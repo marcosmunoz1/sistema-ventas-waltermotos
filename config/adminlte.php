@@ -300,7 +300,7 @@ return [
 
     'menu' => [
         // Navbar items:
-        [
+        /* [
             'type' => 'navbar-search',
             'text' => 'search',
             'topnav_right' => true,
@@ -337,7 +337,7 @@ return [
             'text' => 'change_password',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
-        ],
+        ], */
         [
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',
@@ -346,7 +346,7 @@ return [
                     'text' => 'level_one',
                     'url' => '#',
                 ],
-                [
+              /*   [
                     'text' => 'level_one',
                     'url' => '#',
                     'submenu' => [
@@ -369,14 +369,14 @@ return [
                             ],
                         ],
                     ],
-                ],
+                ], */
                 [
                     'text' => 'level_one',
                     'url' => '#',
                 ],
             ],
         ],
-        ['header' => 'labels'],
+       /*  ['header' => 'labels'],
         [
             'text' => 'important',
             'icon_color' => 'red',
@@ -391,7 +391,7 @@ return [
             'text' => 'information',
             'icon_color' => 'cyan',
             'url' => '#',
-        ],
+        ], */
     ],
 
     /*
