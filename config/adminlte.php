@@ -300,10 +300,10 @@ return [
 
     'menu' => [
         // Navbar items:
-        /* [
+        [
             'type' => 'navbar-search',
             'text' => 'search',
-            'topnav_right' => true,
+            'topnav_right' => false,
         ],
         [
             'type' => 'fullscreen-widget',
@@ -313,70 +313,98 @@ return [
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'Buscar',
         ],
-        [
+        /* [
             'text' => 'blog',
             'url' => 'admin/blog',
             'can' => 'manage-blog',
-        ],
-        [
+        ], */
+        /*  [
             'text' => 'pages',
             'url' => 'admin/pages',
             'icon' => 'far fa-fw fa-file',
             'label' => 4,
             'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
+        ], */
         [
+            'text' => 'Ventas',
+            'url' => 'admin/ventas',
+            'icon' => 'fas fa-fw fa-cash-register',
+        ],
+        [
+            'text' => 'Clientes',
+            'icon' => 'fa-solid fa-users',
+            'url' => 'admin/clientes',
+        ], 
+        [
+            'text' => 'Compras',
+            'icon' => 'fa-solid fa-cart-shopping',
+            'url' => 'admin/compras',
+
+        ],
+        [
+            'text' => 'Proveedores',
+            'icon' => 'fa-solid fa-people-carry-box',
+            'url' => 'admin/proveedores',
+
+        ],    
+      /*   [
+            'text' => 'Maestros',
+            'icon' => 'fas fa-fw fa-gear',
+            'submenu' => [
+                [
+                    'text' => 'Categorias',
+                    'url' => 'admin/categorias',
+                    'icon' => 'fa-solid fa-list-check',
+                ],
+                [
+                    'text' => 'Marcas',
+                    'url' => 'admin/marcas',
+                    'icon' => 'fa-solid fa-bars',
+                ],
+                [
+                    'text' => 'Estados de Orden',
+                    'url' => 'admin/estados',
+                    'icon' => 'fa-solid fa-chart-gantt',
+                ],
+            ],
+        ], */
+        ['header' => 'account_settings'],
+        /*  [
             'text' => 'profile',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
         ], */
+
         [
-            'text' => 'Proveedores',
-            'icon' => 'fas fa-fw fa-share',
+            'text' => 'Configuración',
+            'icon' => 'fas fa-fw fa-gear',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url' => 'proveedores',
+                    'text' => 'Roles',
+                    'url' => 'admin/roles',
+                    'icon' => 'fas fa-fw fa-user-check',
+                ], 
+                [
+                    'text' => 'Usuarios',
+                    'url' => 'admin/usuarios',
+                    'icon' => 'fas fa-fw fa-users',
                 ],
-              /*   [
-                    'text' => 'level_one',
-                    'url' => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                        ],
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ], */
                /*  [
-                    'text' => 'level_one',
-                    'url' => '#',
+                    'text' => 'Permisos',
+                    'url' => 'admin/permisos',
+                    'icon' => 'fas fa-fw fa-user-check',
+                 
+                ], */
+                /* [
+                    'text' => 'Empresa',
+                    'url' => 'admin/configuraciones',
+                    'icon' => 'fa-solid fa-shop',
                 ], */
             ],
         ],
-       /*  ['header' => 'labels'],
+        /*  ['header' => 'labels'],
         [
             'text' => 'important',
             'icon_color' => 'red',
@@ -474,13 +502,18 @@ return [
                 ],
             ],
         ],
-        'Sweetalert2' => [
+       'Sweetalert2' => [
             'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'asset' => true,
+                    'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css',
                 ],
             ],
         ],
