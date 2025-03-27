@@ -6,12 +6,12 @@
 
 {{-- Content body: main page content --}}
 @section('content_header')
-    <h1><b>Listado de Proveedores</b></h1>
+    <h1><b>Proveedores</b></h1>
     <hr>
 @stop
 
 @section('content')
-   
+
 @stop
 
 {{-- Push extra CSS --}}
