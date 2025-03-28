@@ -23,7 +23,7 @@
                 <div class="col-md-10 mx-auto mt-4">
                     <div class="card">
                         <div class="card-body">
-                            <table class="table table-striped table-hover">
+                            <table id="mitabla" class="table table-striped table-hover">
                                 <thead class="table-primary">
                                     <tr>
                                         <th class="text-center" style="width: 10%">#</th>
@@ -98,4 +98,28 @@
             });
         }
     </script>
+    <script>
+        $('#mitabla').DataTable({
+          "pageLength":5,
+          "language":{
+              "emptyTable": "No hay información",
+              "info": "Mostrando _START_ a _END_ de _TOTAL_ Roles",
+              "infoEmpty": "Mostrando 0 a 0 de 0 Productos",
+              "infoFiltered": "(Filtrado de _MAX_ total Roles)",
+              "infoPostFix": "",
+              "thousands": ",",
+              "lengthMenu": "Mostrar _MENU_ Roles",
+              "loadingRecords": "Cargando...",
+              "processings": "Procesando",
+              "search": "Buscador",
+              "zeroRecords": "Sin resultados encontrados",
+              "paginate": {
+                  "first": "Primero",
+                  "last": "Ultimo",
+                  "next": "Siguiente",
+                  "previous": "Anterior"
+              }
+          },
+      });
+     </script>
 @stop

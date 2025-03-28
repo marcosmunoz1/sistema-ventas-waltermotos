@@ -11,7 +11,7 @@
 @stop
 
 @section('content')
-
+ qwqw
 @stop
 
 {{-- Push extra CSS --}}

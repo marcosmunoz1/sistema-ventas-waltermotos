@@ -8,8 +8,8 @@
 
 {{-- Content body: main page content --}}
 
-@section('content_body')
-    <p>Welcome to this beautiful admin panel.</p>
+@section('content')
+    <p>Home matherfaker</p>
 @stop
 
 {{-- Push extra CSS --}}
