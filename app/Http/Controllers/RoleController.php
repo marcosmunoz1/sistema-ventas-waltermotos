@@ -8,26 +8,12 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::where('name', '!=', 'SuperAdmin')->get();    
         return view('admin.roles.index', compact('roles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('admin.roles.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -47,29 +33,12 @@ class RoleController extends Controller
             ->with('icono', 'success');
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        $rol = Role::find($id);
-
-        return view('admin.roles.show', compact('rol'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $rol = Role::find($id);
         return view('/admin/roles/edit', compact('rol'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         //
@@ -90,9 +59,6 @@ class RoleController extends Controller
             ->with('icono', 'success');
     }
 
-    /**
-     * Asignar the specified resource from storage.
-     */
     public function asignar($id)
     {
         $rol = Role::find($id);
@@ -153,9 +119,7 @@ class RoleController extends Controller
             ->with('icono', 'success');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy($id)
     {
         Role::destroy($id);
