@@ -1,67 +1,71 @@
 @extends('adminlte::page')
 
-@section('title', 'Proveedores')
+@section('title', 'Compras')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light ">Listado de Proveedores
+    <h2 class="brand-text font-weight-light ">Listado de Compras
         {{-- <b>{{ $empresa->nombre_empresa }}</b> --}}
     </h2>
     <hr>
-@stop
- 
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Proveedores Registrados</h3>
+                    <h3 class="card-title">Listgado de Compras</h3>
                     <div class="card-tools">
-                        <a href="{{ url('admin/proveedores/crear-proveedor') }}" class="btn btn-primary"><i
-                                class="fas fa-plus"></i> Nuevo
-                            Proveedor</a>
+                        <a href="{{ url('admin/compras/crear-compra') }}" class="btn btn-primary"><i
+                            class="fas fa-plus"></i>Nueva Compra</a>
                     </div>
                 </div>
                 <div class="col-md-12 mx-auto mt-4">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="tablaProveedores" class="table table-striped" >
+                            <table class="table table-striped" id="tablaCompras">
                                 <thead class="table-primary">
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
-                                        <th class="text-center" style="width: 15%">Nombre</th>
-                                        <th class="text-center" style="width: 15%">CUIT</th>
-                                        <th class="text-center" style="width: 15%">Telefono</th>
-                                        <th class="text-center" style="width: 15%">Celular</th>
-                                        <th class="text-center" style="color:red 5%">Estado</th>
-                                        <th class="text-center" style="width: 15%">Acciones</th>
+                                        <th class="text-center" style="width: 10%">Fecha</th>
+                                        <th class="text-center" style="width: 10%">Remito</th>
+                                        <th class="text-center" style="width: 10%">Factura</th>
+                                        <th class="text-center" style="width: 10%">Empresa</th>
+                                        <th class="text-center" style="width: 20%">Proveedor</th>
+                                        <th class="text-center" style="width: 10%">Total</th>
+                                        <th class="text-center" style="width: 5%">Pagada</th>
+                                        <th class="text-center" style="width: 10%">Acciones</th>
                                     </tr>
                                 </thead>
                                 <?php $contador = 1; ?>
                                 <tbody>
-                                    @foreach ($proveedores as $proveedor)
+                                    @foreach ($compras as $compra)
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
-                                            <td  class="text-center" style="vertical-align: middle"> {{ $proveedor->nombre_proveedor }}</td>
-                                            <td class="text-center" style="vertical-align: middle">{{ $proveedor->cuit }}</th>
-                                            <td class="text-center" style="text-align: right; vertical-align: middle;">
-                                                {{ $proveedor->telefono }}</td>
-                                            <td class="text-center" style="text-align: right; vertical-align: middle; ">
-                                                {{ $proveedor->celular }} </td>
-                                                <td class="text-center" style="vertical-align: middle">
-                                                    <span class="badge {{ $proveedor->estado == 1 ? 'bg-success' : 'bg-danger' }}">
-                                                        {{ $proveedor->estado == 1 ? 'Activo' : 'Inactivo' }}
-                                                    </span>
-                                                </td>
-
+                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->fecha }}</td>
+                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->remito }}
+                                            </td>
+                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->factura }}
+                                            </td>
+                                            <td class="text-center"style="vertical-align: middle">
+                                                {{ $compra->proveedor->empresa }}</td>
+                                            <td class="text-center"style="vertical-align: middle">
+                                                {{ $compra->proveedor->nombre }}</td>
+                                            <td class="text-center"style="vertical-align: middle">{{ $compra->total }}</td>
                                             <td class="text-center" style="vertical-align: middle">
-                                                <a href="{{ url('/admin/proveedores', $proveedor->id) }}"
+                                                <span
+                                                    class="badge {{ $compra->cancelada == 'Si' ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $compra->cancelada }}
+                                                </span>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                <a href="{{ url('/admin/compras', $compra->id) }}"
                                                     class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                <a href="{{ url('/admin/proveedores/' . $proveedor->id . '/edit') }}"
+                                                <a href="{{ url('/admin/compras/' . $compra->id . '/edit') }}"
                                                     class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                <form action="{{ url('/admin/proveedores', $proveedor->id) }}"
-                                                    method="post" class="d-inline-block"
-                                                    onsubmit="preguntar(event, {{ $proveedor->id }})"
-                                                    id="miFormulario{{ $proveedor->id }}">
+                                                <form action="{{ url('/admin/compras', $compra->id) }}" method="post"
+                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $compra->id }})"
+                                                    id="miFormulario{{ $compra->id }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger">
@@ -80,12 +84,13 @@
             </div>
         </div>
     </div>
-@stop
+
+@endsection
 
 @section('css')
     {{-- Add here extra stylesheets --}}
     {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
-@stop
+@endsection
 
 @section('js')
 
@@ -94,7 +99,7 @@
             event.preventDefault();
 
             Swal.fire({
-                title: '¿Desea eliminar este proveedor?',
+                title: '¿Desea eliminar esta Compra?',
                 text: 'Los cambios seran permanentes',
                 icon: 'warning',
                 showDenyButton: true,
@@ -114,7 +119,7 @@
     </script>
 
     <script>
-        $('#tablaProveedores').DataTable({
+        $('#tablaCompras').DataTable({
             "pageLength": 5,
             "language": {
                 "emptyTable": "No hay información.",
@@ -135,6 +140,4 @@
             }
         });
     </script>
-@stop
-
-
+@endsection

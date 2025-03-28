@@ -330,23 +330,23 @@ return [
         [
             'text' => 'Ventas',
             'url' => 'ventas',
-            'icon' => 'fas fa-fw fa-cash-register',
+            'icon' => 'fas fa fa-cash-register',
         ],
         [
             'text' => 'Clientes',
-            'icon' => 'fa-solid fa-users',
+            'icon' => 'fas fa fa-users',
             'url' => 'clientes',
         ],
         [
             'text' => 'Compras',
-            'icon' => 'fa-solid fa-cart-shopping',
+            'icon' => 'fas fa-cart-shopping',
             'url' => 'compras',
 
         ],
         [
             'text' => 'Proveedores',
-            'icon' => 'fa-solid fa-people-carry-box',
             'url' => 'proveedores',
+           'icon' => 'fas fa fa-truck',
 
         ],
       /*   [

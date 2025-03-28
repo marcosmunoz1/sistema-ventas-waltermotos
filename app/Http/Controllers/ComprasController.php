@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Compras;
 use App\Models\Proveedores;
 use Illuminate\Http\Request;
 
-class ProveedoresController extends Controller
+class ComprasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $proveedores = Proveedores::all();
-        return view('admin.proveedores.index', compact('proveedores'));
-
+    {    $compras = compras::all();
+        return view('admin.compras.index', compact('compras'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
+    {    $proveedores = Proveedores::all();
+        return view('admin.compras.create', compact('proveedores'));
     }
 
     /**
@@ -36,7 +35,7 @@ class ProveedoresController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Proveedores $proveedores)
+    public function show(Compras $compras)
     {
         //
     }
@@ -44,7 +43,7 @@ class ProveedoresController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Proveedores $proveedores)
+    public function edit(Compras $compras)
     {
         //
     }
@@ -52,7 +51,7 @@ class ProveedoresController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Proveedores $proveedores)
+    public function update(Request $request, Compras $compras)
     {
         //
     }
@@ -60,7 +59,7 @@ class ProveedoresController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Proveedores $proveedores)
+    public function destroy(Compras $compras)
     {
         //
     }
