@@ -55,4 +55,19 @@
 @section('adminlte_js')
     @stack('js')
     @yield('js')
+
+    @if (Session::has('mensaje') && Session::has('icono'))
+        <script>
+            Swal.fire({
+                icon: {!! json_encode(Session::get('icono')) !!},
+                title: {!! json_encode(Session::get('mensaje')) !!},
+                text: "Clic en Aceptar para continuar",
+                showConfirmButton: true, // Muestra el botón
+                confirmButtonText: "Aceptar", // Cambia el texto del botón
+                confirmButtonColor: "#3085d6", // Cambia el color del botón
+                timer: 4000 // Se cerrará automáticamente después de 4 segundos
+            });
+        </script>
+    @endif
+    
 @stop
