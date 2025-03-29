@@ -329,26 +329,26 @@ return [
         ], */
         [
             'text' => 'Ventas',
-            'url' => 'admin/ventas',
-            'icon' => 'fas fa-fw fa-cash-register',
+            'url' => 'ventas',
+            'icon' => 'fas fa fa-cash-register',
         ],
         [
             'text' => 'Clientes',
-            'icon' => 'fa-solid fa-users',
-            'url' => 'admin/clientes',
-        ], 
+            'icon' => 'fas fa fa-users',
+            'url' => 'clientes',
+        ],
         [
             'text' => 'Compras',
-            'icon' => 'fa-solid fa-cart-shopping',
-            'url' => 'admin/compras',
+            'icon' => 'fas fa-cart-shopping',
+            'url' => 'compras',
 
         ],
         [
             'text' => 'Proveedores',
-            'icon' => 'fa-solid fa-people-carry-box',
-            'url' => 'admin/proveedores',
+            'url' => 'proveedores',
+           'icon' => 'fas fa fa-truck',
 
-        ],    
+        ],
       /*   [
             'text' => 'Maestros',
             'icon' => 'fas fa-fw fa-gear',
@@ -385,7 +385,7 @@ return [
                     'text' => 'Roles',
                     'url' => 'admin/roles',
                     'icon' => 'fas fa-fw fa-user-check',
-                ], 
+                ],
                 [
                     'text' => 'Usuarios',
                     'url' => 'admin/usuarios',
@@ -395,7 +395,7 @@ return [
                     'text' => 'Permisos',
                     'url' => 'admin/permisos',
                     'icon' => 'fas fa-fw fa-user-check',
-                 
+
                 ], */
                 /* [
                     'text' => 'Empresa',

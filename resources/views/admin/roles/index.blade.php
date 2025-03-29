@@ -24,7 +24,7 @@
                 <div class="col-md-10 mx-auto mt-4">
                     <div class="card">
                         <div class="card-body">
-                            <table class="table table-striped table-hover">
+                            <table id="mitabla" class="table table-striped table-hover">
                                 <thead class="table-primary">
                                     <tr>
                                         <th class="text-center" style="width: 10%">#</th>
@@ -157,6 +157,4 @@
             });
         }
     </script>
-
-
 @stop
