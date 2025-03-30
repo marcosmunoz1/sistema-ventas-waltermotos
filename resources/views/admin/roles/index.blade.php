@@ -67,16 +67,14 @@
     </div>
 
     <!-- Modal para Crear Rol -->
-    <div class="modal fade" id="crearRolModal" tabindex="-1" aria-labelledby="crearRolLabel" aria-hidden="true"
-        data-backdrop="static">
-        <div class="modal-dialog " role="document">
+    <div class="modal" id="crearRolModal" tabindex="-1" aria-labelledby="crearRolLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-success text-white">
                     <h5 class="modal-title"><i class="fas fa-file-alt"></i> Crear Nuevo Rol</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar"
-                        onclick="cerrarModal()">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="close">
                         <span aria-hidden="true">&times;</span>
-                    </button>
+                      </button>
                 </div>
 
                 <div class="modal-body">
@@ -85,8 +83,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="name">Nombre del Rol</label>
-                                <input type="text"name="name" class="form-control" required value="{{ old('name') }}"
-                                    placeholder="Ingrese un nombre de rol">
+                                <input type="text"name="name" class="form-control" required>
                                 @error('name')
                                     <small style="color: red;">{{ $message }}</small>
                                 @enderror
@@ -124,16 +121,6 @@
         </script>
     @endif
 
-
-    <script>
-          // limpiar el formulario recargamos la pagina
-        document.addEventListener("DOMContentLoaded", function() {
-            $('#crearRolModal').on('hidden.bs.modal', function() {
-                window.location.href = "{{ url()->current() }}"; // Recarga la página y limpia errores
-            });
-        });
-    </script>
-
     <script>
         function preguntar(event, id) {
             event.preventDefault();
@@ -157,4 +144,29 @@
             });
         }
     </script>
+     <script>
+        $('#mitabla').DataTable({
+            "pageLength": 5,
+            "language": {
+                "emptyTable": "No hay información.",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Roles",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Productos",
+                "infoFiltered": "(Filtrado de _MAX_ total Roles)",
+                "lengthMenu": "Mostrar _MENU_ Roles",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscador:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+
+
+    </script> 
+
 @stop

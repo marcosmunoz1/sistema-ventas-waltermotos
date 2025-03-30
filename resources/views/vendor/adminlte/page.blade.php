@@ -55,7 +55,8 @@
 @section('adminlte_js')
     @stack('js')
     @yield('js')
-
+    <script src="{{asset('js/funciones.js')}}"></script>
+    
     @if (Session::has('mensaje') && Session::has('icono'))
         <script>
             Swal.fire({
@@ -69,5 +70,5 @@
             });
         </script>
     @endif
-    
+
 @stop
