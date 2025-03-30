@@ -28,9 +28,9 @@
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
                                         <th class="text-center" style="width: 10%">Fecha</th>
+                                        <th class="text-center" style="width: 10%">nr_compra</th>
                                         <th class="text-center" style="width: 10%">Remito</th>
                                         <th class="text-center" style="width: 10%">Factura</th>
-                                        <th class="text-center" style="width: 10%">Empresa</th>
                                         <th class="text-center" style="width: 20%">Proveedor</th>
                                         <th class="text-center" style="width: 10%">Total</th>
                                         <th class="text-center" style="width: 5%">Pagada</th>
@@ -42,16 +42,16 @@
                                     @foreach ($compras as $compra)
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->fecha }}</td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->remito }}
+                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->fecha_compra }}</td>
+                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_compra }}
                                             </td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->factura }}
+                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_remito }}
+                                            </td>
+                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_factura }}
                                             </td>
                                             <td class="text-center"style="vertical-align: middle">
-                                                {{ $compra->proveedor->empresa }}</td>
-                                            <td class="text-center"style="vertical-align: middle">
-                                                {{ $compra->proveedor->nombre }}</td>
-                                            <td class="text-center"style="vertical-align: middle">{{ $compra->total }}</td>
+                                                {{ $compra->proveedor->nombre_proveedor ?? 'Sin proveedor' }}</td>
+                                            <td class="text-center"style="vertical-align: middle">{{ $compra->total_compra }}</td>
                                             <td class="text-center" style="vertical-align: middle">
                                                 <span
                                                     class="badge {{ $compra->cancelada == 'Si' ? 'bg-success' : 'bg-danger' }}">
