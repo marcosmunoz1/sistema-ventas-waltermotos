@@ -54,8 +54,8 @@
                                             <td class="text-center"style="vertical-align: middle">{{ $compra->total_compra }}</td>
                                             <td class="text-center" style="vertical-align: middle">
                                                 <span
-                                                    class="badge {{ $compra->cancelada == 'Si' ? 'bg-success' : 'bg-danger' }}">
-                                                    {{ $compra->cancelada }}
+                                                    class="badge {{ $compra->estado_compra == 1 ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $compra->estado_compra }}
                                                 </span>
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">

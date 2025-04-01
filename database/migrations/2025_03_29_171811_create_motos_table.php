@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Schema;
         Schema::create('motos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_nacionalidad');
-            $table->foreign(columns:'id_nacionalidad')->references('id')->on(table: 'nacionalidades')->onDelete(action:'cascade');
+            $table->foreign('id_nacionalidad')->references('id')->on('nacionalidades')->onDelete('cascade');
             $table->unsignedBigInteger('id_compra');
-            $table->foreign(columns:'id_compra')->references('id')->on(table: 'compras')->onDelete(action:'cascade');
+            $table->foreign('id_compra')->references('id')->on('compras')->onDelete('cascade');
             $table->unsignedBigInteger('id_deposito');
-            $table->foreign(columns:'id_deposito')->references('id')->on(table: 'depositos')->onDelete(action:'cascade');
+            $table->foreign('id_deposito')->references('id')->on('depositos')->onDelete('cascade');
             $table->string('marca_moto');
             $table->string('modelo_moto');
             $table->string('dominio');
@@ -46,7 +46,7 @@ use Illuminate\Support\Facades\Schema;
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventarios');
+        Schema::dropIfExists('motos');
     }
 };
 

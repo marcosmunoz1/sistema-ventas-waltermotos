@@ -3,7 +3,7 @@
 @section('title', 'Empresas')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light ">Listado de Roles
+    <h2>Listado de Roles
         {{-- <b>{{ $empresa->nombre_empresa }}</b> --}}
     </h2>
     <hr>
@@ -107,8 +107,6 @@
             </div>
         </div>
     </div>
-
-
 
 @stop
 
