@@ -22,87 +22,96 @@
                     </div>
                 </div>
                 <div class="col-md-10 mx-auto mt-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <table class="table table-striped table-hover">
-                                <thead class="table-primary">
-                                    <tr>
-                                        <th class="text-center" style="width: 10%">#</th>
-                                        <th style="width: 40%">Nombre del Rol</th>
-                                        <th class="text-center" style="width: 40%">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <?php $contador = 1; ?>
-                                <tbody>
-                                    @foreach ($roles as $rol)
+                    <div class="card ">
+                        <div class="card-body ">
+                            <div class="d-flex justify-content-center">
+                                <table class="table table-striped table-hover">
+                                    <thead class="table-primary">
                                         <tr>
-                                            <td class="text-center">{{ $contador++ }}</td>
-                                            <td>{{ $rol->name }}</th>
-                                            <td class="text-center">
-                                                <a href="{{ url('/admin/roles/' . $rol->id . '/edit') }}"
-                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
-                                                <a href="{{ url('/admin/roles/asignar/' . $rol->id) }}"
-                                                    class="btn btn-sm btn-success"><i class="fas fa-check"></i> Permisos</a>
-                                                <form action="{{ url('/admin/roles', $rol->id) }}" method="post"
-                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $rol->id }})"
-                                                    id="miFormulario{{ $rol->id }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">
-                                                        <i class="fas fa-trash"></i> Eliminar
-                                                    </button>
-                                                </form>
-
-                                            </td>
+                                            <th class="text-center" style="width: 10%">#</th>
+                                            <th style="width: 40%">Nombre del Rol</th>
+                                            <th class="text-center" style="width: 40%">Acciones</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                                    </thead>
+                                    <?php $contador = 1; ?>
+                                    <tbody>
+                                        @foreach ($roles as $rol)
+                                            <tr>
+                                                <td class="text-center">{{ $contador++ }}</td>
+                                                <td>{{ $rol->name }}</th>
+                                                <td class="text-center">
+                                                    <a href="{{ url('/admin/roles/' . $rol->id . '/edit') }}"
+                                                        class="btn btn-sm btn-warning"><i class="fas fa-edit"></i>
+                                                        Editar</a>
+                                                    <a href="{{ url('/admin/roles/asignar/' . $rol->id) }}"
+                                                        class="btn btn-sm btn-success"><i class="fas fa-check"></i>
+                                                        Permisos</a>
+                                                    <form action="{{ url('/admin/roles', $rol->id) }}" method="post"
+                                                        class="d-inline-block"
+                                                        onsubmit="preguntar(event, {{ $rol->id }})"
+                                                        id="miFormulario{{ $rol->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash"></i> Eliminar
+                                                        </button>
+                                                    </form>
 
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para Crear Rol -->
-    <div class="modal fade" id="crearRolModal" tabindex="-1" aria-labelledby="crearRolLabel" aria-hidden="true"
-        data-backdrop="static">
-        <div class="modal-dialog " role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title"><i class="fas fa-file-alt"></i> Crear Nuevo Rol</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar"
-                        onclick="cerrarModal()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <form action="{{ url('/admin/roles/crear-rol') }}" method="post">
-                        @csrf
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="name">Nombre del Rol</label>
-                                <input type="text"name="name" class="form-control" required value="{{ old('name') }}"
-                                    placeholder="Ingrese un nombre de rol">
-                                @error('name')
-                                    <small style="color: red;">{{ $message }}</small>
-                                @enderror
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-save"></i> Guardar Orden</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
+
+        <!-- Modal para Crear Rol -->
+        <div class="modal fade" id="crearRolModal" tabindex="-1" aria-labelledby="crearRolLabel" aria-hidden="true"
+            data-backdrop="static">
+            <div class="modal-dialog " role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title"><i class="fas fa-file-alt"></i> Crear Nuevo Rol</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar"
+                            onclick="cerrarModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="{{ url('/admin/roles/crear-rol') }}" method="post">
+                            @csrf
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="name">Nombre del Rol</label>
+                                    <input type="text"name="name" class="form-control" required
+                                        value="{{ old('name') }}" placeholder="Ingrese un nombre de rol">
+                                    @error('name')
+                                        <small style="color: red;">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save"></i> Guardar Orden</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                                        class="fas fa-cancel"></i> Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+
 
 
 
@@ -126,7 +135,7 @@
 
 
     <script>
-          // limpiar el formulario recargamos la pagina
+        // limpiar el formulario recargamos la pagina
         document.addEventListener("DOMContentLoaded", function() {
             $('#crearRolModal').on('hidden.bs.modal', function() {
                 window.location.href = "{{ url()->current() }}"; // Recarga la página y limpia errores
