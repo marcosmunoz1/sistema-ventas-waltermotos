@@ -12,7 +12,7 @@ class ComprasController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {    $compras = compras::all();
+    {    $compras = compras::with('proveedor')->get();
         return view('admin.compras.index', compact('compras'));
     }
 
@@ -29,7 +29,8 @@ class ComprasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+          $datos = request()->all();
+        return response()->json($datos);   
     }
 
     /**
