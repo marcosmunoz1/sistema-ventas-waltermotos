@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compras;
+use App\Models\inventario;
+use App\Models\motos;
 use App\Models\Proveedores;
 use Illuminate\Http\Request;
 
@@ -21,7 +23,8 @@ class ComprasController extends Controller
      */
     public function create()
     {    $proveedores = Proveedores::all();
-        return view('admin.compras.create', compact('proveedores'));
+         $motos = motos::all();
+        return view('admin.compras.create', compact('proveedores','motos'));
     }
 
     /**
@@ -30,7 +33,7 @@ class ComprasController extends Controller
     public function store(Request $request)
     {
           $datos = request()->all();
-        return response()->json($datos);   
+        return response()->json($datos);
     }
 
     /**
