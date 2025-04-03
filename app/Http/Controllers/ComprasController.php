@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compras;
+use App\Models\Depositos;
+use App\Models\inventario;
+use App\Models\Marcas;
+use App\Models\motos;
+use App\Models\Nacionalidades;
 use App\Models\Proveedores;
 use Illuminate\Http\Request;
 
@@ -12,7 +17,7 @@ class ComprasController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {    $compras = compras::all();
+    {    $compras = compras::with('proveedor')->get();
         return view('admin.compras.index', compact('compras'));
     }
 
@@ -21,7 +26,11 @@ class ComprasController extends Controller
      */
     public function create()
     {    $proveedores = Proveedores::all();
-        return view('admin.compras.create', compact('proveedores'));
+         $marcas = Marcas::all();
+         $nacionalidades = Nacionalidades::all();
+         $depositos = Depositos::all(); 
+         $motos = motos::all();
+        return view('admin.compras.create', compact('proveedores','motos'));
     }
 
     /**
@@ -29,7 +38,8 @@ class ComprasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+          $datos = request()->all();
+        return response()->json($datos);
     }
 
     /**

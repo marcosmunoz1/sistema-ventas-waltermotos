@@ -31,13 +31,18 @@ Route::get('/admin/usuarios/{id}/edit', [App\Http\Controllers\UsuariosController
 Route::put('/admin/usuarios/{id}', [App\Http\Controllers\UsuariosController::class, 'update'])->name('admin.usuarios.update');
 Route::delete('/admin/usuarios/{id}', [App\Http\Controllers\UsuariosController::class, 'destroy'])->name('admin.usuarios.destroy');
 
+//Rutas para usuarios
+Route::get('/admin/motos', [App\Http\Controllers\MotoController::class, 'index'])->name('admin.motos.index');
+Route::get('/admin/motos/crear-moto', [App\Http\Controllers\MotoController::class, 'create'])->name('admin.motos.create');
+Route::post('admin/motos/crear-moto', [App\Http\Controllers\MotoController::class, 'store'])->name('admin.motos.store');
+Route::get('/admin/motos/{id}', [App\Http\Controllers\MotoController::class, 'show'])->name('admin.motos.show');
 
 Route::get('/proveedores', [App\Http\Controllers\ProveedoresController::class, 'index'])->name('index');
 
 Route::get('/compras', [App\Http\Controllers\ComprasController::class, 'index'])->name('admin.compras.index');
 Route::get('/admin/compras/crear-compra', [App\Http\Controllers\ComprasController::class, 'create'])->name('admin.compras.create');
-/* Route::get('/admin/compras/reporte', [App\Http\Controllers\ComprasController::class, 'reporte'])->name('admin.compras.reporte')->middleware('auth','can:Ver reporte de compras');
 Route::post('/admin/compras/cargar-compra', [App\Http\Controllers\ComprasController::class, 'store'])->name('admin.compras.store')->middleware('auth'); //ruta para enviar la informacion del nuevo rol
+ /* Route::get('/admin/compras/reporte', [App\Http\Controllers\ComprasController::class, 'reporte'])->name('admin.compras.reporte')->middleware('auth','can:Ver reporte de compras');
 Route::get('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'show'])->name('admin.compras.show')->middleware('auth','can:Ver datos de compra');
 Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\ComprasController::class, 'edit'])->name('admin.compras.edit')->middleware('auth','can:Editar compra');
 Route::put('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'update'])->name('admin.compras.update')->middleware('auth');

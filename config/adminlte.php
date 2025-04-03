@@ -349,6 +349,13 @@ return [
            'icon' => 'fas fa fa-truck',
 
         ],
+        [
+            'text' => 'Motos',
+            'url' => 'admin/motos',
+           'icon' => 'fas fa-motorcycle',
+
+        ],
+        
       /*   [
             'text' => 'Maestros',
             'icon' => 'fas fa-fw fa-gear',

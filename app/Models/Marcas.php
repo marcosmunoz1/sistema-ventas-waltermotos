@@ -4,14 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Proveedores extends Model
+class Marcas extends Model
 {
-    //protected $fillable = ['nombre_proveedor'];
-
     public function compras(){
 
         return $this->hasMany(Compras::class);
     }
-
-   
 }
