@@ -3,7 +3,7 @@
 @section('title', 'Empresas')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light ">Listado de Roles
+    <h2>Listado de Roles
         {{-- <b>{{ $empresa->nombre_empresa }}</b> --}}
     </h2>
     <hr>
@@ -83,7 +83,14 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="name">Nombre del Rol</label>
-                                <input type="text"name="name" class="form-control" required>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text">
+                                        <i class="fas fa-user-pen"></i>
+                                      </span>
+                                    </div>
+                                    <input type="text" name="name" class="form-control" required>
+                                  </div>
                                 @error('name')
                                     <small style="color: red;">{{ $message }}</small>
                                 @enderror
@@ -92,7 +99,7 @@
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-success">
-                                <i class="fas fa-save"></i> Guardar Orden</button>
+                                <i class="fas fa-save"></i> Agregar Rol</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
                         </div>
                     </form>
@@ -100,8 +107,6 @@
             </div>
         </div>
     </div>
-
-
 
 @stop
 
@@ -167,6 +172,6 @@
         });
 
 
-    </script> 
+    </script>
 
 @stop
