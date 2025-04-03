@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compras;
+use App\Models\Depositos;
 use App\Models\inventario;
+use App\Models\Marcas;
 use App\Models\motos;
+use App\Models\Nacionalidades;
 use App\Models\Proveedores;
 use Illuminate\Http\Request;
 
@@ -23,6 +26,9 @@ class ComprasController extends Controller
      */
     public function create()
     {    $proveedores = Proveedores::all();
+         $marcas = Marcas::all();
+         $nacionalidades = Nacionalidades::all();
+         $depositos = Depositos::all(); 
          $motos = motos::all();
         return view('admin.compras.create', compact('proveedores','motos'));
     }
