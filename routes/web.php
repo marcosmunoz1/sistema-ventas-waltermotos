@@ -36,6 +36,11 @@ Route::get('/admin/motos', [App\Http\Controllers\MotoController::class, 'index']
 Route::get('/admin/motos/crear-moto', [App\Http\Controllers\MotoController::class, 'create'])->name('admin.motos.create');
 Route::post('admin/motos/crear-moto', [App\Http\Controllers\MotoController::class, 'store'])->name('admin.motos.store');
 Route::get('/admin/motos/{id}', [App\Http\Controllers\MotoController::class, 'show'])->name('admin.motos.show');
+Route::get('/admin/motos/{id}/edit', [App\Http\Controllers\MotoController::class, 'edit'])->name('admin.motos.edit');
+Route::put('/admin/motos/{id}', [App\Http\Controllers\MotoController::class, 'update'])->name('admin.motos.update');
+Route::delete('/admin/motos/{id}', [App\Http\Controllers\MotoController::class, 'destroy'])->name('admin.motos.destroy');
+
+
 
 Route::get('/proveedores', [App\Http\Controllers\ProveedoresController::class, 'index'])->name('index');
 

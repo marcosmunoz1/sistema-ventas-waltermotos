@@ -25,7 +25,6 @@
                                 <div class="row">
                                     <!-- Primera Columna: Datos -->
                                     <div class="col-md-9">
-                                        <!-- Fila 1 -->
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label>Marca</label>
@@ -48,14 +47,13 @@
                                                     value="{{ $moto->cilindrada_moto }}" disabled>
                                             </div>
                                         </div>
-                                        <!-- Fila 2 -->
                                         <div class="row mt-2">
-                                            <div class="col-md-2">
+                                            <div class="col-md-3">
                                                 <label>Color</label>
                                                 <input type="text" class="form-control" value="{{ $moto->color_moto }}"
                                                     disabled>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label>Nacionalidad</label>
                                                 <input type="text" class="form-control"
                                                     value="{{ $moto->nacionalidad->pais }}" disabled>
@@ -71,13 +69,11 @@
                                                     disabled>
                                             </div>
                                             <div class="col-md-2">
-                                                <div class="form-check mt-4">
-                                                    <input class="form-check-input" type="checkbox" id="esUsada">
-                                                    <label class="form-check-label">¿Es usada?</label>
-                                                </div>
+                                                <label>Moto</label>
+                                                <input type="text" class="form-control"
+                                                    value="{{ $moto->es_usada == 1 ? 'Usada' : 'Nueva' }}" disabled>
                                             </div>
                                         </div>
-                                        <!-- Fila 3 -->
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <label>Nro. Motor</label>
@@ -90,7 +86,6 @@
                                                     disabled>
                                             </div>
                                         </div>
-                                        <!-- Fila 4 -->
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <label>D.N.R.P.A</label>
@@ -105,13 +100,16 @@
                                         </div>
                                     </div>
 
-                                    <!-- Segunda Columna: Imagen -->
                                     <div class="col-md-3">
                                         <div class="text-center">
                                             <div class="form-group">
                                                 <label for="imagen">Imagen</label>
-                                               
-                                                <center><output id="list"></output></center>
+                                                <center> 
+                                                    <output id="list">
+                                                        <img src="{{ asset('storage/' . $moto->imagen_moto) }}" width="100%"
+                                                            alt="">
+                                                    </output>
+                                                </center>
                                             </div>
                                         </div>
                                     </div>
@@ -119,10 +117,7 @@
                             </div>
                         </div>
 
-
-
                         <div class="row">
-                            <!-- Datos de Compra -->
                             <div class="col-md-6">
                                 <div class="card">
                                     <h5 class="text-center text-info mt-2"><i class="fas fa fa-truck"></i> Datos del Compra
@@ -130,20 +125,20 @@
                                     <div
                                         class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
                                         <div class="row">
-                                            <!-- Primera Columna -->
                                             <div class="col-md-12 mb-3">
-                                                <label for="nroFactura" class="form-label">Proveedor</label>
+                                                <label class="form-label">Proveedor</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control"
                                                         value="{{ $proveedor->nombre_proveedor }}" disabled>
-                                                    <button class="btn btn-outline-info" type="button"
-                                                        id="btnVerFactura">
+                                                    <button class="btn btn-outline-info" type="button" id="btnVerProveedor"
+                                                        data-nombre="{{ $proveedor->nombre_proveedor }}"
+                                                        data-email="{{ $proveedor->email }}"
+                                                        data-telefono="{{ $proveedor->telefono }}">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                 </div>
                                             </div>
 
-                                            <!-- Segunda Columna -->
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label>Fecha de Ingreso</label>
@@ -152,11 +147,11 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Precio de Compra</label>
-                                                    <input type="number" class="form-control"
-                                                        value="{{ $moto->precio_compra }}" disabled>
+                                                    <input type="text" class="form-control text-success"
+                                                        value="{{ '$' . number_format($moto->precio_compra, 0, ',', '.') }}"
+                                                        disabled>
                                                 </div>
                                             </div>
-                                            <!-- tercera Columna -->
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label>Número de Remito</label>
@@ -164,18 +159,17 @@
                                                         value="{{ $moto->compra->numero_remito }}" disabled>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <div class="mb-3">
-                                                        <label>Nro. de Factura</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control"
-                                                                value="{{ $moto->compra->numero_factura }}" disabled>
-                                                            <button class="btn btn-outline-info" type="button"
-                                                                id="btnVerFactura">
-                                                                <i class="fas fa-eye"></i>
-                                                            </button>
-                                                        </div>
+                                                    <label>Nro. de Factura</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" value="{{ $moto->compra->numero_factura }}" disabled>
+                                                        <button class="btn btn-outline-info" type="button" id="btnVerCompra"
+                                                                data-fecha="{{ $moto->compra->fecha_compra }}"
+                                                                data-factura="{{ $moto->compra->numero_factura }}"
+                                                                data-remito="{{ $moto->compra->numero_remito }}"
+                                                                data-total="{{ '$' . number_format($moto->compra->total_compra , 0, ',', '.')   }}">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -183,20 +177,18 @@
                                 </div>
                             </div>
 
-                            <!-- Datos de Venta -->
                             <div class="col-md-6">
                                 <div class="card">
-                                    <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i>
-                                        Datos de Venta</h5>
+                                    <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i> Datos
+                                        de Venta</h5>
                                     <div
-                                        class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }} ">
+                                        class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
                                         <div class="row">
-                                            <!-- Primera Columna -->
                                             <div class="col-md-12">
                                                 <div class="mb-3">
                                                     <label for="nroFactura" class="form-label">Cliente</label>
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control"  disabled>
+                                                        <input type="text" class="form-control" disabled>
                                                         <button class="btn btn-outline-secondary" type="button"
                                                             id="btnVerFactura">
                                                             <i class="fas fa-eye"></i>
@@ -205,31 +197,31 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Segunda Columna -->
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label for="fechaIngreso" class="form-label">Fecha de Egreso
-                                                        *</label>
-                                                    <input type="date" class="form-control"  value="{{ $moto->compra->numero_remito }}" disabled>
+                                                    <label for="fechaIngreso" class="form-label">Fecha de Egreso</label>
+                                                    <input type="date" class="form-control"
+                                                        value="{{ $moto->compra->numero_remito }}" disabled>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="precioCompra" class="form-label">Precio de Venta
-                                                        *</label>
-                                                    <input type="number" class="form-control"  value="{{ $moto->compra->numero_remito }}" disabled>
+                                                    <label for="precioVenta" class="form-label">Precio de Venta</label>
+                                                    <input type="text" class="form-control text-danger"
+                                                        value="{{ '$' . number_format($moto->precio_venta, 0, ',', '.') }}"
+                                                        disabled>
                                                 </div>
                                             </div>
-                                            <!-- tercera Columna -->
+
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label for="precioCompra" class="form-label">Número de Remito
-                                                        *</label>
-                                                    <input type="number" class="form-control" value="{{ $moto->compra->numero_remito }}" disabled>
+                                                    <label for="precioCompra" class="form-label">Número de Remito</label>
+                                                    <input type="number" class="form-control"
+                                                        value="{{ $moto->compra->numero_remito }}" disabled>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="nroFactura" class="form-label">Nro. de
-                                                        Factura</label>
+                                                    <label for="nroFactura" class="form-label">Nro. de Factura</label>
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control"  value="{{ $moto->compra->numero_remito }}" disabled>
+                                                        <input type="text" class="form-control"
+                                                            value="{{ $moto->compra->numero_remito }}" disabled>
                                                         <button class="btn btn-outline-secondary" type="button"
                                                             id="btnVerFactura">
                                                             <i class="fas fa-eye"></i>
@@ -246,27 +238,89 @@
 
                     </div>
 
-
-                    <!-- Botones de acción -->
                     <div class="card-footer text-right">
                         <a href="{{ url('admin/productos') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
                     </div>
-
-
                 </div>
             </div>
         </div>
+    </div>
 
+    <div class="modal fade" id="modalProveedor" tabindex="-1" aria-labelledby="modalProveedorLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="modalProveedorLabel">Información del Proveedor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Nombre:</strong> <span id="nombreProveedor"></span></p>
+                    <p><strong>Email:</strong> <span id="emailProveedor"></span></p>
+                    <p><strong>Teléfono:</strong> <span id="telefonoProveedor"></span></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Compra -->
+    <div class="modal fade" id="modalCompra" tabindex="-1" aria-labelledby="modalCompraLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="modalCompraLabel">Información de la Compra</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Fecha:</strong> <span id="fechaCompra"></span></p>
+                    <p><strong>Factura:</strong> <span id="facturaCompra"></span></p>
+                    <p><strong>Remito:</strong> <span id="remitoCompra"></span></p>
+                    <p><strong>Total:</strong> <span id="totalCompra"></span></p>
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection
 
 @section('css')
-    {{-- Aquí puedes agregar estilos personalizados --}}
+    {{-- Estilos personalizados --}}
 @endsection
 
 @section('js')
-    {{-- Aquí puedes agregar scripts adicionales --}}
+    {{-- Scripts adicionales --}}
+    <script>
+        document.getElementById('btnVerProveedor').addEventListener('click', function() {
+            const nombre = this.getAttribute('data-nombre');
+            const email = this.getAttribute('data-email');
+            const telefono = this.getAttribute('data-telefono');
+
+            document.getElementById('nombreProveedor').textContent = nombre;
+            document.getElementById('emailProveedor').textContent = email;
+            document.getElementById('telefonoProveedor').textContent = telefono;
+
+            var myModal = new bootstrap.Modal(document.getElementById('modalProveedor'));
+            myModal.show();
+        });
+
+        document.getElementById('btnVerCompra').addEventListener('click', function() {
+            const fecha = this.getAttribute('data-fecha');
+            const factura = this.getAttribute('data-factura');
+            const remito = this.getAttribute('data-remito');
+            const total = this.getAttribute('data-total');
+
+            // Asignar los valores al modal
+            document.getElementById('fechaCompra').textContent = fecha;
+            document.getElementById('facturaCompra').textContent = factura;
+            document.getElementById('remitoCompra').textContent = remito;
+            document.getElementById('totalCompra').textContent = total;
+
+            // Mostrar el modal
+            var myModal = new bootstrap.Modal(document.getElementById('modalCompra'));
+            myModal.show();
+        });
+    </script>
 @endsection

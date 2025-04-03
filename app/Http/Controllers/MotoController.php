@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compra;
+use App\Models\Deposito;
 use App\Models\Marca;
 use App\Models\Moto;
+use App\Models\Nacionalidad;
 use App\Models\Proveedores;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MotoController extends Controller
 {
@@ -45,30 +48,90 @@ class MotoController extends Controller
         $moto = Moto::with(['marca', 'nacionalidad', 'compra', 'deposito'])->findOrFail($id);
         $proveedor = Proveedores::where('id', $moto->compra->id_proveedor)->first();
 
-        return view('admin.motos.show', compact('moto','proveedor'));
+        return view('admin.motos.show', compact('moto', 'proveedor'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Moto $moto)
+    public function edit($id)
     {
         //
+        $moto = Moto::find($id);
+        $marcas = Marca::all();
+        $nacionalidades = Nacionalidad::all();
+        $depositos = Deposito::all();
+        return view('/admin/motos/edit', compact('moto', 'marcas', 'nacionalidades','depositos'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Moto $moto)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'marca' => 'required',
+            'modelo' => 'required|string|max:255',
+            'dominio' => 'required|unique:motos,dominio,' . $id,
+            'cilindrada' => 'required|numeric',
+            'color' => 'nullable|string|max:50',
+            'anio' => 'nullable|numeric',
+            'km' => 'nullable|numeric',
+            'motor' => 'required|unique:motos,nr_motor,' . $id,
+            'chasis' => 'required|unique:motos,nr_chasis,'. $id,
+            'dnrpa' => 'nullable|unique:motos,dnrpa,'. $id,
+            'certificado' => 'nullable|unique:motos,nr_certificado,'. $id,
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'nacionalidad' => 'required'
+        ]);
+
+
+        $moto = Moto::findOrFail($id);
+
+        $moto->id_marca = $request->marca;
+        $moto->modelo_moto = $request->modelo;
+        $moto->dominio = $request->dominio;
+        $moto->cilindrada_moto = $request->cilindrada;
+        $moto->color_moto = $request->color;
+        $moto->anio_moto = $request->anio;
+        $moto->km_moto = $request->km;
+        $moto->nr_motor = $request->motor;
+        $moto->nr_chasis = $request->chasis;
+        $moto->dnrpa = $request->dnrpa;
+        $moto->nr_certificado = $request->certificado;
+        $moto->id_nacionalidad = $request->nacionalidad;
+        $moto->es_usada = $request->has('es_usada') ? 1 : 0;  
+        $moto->id_deposito = $request->deposito;
+
+
+       // Verificar si hay una nueva imagen
+    if ($request->hasFile('imagen')) {
+        // Eliminar la imagen antigua si existe
+        if ($moto->imagen_moto && Storage::exists('public/' . $moto->imagen_moto)) {
+            Storage::delete('public/' . $moto->imagen_moto);
+        }
+        // Subir la nueva imagen
+        $imagenPath = $request->file('imagen')->store('motos', 'public');
+        $moto->imagen_moto = $imagenPath;
     }
+        $moto->save();
+
+
+        return redirect()->route('admin.motos.index')
+            ->with('mensaje', 'Se actualizo la moto con exíto.')
+            ->with('icono', 'success');
+    }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Moto $moto)
+    public function destroy($id)
     {
-        //
+            //
+            Moto::destroy($id);
+            return redirect()->route('admin.motos.index')
+                ->with('mensaje', 'Se elimino la Moto con exíto')
+                ->with('icono','success');
     }
 }
