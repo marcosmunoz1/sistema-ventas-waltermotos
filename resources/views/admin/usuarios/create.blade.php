@@ -17,7 +17,8 @@
 
                 <div class="col-md-4 mx-auto mt-4">
                     <div class="card card-info">
-                        <div class="card-body">
+                        <div
+                            class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
                             <form action="{{ url('/admin/usuarios/crear-usuario') }}" method="post">
                                 @csrf
 
