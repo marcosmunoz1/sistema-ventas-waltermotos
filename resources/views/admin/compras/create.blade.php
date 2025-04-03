@@ -10,7 +10,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline card-secondary"> 
+            <div class="card card-outline card-secondary">
                 <div class="card-header">
                     <div class="card-title">Datos de Compra </div>
                 </div>
@@ -103,7 +103,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Date:</label>
+                                    <label>Fecha compra:</label>
                                       <div class="input-group date" id="reservationdate" data-target-input="nearest">
                                           <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate">
                                           <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
@@ -128,8 +128,9 @@
                     <div class="card-body">
                          <div class="row">
                             <div class="col-md-12 mx-auto mt-4">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-plus"></i> Agregar Moto</button>
+                                <a class="btn btn-primary" data-toggle="modal" data-target="#crearMotoModal">
+                                    <i class="fas fa-plus"></i> Agregar moto
+                                </a>
                               </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -204,13 +205,206 @@
           </div>
           <div class="col-md-6 " style="justify-items: end">
 
-            <p><b>Suma de compra:</b>12222</p>
+            <p><b>Suma de compra:</b></p>
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Guardar compra</button>
           </div>
           </div>
     </div>
     <br>
+    <!-- Modal para agregar detalle de la moto -->
+    <div class="modal" id="crearMotoModal" tabindex="-1" aria-labelledby="crearRolLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="fas fa-file-alt"></i> Agregar detalle de la moto</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-outline card-success">
+                                <div class="card-header">
+                                    <h5 class="text-center text-success"><i class="fas fa-motorcycle"></i> Datos de la Moto</h5>
+                                </div>
+
+                                <div class="col-md-12 mx-auto mt-2">
+                                    <div class="card card-info">
+                                        <div
+                                            class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                            <form action="{{ url('/admin/motos/crear-moto') }}" method="post">
+                                                @csrf
+                                                <!-- Datos de Moto -->
+                                                <div class="row">
+                                                    <!-- Primera Columna: Datos -->
+                                                    <div class="col-md-9">
+                                                        <!-- Fila 1 -->
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <label>Marca</label> <b style="color: red;">*</b>
+                                                                <select class="form-control" required>
+                                                                    <option selected disabled>Seleccionar</option>
+                                                                    <option value="Honda">Honda</option>
+                                                                    <option value="Yamaha">Yamaha</option>
+                                                                    <option value="Suzuki">Suzuki</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label>Modelo</label> <b style="color: red;">*</b>
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="Modelo" required>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label>Dominio</label><b style="color: red;">*</b>
+                                                                <input type="text" class="form-control" required
+                                                                    placeholder="Dominio">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label>Cilindrada</label><b style="color: red;">*</b>
+                                                                <input type="number" class="form-control" id="cilindrada"
+                                                                    placeholder="Cilindrada" required>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Fila 2 -->
+                                                        <div class="row mt-2">
+                                                            <div class="col-md-2">
+                                                                <label>Color</label>
+                                                                <input type="text" class="form-control"  placeholder="Color">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label>Nacionalidad</label>
+                                                                <select class="form-control">
+                                                                    <option selected disabled>Seleccionar nacionalidad
+                                                                    </option>
+                                                                    <option value="Argentina">Argentina</option>
+                                                                    <option value="Brasil">Brasil</option>
+                                                                    <option value="Japón">Japón</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label>Año</label>
+                                                                <input type="number" class="form-control" placeholder="Año">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label>Km</label>
+                                                                <input type="number" class="form-control" placeholder="Kilometraje">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-check mt-4">
+                                                                    <input class="form-check-input" type="checkbox" id="esUsada">
+                                                                    <label class="form-check-label">¿Es usada?</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Fila 3 -->
+                                                        <div class="row mt-2">
+                                                            <div class="col-md-6">
+                                                                <label>Nro. Motor</label><b style="color: red;">*</b>
+                                                                <input type="text" class="form-control"  placeholder="Nro. Motor" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>Nro. Chasis</label><b style="color: red;">*</b>
+                                                                <input type="text" class="form-control" placeholder="Nro. Chasis" required>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Fila 4 -->
+                                                        <div class="row mt-2">
+                                                            <div class="col-md-6">
+                                                                <label>D.N.R.P.A</label>
+                                                                <input type="text" class="form-control" placeholder="Nro. DNRPA">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>Certificado</label>
+                                                                <input type="text" class="form-control" placeholder="Nro. Certificado">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-2">
+                                                            <div class="col-md-6">
+                                                                <label>Precio compra</label>
+                                                                <input type="text" class="form-control" placeholder="Precio compra">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>Precio venta</label>
+                                                                <input type="text" class="form-control" placeholder="Precio venta">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-2">
+                                                           <div class="col-md-6">
+                                                            <label>Deposito</label>
+                                                            <select class="form-control">
+                                                                <option selected disabled>Seleccionar deposito
+                                                                </option>
+                                                                <option value="Argentina">deposito 1</option>
+                                                                <option value="Brasil">deposito 2</option>
+                                                                <option value="Japón">deposito 3</option>
+                                                            </select>
+                                                           </div>
+                                                           <div class="col-md-6">
+                                                            <label>Numero certificado</label>
+                                                            <input type="text" class="form-control" placeholder="Numero certificado">
+
+
+                                                           </div>
+
+
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Segunda Columna: Imagen -->
+                                                    <div class="col-md-3">
+                                                        <div class="text-center">
+                                                            <div class="form-group">
+                                                                <label for="imagen">Imagen</label>
+                                                                <input type="file" id="file" name="imagen"
+                                                                    accept=".jpg, jpeg, png" class="form-control">
+                                                                @error('imagen')
+                                                                    <small style="color: red;">{{ $message }}</small>
+                                                                @enderror
+                                                                <br>
+                                                                <center><output id="list"></output></center>
+                                                                <script>
+                                                                    function archivo(evt){
+                                                                       var files = evt.target.files; //file List objet
+                                                                       //Obtenemos la imagen del campo "file"
+                                                                       for(var i = 0, f; f = files[i]; i++ ){
+                                                                          //solo admitimos imagenes
+                                                                          if(!f.type.match('image.*')){
+                                                                            continue;
+                                                                          }
+                                                                          var reader = new FileReader();
+                                                                          reader.onload = (function (theFile){
+                                                                            return function (e) {
+                                                                                //insertamos la imagen
+                                                                                document.getElementById("list").innerHTML = ['<img class="thumb thumbail" src="',e.target.result,'" width="70%" title="',escape(theFile.name),'"/>'].join('');
+                                                                            };
+                                                                          })(f);
+                                                                          reader.readAsDataURL(f);
+
+                                                                       }
+
+                                                                    }
+                                                                    document.getElementById('file').addEventListener('change', archivo, false);
+                                                               </script>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Guardar moto</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     @endsection
