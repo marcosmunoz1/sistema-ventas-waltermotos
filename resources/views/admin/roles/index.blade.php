@@ -22,11 +22,27 @@
                     </div>
                 </div>
                 <div class="col-md-10 mx-auto mt-4">
+<<<<<<< HEAD
                     <div class="card ">
                         <div class="card-body ">
                             <div class="d-flex justify-content-center">
                                 <table class="table table-striped table-hover">
                                     <thead class="table-primary">
+=======
+                    <div class="card">
+                        <div class="card-body">
+                            <table id="mitabla" class="table table-striped table-hover">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th class="text-center" style="width: 10%">#</th>
+                                        <th style="width: 40%">Nombre del Rol</th>
+                                        <th class="text-center" style="width: 40%">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <?php $contador = 1; ?>
+                                <tbody>
+                                    @foreach ($roles as $rol)
+>>>>>>> ebac8b4953d9087f5096e6c70c2a8b0e6702f611
                                         <tr>
                                             <th class="text-center" style="width: 10%">#</th>
                                             <th style="width: 40%">Nombre del Rol</th>
@@ -166,6 +182,4 @@
             });
         }
     </script>
-
-
 @stop

@@ -23,50 +23,44 @@
                 </div>
                 <div class="col-md-10 mx-auto mt-4">
                     <div class="card">
-                        <div class="card-body ">
-                            <div class="d-flex justify-content-center">
-                                <table class="table table-striped table-hover table-sm">
-                                    <thead class="table-primary">
+                        <div class="card-body">
+                            <table id="mitabla" class="table table-striped table-hover">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th class="text-center" style="width: 5%">#</th>
+                                        <th style="width: 25%">Nombre del Usuario</th>
+                                        <th style="width: 30%">Correo</th>
+                                     {{--    <th style="width: 10%">Rol</th> --}}
+                                        <th class="text-center" style="width: 30%">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <?php $contador = 1; ?>
+                                <tbody>
+                                    @foreach ($usuarios as $usuario)
                                         <tr>
-                                            <th class="text-center" style="width: 5%">#</th>
-                                            <th style="width: 25%">Nombre del Usuario</th>
-                                            <th style="width: 30%">Correo</th>
-                                            {{--    <th style="width: 10%">Rol</th> --}}
-                                            <th class="text-center" style="width: 30%">Acciones</th>
+                                            <td class="text-center ">{{ $contador++ }}</td>
+                                            <td>{{ $usuario->name }}</td>
+                                            <td>{{ $usuario->email }}</td>
+                                          {{--   <td>{{ $usuario->roles->pluck('name')->implode(', ') }}</td> --}}
+                                            <td class="text-center">
+                                                <a href="{{ url('/admin/usuarios', $usuario->id) }}"
+                                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Ver</a>
+                                                <a href="{{ url('/admin/usuarios/' . $usuario->id . '/edit') }}"
+                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
+                                                <form action="{{ url('/admin/usuarios', $usuario->id) }}" method="post"
+                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $usuario->id }})"
+                                                    id="miFormulario{{ $usuario->id }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="fas fa-trash"></i> Eliminar
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <?php $contador = 1; ?>
-                                    <tbody>
-                                        @foreach ($usuarios as $usuario)
-                                            <tr>
-                                                <td class="text-center ">{{ $contador++ }}</td>
-                                                <td>{{ $usuario->name }}</td>
-                                                <td>{{ $usuario->email }}</td>
-                                                {{--   <td>{{ $usuario->roles->pluck('name')->implode(', ') }}</td> --}}
-                                                <td class="text-center">
-                                                    <a href="{{ url('/admin/usuarios', $usuario->id) }}"
-                                                        class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Ver</a>
-                                                    <a href="{{ url('/admin/usuarios/' . $usuario->id . '/edit') }}"
-                                                        class="btn btn-sm btn-warning"><i class="fas fa-edit"></i>
-                                                        Editar</a>
-                                                    <div class="d-inline-flex">
-                                                        <form action="{{ url('/admin/usuarios', $usuario->id) }}"
-                                                            method="post" onsubmit="preguntar(event, {{ $usuario->id }})"
-                                                            id="miFormulario{{ $usuario->id }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                                <i class="fas fa-trash"></i> Eliminar
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
-                            </div>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
 
                     </div>
@@ -204,22 +198,23 @@
                 function preguntar(event, id) {
                     event.preventDefault();
 
-                    Swal.fire({
-                        title: '¿Desea eliminar este Usuario? ',
-                        text: 'Todos las transacciones asociadas a el se veran afectadas.',
-                        icon: 'question',
-                        showDenyButton: true,
-                        confirmButtonText: 'Eliminar',
-                        confirmButtonColor: '#a5161d',
-                        denyButtonColor: '#270a0a',
-                        denyButtonText: 'Cancelar',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            var form = document.getElementById('miFormulario' + id);
-                            if (form) {
-                                form.submit();
-                            }
-                        }
-                    });
+            Swal.fire({
+                title: '¿Desea eliminar este Usuario?',
+                text: 'El mismo ya no tendra acceso al sistema.',
+                icon: 'warning',
+                showDenyButton: true,
+                confirmButtonText: 'Eliminar',
+                confirmButtonColor: '#a5161d',
+                denyButtonColor: '#270a0a',
+                denyButtonText: 'Cancelar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = document.getElementById('miFormulario' + id);
+                    if (form) {
+                        form.submit();
+                    }
                 }
-            </script>
+            });
+        }
+    </script>
+@stop
