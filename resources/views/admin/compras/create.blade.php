@@ -447,7 +447,6 @@
                     alert("El producto no es válido.");
                     return;
                 }
-
                 // Verifica si el producto ya está en la tabla
                 if (!agregarOActualizarFila(id, nombre, precioCompra, precioVenta, cantidad, codigo)) {
                     agregarFilaDesdeModal(id, nombre, precioCompra, precioVenta, cantidad, codigo);

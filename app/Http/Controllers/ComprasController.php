@@ -37,11 +37,17 @@ class ComprasController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {/*
           $datos = request()->all();
-        return response()->json($datos);
-    }
+        return response()->json($datos); */
+        Compras::registrarCompra($request->all());
 
+        // Redirección con mensaje de éxito
+        return redirect()->route('admin.compras.index')
+            ->with('mensaje', 'Compra registrada con éxito')
+            ->with('icono', 'success');
+    }
+    
     /**
      * Display the specified resource.
      */
