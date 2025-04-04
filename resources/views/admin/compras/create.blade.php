@@ -495,7 +495,7 @@
                         <td>${moto.nr_chasis}</td>
                         <td>${moto.precio_compra}</td>
                         <td>
-                            <button class="btn btn-danger btn-sm" onclick="eliminarMoto(${moto.motoId})">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarMoto(${moto.motoId})">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
@@ -519,7 +519,7 @@
                             if (response.success) {
                                 alert("Moto eliminada correctamente");
                                 // Actualizamos la tabla con los datos que devuelve el servidor
-                                actualizarTablaTemporal(response.motos); 
+                                actualizarTablaTemporal(response.motos);
                             } else {
                                 alert("Error al eliminar la moto: " + response.message);
                             }

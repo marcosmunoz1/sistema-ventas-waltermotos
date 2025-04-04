@@ -38,12 +38,12 @@ class Compra extends Model
                 'estado_compra' => $data['estado_compra'],
             ]);
 
-            $compra->actualizarDetalles($data);
+            $compra->actualizarDetalles($data); 
 
             $arqueo_id = Arqueo::whereNull('fecha_cierre')->first();
             MovimientoCaja::create([
                 'arqueo_id' => $arqueo_id->id,
-                'tipo' => 'Egreso', 
+                'tipo' => 'Egreso',
                 'monto' => array_sum($data['subtotales']),
                 'descripcion' => 'Compra Remito - '. $data['remito'] ,
             ]);

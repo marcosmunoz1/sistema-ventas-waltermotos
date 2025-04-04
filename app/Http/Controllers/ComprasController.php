@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Compra;
 use App\Models\Compras;
-use App\Models\Depositos;
-use App\Models\Marcas;
-use App\Models\motos;
-use App\Models\Nacionalidades;
+use App\Models\Deposito;
+use App\Models\Marca;
+use App\Models\Moto; 
+use App\Models\Nacionalidad;
 use App\Models\Proveedores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -27,10 +27,10 @@ class ComprasController extends Controller
      */
     public function create()
     {    $proveedores = Proveedores::all();
-         $marcas = Marcas::all();
-         $nacionalidades = Nacionalidades::all();
-         $depositos = Depositos::all();
-         $motos = motos::all();
+         $marcas = Marca::all();
+         $nacionalidades = Nacionalidad::all();
+         $depositos = Deposito::all();
+         $motos = Moto::all();
         return view('admin.compras.create', compact('proveedores','motos','marcas','nacionalidades','depositos'));
     }
 
@@ -92,7 +92,7 @@ class ComprasController extends Controller
                 ]);
             }
     }
-    public function eliminarMoto(Request $request) 
+    public function eliminarMoto(Request $request)
         {
             // Obtener el ID de la moto a eliminar
             $motoId = $request->input('motoId');
@@ -137,7 +137,7 @@ class ComprasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Compras $compras)
+    public function update(Request $request, Compra $compras)
     {
         //
     }
@@ -145,7 +145,7 @@ class ComprasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Compras $compras)
+    public function destroy(Compra $compras)
     {
         //
     }

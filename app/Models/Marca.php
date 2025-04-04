@@ -15,4 +15,8 @@ class Marca extends Model
     {
         return $this->hasMany(Moto::class, 'id_marca');
     }
+    public function compras(){
+
+        return $this->hasMany(Compra::class);
+    }
 }
