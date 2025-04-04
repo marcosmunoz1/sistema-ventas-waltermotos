@@ -103,6 +103,9 @@ class MotoController extends Controller
         $moto->es_usada = $request->has('es_usada') ? 1 : 0;  
         $moto->id_deposito = $request->deposito;
 
+        $precio_venta = str_replace(['.', ','], ['', '.'], $request->precio_venta); // Quitar puntos y cambiar la coma por un punto
+        $moto->precio_venta = $precio_venta;
+
 
        // Verificar si hay una nueva imagen
     if ($request->hasFile('imagen')) {

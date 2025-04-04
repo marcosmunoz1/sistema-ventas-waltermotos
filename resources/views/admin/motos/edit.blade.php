@@ -184,18 +184,28 @@
                                     <div class="col-md-3">
                                         <div class="mb-3">
                                             <label>Precio de Compra</label>
-                                            <input type="text" class="form-control text-success"
-                                                value="{{ '$' . number_format($moto->precio_compra, 0, ',', '.') }}"
-                                                disabled>
+                                            <div class="input-group">
+                                                    <span class="input-group-text text-success">$</span>
+                                                  <input type="text" class="form-control text-success"
+                                                value="{{ number_format($moto->precio_compra, 2, ',', '.') }}" disabled>
+                                            </div>
                                         </div>
                                     </div>
+
+
                                     <div class="col-md-3">
                                         <div class="mb-3">
-                                            <label for="precioVenta" class="form-label">Precio de Venta</label>
-                                            <input type="text" class="form-control text-danger"
-                                                value="{{ '$' . number_format($moto->precio_venta, 0, ',', '.') }}">
+                                            <label>Precio de Venta</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text text-danger">$</span>
+                                                <input name="precio_venta" type="text" 
+                                                    class="form-control text-danger"
+                                                    value="{{ number_format($moto->precio_venta, 2, ',', '.') }}">
+                                            </div>
                                         </div>
                                     </div>
+
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Deposito </label>

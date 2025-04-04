@@ -239,7 +239,7 @@
                     </div>
 
                     <div class="card-footer text-right">
-                        <a href="{{ url('admin/productos') }}" class="btn btn-secondary">
+                        <a href="{{ url('admin/motos') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
                     </div>
