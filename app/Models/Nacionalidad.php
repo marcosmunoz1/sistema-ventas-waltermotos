@@ -14,4 +14,10 @@ class Nacionalidad extends Model
     {
         return $this->hasMany(Moto::class, 'id_nacionalidad');
     }
+
+    public function compras(){
+
+        return $this->hasMany(Compra::class);
+    }
+
 }

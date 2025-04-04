@@ -10,9 +10,15 @@ class Moto extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_nacionalidad', 'id_compra', 'id_deposito', 'id_marca', 'modelo_moto', 'dominio', 
+
+        'id_nacionalidad', 'id_compra', 'id_deposito', 'id_marca', 'modelo_moto', 'dominio',
         'cilindrada_moto', 'color_moto', 'anio_moto', 'km_moto', 'es_usada', 'nr_certificado',
-        'dnrpa', 'nr_motor', 'nr_chasis', 'fecha_compra_moto', 'fecha_venta_moto', 
+        'dnrpa', 'nr_motor', 'nr_chasis', 'fecha_compra_moto', 'fecha_venta_moto',
+
+        'id_nacionalidad', 'id_compra', 'id_deposito', 'id_marca', 'modelo_moto', 'dominio',
+        'cilindrada_moto', 'color_moto', 'anio_moto', 'km_moto', 'es_usada', 'nr_certificado',
+        'dnrpa', 'nr_motor', 'nr_chasis', 'fecha_compra_moto', 'fecha_venta_moto',
+
         'precio_compra', 'precio_venta', 'estado_moto', 'imagen_moto'
     ];
 
@@ -36,4 +42,8 @@ class Moto extends Model
     {
         return $this->belongsTo(Deposito::class, 'id_deposito');
     }
+
+
+
+
 }
