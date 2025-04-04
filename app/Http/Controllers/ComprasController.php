@@ -28,9 +28,9 @@ class ComprasController extends Controller
     {    $proveedores = Proveedores::all();
          $marcas = Marcas::all();
          $nacionalidades = Nacionalidades::all();
-         $depositos = Depositos::all(); 
+         $depositos = Depositos::all();
          $motos = motos::all();
-        return view('admin.compras.create', compact('proveedores','motos'));
+        return view('admin.compras.create', compact('proveedores','motos','marcas','nacionalidades','depositos'));
     }
 
     /**
