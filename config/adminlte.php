@@ -335,7 +335,7 @@ return [
         [
             'text' => 'Clientes',
             'icon' => 'fas fa fa-users',
-            'url' => 'clientes',
+            'url' => 'admin/clientes',
         ],
         [
             'text' => 'Compras',

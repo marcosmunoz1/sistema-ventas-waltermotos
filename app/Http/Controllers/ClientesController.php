@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Clientes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClientesController extends Controller
 {
@@ -12,7 +13,8 @@ class ClientesController extends Controller
      */
     public function index()
     {
-        //
+        $clientes = Clientes::all();
+        return view('admin.clientes.index', compact('clientes'));
     }
 
     /**
@@ -20,7 +22,16 @@ class ClientesController extends Controller
      */
     public function create()
     {
-        //
+        $tipoCampo = DB::selectOne("SHOW COLUMNS FROM clientes WHERE Field = 'estado_civil_cliente'");
+
+        // Extraer los valores del enum del string: enum('soltero','casado','divorciado','viudo')
+        preg_match("/^enum\((.*)\)$/", $tipoCampo->Type, $matches);
+
+        $valores = [];
+        if (!empty($matches)) {
+            $valores = str_getcsv($matches[1], ',', "'");
+        }
+        return view('admin.clientes.create', compact('valores'));
     }
 
     /**
@@ -34,7 +45,7 @@ class ClientesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Clientes $clientes)
+    public function show($id)
     {
         //
     }
