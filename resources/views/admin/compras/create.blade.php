@@ -8,7 +8,7 @@
 @endsection
 
 @section('content')
-<form action="{{ url('/admin/compras/crear-compra') }}" method="post">
+<form action="{{ url('/admin/compras/cargar-compra') }}" method="post">
     @csrf
     <div class="row">
         <div class="col-md-12">
@@ -150,7 +150,11 @@
                                                     <th class="text-center" style="width: 20%">Acciones</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="detalle_producto">
+                                            <tbody id="tabla_moto_temporal">
+
+                                                <tr>
+                                                    <td colspan="5" class="text-center">No hay motos agregadas</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -162,30 +166,28 @@
                     </div>
                 </div>
         </div>
-
     </div>
     <hr>
     <div class="row">
           <div class="col-md-6">
           </div>
           <div class="col-md-6 " style="justify-items: end">
-
             <p><b>Suma de compra:</b></p>
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Guardar compra</button>
-          </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Guardar compra</button>
           </div>
     </div>
     <br>
+</form>
+
     <!-- Modal para agregar detalle de la moto -->
     <div class="modal" id="crearMotoModal" tabindex="-1" aria-labelledby="crearRolLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header bg-success text-white">
                     <h5 class="modal-title"><i class="fas fa-file-alt"></i> Agregar detalle de la moto</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
                         <span aria-hidden="true">&times;</span>
-                      </button>
+                    </button>
                 </div>
 
                 <div class="modal-body">
@@ -208,25 +210,25 @@
                                                         <div class="row">
                                                             <div class="col-md-4">
                                                                 <label>Marca</label> <b style="color: red;">*</b>
-                                                                <select class="form-control" required>
+                                                                <select class="form-control" name="marca" id="marca" required>
                                                                     @foreach ($marcas as $marca )
-                                                                    <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option>
+                                                                    <option value="{{$marca->nombre_marca}}">{{$marca->nombre_marca}}</option>
                                                                 @endforeach
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label>Modelo</label> <b style="color: red;">*</b>
-                                                                <input type="text" name="modelo_moto" class="form-control"
+                                                                <input type="text" name="modelo_moto" id="modelo_moto" class="form-control"
                                                                     placeholder="Modelo" required>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Dominio</label><b style="color: red;">*</b>
-                                                                <input type="text" name="dominio" class="form-control" required
+                                                                <input type="text" name="dominio" id="dominio" class="form-control" required
                                                                     placeholder="Dominio">
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Cilindrada</label><b style="color: red;">*</b>
-                                                                <input type="number" name="cilindrada_moto" class="form-control" id="cilindrada"
+                                                                <input type="number" name="cilindrada_moto" id="cilindrada_moto" class="form-control" id="cilindrada"
                                                                     placeholder="Cilindrada" required>
                                                             </div>
                                                         </div>
@@ -234,27 +236,27 @@
                                                         <div class="row mt-2">
                                                             <div class="col-md-2">
                                                                 <label>Color</label>
-                                                                <input type="text" name="color_moto" class="form-control"  placeholder="Color">
+                                                                <input type="text" name="color_moto" id="color_moto" class="form-control"  placeholder="Color">
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label>Nacionalidad</label>
-                                                                <select class="form-control">
+                                                                <select class="form-control" name="nacion" id="nacion">
                                                                 @foreach ($nacionalidades as $nacionalidad )
-                                                                <option value="{{$nacionalidad->id}}">{{$nacionalidad->pais}}</option>
+                                                                <option value="{{$nacionalidad->pais}}">{{$nacionalidad->pais}}</option>
                                                                 @endforeach
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Año</label>
-                                                                <input type="number" name="anio_moto" class="form-control" placeholder="Año">
+                                                                <input type="number" name="anio_moto" id="anio_moto" class="form-control" placeholder="Año">
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Km</label>
-                                                                <input type="number" name="km_moto" class="form-control" placeholder="Kilometraje">
+                                                                <input type="number" name="km_moto" id="km_moto" class="form-control" placeholder="Kilometraje">
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-check mt-4">
-                                                                    <input class="form-check-input" name="es_usada" type="checkbox" id="esUsada">
+                                                                    <input class="form-check-input" name="es_usada" id="es_usada" type="checkbox">
                                                                     <label class="form-check-label">¿Es usada?</label>
                                                                 </div>
                                                             </div>
@@ -263,47 +265,44 @@
                                                         <div class="row mt-2">
                                                             <div class="col-md-6">
                                                                 <label>Nro. Motor</label><b style="color: red;">*</b>
-                                                                <input type="text" name="nr_motor" class="form-control"  placeholder="Nro. Motor" required>
+                                                                <input type="text" name="nr_motor" id="nr_motor" class="form-control"  placeholder="Nro. Motor" required>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Nro. Chasis</label><b style="color: red;">*</b>
-                                                                <input type="text" name="nr_chasis" class="form-control" placeholder="Nro. Chasis" required>
+                                                                <input type="text" name="nr_chasis" id="nr_chasis" class="form-control" placeholder="Nro. Chasis" required>
                                                             </div>
                                                         </div>
                                                         <!-- Fila 4 -->
                                                         <div class="row mt-2">
                                                             <div class="col-md-6">
                                                                 <label>D.N.R.P.A</label>
-                                                                <input type="text" name="dnrpa" class="form-control" placeholder="Nro. DNRPA">
+                                                                <input type="text" name="dnrpa" id="dnrpa" class="form-control" placeholder="Nro. DNRPA">
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Certificado</label>
-                                                                <input type="text" class="form-control" name="nr_certificado" placeholder="Nro. Certificado">
+                                                                <input type="text" class="form-control" name="nr_certificado" id="nr_certificado" placeholder="Nro. Certificado">
                                                             </div>
                                                         </div>
                                                         <div class="row mt-2">
                                                             <div class="col-md-6">
                                                                 <label>Precio compra</label>
-                                                                <input type="text" class="form-control" name="precio_compra" placeholder="Precio compra">
+                                                                <input type="text" class="form-control" name="precio_compra" id="precio_compra" placeholder="Precio compra">
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Precio venta</label>
-                                                                <input type="text" class="form-control" name="precio_venta" placeholder="Precio venta">
+                                                                <input type="text" class="form-control" name="precio_venta" id="precio_venta" placeholder="Precio venta">
                                                             </div>
                                                         </div>
                                                         <div class="row mt-2">
-                                                           <div class="col-md-6">
+                                                        <div class="col-md-6">
                                                             <label>Deposito</label>
-                                                            <select class="form-control">
+                                                            <select class="form-control" id="deposito">
                                                                 @foreach ($depositos as $deposito )
                                                                 <option value="{{$deposito->id}}">{{$deposito->nombre_deposito}}</option>
                                                                 @endforeach
                                                             </select>
-                                                           </div>
-                                                           <div class="col-md-6">
-                                                            <label>Numero certificado</label>
-                                                            <input type="text" class="form-control" name="nr_certificado" placeholder="Numero certificado">
-                                                           </div>
+                                                        </div>
+
                                                         </div>
                                                     </div>
 
@@ -321,27 +320,27 @@
                                                                 <center><output id="list"></output></center>
                                                                 <script>
                                                                     function archivo(evt){
-                                                                       var files = evt.target.files; //file List objet
-                                                                       //Obtenemos la imagen del campo "file"
-                                                                       for(var i = 0, f; f = files[i]; i++ ){
-                                                                          //solo admitimos imagenes
-                                                                          if(!f.type.match('image.*')){
+                                                                    var files = evt.target.files; //file List objet
+                                                                    //Obtenemos la imagen del campo "file"
+                                                                    for(var i = 0, f; f = files[i]; i++ ){
+                                                                        //solo admitimos imagenes
+                                                                        if(!f.type.match('image.*')){
                                                                             continue;
-                                                                          }
-                                                                          var reader = new FileReader();
-                                                                          reader.onload = (function (theFile){
+                                                                        }
+                                                                        var reader = new FileReader();
+                                                                        reader.onload = (function (theFile){
                                                                             return function (e) {
                                                                                 //insertamos la imagen
                                                                                 document.getElementById("list").innerHTML = ['<img class="thumb thumbail" src="',e.target.result,'" width="70%" title="',escape(theFile.name),'"/>'].join('');
                                                                             };
-                                                                          })(f);
-                                                                          reader.readAsDataURL(f);
+                                                                        })(f);
+                                                                        reader.readAsDataURL(f);
 
-                                                                       }
+                                                                    }
 
                                                                     }
                                                                     document.getElementById('file').addEventListener('change', archivo, false);
-                                                               </script>
+                                                            </script>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -350,7 +349,7 @@
                                     </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" onclick="agregarMotoDesdeModal()" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Guardar moto</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
                         </div>
@@ -359,7 +358,6 @@
             </div>
         </div>
     </div>
-</form>
 
     @endsection
 
@@ -413,154 +411,125 @@
             });
         </script>
         <script>
-              function seleccionarProductoDesdeModal(id, codigo, nombre, precioCompra, precioVenta) {
-                let cantidad = parseInt($("#cantidad").val()) || 1; // Si no hay valor, usa 1
+          function agregarMotoDesdeModal() {
+                let formData = new FormData();
 
-                if (!id || !nombre || isNaN(precioCompra) || isNaN(precioVenta)) {
-                    alert("Por favor, selecciona un producto válido.".precioCompra, value);
+                formData.append('marca', $('#marca').val());
+                formData.append('modelo', $('#modelo_moto').val());
+                formData.append('dominio ', $('#dominio').val());
+                formData.append('cilindrada ', $('#cilindrada_moto').val());
+                formData.append('color', $('#color_moto').val());
+                formData.append('nacion', $('#nacion').val());
+                formData.append('anio_moto', $('#anio_moto').val());
+                formData.append('km', $('#km_moto').val());
+                formData.append('es_usada', $('#es_usada').is(':checked') ? 1 : 0);
+                formData.append('nr', $('#nr_motor').val());
+                formData.append('nr_chasis', $('#nr_chasis').val());
+                formData.append('dnrpa', $('#dnrpa').val());
+                formData.append('certificado', $('#nr_certificado').val());
+                formData.append('precio_compra', $('#precio_compra').val());
+                formData.append('precio_venta', $('#precio_venta').val());
+                formData.append('deposito', $('#deposito').val());
+
+                const fileInput = document.getElementById('file');
+                if (fileInput.files.length > 0) {
+                    formData.append('imagen', fileInput.files[0]);
+                }
+
+
+
+                    $.ajax({
+                        url: "{{ url('admin/agregar-moto') }}",
+                        method: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                alert('Moto guardada exitosamente');
+                                actualizarTablaTemporal(response.motos);
+                            } else {
+                                alert('Error al guardar la moto');
+                            }
+                        },
+                        error: function (xhr) {
+                            console.error(xhr.responseText);
+                            alert('Error al procesar la solicitud');
+                        }
+                    });
+
+            }
+
+            function actualizarTablaTemporal(motos) {
+                let tabla = document.getElementById("tabla_moto_temporal");
+
+                if (!tabla) {
+                    console.error("Error: No se encontró el elemento con ID 'tabla_moto_temporal'");
                     return;
                 }
 
-                // Verifica si el producto ya está en la tabla
-                if (!agregarOActualizarFila(id, nombre, precioCompra, precioVenta, cantidad, codigo)) {
-                    agregarFilaDesdeModal(id, nombre, precioCompra, precioVenta, cantidad, codigo);
-                }
+                // Limpiar la tabla antes de actualizarla
+                tabla.innerHTML = "";
 
-                // Cerrar el modal según la versión de Bootstrap
-                let modal = document.getElementById("productosModal");
-                if (typeof bootstrap !== "undefined") {
-                    let modalInstance = bootstrap.Modal.getInstance(modal);
-                    if (modalInstance) modalInstance.hide();
-                } else {
-                    $("#productosModal").modal("hide"); // Para Bootstrap 4
-                }
-            }
-
-            function agregarFilaDesdeCodigo(producto, cantidad) {
-                let id = producto.id;
-                let codigo = producto.codigo;
-                let nombre = producto.nombre;
-                let precioCompra = parseFloat(producto.precio_compra);
-                let precioVenta = parseFloat(producto.precio_venta);
-
-                if (!id || !nombre || isNaN(precioCompra) || isNaN(precioVenta)) {
-                    alert("El producto no es válido.");
+                // Verificar si hay motos para mostrar
+                if (motos.length === 0) {
+                    tabla.innerHTML = `<tr><td colspan="5" class="text-center">No hay motos agregadas</td></tr>`;
                     return;
                 }
-                // Verifica si el producto ya está en la tabla
-                if (!agregarOActualizarFila(id, nombre, precioCompra, precioVenta, cantidad, codigo)) {
-                    agregarFilaDesdeModal(id, nombre, precioCompra, precioVenta, cantidad, codigo);
-                }
-            }
 
-            // Función para agregar o actualizar la fila con el producto
-            function agregarOActualizarFila(productoId, productoNombre, precioCompra, precioVenta, cantidad, codigo) {
-                const detalleProductos = document.getElementById('detalle-productos');
-                const filas = detalleProductos.querySelectorAll('tr');
+                // Crear filas y agregarlas a la tabla
+                motos.forEach(moto => {
+                    let fila = document.createElement("tr");
 
-                for (let fila of filas) {
-                    const idProducto = fila.querySelector('input[name="productos[]"]').value;
-
-                    // Si el producto ya existe, actualiza la cantidad
-                    if (idProducto == productoId) {
-                        const cantidadInput = fila.querySelector('input[name="cantidades[]"]');
-                        const subtotalInput = fila.querySelector('input[name="subtotales[]"]');
-                        let nuevaCantidad = parseInt(cantidadInput.value) + parseInt(cantidad, 10); // Suma la cantidad
-
-                        cantidadInput.value = nuevaCantidad;
-                        subtotalInput.value = (precioCompra * nuevaCantidad).toFixed(2); // Actualiza el subtotal
-                        calcularTotal(); // Recalcula el total de la compra
-                        return true; // Producto ya estaba, no es necesario agregar nueva fila
-                    }
-                }
-                return false; // Producto no encontrado, se necesita agregar nueva fila
-            }
-
-            // Función para agregar la fila con el producto seleccionado en el modal
-            function agregarFilaDesdeModal(productoId, productoNombre, precioCompra, precioVenta, cantidad, codigo) {
-                const detalleProductos = document.getElementById('detalle-productos');
-                const fila = document.createElement('tr');
-
-                fila.innerHTML = `
-                        <td class="text-center">
-                            <input type="number" name="cantidades[]" class="form-control" value="${cantidad}" min="1" required oninput="calcularSubtotal(this)">
-                        </td>
-                        <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="codigos[]" class="form-control" value="${codigo}" min="1" required readonly oninput="calcularSubtotal(this)">
-                            ${codigo}
-                        </td>
-                        <td style="vertical-align: middle;">
-                            <input type="hidden" name="productos[]" value="${productoId}">
-                            ${productoNombre}
-                        </td>
-                        <td class="text-success bg-light fs-5">
-                            <input style="text-align: right;" type="number" name="precios_compra[]" class="form-control" step="0.01" value="${precioCompra}" required oninput="calcularSubtotal(this)">
-                        </td>
-                        <td class="text-success bg-light fs-5">
-                            <input style="text-align: right;" type="number" name="precios_venta[]" class="form-control" step="0.01" value="${precioVenta}" required>
-                        </td>
-                        <td class=" bg-light fs-5">
-                            <input style="text-align: right;" type="number" name="subtotales[]" class="form-control" step="0.01" value="${(precioCompra * cantidad).toFixed(2)}" required readonly>
-                        </td>
+                    fila.innerHTML = `
+                        <td>${moto.motoId}</td>
+                        <td>${moto.marca}</td>
+                        <td>${moto.modelo}</td>
+                        <td>${moto.color}</td>
+                        <td>${moto.anio_moto}</td>
+                        <td>${moto.nacion}</td>
+                        <td>${moto.nr}</td>
+                        <td>${moto.nr_chasis}</td>
+                        <td>${moto.precio_compra}</td>
                         <td>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove(); calcularTotal()">
+                            <button class="btn btn-danger btn-sm" onclick="eliminarMoto(${moto.motoId})">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
                     `;
 
-                detalleProductos.appendChild(fila);
-                calcularTotal(); // Recalcula el total de la compra
-            }
-
-            function calcularTotal() {
-                let total = 0;
-
-                // Accede a todos los campos "subtotales[]"
-                let subtotales = document.querySelectorAll('input[name="subtotales[]"]');
-
-                // Suma los valores de los subtotales
-                subtotales.forEach(function(subtotalInput) {
-                    total += parseFloat(subtotalInput.value) || 0;
-                    console.log('Total:', total);
+                    tabla.appendChild(fila);
                 });
+    }
 
-                document.getElementById('total-compra').innerText = '$' + new Intl.NumberFormat('es-AR').format(total
-                    .toFixed(
-                        2));
-                document.getElementById('total-compra2').value = new Intl.NumberFormat('es-AR', {
-                    style: 'currency',
-                    currency: 'ARS'
-                }).format(total);
-
-
-            }
-
-            function actualizarPrecio(select) {
-                const precioCompra = select.options[select.selectedIndex].getAttribute('data-precio-compra');
-                const fila = select.closest('tr');
-                const inputPrecio = fila.querySelector('input[name="preciosCompra[]"]');
-
-                inputPrecio.value = parseFloat(precioCompra || 0).toFixed(2);
-            }
-
-            document.getElementById('detalle-productos').addEventListener('input', function(e) {
-                if (e.target.matches('input[name="cantidades[]"], input[name="preciosCompra[]"]')) {
-                    calcularSubtotal(e.target);
-                }
-            });
-
-            // Ajusta la función que calcula el subtotal de la compra
-            function calcularSubtotal(input) {
-                let fila = input.closest('tr');
-                let cantidad = fila.querySelector('input[name="cantidades[]"]').value || 0;
-                let precio_compra = fila.querySelector('input[name="precios_compra[]"]').value || 0;
-                let subtotal = parseFloat(cantidad) * parseFloat(precio_compra);
-
-                fila.querySelector('input[name="subtotales[]"]').value = subtotal.toFixed(2);
-                calcularTotal(); // Recalcula el total después de actualizar
-            }
         </script>
+        <script>
+              function eliminarMoto(motoId) {
+                    $.ajax({
+                        url: "{{ url('admin/eliminar-moto') }}",
+                        method: "POST",
+                        data: { motoId: motoId },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert("Moto eliminada correctamente");
+                                // Actualizamos la tabla con los datos que devuelve el servidor
+                                actualizarTablaTemporal(response.motos); 
+                            } else {
+                                alert("Error al eliminar la moto: " + response.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error(xhr.responseText);
+                            alert("Error al procesar la solicitud");
+                        }
+                    });
+                }
         </script>
 
 

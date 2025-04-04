@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class Compras extends Model
+class Compra extends Model
 {
     public function proveedor(){
         return $this->belongsTo(Proveedores::class);
@@ -26,7 +26,7 @@ class Compras extends Model
     ];
 
     //Registrar nueva compra
-  /*   public static function registrarCompra(array $data)
+    public static function registrarCompra(array $data)
     {
         return DB::transaction(function () use ($data) {
             $compra = self::create([
@@ -43,12 +43,12 @@ class Compras extends Model
             $arqueo_id = Arqueo::whereNull('fecha_cierre')->first();
             MovimientoCaja::create([
                 'arqueo_id' => $arqueo_id->id,
-                'tipo' => 'Egreso',
+                'tipo' => 'Egreso', 
                 'monto' => array_sum($data['subtotales']),
                 'descripcion' => 'Compra Remito - '. $data['remito'] ,
             ]);
 
             return $compra;
         });
-    } */
+    }
 }
