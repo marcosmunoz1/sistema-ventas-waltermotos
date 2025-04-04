@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Compras;
+use App\Models\Compra;
 use App\Models\Depositos;
 use App\Models\inventario;
 use App\Models\Marcas;
@@ -17,7 +17,7 @@ class ComprasController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {    $compras = compras::with('proveedor')->get();
+    {    $compras = Compra::with('proveedor')->get();
         return view('admin.compras.index', compact('compras'));
     }
 
@@ -45,7 +45,7 @@ class ComprasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Compras $compras)
+    public function show(Compra $compras)
     {
         //
     }
@@ -53,7 +53,7 @@ class ComprasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Compras $compras)
+    public function edit(Compra $compras)
     {
         //
     }
@@ -61,7 +61,7 @@ class ComprasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Compras $compras)
+    public function update(Request $request, Compra $compras)
     {
         //
     }
@@ -69,7 +69,7 @@ class ComprasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Compras $compras)
+    public function destroy(Compra $compras)
     {
         //
     }
