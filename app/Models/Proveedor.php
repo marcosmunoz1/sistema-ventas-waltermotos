@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Proveedores extends Model
+class Proveedor extends Model
 {
     //protected $fillable = ['nombre_proveedor'];
 
@@ -13,7 +13,5 @@ class Proveedores extends Model
         return $this->hasMany(Compra::class);
     }
 
-
+   
 }
-
-

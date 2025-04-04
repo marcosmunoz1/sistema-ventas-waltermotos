@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+
 
 class Compra extends Model
 {
     public function proveedor(){
         return $this->belongsTo(Proveedores::class);
     }
+
 
 
     protected $table = 'compras';
@@ -38,17 +41,10 @@ class Compra extends Model
                 'estado_compra' => $data['estado_compra'],
             ]);
 
-            $compra->actualizarDetalles($data); 
-
-            $arqueo_id = Arqueo::whereNull('fecha_cierre')->first();
-            MovimientoCaja::create([
-                'arqueo_id' => $arqueo_id->id,
-                'tipo' => 'Egreso',
-                'monto' => array_sum($data['subtotales']),
-                'descripcion' => 'Compra Remito - '. $data['remito'] ,
-            ]);
+            $compra->actualizarDetalles($data);
 
             return $compra;
         });
     }
+
 }
