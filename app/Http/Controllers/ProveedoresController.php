@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Proveedores;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
 
 class ProveedoresController extends Controller
@@ -12,7 +12,7 @@ class ProveedoresController extends Controller
      */
     public function index()
     {
-        $proveedores = Proveedores::all();
+        $proveedores = Proveedor::all();
         return view('admin.proveedores.index', compact('proveedores'));
 
     }
@@ -36,7 +36,7 @@ class ProveedoresController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Proveedores $proveedores)
+    public function show(Proveedor $proveedores)
     {
         //
     }
@@ -44,7 +44,7 @@ class ProveedoresController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Proveedores $proveedores)
+    public function edit(Proveedor $proveedores)
     {
         //
     }
@@ -52,7 +52,7 @@ class ProveedoresController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Proveedores $proveedores)
+    public function update(Request $request, Proveedor $proveedores)
     {
         //
     }
@@ -60,7 +60,7 @@ class ProveedoresController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Proveedores $proveedores)
+    public function destroy(Proveedor $proveedores)
     {
         //
     }
