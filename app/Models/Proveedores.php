@@ -4,17 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Deposito extends Model
+class Proveedores extends Model
 {
-    public function motos()
-    {
-        return $this->hasMany(Moto::class, 'id_deposito');
-    }
-
+    //protected $fillable = ['nombre_proveedor'];
 
     public function compras(){
 
         return $this->hasMany(Compra::class);
     }
 
+
 }
+
+
