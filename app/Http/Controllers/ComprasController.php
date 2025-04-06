@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compra;
-use App\Models\Compras;
+use App\Models\inventario;
 use App\Models\Deposito;
 use App\Models\Marca;
 use App\Models\Moto; 
 use App\Models\Nacionalidad;
-use App\Models\Proveedores;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -26,7 +26,7 @@ class ComprasController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {    $proveedores = Proveedores::all();
+    {    $proveedores = Proveedor::all();
          $marcas = Marca::all();
          $nacionalidades = Nacionalidad::all();
          $depositos = Deposito::all();
@@ -122,6 +122,7 @@ class ComprasController extends Controller
      * Display the specified resource.
      */
     public function show($id)
+
     {
         //
     }
@@ -129,6 +130,7 @@ class ComprasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
     public function edit( $id)
     {
         //
