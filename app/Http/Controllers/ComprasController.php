@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compra;
-use App\Models\Compras;
 use App\Models\Deposito;
 use App\Models\Marca;
-use App\Models\Moto; 
+use App\Models\Moto;
 use App\Models\Nacionalidad;
-use App\Models\Proveedores;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Http\UploadedFile;
 
 class ComprasController extends Controller
 {
@@ -26,7 +25,7 @@ class ComprasController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {    $proveedores = Proveedores::all();
+    {    $proveedores = Proveedor::all();
          $marcas = Marca::all();
          $nacionalidades = Nacionalidad::all();
          $depositos = Deposito::all();
@@ -39,57 +38,68 @@ class ComprasController extends Controller
      */
     public function store(Request $request)
     {
-          $datos = request()->all();
-        return response()->json($datos);
-       /*  Compras::registrarCompra($request->all());
+        $request->validate([
+            'id_proveedor' => 'required|exists:proveedors,id',
+            'fecha_compra' => 'required|date',
+            'numero_factura' => 'required|numeric', // Cambiado de 'number' a 'numeric'
+            'numero_remito' => 'nullable|string|max:255', // Permite que sea opcional
+            'productos' => 'required|array',
+            'productos.*' => 'exists:productos,id'
+        ]);
+
+        Moto::registrarCompra($request->all());
 
         // Redirección con mensaje de éxito
         return redirect()->route('admin.compras.index')
             ->with('mensaje', 'Compra registrada con éxito')
-            ->with('icono', 'success'); */
+            ->with('icono', 'success');
+
+
     }
 
     public function agregarMoto(Request $request){
         {
 
-                $request->validate([
-                    'marca' => 'required|string|max:100',
-                    'modelo' => 'required|string|max:100',
-                    'dominio' => 'nullable|string|max:20',
-                    'cilindrada' => 'nullable|string|max:50',
-                    'color' => 'nullable|string|max:50',
-                    'nacion' => 'nullable|string|max:50',
-                    'anio_moto' => 'nullable|integer',
-                    'km' => 'nullable|numeric',
-                    'es_usada' => 'required|boolean',
-                    'nr' => 'nullable|string|max:100',
-                    'nr_chasis' => 'nullable|string|max:100',
-                    'dnrpa' => 'nullable|string|max:100',
-                    'certificado' => 'nullable|string|max:100',
-                    'precio_compra' => 'required|numeric',
-                    'precio_venta' => 'required|numeric',
-                    'deposito' => 'nullable|string|max:100',
-                    'imagen' => 'nullable|file|image|max:2048'
-                ]);
+            $request->validate([
+                'marca' => 'required|string|max:100',
+                'modelo' => 'required|string|max:100',
+                'dominio' => 'nullable|string|max:20',
+                'cilindrada' => 'nullable|string|max:50',
+                'color' => 'nullable|string|max:50',
+                'nacion' => 'nullable|string|max:50',
+                'anio_moto' => 'nullable|integer',
+                'km' => 'nullable|numeric',
+                'es_usada' => 'required|boolean',
+                'nr' => 'nullable|string|max:100',
+                'nr_chasis' => 'nullable|string|max:100',
+                'dnrpa' => 'nullable|string|max:100',
+                'certificado' => 'nullable|string|max:100',
+                'precio_compra' => 'required|numeric',
+                'precio_venta' => 'required|numeric',
+                'deposito' => 'nullable|string|max:100',
+                'imagen' => 'nullable|file|image|max:2048'
+            ]);
 
-                // Guardar la imagen si existe
-                $rutaImagen = null;
-                if ($request->hasFile('imagen')) {
-                    $rutaImagen = $request->file('imagen')->store('motos', 'public');
-                }
-                $contador = 1;
-                // Armar array de la moto
-                $moto = $request->except('imagen');
-                $moto['imagen'] = $rutaImagen;
-                $moto['motoId'] = $contador; // ID temporal para poder eliminarla si hiciera falta
+            // Guardar la imagen si existe
+            $rutaImagen = null;
+            if ($request->hasFile('imagen')) {
+                $rutaImagen = $request->file('imagen')->store('motos', 'public');
+            }
+            $contador = 1;
+            // Armar array de la moto
+            $moto = $request->except('imagen');
+            $moto['imagen'] = $rutaImagen;
+            $moto['motoId'] = $contador; // ID temporal para poder eliminarla si hiciera falta
 
-                // Reemplazar cualquier moto existente en sesión (solo una)
-                session(['moto_temporal' => $moto]);
+            // Reemplazar cualquier moto existente en sesión (solo una)
+            session(['moto_temporal' => $moto]);
 
-                return response()->json([
-                    'success' => true,
-                    'motos' => [$moto] // lo devolvés como array para que funcione tu función de JS
-                ]);
+            return response()->json([
+                'success' => true,
+                'motos' => [$moto] // lo devolvés como array para que funcione tu función de JS
+            ]);
+
+
             }
     }
     public function eliminarMoto(Request $request)
