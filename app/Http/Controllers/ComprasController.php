@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compra;
+use App\Models\inventario;
 use App\Models\Deposito;
 use App\Models\Marca;
 use App\Models\Moto;
@@ -132,6 +133,7 @@ class ComprasController extends Controller
      * Display the specified resource.
      */
     public function show($id)
+
     {
         //
     }
@@ -139,6 +141,7 @@ class ComprasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
     public function edit( $id)
     {
         //

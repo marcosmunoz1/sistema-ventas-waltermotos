@@ -50,3 +50,12 @@ Route::get('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class
 Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\ComprasController::class, 'edit'])->name('admin.compras.edit')->middleware('auth','can:Editar compra');
 Route::put('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'update'])->name('admin.compras.update')->middleware('auth');
 Route::delete('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'destroy'])->name('admin.compras.destroy')->middleware('auth','can:Eliminar compra'); */
+
+//Rutas para clientes
+Route::get('/admin/clientes', [App\Http\Controllers\ClientesController::class, 'index'])->name('admin.clientes.index');
+Route::get('admin/clientes/create', [App\Http\Controllers\ClientesController::class, 'create'])->name('admin.clientes.create');
+Route::post('admin/clientes/create', [App\Http\Controllers\ClientesController::class, 'store'])->name('admin.clientes.store');
+Route::get('/admin/clientes/{id}/edit', [App\Http\Controllers\ClientesController::class, 'edit'])->name('admin.clientes.edit');
+Route::put('/admin/clientes/{id}', [App\Http\Controllers\ClientesController::class, 'update'])->name('admin.clientes.update');
+Route::delete('/admin/clientes/{id}', [App\Http\Controllers\ClientesController::class, 'destroy'])->name('admin.clientes.destroy');
+
