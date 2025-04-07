@@ -27,6 +27,7 @@
                                          <div style="margin-right: 10px"></div>
                                         <a href="{{ url('/admin/proveedores/crear-proveedor') }}" type="button"
                                         class="btn btn-success"><i class="fas fa-plus"></i></a>
+                                        
                                         <div class="modal fade" id="exampleModal2" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
@@ -194,9 +195,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card card-outline card-success">
-                                <div class="card-header">
+                                {{-- <div class="card-header">
                                     <h5 class="text-center text-success"><i class="fas fa-motorcycle"></i> Datos de la Moto</h5>
-                                </div>
+                                </div> --}}
 
                                 <div class="col-md-12 mx-auto mt-2">
                                     <div class="card card-info">
@@ -284,26 +285,24 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mt-2">
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-4">
                                                                 <label>Precio compra</label>
                                                                 <input type="text" class="form-control" name="precio_compra" id="precio_compra" placeholder="Precio compra">
                                                             </div>
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-4">
                                                                 <label>Precio venta</label>
                                                                 <input type="text" class="form-control" name="precio_venta" id="precio_venta" placeholder="Precio venta">
                                                             </div>
+                                                            <div class="col-md-4">
+                                                                <label>Deposito</label>
+                                                                <select class="form-control" id="deposito">
+                                                                    @foreach ($depositos as $deposito )
+                                                                    <option value="{{$deposito->id}}">{{$deposito->nombre_deposito}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                        <div class="row mt-2">
-                                                        <div class="col-md-6">
-                                                            <label>Deposito</label>
-                                                            <select class="form-control" id="deposito">
-                                                                @foreach ($depositos as $deposito )
-                                                                <option value="{{$deposito->id}}">{{$deposito->nombre_deposito}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
-                                                        </div>
+                                                  
                                                     </div>
 
                                                     <!-- Segunda Columna: Imagen -->
@@ -349,7 +348,7 @@
                                     </div>
 
                         <div class="modal-footer">
-                            <button type="button" onclick="agregarMotoDesdeModal()" class="btn btn-primary">
+                            <button type="button" onclick="agregarMotoDesdeModal()" class="btn btn-success">
                                 <i class="fas fa-save"></i> Guardar moto</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
                         </div>

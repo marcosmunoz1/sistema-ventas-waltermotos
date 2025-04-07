@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
@@ -13,8 +11,6 @@ class Compra extends Model
     public function proveedor(){
         return $this->belongsTo(Proveedores::class);
     }
-
-
 
     protected $table = 'compras';
 
