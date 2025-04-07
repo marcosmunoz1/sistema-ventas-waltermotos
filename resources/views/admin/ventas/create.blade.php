@@ -78,22 +78,39 @@
 
             <div class="col-md-12">
                 <div class="card">
-                    <!-- Botón para buscar cliente -->
+                    <!-- Botón para buscar Moto -->
                     <div class="card-footer text-center">
-                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#motosModal">
+                        <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                            data-target="#buscarMotoModal">
                             <i class="fas fa-search"></i> Buscar Moto <i class="fas fa-motorcycle"></i>
                         </button>
                     </div>
                     <div class="card-body">
-                        
+                        <div class="row">
+                            <div class="col-4">
+                                <input type="hidden" name="id_moto">
+                                <h6><strong>Marca:</strong> <span id="motoMarca"></span> </h6>
+                                <h6><strong>Modelo:</strong> <span id="motoModelo"></span></h6>
+                                <h6><strong>Año:</strong> <span id="motoAnio"></span></h6>
+                                <h6><strong>Dominio:</strong> <span id="motoDominio"></span></h6>
+                            </div>
+                            <div class="col-4">
+                                <h6><strong>Color:</strong> <span id="motoColor"></span></h6>
+                                <h6><strong>Cilindradas:</strong> <span id="motoCilindrada"></span> </h6>
+                                <h6><strong>Nacionalidad:</strong> <span id="motoPais"></span> </h6>
+                                <h6><strong>Km:</strong> <span id="motoKm"></span> </h6>
+                                
+                            </div>
+                            <div class="col-4">
+                                <h6><strong>DNRPA:</strong> <span id="motoDnrpa"></span> </h6>
+                                <h6><strong>Nro. Certificado:</strong> <span id="motoCertificado"></span> </h6>
+                                <h6><strong>Nro. Motor:</strong> <span id="motoMotor"></span> </h6>
+                                <h6><strong>Nro. Chasis:</strong> <span id="motoChasis"></span> </h6>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-
-
             </form>
         </div>
         <!-- Botones de acción -->
@@ -105,10 +122,7 @@
                 <i class="fas fa-times"></i> Cancelar
             </a>
         </div>
-
     </div>
-    </div>
-
 
     <!-- Modal para Buscar Cliente -->
     <div class="modal fade" id="buscarClienteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -289,89 +303,101 @@
         </div>
     </div>
 
+    <!-- Modal para Editar Conyugue -->
+    <div class="modal fade" id="buscarConyugeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5" id="clientesModalLabel">Cónyugue</h3>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-outline card-warning">
+                                <div class="card-header">
+                                    <h3 class="card-title">Modifique los Datos</h3>
+                                </div>
+                                <div class="col-md-12 mx-auto d-flex justify-content-center">
+                                    <div class="card-body">
+                                        <div class="card card-info">
+                                            <form action="{{ url('/admin/conyugues', $cliente->id_conyugue_cliente) }}"
+                                                method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="card-body">
+                                                    @if ($cliente->conyugue)
+                                                        <!-- Mostrar datos del conyugue -->
+                                                        <div class="form-group">
+                                                            <label for="apellido_conyugue">Apellido</label>
+                                                            <input type="text" name="apellido_conyugue"
+                                                                class="form-control" required
+                                                                value="{{ $cliente->conyugue->apellido_conyugue }}"
+                                                                placeholder="Ingrese el apellido del cónyuge">
+                                                            @error('apellido_conyugue')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
 
-  <!-- Modal para Editar Conyugue -->
-<div class="modal fade" id="buscarConyugeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title fs-5" id="clientesModalLabel">Cónyugue</h3>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card card-outline card-warning">
-                            <div class="card-header">
-                                <h3 class="card-title">Modifique los Datos</h3>
-                            </div>
-                            <div class="col-md-12 mx-auto d-flex justify-content-center">
-                                <div class="card-body">
-                                    <div class="card card-info">
-                                        <form action="{{ url('/admin/conyugues', $cliente->id_conyugue_cliente) }}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="card-body">
-                                                @if ($cliente->conyugue)
-                                                    <!-- Mostrar datos del conyugue -->
-                                                    <div class="form-group">
-                                                        <label for="apellido_conyugue">Apellido</label>
-                                                        <input type="text" name="apellido_conyugue" class="form-control" required
-                                                            value="{{ $cliente->conyugue->apellido_conyugue }}" placeholder="Ingrese el apellido del cónyuge">
-                                                        @error('apellido_conyugue')
-                                                            <small style="color: red;">{{ $message }}</small>
-                                                        @enderror
-                                                    </div>
+                                                        <div class="form-group">
+                                                            <label for="nombre_conyugue">Nombre</label>
+                                                            <input type="text" name="nombre_conyugue"
+                                                                class="form-control" required
+                                                                value="{{ $cliente->conyugue->nombre_conyugue }}"
+                                                                placeholder="Ingrese el nombre del cónyuge">
+                                                            @error('nombre_conyugue')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
 
-                                                    <div class="form-group">
-                                                        <label for="nombre_conyugue">Nombre</label>
-                                                        <input type="text" name="nombre_conyugue" class="form-control" required
-                                                            value="{{ $cliente->conyugue->nombre_conyugue }}" placeholder="Ingrese el nombre del cónyuge">
-                                                        @error('nombre_conyugue')
-                                                            <small style="color: red;">{{ $message }}</small>
-                                                        @enderror
-                                                    </div>
+                                                        <div class="form-group">
+                                                            <label for="dni_conyugue">DNI</label>
+                                                            <input type="text" name="dni_conyugue"
+                                                                class="form-control" required
+                                                                value="{{ $cliente->conyugue->dni_conyugue }}"
+                                                                placeholder="Ingrese el DNI del cónyuge">
+                                                            @error('dni_conyugue')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
 
-                                                    <div class="form-group">
-                                                        <label for="dni_conyugue">DNI</label>
-                                                        <input type="text" name="dni_conyugue" class="form-control" required
-                                                            value="{{ $cliente->conyugue->dni_conyugue }}" placeholder="Ingrese el DNI del cónyuge">
-                                                        @error('dni_conyugue')
-                                                            <small style="color: red;">{{ $message }}</small>
-                                                        @enderror
-                                                    </div>
+                                                        <div class="form-group">
+                                                            <label for="celular_conyugue">Celular</label>
+                                                            <input type="text" name="celular_conyugue"
+                                                                class="form-control" required
+                                                                value="{{ $cliente->conyugue->celular_conyugue }}"
+                                                                placeholder="Ingrese el celular del cónyuge">
+                                                            @error('celular_conyugue')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
 
-                                                    <div class="form-group">
-                                                        <label for="celular_conyugue">Celular</label>
-                                                        <input type="text" name="celular_conyugue" class="form-control" required
-                                                            value="{{ $cliente->conyugue->celular_conyugue }}" placeholder="Ingrese el celular del cónyuge">
-                                                        @error('celular_conyugue')
-                                                            <small style="color: red;">{{ $message }}</small>
-                                                        @enderror
-                                                    </div>
+                                                        <div class="form-group">
+                                                            <label for="fecha_nacimiento_conyugue">Fecha de
+                                                                Nacimiento</label>
+                                                            <input type="date" name="fecha_nacimiento_conyugue"
+                                                                class="form-control" required
+                                                                value="{{ $cliente->conyugue->fecha_nacimiento_conyugue }}">
+                                                            @error('fecha_nacimiento_conyugue')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                    @else
+                                                        <p>No tiene cónyuge registrado.</p>
+                                                    @endif
+                                                </div>
 
-                                                    <div class="form-group">
-                                                        <label for="fecha_nacimiento_conyugue">Fecha de Nacimiento</label>
-                                                        <input type="date" name="fecha_nacimiento_conyugue" class="form-control" required
-                                                            value="{{ $cliente->conyugue->fecha_nacimiento_conyugue }}">
-                                                        @error('fecha_nacimiento_conyugue')
-                                                            <small style="color: red;">{{ $message }}</small>
-                                                        @enderror
-                                                    </div>
-                                                @else
-                                                    <p>No tiene cónyuge registrado.</p>
-                                                @endif
-                                            </div>
-
-                                            <div class="card-footer text-right">
-                                                <button type="submit" class="btn btn-warning">
-                                                    <i class="fa-solid fa-file-arrow-up"></i> Actualizar
-                                                </button>
-                                                <butto class="btn btn-secondary" data-dismiss="modal">
-                                                    <i class="fas fa-cancel"></i> Cancelar
-                                                </button>
-                                            </div>
-                                        </form>
+                                                <div class="card-footer text-right">
+                                                    <button type="submit" class="btn btn-warning">
+                                                        <i class="fa-solid fa-file-arrow-up"></i> Actualizar
+                                                    </button>
+                                                    <butto class="btn btn-secondary" data-dismiss="modal">
+                                                        <i class="fas fa-cancel"></i> Cancelar
+                                                        </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -381,7 +407,84 @@
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Modal para Buscar Moto -->
+    <div class="modal fade" id="buscarMotoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5" id="clientesModalLabel">Buscar Moto</h3>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table">
+                        <table class="table table-ms table-striped" id="tablaMotos">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th scope="col" class="text-center" style="width: 5%;">...</th>
+                                    <th class="text-center" style="width: 10%">Marca</th>
+                                    <th class="text-center" style="width: 10%">Modelo</th>
+                                    <th class="text-center" style="width: 5%">Año</th>
+                                    <th class="text-center" style="width: 10%">Nacionalidad</th>
+                                    <th class="text-center" style="width: 10%">P. Compra</th>
+                                    <th class="text-center" style="width: 10%">P. Venta</th>
+                                    <th class="text-center" style="width: 10%">Imagen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($motos as $moto)
+                                    <tr>
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            <button class="btn btn-info"
+                                                onclick="seleccionarMotoDesdeModal(
+                                                '{{ $moto->id }}', 
+                                                '{{ $moto->marca->nombre_marca }}', 
+                                                '{{ $moto->modelo_moto }}',
+                                                '{{ $moto->dominio }}',
+                                                '{{ $moto->color_moto }}',
+                                                '{{ $moto->anio_moto }}',
+                                                '{{ $moto->km_moto }}',
+                                                '{{ $moto->cilindrada_moto }}', 
+                                                '{{ $moto->nacionalidad->pais }}', 
+                                                '{{ $moto->nr_motor }}', 
+                                                '{{ $moto->nr_chasis }}', 
+                                                '{{ $moto->nr_certificado }}', 
+                                                '{{ $moto->dnrpa }}'
+                                            )">
+                                                <i class="fa-solid fa-circle-plus"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center" style="vertical-align: middle">
+                                            {{ $moto->marca->nombre_marca }}</td>
+                                        <td class="text-center" style="vertical-align: middle">{{ $moto->modelo_moto }}
+                                        </td>
+                                        <td class="text-center" style="vertical-align: middle">{{ $moto->anio_moto }}
+                                        </td>
+                                        <td class="text-center" style="vertical-align: middle">
+                                            {{ $moto->nacionalidad->pais }}</td>
+                                        <td class="text-end text-success bg-light fs-5" style="vertical-align: middle">
+                                            ${{ number_format($moto->precio_compra, 2, ',', '.') }}
+                                        </td>
+                                        <td class="text-end text-danger bg-light fs-5" style="vertical-align: middle">
+                                            ${{ number_format($moto->precio_venta, 2, ',', '.') }}
+                                        </td>
+                                        <td class="text-center" style="vertical-align: middle">
+                                            <img src="{{ asset('storage/' . $moto->imagen_moto) }}"
+                                                style="max-width: 100%; width: auto;" alt="">
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 @endsection
@@ -393,7 +496,7 @@
 @section('js')
     {{-- Aquí puedes agregar scripts adicionales --}}
 
-
+    {{-- Script de Clientes --}}
     <script>
         $(document).ready(function() {
             $('#tablaClientes').DataTable({
@@ -449,6 +552,72 @@
 
             // Cerrar el modal
             $('#buscarClienteModal').modal('hide');
+        }
+    </script>
+
+    {{-- Script de Motos --}}
+    <script>
+        $(document).ready(function() {
+            $('#tablaMotos').DataTable({
+                "pageLength": 5,
+                "language": {
+                    "emptyTable": "No hay información.",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Motos",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 Motos",
+                    "infoFiltered": "(Filtrado de _MAX_ total Motos)",
+                    "lengthMenu": "Mostrar _MENU_ Motos",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscador:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+        });
+
+        function seleccionarMotoDesdeModal(id, nombre_marca, modelo_moto, dominio, color_moto, anio_moto,
+            km_moto, cilindrada_moto, pais, nr_motor, nr_chasis, nr_certificado, dnrpa) {
+
+
+            // Depuración para ver los valores que se están pasando
+            console.log('Datos recibidos:', {
+                id,
+                nombre_marca,
+                modelo_moto,
+                dominio,
+                color_moto,
+                anio_moto,
+                km_moto,
+                cilindrada_moto,
+                pais,
+                nr_motor,
+                nr_chasis,
+                nr_certificado,
+                dnrpa
+            });
+
+            document.querySelector('input[name="id_moto"]').value = id;
+            document.getElementById('motoMarca').textContent = nombre_marca || 'N/A';
+            document.getElementById('motoModelo').textContent = modelo_moto || 'N/A';
+            document.getElementById('motoDominio').textContent = dominio || 'N/A';
+            document.getElementById('motoColor').textContent = color_moto || 'N/A';
+            document.getElementById('motoAnio').textContent = anio_moto || 'N/A';
+            document.getElementById('motoKm').textContent = km_moto || 'N/A';
+            document.getElementById('motoCilindrada').textContent = cilindrada_moto || 'N/A';
+            document.getElementById('motoPais').textContent = pais || 'N/A';
+            document.getElementById('motoMotor').textContent = nr_motor || 'N/A';
+            document.getElementById('motoChasis').textContent = nr_chasis || 'N/A';
+            document.getElementById('motoCertificado').textContent = nr_certificado || 'N/A';
+            document.getElementById('motoDnrpa').textContent = dnrpa || 'N/A';
+
+            // Cerrar el modal
+            $('#buscarMotoModal').modal('hide');
+
         }
     </script>
 
