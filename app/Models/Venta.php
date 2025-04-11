@@ -9,10 +9,10 @@ class Venta extends Model
     //
 
     public function cliente(){
-        return $this->belongsTo(Cliente::class);
+        return $this->belongsTo(Cliente::class, 'id_cliente');
     }
 
     public function moto(){
-        return $this->belongsTo(Moto::class);
+        return $this->belongsTo(Moto::class, 'id_moto');
     }
 }

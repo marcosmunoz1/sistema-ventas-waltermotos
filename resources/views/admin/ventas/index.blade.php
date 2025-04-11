@@ -31,7 +31,6 @@
                                         <th class="text-center" style="width: 10%">Numero</th>
                                         <th class="text-center" style="width: 20%">Cliente</th>
                                         <th class="text-center" style="width: 10%">Total</th>
-                                        <th class="text-center" style="width: 5%">Pago</th>
                                         <th class="text-center" style="width: 5%">Estado</th>
                                         <th class="text-center" style="width: 10%">Acciones</th>
                                     </tr>
@@ -42,14 +41,14 @@
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $venta->fecha_venta }}</td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $venta->numero_compra }}
+                                            <td class="text-center"style="vertical-align: middle"> {{ $venta->id_venta }}
                                             <td class="text-center"style="vertical-align: middle">
-                                                {{ $venta->cliente->nombre_cliente ?? 'Sin proveedor' }}</td>
-                                            <td class="text-center"style="vertical-align: middle">{{ $venta->total_pago }}</td>
+                                                {{ $venta->cliente->apellido_cliente }}, {{ $venta->cliente->nombre_cliente }} </td>
+                                            <td class="text-center"style="vertical-align: middle">{{ $venta->precio_venta }}</td>
                                             <td class="text-center" style="vertical-align: middle">
                                                 <span
-                                                    class="badge {{ $venta->estado_compra == 'Pagado' ? 'bg-success' : 'bg-danger' }}">
-                                                    {{ $venta->estado_compra }}
+                                                    class="badge {{ $venta->estado_venta == 'Pagado' ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $venta->estado_venta }}
                                                 </span>
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">
