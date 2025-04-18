@@ -25,13 +25,13 @@
 @section('classes_body'){{ $bodyClasses }}@stop
 
 @section('body')
-    <div class="{{ $authType }}-box">
+    <div class="{{ $authType }}-box"  style="background-color: #faf9f9; box-shadow: 5px 10px 5px 5px #cccccc"><br>
 
-        {{-- Logo --}}
-        <div class="{{ $authType }}-logo">
+          
+         <div class="{{ $authType }}-logo">
             <a href="{{ $dashboardUrl }}">
 
-                {{-- Logo Image --}}
+                
                 @if (config('adminlte.auth_logo.enabled', false))
                     <img src="{{ asset(config('adminlte.auth_logo.img.path')) }}"
                          alt="{{ config('adminlte.auth_logo.img.alt') }}"
@@ -49,14 +49,15 @@
                          alt="{{ config('adminlte.logo_img_alt') }}" height="50">
                 @endif
 
-                {{-- Logo Label --}}
-                {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
+                
+                {!! config('adminlte.logo', '<b>waltern</b>MOTOS') !!}
 
             </a>
         </div>
-
+ 
         {{-- Card Box --}}
-        <div class="card {{ config('adminlte.classes_auth_card', 'card-outline card-primary') }}">
+        <div class="card {{ config('adminlte.classes_auth_card', 'card-outline card-primary') }} mt-2"
+            style="box-shadow: 5px 5px 5px 5px #cccccc">
 
             {{-- Card Header --}}
             @hasSection('auth_header')

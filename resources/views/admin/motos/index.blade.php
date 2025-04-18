@@ -30,11 +30,11 @@
                                                 <th class="text-center" style="width: 5%">#</th>
                                                 <th class="text-center" style="width: 10%">Marca</th>
                                                 <th class="text-center" style="width: 10%">Modelo</th>
-                                                <th class="text-center" style="width: 10%">Color</th>
-                                                <th class="text-center" style="width: 10%">Año</th>
+                                                <th class="text-center" style="width: 5%">Año</th>
                                                 <th class="text-center" style="width: 10%">Nacionalidad</th>
                                                 <th class="text-center" style="width: 10%">P. Compra</th>
                                                 <th class="text-center" style="width: 10%">P. Venta</th>
+                                                <th class="text-center" style="width: 10%">Imagen</th>
                                                 <th class="text-center" style="width: 10%">Acciones</th>
                                             </tr>
                                         </thead>
@@ -45,13 +45,19 @@
                                                     <td class="text-center" style="vertical-align: middle">
                                                         {{ $contador++ }}</td>
                                                     <!-- Marca de la moto, usando la relación -->
-                                                    <td class="text-center">{{ $moto->marca->nombre_marca }}</td>
-                                                    <td class="text-center">{{ $moto->modelo_moto }}</td>
-                                                    <td class="text-center">{{ $moto->color_moto }}</td>
-                                                    <td class="text-center">{{ $moto->anio_moto }}</td>
-                                                    <td class="text-center">{{ $moto->nacionalidad->pais }}</td>
-                                                    <td class="text-end text-success bg-light fs-5">${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
-                                                    <td class="text-end text-danger bg-light fs-5">${{ number_format($moto->precio_venta, 2, ',', '.') }}</td>
+                                                    <td class="text-center" style="vertical-align: middle">{{ $moto->marca->nombre_marca }}</td>
+                                                    <td class="text-center" style="vertical-align: middle">{{ $moto->modelo_moto }}</td>
+                                                
+                                                    <td class="text-center" style="vertical-align: middle">{{ $moto->anio_moto }}</td>
+                                                    <td class="text-center" style="vertical-align: middle">{{ $moto->nacionalidad->pais }}</td>
+                                                    <td class="text-end text-success bg-light fs-5" style="vertical-align: middle">
+                                                        ${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
+                                                    <td class="text-end text-danger bg-light fs-5" style="vertical-align: middle">
+                                                        ${{ number_format($moto->precio_venta, 2, ',', '.') }}</td>
+                                                    <td class="text-center" style="vertical-align: middle">
+                                                        <img src="{{ asset('storage/' . $moto->imagen_moto) }}" width="80%"
+                                                        alt="">
+                                                    </td>
                                                     <td class="text-center" style="vertical-align: middle">
                                                         <a href="{{ url('/admin/motos', $moto->id) }}"
                                                             class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
