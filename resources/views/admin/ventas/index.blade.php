@@ -23,11 +23,11 @@
                 <div class="col-md-12 mx-auto">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped" id="miTabla">
+                            <table class="table table-striped table-sm" id="miTabla">
                                 <thead class="table-primary">
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
-                                        <th class="text-center" style="width: 5%">Fecha</th>
+                                        <th class="text-center" style="width: 10%">Fecha</th>
                                         <th class="text-center" style="width: 5%">Numero</th>
                                         <th class="text-center" style="width: 15%">Cliente</th>
                                         <th class="text-center" style="width: 5%">P. Venta</th>
@@ -52,9 +52,13 @@
                                                 ${{ number_format($venta->precio_venta, 2, ',', '.') }}</td>
                                                 <td class="text-danger text-right" style="vertical-align: middle">
                                                     ${{ number_format($venta->total_pago, 2, ',', '.') }}</td>
-                                            <td class="text-center"style="vertical-align: middle">
-                                                <span class="badge bg-primary">{{ $venta->forma_pago }}</span>
-                                            </td>
+                                                    <td class="text-center" style="vertical-align: middle">
+                                                        @php
+                                                            $color = $venta->forma_pago === 'Contado' ? 'primary' : 'warning';
+                                                        @endphp
+                                                        <span class="badge bg-{{ $color }}">{{ ucfirst($venta->forma_pago) }}</span>
+                                                    </td>
+                                                    
                                             <td class="text-center" style="vertical-align: middle">
                                                 <span
                                                     class="badge {{ $venta->estado_venta == 'Pagado' ? 'bg-success' : 'bg-danger' }}">
@@ -123,7 +127,7 @@
 
     <script>
         $('#miTabla').DataTable({
-            "pageLength": 5,
+            ordering: false,
             "language": {
                 "emptyTable": "No hay información.",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Ventas",

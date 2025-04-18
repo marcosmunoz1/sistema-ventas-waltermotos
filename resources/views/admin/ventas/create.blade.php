@@ -41,7 +41,7 @@
                                         <div class="card-footer text-center">
                                             <button type="button" class="btn btn-outline-warning" data-toggle="modal"
                                                 data-target="#buscarConyugeModal">
-                                                <i class="fas fa-edit"></i> Editar Conyugue <i class="fas fa-user"></i>
+                                                <i class="fas fa-edit"></i> Editar Conyugue <i class="fas fa-user-friends"></i>
                                             </button>
                                         </div>
 
@@ -121,10 +121,6 @@
                                                     {{ old('forma_pago') == 'Contado' ? 'selected' : '' }}>Contado</option>
                                                 <option value="Credito"
                                                     {{ old('forma_pago') == 'Credito' ? 'selected' : '' }}>Crédito</option>
-                                                <option value="Tarjeta"
-                                                    {{ old('forma_pago') == 'Tarjeta' ? 'selected' : '' }}>Tarjeta</option>
-                                                <option value="Otro" {{ old('forma_pago') == 'Otro' ? 'selected' : '' }}>
-                                                    Otro</option>
                                             </select>
                                             @error('forma_pago')
                                                 <small class="text-danger">{{ $message }}</small>
@@ -491,7 +487,7 @@
         <!-- Modal para Buscar Moto -->
         <div class="modal fade" id="buscarMotoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-xl">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title fs-5" id="clientesModalLabel">Buscar Moto</h3>
@@ -499,16 +495,16 @@
                     </div>
                     <div class="modal-body">
                         <div class="table">
-                            <table class="table table-ms table-striped" id="tablaMotos">
-                                <thead class="table-primary">
+                            <table class="table table-sm table-striped" id="tablaMotos">
+                                <thead class="table-info">
                                     <tr>
                                         <th scope="col" class="text-center" style="width: 5%;">...</th>
                                         <th class="text-center" style="width: 10%">Marca</th>
                                         <th class="text-center" style="width: 10%">Modelo</th>
                                         <th class="text-center" style="width: 5%">Año</th>
                                         <th class="text-center" style="width: 10%">Nacionalidad</th>
-                                        <th class="text-center" style="width: 10%">P. Compra</th>
-                                        <th class="text-center" style="width: 10%">P. Venta</th>
+                                        <th class="text-center" style="width: 5%">P. Compra</th>
+                                        <th class="text-center" style="width: 5%">P. Venta</th>
                                         <th class="text-center" style="width: 10%">Imagen</th>
                                     </tr>
                                 </thead>
@@ -545,11 +541,11 @@
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">
                                                 {{ $moto->nacionalidad->pais }}</td>
-                                            <td class="text-end text-success bg-light fs-5"
+                                            <td class="text-right text-success"
                                                 style="vertical-align: middle">
                                                 ${{ number_format($moto->precio_compra, 2, ',', '.') }}
                                             </td>
-                                            <td class="text-end text-danger bg-light fs-5" style="vertical-align: middle">
+                                            <td class="text-right text-danger" style="vertical-align: middle">
                                                 ${{ number_format($moto->precio_venta, 2, ',', '.') }}
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">

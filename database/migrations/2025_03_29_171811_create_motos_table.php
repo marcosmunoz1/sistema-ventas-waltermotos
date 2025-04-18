@@ -37,6 +37,8 @@ return new class extends Migration
             $table->decimal('precio_venta', 10, 2);
             $table->string('estado_moto');
             $table->string('imagen_moto')->nullable();
+            $table->enum('condicion', ['vendida', 'en_stock', 'garantia', 'devuelta'])->default('en_stock');
+
             $table->timestamps();
         });
     }

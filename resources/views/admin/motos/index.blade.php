@@ -24,7 +24,7 @@
                             <!-- Tabla -->
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped" id="mitabla">
+                                    <table class="table table-sm table-bordered table-striped" id="mitabla">
                                         <thead>
                                             <tr>
                                                 <th class="text-center" style="width: 5%">#</th>
@@ -34,6 +34,7 @@
                                                 <th class="text-center" style="width: 10%">Nacionalidad</th>
                                                 <th class="text-center" style="width: 10%">P. Compra</th>
                                                 <th class="text-center" style="width: 10%">P. Venta</th>
+                                                <th class="text-center" style="width: 10%">Condicion</th>
                                                 <th class="text-center" style="width: 10%">Imagen</th>
                                                 <th class="text-center" style="width: 10%">Acciones</th>
                                             </tr>
@@ -45,18 +46,37 @@
                                                     <td class="text-center" style="vertical-align: middle">
                                                         {{ $contador++ }}</td>
                                                     <!-- Marca de la moto, usando la relación -->
-                                                    <td class="text-center" style="vertical-align: middle">{{ $moto->marca->nombre_marca }}</td>
-                                                    <td class="text-center" style="vertical-align: middle">{{ $moto->modelo_moto }}</td>
-                                                
-                                                    <td class="text-center" style="vertical-align: middle">{{ $moto->anio_moto }}</td>
-                                                    <td class="text-center" style="vertical-align: middle">{{ $moto->nacionalidad->pais }}</td>
-                                                    <td class="text-end text-success bg-light fs-5" style="vertical-align: middle">
-                                                        ${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
-                                                    <td class="text-end text-danger bg-light fs-5" style="vertical-align: middle">
-                                                        ${{ number_format($moto->precio_venta, 2, ',', '.') }}</td>
                                                     <td class="text-center" style="vertical-align: middle">
-                                                        <img src="{{ asset('storage/' . $moto->imagen_moto) }}" width="80%"
-                                                        alt="">
+                                                        {{ $moto->marca->nombre_marca }}</td>
+                                                    <td class="text-center" style="vertical-align: middle">
+                                                        {{ $moto->modelo_moto }}</td>
+
+                                                    <td class="text-center" style="vertical-align: middle">
+                                                        {{ $moto->anio_moto }}</td>
+                                                    <td class="text-center" style="vertical-align: middle">
+                                                        {{ $moto->nacionalidad->pais }}</td>
+                                                    <td class="text-right text-success" style="vertical-align: middle">
+                                                        ${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
+                                                    <td class="text-right text-danger" style="vertical-align: middle">
+                                                        ${{ number_format($moto->precio_venta, 2, ',', '.') }}</td>
+                                                        <td class="text-center" style="vertical-align: middle">
+                                                            @php
+                                                                $colores = [
+                                                                    'vendida'   => 'danger',     
+                                                                    'en_stock'  => 'success',   
+                                                                    'garantia'  => 'warning',    
+                                                                    'devuelta'  => 'secondary',  
+                                                                ];
+                                                                $color = $colores[$moto->condicion] ?? 'light';
+                                                            @endphp
+                                                            <span class="badge bg-{{ $color }}">
+                                                                {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
+                                                            </span>
+                                                        </td>
+                                                        
+                                                    <td class="text-center" style="vertical-align: middle">
+                                                        <img src="{{ asset('storage/' . $moto->imagen_moto) }}"
+                                                            width="80%" alt="">
                                                     </td>
                                                     <td class="text-center" style="vertical-align: middle">
                                                         <a href="{{ url('/admin/motos', $moto->id) }}"
