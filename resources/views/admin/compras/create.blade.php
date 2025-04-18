@@ -346,7 +346,7 @@
                                     </div>
 
                         <div class="modal-footer">
-                            <button type="button" id="btn-agregar-moto" class="btn btn-primary">
+                            <button type="submit" id="btn-agregar-moto" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Guardar moto</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
                         </div>
@@ -374,22 +374,31 @@
 
             // Enviar con Fetch API
             fetch(this.action, {
-                method: 'POST',
-                body: new FormData(this),
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = data.redirect;
-                } else {
-                    alert('Errores: ' + Object.values(data.errors).join('\n'));
-                }
-            });
-        });
+    method: 'POST',
+    body: new FormData(this),
+    credentials: 'same-origin'
+})
+.then(async response => {
+    const contentType = response.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        if (data.success) {
+            window.location.href = data.redirect;
+        } else {
+            alert('Errores: ' + Object.values(data.errors).join('\n'));
+        }
+    } else {
+        const text = await response.text();
+        console.error("Respuesta no es JSON:", text);
+        alert("Ocurrió un error inesperado.");
+    }
+})
+.catch(error => {
+    console.error("Error en fetch:", error);
+    alert("Error en la conexión con el servidor.");
+});
+                    });
        </script>
 
         {{-- Aquí puedes agregar scripts adicionales --}}
@@ -451,7 +460,7 @@
                     return;
                 }
 
-            let contador = 1;
+                let contador = 1;
                 let marca = document.getElementById('marca').value;
                 let modelo = document.getElementById('modelo_moto').value;
                 let dominio = document.getElementById('dominio').value;
@@ -530,7 +539,7 @@
 
                 // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
                 const form = document.getElementById('formulario-compra');
-                
+
 
 
                 // 3. Resetear solo los campos del modal (no el formulario completo)

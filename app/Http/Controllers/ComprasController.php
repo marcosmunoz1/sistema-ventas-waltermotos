@@ -77,7 +77,9 @@ class ComprasController extends Controller
             'nr_chasis' => 'required|array',
             'nr_chasis.*' => 'required|string|max:255',
             'precio_compra' => 'required|array',
-            'precio_compra.*' => 'numeric|min:0'
+            'precio_compra.*' => 'numeric|min:0',
+            'imagen' => 'nullable|array',
+            'imagen.*' => 'nullable|string|max:255',
 
         ]);
 
@@ -127,7 +129,7 @@ class ComprasController extends Controller
 
             return response()->json([
                 'success' => true,
-                'redirect' => route('compras.index') 
+                'redirect' => route('compras.index')
             ]);
 
             } catch (\Exception $e) {
