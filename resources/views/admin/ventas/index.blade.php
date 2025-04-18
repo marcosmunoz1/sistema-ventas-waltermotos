@@ -10,27 +10,29 @@
 @endsection
 
 @section('content')
-    <div class="row"> 
+    <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Datos de Ventas</h3>
                     <div class="card-tools">
-                        <a href="{{ url('admin/ventas/crear-venta') }}" class="btn btn-primary"><i
-                            class="fas fa-plus"></i> Nueva Venta</a>
+                        <a href="{{ url('admin/ventas/crear-venta') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
+                            Nueva Venta</a>
                     </div>
                 </div>
-                <div class="col-md-12 mx-auto mt-4">
+                <div class="col-md-12 mx-auto">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped" id="miTabla">
                                 <thead class="table-primary">
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
-                                        <th class="text-center" style="width: 10%">Fecha</th>
-                                        <th class="text-center" style="width: 10%">Numero</th>
-                                        <th class="text-center" style="width: 20%">Cliente</th>
-                                        <th class="text-center" style="width: 10%">Total</th>
+                                        <th class="text-center" style="width: 5%">Fecha</th>
+                                        <th class="text-center" style="width: 5%">Numero</th>
+                                        <th class="text-center" style="width: 15%">Cliente</th>
+                                        <th class="text-center" style="width: 5%">P. Venta</th>
+                                        <th class="text-center" style="width: 5%">Pagado</th>
+                                        <th class="text-center" style="width: 5%">Forma</th>
                                         <th class="text-center" style="width: 5%">Estado</th>
                                         <th class="text-center" style="width: 10%">Acciones</th>
                                     </tr>
@@ -40,11 +42,19 @@
                                     @foreach ($ventas as $venta)
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $venta->fecha_venta }}</td>
+                                            <td class="text-center"style="vertical-align: middle"> {{ $venta->fecha_venta }}
+                                            </td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $venta->id_venta }}
+                                            <td style="vertical-align: middle">
+                                                {{ $venta->cliente->apellido_cliente }},
+                                                {{ $venta->cliente->nombre_cliente }} </td>
+                                            <td class="text-success text-right" style="vertical-align: middle">
+                                                ${{ number_format($venta->precio_venta, 2, ',', '.') }}</td>
+                                                <td class="text-danger text-right" style="vertical-align: middle">
+                                                    ${{ number_format($venta->total_pago, 2, ',', '.') }}</td>
                                             <td class="text-center"style="vertical-align: middle">
-                                                {{ $venta->cliente->apellido_cliente }}, {{ $venta->cliente->nombre_cliente }} </td>
-                                            <td class="text-center"style="vertical-align: middle">{{ $venta->precio_venta }}</td>
+                                                <span class="badge bg-primary">{{ $venta->forma_pago }}</span>
+                                            </td>
                                             <td class="text-center" style="vertical-align: middle">
                                                 <span
                                                     class="badge {{ $venta->estado_venta == 'Pagado' ? 'bg-success' : 'bg-danger' }}">
@@ -52,7 +62,7 @@
                                                 </span>
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">
-                                                <a href="{{ url('/ventas/compras', $venta->id) }}"
+                                                <a href="{{ url('/admin/ventas/'. $venta->id_venta) }}"
                                                     class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
                                                 <a href="{{ url('/admin/ventas/' . $venta->id . '/edit') }}"
                                                     class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>

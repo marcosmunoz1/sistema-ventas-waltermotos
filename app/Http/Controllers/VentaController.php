@@ -54,36 +54,47 @@ class VentaController extends Controller
             'valor_cuota'    => 'nullable|numeric|min:0',
         ]);
 
-        // Crear nueva venta
         $venta = new Venta();
         $venta->id_cliente   = $validated['id_cliente'];
         $venta->id_moto      = $validated['id_moto'];
         $venta->fecha_venta  = $validated['fecha'];
         $venta->forma_pago   = $validated['forma_pago'];
-        $venta->precio_venta = $validated['precio_venta'];
-        $venta->total_pago   = 0; // Al inicio, total_pago es 0
+
+        if ($validated['forma_pago'] === 'Credito') {
+            $entrega = $validated['entrega'] ?? 0;
+            $cuotas = $validated['cuotas'];
+            $valor_cuota = $validated['valor_cuota'];
+
+            $venta->total_pago   = $entrega;
+            $venta->precio_venta = $entrega + ($cuotas * $valor_cuota);
+        } else {
+            $venta->total_pago   = $validated['precio_venta'];
+            $venta->precio_venta = $validated['precio_venta'];
+        }
+
         $venta->save();
 
         if ($validated['forma_pago'] === 'Credito') {
-            // Crear el crédito
             $credito = new Credito();
-            $credito->id_venta         = $venta->id;
-            $credito->valor_financiado = $venta->precio_venta - $validated['entrega'];
-            $credito->saldo_credito    = $credito->valor_financiado; // Al inicio, saldo_credito es igual al financiado
-            $credito->cantidad_cuotas  = $validated['cuotas'];
+            $credito->id_venta         = $venta->id_venta;
+            $credito->valor_financiado = $venta->precio_venta - $entrega;
+            $credito->saldo_credito    = $credito->valor_financiado;
+            $credito->entrega          = $entrega;
+            $credito->cantidad_cuotas  = $cuotas;
             $credito->interes          = $validated['interes'];
-            $credito->monto_cuota      = $validated['valor_cuota'];
+            $credito->monto_cuota      = $valor_cuota;
             $credito->estado_credito   = 'Pendiente';
             $credito->save();
 
-            // Crear los detalles del crédito (una cuota por cada mes)
-            $fechaVencimiento = Carbon::parse($venta->fecha); // Primera cuota vence el mismo mes de la venta
+
+            $fechaVencimiento = Carbon::parse($venta->fecha_venta)->addMonth();
+
             for ($i = 1; $i <= $credito->cantidad_cuotas; $i++) {
                 $detalle = new DetalleCredito();
                 $detalle->id_credito        = $credito->id;
                 $detalle->numero_cuota      = $i;
                 $detalle->valor_cuota       = $credito->monto_cuota;
-                $detalle->fecha_vencimiento = $fechaVencimiento->copy()->addMonth($i); // Sumar un mes completo
+                $detalle->fecha_vencimiento = $fechaVencimiento->copy()->addMonthsNoOverflow($i - 1);
                 $detalle->estado_cuota      = 'Pendiente';
                 $detalle->save();
             }
@@ -96,13 +107,25 @@ class VentaController extends Controller
 
 
 
+
     /**
      * Display the specified resource.
      */
-    public function show(Venta $venta)
+    public function show($id)
     {
-        //
+        $venta = Venta::find($id);
+        $cliente = Cliente::with('conyugue')->where('id', $venta->id_cliente)->first();
+        $moto = Moto::with('marca','nacionalidad')->where('id', $venta->id_moto)->first();
+        if ($venta->forma_pago === 'Credito') {
+            $credito = Credito::with('detalles')->where('id_venta', $venta->id_venta)->first();
+
+            return view('admin.ventas.show_credito', compact('venta', 'credito', 'cliente','moto'));
+        } else {
+            return view('admin.ventas.show', compact('venta', 'cliente','moto'));
+        }
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

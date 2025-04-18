@@ -16,9 +16,6 @@ class Conyugue extends Model
     ];
 
     
-    public function cliente()
-    {
-        return $this->belongsTo(Cliente::class, 'id_conyugue_cliente'); 
-    }
+    
 }
 

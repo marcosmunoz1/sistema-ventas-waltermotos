@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Venta extends Model
 {
     //
+    protected $primaryKey = 'id_venta';
 
     public function cliente(){
         return $this->belongsTo(Cliente::class, 'id_cliente');

@@ -10,6 +10,7 @@ return new class extends Migration {
             $table->id(); 
             $table->unsignedBigInteger('id_venta');
             $table->foreign(columns:'id_venta')->references('id_venta')->on(table: 'ventas')->onDelete('cascade');
+            $table->decimal('entrega', 12, 2);
             $table->decimal('valor_financiado', 12, 2);
             $table->decimal('saldo_credito', 12, 2);
             $table->integer('cantidad_cuotas');
