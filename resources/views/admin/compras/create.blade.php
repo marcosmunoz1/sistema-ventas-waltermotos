@@ -3,7 +3,7 @@
 @section('title', 'Cargar Compra')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light">Compras/<b>Cargar-Compra</b></h2>
+    <h2 class="brand-text font-weight-light">Compras/<b>Cargar Compra</b></h2>
     <hr>
 @endsection
 
@@ -15,160 +15,160 @@
                     <div class="card-title">Datos de Compra </div>
                 </div>
                     <div class="card-body">
-                    <form action="{{ url('/admin/compras/cargar-compra') }}" id="formulario-compra" method="post" enctype="multipart/form-data">
-                        @csrf
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <label for="proveedor">Proveedor</label>
-                                    <div class="row">
-                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-                                            data-target="#exampleModal2"><i class="fas fa-search"></i> Buscar</button>
-                                            <div style="margin-right: 10px"></div>
-                                            <a href="{{ url('/admin/proveedores/crear-proveedor') }}" type="button"
-                                            class="btn btn-success"><i class="fas fa-plus"></i></a>
-                                            <div class="modal fade" id="exampleModal2" tabindex="-1"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Listado de
-                                                            Proveedores</h1>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <table id="mitabla2"
-                                                            class="table table-striped table-bordered table-hover table-sm table-responsive">
-                                                            <thead class="table-dark">
-                                                                <tr>
-                                                                    <th scope="col" style="text-align: center ">Nro
-                                                                    </th>
-                                                                    <th scope="col" style="text-align: center ">
-                                                                        Acción</th>
+                        <form action="{{ url('/admin/compras/cargar-compra') }}" id="formulario-compra" method="post" enctype="multipart/form-data">
+                            @csrf
+                                <div class="row">
 
-                                                                    <th scope="col" style="text-align: center ">
-                                                                        Nombre proveedor</th>
-                                                                    <th scope="col" style="text-align: center ">Celular</th>
-                                                                    <th scope="col" style="text-align: center ">Correo</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <?php $contador = 1; ?>
-                                                                @foreach ($proveedores as $proveedor)
+                                    <div class="col-md-5">
+                                        <label for="proveedor">Proveedor</label>
+                                        <div class="row">
+                                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#exampleModal2"><i class="fas fa-search"></i> Buscar</button>
+                                                <div style="margin-right: 10px"></div>
+                                                <a href="{{ url('/admin/proveedores/crear-proveedor') }}" type="button"
+                                                class="btn btn-success"><i class="fas fa-plus"></i></a>
+                                                <div class="modal fade" id="exampleModal2" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Listado de
+                                                                Proveedores</h1>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <table id="mitabla2"
+                                                                class="table table-striped table-bordered table-hover table-sm table-responsive">
+                                                                <thead class="table-dark">
                                                                     <tr>
-                                                                        <td
-                                                                            style="text-align: center;vertical-align: middle ">
-                                                                            {{ $contador++ }}</td>
-                                                                        <td
-                                                                            style="text-align: center;vertical-align: middle ">
-                                                                            <button type="button" class="btn btn-info seleccionar-btn-proveedor" data-id="{{ $proveedor->id }}" data-nombre_proveedor="{{ $proveedor->nombre_proveedor }}">Seleccionar</button>
-                                                                        </td>
-                                                                        <td style="text-align: center">
-                                                                            {{ $proveedor->nombre_proveedor }}</td>
-                                                                            <td style="text-align: center">
-                                                                                {{ $proveedor->celular }}</td>
-                                                                            <td style="text-align: center">
-                                                                                {{ $proveedor->email }}</td>
+                                                                        <th scope="col" style="text-align: center ">Nro
+                                                                        </th>
+                                                                        <th scope="col" style="text-align: center ">
+                                                                            Acción</th>
 
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                    <a class="btn btn-success" href="{{url('admin/proveedores/create')}}"> <i class="fas fa-save"></i> Agregar proveedor</a>
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal"><i class="fas fa-cancel"></i> Cerrar</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" id="nombre_proveedor" disabled>
-                                            <input type="hidden" class="form-control" id="id_proveedor" name="id_proveedor" hidden>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Factura</label>
-                                        <input type="text" class="form-control" id="numero_factura" name="numero_factura" placeholder="Número de factura">
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Remito</label>
-                                        <input type="text" class="form-control" id="numero_remito" name="numero_remito" placeholder="Número de remito">
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Fecha compra:</label>
-
-                                            <input type="date" name="fecha_compra" id="fecha_compra" class="form-control datetimepicker-input" data-target="#reservationdate">
-
-                                        </div>
-                                    </div>
-                                </div>
-                         </div>
-                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="card card-outline card-secondary">
-                                    <div class="card-header">
-                                        <div class="card-title">Detalle de moto </div>
-                                    </div>
-                                        <div class="card-body">
-                                             <div class="row">
-                                                <div class="col-md-12 mx-auto mt-4">
-                                                    <a class="btn btn-primary" data-toggle="modal" data-target="#crearMotoModal">
-                                                        <i class="fas fa-plus"></i> Agregar moto
-                                                    </a>
-                                                  </div>
-                                                    <div class="card-body">
-                                                        <div class="table-responsive">
-                                                            <table id="tablaProveedores" class="table table-striped table-responsive" >
-                                                                <thead class="table">
-                                                                    <tr>
-                                                                        <th class="text-center" style="width: 5%">#</th>
-                                                                        <th class="text-center" style="width: 10%">Marca</th>
-                                                                        <th class="text-center" style="width: 15%">Modelo</th>
-                                                                        <th class="text-center" style="width: 15%">Color</th>
-                                                                        <th class="text-center" style="width: 15%">Año</th>
-                                                                        <th class="text-center" style="color:red 5%">Nacionalidad</th>
-                                                                        <th class="text-center" style="color:red 5%">Nr_motor</th>
-                                                                        <th class="text-center" style="color:red 5%">Nr_chasis</th>
-                                                                        <th class="text-center" style="color:red 5%">Precio_unitario</th>
-                                                                        <th class="text-center" style="width: 20%">Acciones</th>
+                                                                        <th scope="col" style="text-align: center ">
+                                                                            Nombre proveedor</th>
+                                                                        <th scope="col" style="text-align: center ">Celular</th>
+                                                                        <th scope="col" style="text-align: center ">Correo</th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody id="tabla-motos">
+                                                                <tbody>
+                                                                    <?php $contador = 1; ?>
+                                                                    @foreach ($proveedores as $proveedor)
+                                                                        <tr>
+                                                                            <td
+                                                                                style="text-align: center;vertical-align: middle ">
+                                                                                {{ $contador++ }}</td>
+                                                                            <td
+                                                                                style="text-align: center;vertical-align: middle ">
+                                                                                <button type="button" class="btn btn-info seleccionar-btn-proveedor" data-id="{{ $proveedor->id }}" data-nombre_proveedor="{{ $proveedor->nombre_proveedor }}">Seleccionar</button>
+                                                                            </td>
+                                                                            <td style="text-align: center">
+                                                                                {{ $proveedor->nombre_proveedor }}</td>
+                                                                                <td style="text-align: center">
+                                                                                    {{ $proveedor->celular }}</td>
+                                                                                <td style="text-align: center">
+                                                                                    {{ $proveedor->email }}</td>
 
-
+                                                                        </tr>
+                                                                    @endforeach
                                                                 </tbody>
                                                             </table>
                                                         </div>
+                                                        <div class="modal-footer">
+                                                        <a class="btn btn-success" href="{{url('admin/proveedores/create')}}"> <i class="fas fa-save"></i> Agregar proveedor</a>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal"><i class="fas fa-cancel"></i> Cerrar</button>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="nombre_proveedor" disabled>
+                                                <input type="hidden" class="form-control" id="id_proveedor" name="id_proveedor" hidden>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Factura</label>
+                                            <input type="text" class="form-control" id="numero_factura" name="numero_factura" placeholder="Número de factura">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Remito</label>
+                                            <input type="text" class="form-control" id="numero_remito" name="numero_remito" placeholder="Número de remito">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Fecha compra:</label>
 
-                                             </div>
+                                                <input type="date" name="fecha_compra" id="fecha_compra" class="form-control datetimepicker-input" data-target="#reservationdate">
+
+                                            </div>
                                         </div>
                                     </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                              <div class="col-md-6">
-                              </div>
-                              <div class="col-md-6 " style="justify-items: end">
-                                <p><b>Suma de compra:</b></p>
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Guardar compra</button>
-                              </div>
-                        </div>
-                        <br>
-                    </form>
+                            <div class="row" >
+                                <div class="col-md-12">
+                                    <div class="card card-outline card-secondary">
+                                        <div class="card-header">
+                                            <div class="card-title">Detalle de moto </div>
+                                        </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12 mx-auto mt-4">
+                                                        <a class="btn btn-primary" data-toggle="modal" data-target="#crearMotoModal">
+                                                            <i class="fas fa-plus"></i> Agregar moto
+                                                        </a>
+                                                    </div>
+                                                        <div class="card-body">
+                                                            <div class="table-responsive">
+                                                                <table id="tabla-motos" class="table table-striped table-responsive" >
+                                                                    <thead class="table">
+                                                                        <tr>
+                                                                            <th class="text-center" style="width: 5%">#</th>
+                                                                            <th class="text-center" style="width: 10%">Marca</th>
+                                                                            <th class="text-center" style="width: 15%">Modelo</th>
+                                                                            <th class="text-center" style="width: 15%">Color</th>
+                                                                            <th class="text-center" style="width: 15%">Año</th>
+                                                                            <th class="text-center" style="color:red 5%">Nacionalidad</th>
+                                                                            <th class="text-center" style="color:red 5%">Nr_motor</th>
+                                                                            <th class="text-center" style="color:red 5%">Nr_chasis</th>
+                                                                            <th class="text-center" style="color:red 5%">Precio_unitario</th>
+                                                                            <th class="text-center" style="width: 20%">Acciones</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="tabla-motos-body">
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6 " style="justify-items: end">
+                                    <p><b>Suma de compra:</b></p>
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Guardar compra</button>
+                                </div>
+                            </div>
+                            <br>
+                        </form>
                     </div>
                 </div>
         </div>
@@ -209,7 +209,7 @@
                                                                 <label>Marca</label> <b style="color: red;">*</b>
                                                                 <select class="form-control" name="marca" id="marca" required>
                                                                     @foreach ($marcas as $marca )
-                                                                    <option value="{{$marca->nombre_marca}}">{{$marca->nombre_marca}}</option>
+                                                                    <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option>
                                                                 @endforeach
                                                                 </select>
                                                             </div>
@@ -239,21 +239,21 @@
                                                                 <label>Nacionalidad</label>
                                                                 <select class="form-control" name="nacion" id="nacion">
                                                                 @foreach ($nacionalidades as $nacionalidad )
-                                                                <option value="{{$nacionalidad->pais}}">{{$nacionalidad->pais}}</option>
+                                                                <option value="{{$nacionalidad->id}}">{{$nacionalidad->pais}}</option>
                                                                 @endforeach
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Año</label>
-                                                                <input type="number" name="anio_moto" id="anio_moto" class="form-control" placeholder="Año">
+                                                                <input type="number" name="anio_moto" id="anio_moto" class="form-control" placeholder="Año" required>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Km</label>
-                                                                <input type="number" name="km_moto" id="km_moto" class="form-control" placeholder="Kilometraje">
+                                                                <input type="number" name="km_moto" id="km_moto" class="form-control" placeholder="Kilometraje" required>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-check mt-4">
-                                                                    <input class="form-check-input" name="es_usada" id="es_usada" type="checkbox">
+                                                                    <input class="form-check-input" name="es_usada" id="es_usada" type="checkbox" required>
                                                                     <label class="form-check-label">¿Es usada?</label>
                                                                 </div>
                                                             </div>
@@ -273,29 +273,29 @@
                                                         <div class="row mt-2">
                                                             <div class="col-md-6">
                                                                 <label>D.N.R.P.A</label>
-                                                                <input type="text" name="dnrpa" id="dnrpa" class="form-control" placeholder="Nro. DNRPA">
+                                                                <input type="text" name="dnrpa" id="dnrpa" class="form-control" placeholder="Nro. DNRPA" required>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Certificado</label>
-                                                                <input type="text" class="form-control" name="nr_certificado" id="nr_certificado" placeholder="Nro. Certificado">
+                                                                <input type="text" class="form-control" name="nr_certificado" id="nr_certificado" placeholder="Nro. Certificado" required>
                                                             </div>
                                                         </div>
                                                         <div class="row mt-2">
                                                             <div class="col-md-6">
                                                                 <label>Precio compra</label>
-                                                                <input type="text" class="form-control" name="precio_compra" id="precio_compra" placeholder="Precio compra">
+                                                                <input type="text" class="form-control" name="precio_compra" id="precio_compra" placeholder="Precio compra" required>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Precio venta</label>
-                                                                <input type="text" class="form-control" name="precio_venta" id="precio_venta" placeholder="Precio venta">
+                                                                <input type="text" class="form-control" name="precio_venta" id="precio_venta" placeholder="Precio venta" required>
                                                             </div>
                                                         </div>
                                                         <div class="row mt-2">
                                                         <div class="col-md-6">
                                                             <label>Deposito</label>
-                                                            <select class="form-control" id="deposito">
+                                                            <select class="form-control" id="deposito" required>
                                                                 @foreach ($depositos as $deposito )
-                                                                <option value="{{$deposito->id}}">{{$deposito->nombre_deposito}}</option>
+                                                                <option value="{{$deposito->id}}" required>{{$deposito->nombre_deposito}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -346,7 +346,7 @@
                                     </div>
 
                         <div class="modal-footer">
-                            <button type="button" onclick="agregarMotoATabla()()" class="btn btn-primary">
+                            <button type="button" id="btn-agregar-moto" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Guardar moto</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
                         </div>
@@ -362,6 +362,35 @@
     @endsection
 
     @section('js')
+       <script>
+          document.getElementById('formulario-compra').addEventListener('submit', function(e) {
+            e.preventDefault(); // Esto evita que la página se recargue
+
+            // Validar que haya al menos 1 moto
+            if (document.querySelectorAll('#tabla-motos-body tr').length === 0) {
+                alert('Debe agregar al menos una moto');
+                return;
+            }
+
+            // Enviar con Fetch API
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    alert('Errores: ' + Object.values(data.errors).join('\n'));
+                }
+            });
+        });
+       </script>
 
         {{-- Aquí puedes agregar scripts adicionales --}}
         <script>
@@ -408,33 +437,53 @@
             });
         </script>
         <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('btn-agregar-moto').addEventListener('click', agregarMotoATabla);
+
            function agregarMotoATabla() {
-                let contador = 1;
+
+             const tablaBody = document.getElementById('tabla-motos-body') ||
+            document.querySelector('table tbody');
+
+                if (!tablaBody) {
+                    console.error('Error: No se encontró el elemento #tabla-motos-body');
+                    alert('Error interno. Recarga la página e intenta nuevamente.');
+                    return;
+                }
+
+            let contador = 1;
                 let marca = document.getElementById('marca').value;
                 let modelo = document.getElementById('modelo_moto').value;
+                let dominio = document.getElementById('dominio').value;
+                let cilindrada = document.getElementById('cilindrada_moto').value;
+                let km = document.getElementById('km_moto').value;
+                let es_usada = document.getElementById('es_usada').value;
+                let dnrpa = document.getElementById('dnrpa').value;
+                let nr_certificado = document.getElementById('nr_certificado').value;
+                let precio_venta = parseFloat(document.getElementById('precio_venta').value);
+                let deposito = document.getElementById('deposito').value;
                 let color = document.getElementById('color_moto').value;
                 let anio =   document.getElementById('anio_moto').value;
                 let nacion =   document.getElementById('nacion').value;
                 let nr_motor =   document.getElementById('nr_motor').value;
                 let nr_chasis =   document.getElementById('nr_chasis').value;
-                let precioCompra = parseFloat(document.getElementById('precio_compra').value);
+                let precio_compra = parseFloat(document.getElementById('precio_compra').value);
+                let imagen = 'sin_imagen.jpg';
 
-                // Validaciones básicas
-                if (!marca || !modelo || !color || isNaN(precioCompra)) {
-                    alert("Todos los campos son obligatorios");
-                    return;
-                }
-                // Verificar si ya hay una moto cargada
-                const tabla = document.getElementById('tabla-motos');
-                if (tabla.children.length > 0) {
-                    alert("Solo se puede agregar una moto.");
-                    return;
-                }
-
-                const fila = `
-                    <tr>
-                         <td class="text-center" style="vertical-align: middle;">
+                 // 1. Crear fila
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                        <td class="text-center" style="vertical-align: middle;">
                             <input type="hidden" name="contador[]" class="form-control" value="${contador}" min="1" required readonly>
+                            <input type="hidden" name="dominio[]" class="form-control" value="${dominio}" min="1" required readonly>
+                            <input type="hidden" name="cilindrada[]" class="form-control" value="${cilindrada}" min="1" required readonly>
+                            <input type="hidden" name="km[]" class="form-control" value="${km}" min="1" required readonly>
+                            <input type="hidden" name="es_usada[]" class="form-control" value="${es_usada}" min="1" required readonly>
+                            <input type="hidden" name="dnrpa[]" class="form-control" value="${dnrpa}" min="1" required readonly>
+                            <input type="hidden" name="nr_certificado[]" class="form-control" value="${nr_certificado}" min="1" required readonly>
+                            <input type="hidden" name="precio_venta[]" class="form-control" value="${precio_venta}" min="1" required readonly>
+                            <input type="hidden" name="deposito[]" class="form-control" value="${deposito}" min="1" required readonly>
+                            <input type="hidden" name="imagen[]" class="form-control" value="${imagen}" min="1" required readonly>
                             ${contador}
                         </td>
                         <td class="text-center" style="vertical-align: middle;">
@@ -466,31 +515,29 @@
                             ${nr_chasis}
                         </td>
                         <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="precioCompra[]" class="form-control" value="${precioCompra}" min="1" required readonly oninput="calcularSubtotal(this)">
-                            ${precioCompra}
+                            <input type="hidden" name="precio_compra[]" class="form-control" value="${precio_compra}" min="1" required readonly oninput="calcularSubtotal(this)">
+                            ${precio_compra}
                         </td>
                         <td class="text-center" style="vertical-align: middle;">
                             <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove()">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
-                    </tr>
                 `;
 
-                document.getElementById('tabla-motos').insertAdjacentHTML('beforeend', fila);
+                  // 4. Agregar fila
+                 tablaBody.appendChild(fila);
+
+                // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
+                const form = document.getElementById('formulario-compra');
+                
 
 
+                // 3. Resetear solo los campos del modal (no el formulario completo)
+                $('#modalMoto').find('input').not('[type="hidden"]').val('');
 
-                // Limpiar modal
-                document.getElementById('marca').value = '';
-                document.getElementById('modelo_moto').value = '';
-                document.getElementById('color_moto').value = '';
-                document.getElementById('precio_compra').value = '';
-
-                 // Cerrar modal con jQuery (Bootstrap 4)
-                $('#crearMotoModal').modal('hide');
-                }
-
+            }
+        });
         </script>
         <script>
               function eliminarMoto(motoId) {
