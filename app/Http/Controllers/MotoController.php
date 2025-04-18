@@ -7,7 +7,7 @@ use App\Models\Deposito;
 use App\Models\Marca;
 use App\Models\Moto;
 use App\Models\Nacionalidad;
-use App\Models\Proveedores;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -46,7 +46,7 @@ class MotoController extends Controller
     public function show($id)
     {
         $moto = Moto::with(['marca', 'nacionalidad', 'compra', 'deposito'])->findOrFail($id);
-        $proveedor = Proveedores::where('id', $moto->compra->id_proveedor)->first();
+        $proveedor = Proveedor::where('id', $moto->compra->id_proveedor)->first();
 
         return view('admin.motos.show', compact('moto', 'proveedor'));
     }
