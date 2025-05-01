@@ -333,6 +333,11 @@ return [
             'icon' => 'fas fa fa-cash-register',
         ],
         [
+            'text' => 'Creditos',
+            'url' => 'admin/creditos',
+            'icon' => 'fas fa fa-cash-register',
+        ],
+        [
             'text' => 'Clientes',
             'icon' => 'fas fa fa-users',
             'url' => 'admin/clientes',

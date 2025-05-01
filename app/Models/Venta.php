@@ -16,4 +16,8 @@ class Venta extends Model
     public function moto(){
         return $this->belongsTo(Moto::class, 'id_moto');
     }
+
+    public function creditos(){
+        return $this->hasMany(Credito::class, 'id_venta');
+    }
 }
