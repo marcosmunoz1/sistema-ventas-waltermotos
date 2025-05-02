@@ -69,7 +69,7 @@ Route::delete('/admin/ventas/{id}', [App\Http\Controllers\VentaController::class
 //Rutas para Creditos
 Route::get('/admin/creditos', [App\Http\Controllers\CreditoController::class, 'index'])->name('admin.creditos.index');
 Route::get('/admin/creditos/{id}/cobrar-cuotas', [App\Http\Controllers\CreditoController::class, 'create'])->name('admin.creditos.cobrar-cuotas.create');
-Route::post('admin/creditos/{id}/cobrar-cuotas}', [App\Http\Controllers\CreditoController::class, 'store'])->name('admin.creditos.cobrar-cuotas.store');
+Route::post('/admin/creditos/cobrar-cuotas', [App\Http\Controllers\CreditoController::class, 'store'])->name('admin.creditos.cobrar-cuotas.store');
 Route::get('/admin/creditos/{id}', [App\Http\Controllers\CreditoController::class, 'show'])->name('admin.creditos.show');
 Route::get('/admin/creditos/{id}/edit', [App\Http\Controllers\CreditoController::class, 'edit'])->name('admin.creditos.edit');
 Route::put('/admin/creditos/{id}', [App\Http\Controllers\CreditoController::class, 'update'])->name('admin.creditos.update');

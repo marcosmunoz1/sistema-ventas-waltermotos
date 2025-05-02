@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Credito extends Model
 {
-    //
+    
+    protected $fillable = [
+        'venta_id',
+        'monto_total',
+        'saldo_credito',
+       
+    ];
+
     public function detalles()
     {
         return $this->hasMany(DetalleCredito::class, 'id_credito');

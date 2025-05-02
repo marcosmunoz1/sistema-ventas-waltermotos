@@ -37,11 +37,11 @@
                                                     {{ \Carbon\Carbon::parse($detalle->fecha_vencimiento)->format('d-m-Y') }}
                                                 <td class="text-center" style="vertical-align: middle">
                                                     @if ($detalle->fecha_pago)
-                                                        {{ \Carbon\Carbon::parse(detalle->fecha_pago)->format('d-m-Y') }}
+                                                        {{ \Carbon\Carbon::parse($detalle->fecha_pago)->format('d-m-Y') }}
                                                     @else
                                                         Impaga
                                                     @endif
-                                                    {{ $detalle->fecha_pago }}
+                                                    
                                                 </td>
                                                 <td class="text-success text-center" style="vertical-align: middle">
                                                     ${{ number_format($detalle->valor_cuota, 2, ',', '.') }}
@@ -49,7 +49,7 @@
                                                 <td class="text-center" style="vertical-align: middle">
                                                     <span
                                                         class="badge {{ $detalle->estado_cuota == 'Pendiente' ? 'bg-danger' : 'bg-success' }}">
-                                                        {{ $credito->venta->estado_venta }}
+                                                        {{ $detalle->estado_cuota }}
                                                     </span>
                                                 </td>
                                                

@@ -39,11 +39,10 @@
                                                     {{ \Carbon\Carbon::parse($detalle->fecha_vencimiento)->format('d-m-Y') }}
                                                 <td class="text-center" style="vertical-align: middle">
                                                     @if ($detalle->fecha_pago)
-                                                        {{ \Carbon\Carbon::parse(detalle->fecha_pago)->format('d-m-Y') }}
+                                                        {{ \Carbon\Carbon::parse($detalle->fecha_pago)->format('d-m-Y') }}
                                                     @else
                                                         Impaga
                                                     @endif
-                                                    {{ $detalle->fecha_pago }}
                                                 </td>
                                                 <td class="text-success text-center" style="vertical-align: middle">
                                                     ${{ number_format($detalle->valor_cuota, 2, ',', '.') }}
@@ -51,13 +50,14 @@
                                                 <td class="text-center" style="vertical-align: middle">
                                                     <span
                                                         class="badge {{ $detalle->estado_cuota == 'Pendiente' ? 'bg-danger' : 'bg-success' }}">
-                                                        {{ $credito->venta->estado_venta }}
+                                                        {{ $detalle->estado_cuota }}
                                                     </span>
                                                 </td>
                                                 <td class="text-center align-middle">
                                                     <input type="checkbox" class="fila-check" value="{{ $detalle->id }}"
                                                         data-numero-cuota="{{ $detalle->numero_cuota }}"
-                                                        data-valor-cuota="{{ $detalle->valor_cuota }}">
+                                                        data-valor-cuota="{{ $detalle->valor_cuota }}"
+                                                        @if ($detalle->estado_cuota !== 'Pendiente') disabled @endif>
                                                 </td>
 
                                             </tr>
@@ -74,11 +74,13 @@
                                 Pago de Cuotas
                             </h5>
                         </div>
-                        <div class="form">
-                            <input type="hidden" name="cuotasSeleccionadas" id="cuotasSeleccionadas">
 
+                        <form action="{{ url('/admin/creditos/cobrar-cuotas') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id_credito" value="{{ $credito->id }}">
 
                             <div class="mx-2 mt-2 mb-2">
+
                                 <!-- Campo Fecha -->
                                 <div class="">
                                     <div class="input-group">
@@ -90,9 +92,6 @@
                                         @enderror
                                     </div>
                                 </div>
-
-
-
                                 <!-- Monto a pagar -->
                                 <div class="">
                                     <div class="input-group">
@@ -108,8 +107,7 @@
                                     <span class="input-group-text">Corresponde a Cuotas:</span>
                                     <input type="text" id="cuotas" name="cuotas" class="form-control" readonly>
                                 </div>
-                                
-                                
+
                                 <div class="input-group">
                                     <span class="input-group-text">Interes:</span>
                                     <input type="number" id="interes" name="interes" class="form-control">
@@ -119,31 +117,35 @@
                                 <hr>
                                 <div class="input-group">
                                     <span class="input-group-text">TOTAL:</span>
-                                    <input type="number" id="total" name="total" class="form-control">
+                                    <input type="number" step="0.01" id="total" name="total" class="form-control">
                                 </div>
 
-                               <!-- Botones de acción -->
-                               <div class="card-footer">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-save"></i> Cobrar
-                                </button>
-                               
-                            </div>
+                                <!-- Botones de acción -->
+                                <div id="cuotasInputsContainer"></div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save"></i> Cobrar
+                                    </button>
+
+                                </div>
 
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
-    </div>
+
     <!-- Botones de acción -->
     <div class="card-footer text-right">
         <a href="{{ url('admin/creditos') }}" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Volver
         </a>
     </div>
+
+
+
 @endsection
 
 @section('css')
@@ -162,60 +164,62 @@
     <script>
         const checkboxes = document.querySelectorAll('.fila-check');
         const totalInput = document.getElementById('precioTotal');
-        const inputCuotas = document.getElementById('cuotasSeleccionadas');
         const cuotasInput = document.getElementById('cuotas');
         const interesInput = document.getElementById('interes');
         const totalConInteresInput = document.getElementById('total');
-    
+        const cuotasContainer = document.getElementById('cuotasInputsContainer');
+
         let cuotasSeleccionadas = [];
-    
-        // Función para calcular total con interés
+
         function actualizarTotalConInteres() {
             const subtotal = parseFloat(totalInput.value) || 0;
             const interes = parseFloat(interesInput.value) || 0;
             const totalFinal = subtotal + (subtotal * interes / 100);
             totalConInteresInput.value = totalFinal.toFixed(2);
         }
-    
-        // Escuchar cambios en el campo de interés
+
         interesInput.addEventListener('input', actualizarTotalConInteres);
-    
-        // Escuchar cambios en los checkboxes
+
+        function renderizarInputsOcultos() {
+            cuotasContainer.innerHTML = ''; // Limpiar anteriores
+            cuotasSeleccionadas.forEach((cuota, index) => {
+                cuotasContainer.insertAdjacentHTML('beforeend', `
+                    <input type="hidden" name="cuotas[${index}][id]" value="${cuota.id}">
+                    <input type="hidden" name="cuotas[${index}][numero_cuota]" value="${cuota.numero_cuota}">
+                    <input type="hidden" name="cuotas[${index}][valor_cuota]" value="${cuota.valor_cuota}">
+                `);
+            });
+        }
+
         checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
+            checkbox.addEventListener('change', function() {
                 const id = this.value;
                 const numero_cuota = this.dataset.numeroCuota;
                 const valor_cuota = parseFloat(this.dataset.valorCuota);
-    
+
                 if (this.checked) {
-                    // Agregar cuota seleccionada
                     cuotasSeleccionadas.push({
                         id,
                         numero_cuota,
                         valor_cuota
                     });
                 } else {
-                    // Eliminar cuota desmarcada
-                    cuotasSeleccionadas = cuotasSeleccionadas.filter(cuota => cuota.id !== id);
+                    cuotasSeleccionadas = cuotasSeleccionadas.filter(c => c.id !== id);
                 }
-    
-                // Calcular total sin interés
+
                 const total = cuotasSeleccionadas.reduce((sum, cuota) => sum + cuota.valor_cuota, 0);
                 totalInput.value = total.toFixed(2);
-    
-                // Mostrar número de cuotas seleccionadas (ej: "1, 2, 5")
-                const numeros = cuotasSeleccionadas.map(cuota => cuota.numero_cuota);
+
+                const numeros = cuotasSeleccionadas.map(c => c.numero_cuota);
                 cuotasInput.value = numeros.join(', ');
-    
-                // Guardar selección en input hidden
-                inputCuotas.value = JSON.stringify(cuotasSeleccionadas);
-    
-                // Actualizar total con interés
+
                 actualizarTotalConInteres();
+                renderizarInputsOcultos();
             });
         });
     </script>
-    
+
+
 
 
 @endsection
