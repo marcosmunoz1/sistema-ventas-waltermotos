@@ -14,7 +14,7 @@ class CreditoController extends Controller
     //
     public function index()
     {
-        $creditos = Credito::with('detalles', 'venta')->get();
+        $creditos = Credito::with('detalles', 'venta')->orderBy('id', 'desc')->get();
         return view('admin.creditos.index', compact('creditos'));
     }
 
@@ -32,9 +32,6 @@ class CreditoController extends Controller
 
     public function store(Request $request)
     {
-        //$datos = $request->all();
-        //return response()->json($datos, 200, [], JSON_PRETTY_PRINT);
-
         $request->validate([
             'id_credito' => 'required|exists:creditos,id',
             'cuotas' => 'required|array|min:1',
@@ -50,35 +47,50 @@ class CreditoController extends Controller
         $fecha_pago = $request->fecha;
         $cuotasPagadas = $request->cuotas;
         $total_pagado = $request->total;
+        $interesPorcentaje = $request->interes ?? 0;
 
-        DB::transaction(function () use ($request, $fecha_pago, $cuotasPagadas, $total_pagado) {
+        DB::transaction(function () use ($request, $fecha_pago, $cuotasPagadas, $total_pagado, $interesPorcentaje) {
 
-            // 1. Actualizar cuotas
+            $interesTotal = 0;
+
             foreach ($cuotasPagadas as $cuota) {
+                $valorCuota = $cuota['valor_cuota'];
+
+                // Calcular interés monetario
+                $cuotaSinInteres = $valorCuota / (1 + ($interesPorcentaje / 100));
+                $interesMonetario = $valorCuota - $cuotaSinInteres;
+
+                $interesTotal += $interesMonetario;
+
                 DetalleCredito::where('id', $cuota['id'])->update([
                     'fecha_pago' => $fecha_pago,
                     'estado_cuota' => 'Paga',
+                    'interes_mora' => $interesMonetario,
                 ]);
             }
 
-            // 2. Actualizar crédito
+            // Actualizar crédito
             $credito = Credito::find($request->id_credito);
-            $nuevo_saldo = $credito->saldo_credito - $total_pagado;
-            $credito->update([
-                'saldo_credito' => max(0, $nuevo_saldo),
-            ]);
+            $credito->saldo_credito = max(0, $credito->saldo_credito - $total_pagado);
+            $credito->total_interes += $interesTotal;
+            $credito->save();
 
-            // 3. Actualizar venta
-            $venta = Venta::find($credito->id_venta); 
+            // Actualizar venta
+            $venta = Venta::find($credito->id_venta);
             $venta->total_pago += $total_pagado;
+            $venta->total_interes += $interesTotal;
+
             if ($venta->total_pago >= $venta->precio_venta) {
                 $venta->estado_venta = 'Pagado';
             }
+
             $venta->save();
         });
 
-        return redirect()->route('admin.creditos.index')
+        return redirect()->back()
             ->with('mensaje', 'Cuotas cobradas correctamente.')
             ->with('icono', 'success');
     }
+
+    
 }

@@ -8,6 +8,10 @@ class DetalleCredito extends Model
 {
     //
     protected $table = 'detalles_creditos';
+    
+    protected $fillable = [
+        'interes_mora',
+    ];
 
     public function detalle_credito()
     {

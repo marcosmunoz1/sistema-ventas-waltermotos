@@ -26,15 +26,16 @@
                             <table class="table table-striped table-sm" id="miTabla">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th class="text-center" style="width: 5%">#</th>
+                                        <th class="text-center" style="width: 3%">#</th>
                                         <th class="text-center" style="width: 10%">Fecha</th>
                                         <th class="text-center" style="width: 5%">Venta</th>
                                         <th class="text-center" style="width: 15%">Cliente</th>
-                                        <th class="text-center" style="width: 5%">Total de Venta</th>
-                                        <th class="text-center" style="width: 5%">Cantidad de Cuotas</th>
+                                        <th class="text-center" style="width: 5%">Cuotas</th>
                                         <th class="text-center" style="width: 5%">Valor Financiado</th>
                                         <th class="text-center" style="width: 5%">Saldo</th>
-                                        <th class="text-center" style="width: 5%">Estado</th>
+                                        <th class="text-center" style="width: 5%">Int. x Mora</th>
+                                        <th class="text-center" style="width: 5%">TOTAL</th>
+                                        <th class="text-center" style="width: 2%">Estado</th>
                                         <th class="text-center" style="width: 15%">Acciones</th>
                                     </tr>
                                 </thead>
@@ -51,18 +52,20 @@
                                             <td style="vertical-align: middle">
                                                 {{ $credito->venta->cliente->apellido_cliente }},
                                                 {{ $credito->venta->cliente->nombre_cliente }} </td>
-                                            <td class="text-danger text-right" style="vertical-align: middle">
-                                                ${{ number_format($credito->venta->precio_venta, 2, ',', '.') }}</td>
                                             <td class="text-center" style="vertical-align: middle">
                                                 {{ $credito->cantidad_cuotas }}</td>
                                             <td class="text-success text-right" style="vertical-align: middle">
                                                 ${{ number_format($credito->valor_financiado, 2, ',', '.') }}</td>
                                             <td class="text-danger text-right" style="vertical-align: middle">
                                                 ${{ number_format($credito->saldo_credito, 2, ',', '.') }}</td>
+                                            <td class="text-right" style="vertical-align: middle">
+                                                ${{ number_format($credito->total_interes, 2, ',', '.') }}</td>
+                                            <td class="text-right text-primary" style="vertical-align: middle">
+                                                ${{ number_format($tota = $credito->valor_financiado + $credito->total_interes - $credito->saldo_credito, 2, ',', '.') }}
                                             <td class="text-center" style="vertical-align: middle">
                                                 <span
-                                                    class="badge {{ $credito->venta->estado_venta == 'Pagado' ? 'bg-success' : 'bg-danger' }}">
-                                                    {{ $credito->venta->estado_venta }}
+                                                    class="badge {{ $credito->estado_credito == 'Pagado' ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $credito->estado_credito }}
                                                 </span>
                                             </td>
 
@@ -71,7 +74,7 @@
                                                     class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
                                                 <a href="{{ url('/admin/creditos/' . $credito->id . '/edit') }}"
                                                     class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                <a href="{{ url('/admin/creditos/'. $credito->id. '/cobrar-cuotas'  ) }}"
+                                                <a href="{{ url('/admin/creditos/' . $credito->id . '/cobrar-cuotas') }}"
                                                     class="btn btn-sm btn-secondary"><i
                                                         class="fas fa-cash-register"></i></a>
                                                 <form action="{{ url('/admin/creditos', $credito->id) }}" method="post"

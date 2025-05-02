@@ -11,6 +11,7 @@ class Venta extends Model
     
     protected $fillable = [
         'total_pago', 
+        'total_interes',
     ];
 
     public function cliente(){

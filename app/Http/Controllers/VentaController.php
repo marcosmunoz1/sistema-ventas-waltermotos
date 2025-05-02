@@ -10,6 +10,7 @@ use App\Models\Moto;
 use App\Models\Venta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VentaController extends Controller
 {
@@ -19,8 +20,8 @@ class VentaController extends Controller
     public function index()
     {
         $ventas = Venta::with('moto', 'cliente')
-               ->orderBy('id_venta', 'desc')
-               ->get();
+            ->orderBy('id_venta', 'desc')
+            ->get();
 
         return view('admin.ventas.index', compact('ventas'));
     }
@@ -80,7 +81,7 @@ class VentaController extends Controller
         //actualizamos la condicion de la moto
         $moto = Moto::find($validated['id_moto']);
         $moto->condicion = 'vendida';
-        $moto->fecha_venta_moto = now(); 
+        $moto->fecha_venta_moto = now();
         $moto->save();
 
 
@@ -156,8 +157,31 @@ class VentaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Venta $venta)
+
+
+    public function destroy($id)
     {
-        //
+        $venta = Venta::findOrFail($id);
+        /*  if ($venta->total_pago > 0) {
+        return redirect()->back()
+            ->with('mensaje', 'No se puede eliminar una venta con pagos registrados. Contacte al administrador')
+            ->with('icono', 'error');
+       */
+        DB::transaction(function () use ($venta) {
+
+            $credito = Credito::where('id_venta', $venta->id_venta)->first();
+
+            if ($credito) {
+                // Elimina los detalles correctamente
+                DetalleCredito::where('id_credito', $credito->id)->delete();
+                $credito->delete();
+            }
+
+            $venta->delete();
+        });
+
+        return redirect()->back()
+            ->with('mensaje', 'Venta eliminada correctamente.')
+            ->with('icono', 'success');
     }
 }

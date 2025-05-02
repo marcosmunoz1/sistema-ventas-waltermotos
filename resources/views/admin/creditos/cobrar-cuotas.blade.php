@@ -22,6 +22,7 @@
                                             <th class="text-center" style="width: 5%">Vencimiento</th>
                                             <th class="text-center" style="width: 15%">Fecha Pago</th>
                                             <th class="text-center" style="width: 5%">Valor</th>
+                                            <th class="text-center" style="width: 5%">Interes</th>
                                             <th class="text-center" style="width: 5%">Estado</th>
                                             <th class="text-center" style="width: 5%">Cobrar</th>
 
@@ -47,6 +48,9 @@
                                                 <td class="text-success text-center" style="vertical-align: middle">
                                                     ${{ number_format($detalle->valor_cuota, 2, ',', '.') }}
                                                 </td>
+                                                <td class="text-danger text-center" style="vertical-align: middle">
+                                                    ${{ number_format($detalle->interes_mora, 2, ',', '.') }}
+                                                </td>
                                                 <td class="text-center" style="vertical-align: middle">
                                                     <span
                                                         class="badge {{ $detalle->estado_cuota == 'Pendiente' ? 'bg-danger' : 'bg-success' }}">
@@ -69,157 +73,159 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="card-footer text-center">
-                            <h5 class="text-center text-success"><i class="fa-solid fa-hand-holding-dollar"></i>
-                                Pago de Cuotas
-                            </h5>
-                        </div>
+                        <div class="card-body">
+                            <div class="card card-footer text-center">
+                                <h5 class="text-center text-success"><i class="fa-solid fa-hand-holding-dollar"></i>
+                                    Pago de Cuotas
+                                </h5>
+                            </div>
 
-                        <form action="{{ url('/admin/creditos/cobrar-cuotas') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="id_credito" value="{{ $credito->id }}">
+                            <form action="{{ url('/admin/creditos/cobrar-cuotas') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="id_credito" value="{{ $credito->id }}">
 
-                            <div class="mx-2 mt-2 mb-2">
+                                <div class="mx-2 mt-2 mb-2">
 
-                                <!-- Campo Fecha -->
-                                <div class="">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Fecha:</span>
-                                        <input type="date" id="fecha" name="fecha"
-                                            value="{{ old('fecha', date('Y-m-d')) }}" class="form-control" required>
-                                        @error('fecha')
+                                    <!-- Campo Fecha -->
+                                    <div class="">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Fecha:</span>
+                                            <input type="date" id="fecha" name="fecha"
+                                                value="{{ old('fecha', date('Y-m-d')) }}" class="form-control" required>
+                                            @error('fecha')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <!-- Monto a pagar -->
+                                    <div class="">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Valor a Cancelar: $</span>
+                                            <input type="number" id="precioTotal" name="precioTotal"
+                                                class="form-control text-danger" readonly>
+                                        </div>
+                                        @error('precioTotal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                </div>
-                                <!-- Monto a pagar -->
-                                <div class="">
                                     <div class="input-group">
-                                        <span class="input-group-text">Valor a Cancelar: $</span>
-                                        <input type="number" id="precioTotal" name="precioTotal"
-                                            class="form-control text-danger" readonly>
+                                        <span class="input-group-text">Corresponde a Cuotas:</span>
+                                        <input type="text" id="cuotas" name="cuotas" class="form-control" readonly>
                                     </div>
-                                    @error('precioTotal')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-text">Corresponde a Cuotas:</span>
-                                    <input type="text" id="cuotas" name="cuotas" class="form-control" readonly>
-                                </div>
 
-                                <div class="input-group">
-                                    <span class="input-group-text">Interes:</span>
-                                    <input type="number" id="interes" name="interes" class="form-control">
-                                    <span class="input-group-text"
-                                        style="width: 120px; display: inline-block;  text-align: left;">%</span>
-                                </div>
-                                <hr>
-                                <div class="input-group">
-                                    <span class="input-group-text">TOTAL:</span>
-                                    <input type="number" step="0.01" id="total" name="total" class="form-control">
-                                </div>
+                                    <div class="input-group">
+                                        <span class="input-group-text">Interes:</span>
+                                        <input type="number" id="interes" name="interes" class="form-control">
+                                        <span class="input-group-text"
+                                            style="width: 120px; display: inline-block;  text-align: left;">%</span>
+                                    </div>
+                                    <hr>
+                                    <div class="input-group">
+                                        <span class="input-group-text">TOTAL:</span>
+                                        <input type="number" step="0.01" id="total" name="total"
+                                            class="form-control">
+                                    </div>
 
-                                <!-- Botones de acción -->
-                                <div id="cuotasInputsContainer"></div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-success">
-                                        <i class="fas fa-save"></i> Cobrar
-                                    </button>
+                                    <!-- Botones de acción -->
+                                    <div id="cuotasInputsContainer"></div>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-save"></i> Cobrar
+                                        </button>
+
+                                    </div>
 
                                 </div>
-
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
-    </div>
-
-    <!-- Botones de acción -->
-    <div class="card-footer text-right">
-        <a href="{{ url('admin/creditos') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Volver
-        </a>
-    </div>
+        <!-- Botones de acción -->
+        <div class="card-footer text-right">
+            <a href="{{ url('admin/creditos') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
 
 
 
-@endsection
+    @endsection
 
-@section('css')
-    {{-- Aquí puedes agregar estilos personalizados --}}
-    <style>
-        .input-group-text {
-            width: 50%;
-            display: inline-block;
-            text-align: right;
-        }
-    </style>
-@endsection
+    @section('css')
+        {{-- Aquí puedes agregar estilos personalizados --}}
+        <style>
+            .input-group-text {
+                width: 50%;
+                display: inline-block;
+                text-align: right;
+            }
+        </style>
+    @endsection
 
-@section('js')
-    {{-- Aquí puedes agregar scripts adicionales --}}
-    <script>
-        const checkboxes = document.querySelectorAll('.fila-check');
-        const totalInput = document.getElementById('precioTotal');
-        const cuotasInput = document.getElementById('cuotas');
-        const interesInput = document.getElementById('interes');
-        const totalConInteresInput = document.getElementById('total');
-        const cuotasContainer = document.getElementById('cuotasInputsContainer');
+    @section('js')
+        {{-- Aquí puedes agregar scripts adicionales --}}
+        <script>
+            const checkboxes = document.querySelectorAll('.fila-check');
+            const totalInput = document.getElementById('precioTotal');
+            const cuotasInput = document.getElementById('cuotas');
+            const interesInput = document.getElementById('interes');
+            const totalConInteresInput = document.getElementById('total');
+            const cuotasContainer = document.getElementById('cuotasInputsContainer');
 
-        let cuotasSeleccionadas = [];
+            let cuotasSeleccionadas = [];
 
-        function actualizarTotalConInteres() {
-            const subtotal = parseFloat(totalInput.value) || 0;
-            const interes = parseFloat(interesInput.value) || 0;
-            const totalFinal = subtotal + (subtotal * interes / 100);
-            totalConInteresInput.value = totalFinal.toFixed(2);
-        }
+            function actualizarTotalConInteres() {
+                const subtotal = parseFloat(totalInput.value) || 0;
+                const interes = parseFloat(interesInput.value) || 0;
+                const totalFinal = subtotal + (subtotal * interes / 100);
+                totalConInteresInput.value = totalFinal.toFixed(2);
+            }
 
-        interesInput.addEventListener('input', actualizarTotalConInteres);
+            interesInput.addEventListener('input', actualizarTotalConInteres);
 
-        function renderizarInputsOcultos() {
-            cuotasContainer.innerHTML = ''; // Limpiar anteriores
-            cuotasSeleccionadas.forEach((cuota, index) => {
-                cuotasContainer.insertAdjacentHTML('beforeend', `
+            function renderizarInputsOcultos() {
+                cuotasContainer.innerHTML = ''; // Limpiar anteriores
+                cuotasSeleccionadas.forEach((cuota, index) => {
+                    cuotasContainer.insertAdjacentHTML('beforeend', `
                     <input type="hidden" name="cuotas[${index}][id]" value="${cuota.id}">
                     <input type="hidden" name="cuotas[${index}][numero_cuota]" value="${cuota.numero_cuota}">
                     <input type="hidden" name="cuotas[${index}][valor_cuota]" value="${cuota.valor_cuota}">
                 `);
+                });
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const id = this.value;
+                    const numero_cuota = this.dataset.numeroCuota;
+                    const valor_cuota = parseFloat(this.dataset.valorCuota);
+
+                    if (this.checked) {
+                        cuotasSeleccionadas.push({
+                            id,
+                            numero_cuota,
+                            valor_cuota
+                        });
+                    } else {
+                        cuotasSeleccionadas = cuotasSeleccionadas.filter(c => c.id !== id);
+                    }
+
+                    const total = cuotasSeleccionadas.reduce((sum, cuota) => sum + cuota.valor_cuota, 0);
+                    totalInput.value = total.toFixed(2);
+
+                    const numeros = cuotasSeleccionadas.map(c => c.numero_cuota);
+                    cuotasInput.value = numeros.join(', ');
+
+                    actualizarTotalConInteres();
+                    renderizarInputsOcultos();
+                });
             });
-        }
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const id = this.value;
-                const numero_cuota = this.dataset.numeroCuota;
-                const valor_cuota = parseFloat(this.dataset.valorCuota);
-
-                if (this.checked) {
-                    cuotasSeleccionadas.push({
-                        id,
-                        numero_cuota,
-                        valor_cuota
-                    });
-                } else {
-                    cuotasSeleccionadas = cuotasSeleccionadas.filter(c => c.id !== id);
-                }
-
-                const total = cuotasSeleccionadas.reduce((sum, cuota) => sum + cuota.valor_cuota, 0);
-                totalInput.value = total.toFixed(2);
-
-                const numeros = cuotasSeleccionadas.map(c => c.numero_cuota);
-                cuotasInput.value = numeros.join(', ');
-
-                actualizarTotalConInteres();
-                renderizarInputsOcultos();
-            });
-        });
-    </script>
+        </script>
 
 
 
 
-@endsection
+    @endsection

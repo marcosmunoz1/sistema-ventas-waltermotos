@@ -11,7 +11,7 @@ class Credito extends Model
         'venta_id',
         'monto_total',
         'saldo_credito',
-       
+        'total_interes',
     ];
 
     public function detalles()

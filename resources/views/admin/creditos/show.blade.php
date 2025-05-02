@@ -22,6 +22,7 @@
                                             <th class="text-center" style="width: 5%">Vencimiento</th>
                                             <th class="text-center" style="width: 15%">Fecha Pago</th>
                                             <th class="text-center" style="width: 5%">Valor</th>
+                                            <th class="text-center" style="width: 5%">Interes x Mora</th>
                                             <th class="text-center" style="width: 5%">Estado</th>
                                             
                                         </tr>
@@ -45,6 +46,9 @@
                                                 </td>
                                                 <td class="text-success text-center" style="vertical-align: middle">
                                                     ${{ number_format($detalle->valor_cuota, 2, ',', '.') }}
+                                                </td>
+                                                <td class="text-success text-center" style="vertical-align: middle">
+                                                    ${{ number_format($detalle->interes_mora, 2, ',', '.') }}
                                                 </td>
                                                 <td class="text-center" style="vertical-align: middle">
                                                     <span
@@ -81,11 +85,16 @@
                                 <p class="mb-0 mx-2"> $
                                     {{ number_format($credito->valor_financiado, 2, ',', '.') }}</p>
                             </div>
-                            <div class="d-flex"><label>Interés</label>
+                            <div class="d-flex"><label>Interés de Credito:</label>
                                 <p class="mb-0 mx-2">{{ $credito->interes }} %</p>
                             </div>
                             <div class="d-flex"><label>Cuotas:</label>
                                 <p class="mb-0 mx-2">{{ $credito->cantidad_cuotas }} </p>
+                            </div>
+                            <div class="d-flex"><label>Interés por Mora:</label>
+                                <p class="mb-0 mx-2 text-warning">$
+                                    {{ number_format($credito->total_interes, 2, ',', '.') }}</p>
+                                    
                             </div>
                             <div class="d-flex"><label>Total Cancelado</label>
                                 <p class="mb-0 mx-2 text-green">$
@@ -113,6 +122,14 @@
 
 @section('css')
     {{-- Aquí puedes agregar estilos personalizados --}}
+    <style>
+        .input-group-text {
+            width: 50%;
+            display: inline-block;
+            text-align: right;
+        }
+    </style>
+
 @endsection
 
 @section('js')
