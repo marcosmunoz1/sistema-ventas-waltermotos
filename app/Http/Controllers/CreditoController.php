@@ -6,8 +6,11 @@ use App\Models\Credito;
 use App\Models\DetalleCredito;
 use App\Models\Venta;
 use Carbon\Carbon;
+use Dompdf\Adapter\PDFLib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Dompdf\Dompdf;
+use Luecano\NumeroALetras\NumeroALetras;
 
 class CreditoController extends Controller
 {
@@ -92,5 +95,24 @@ class CreditoController extends Controller
             ->with('icono', 'success');
     }
 
-    
+
+    public function reporte($id)
+    {
+        $detalle = DetalleCredito::find($id)->first();
+        $credito = Credito::with('venta')->where('id', $detalle->id_credito)->first();
+
+        $formatter = new NumeroALetras();
+        $montoLetras = $formatter->toMoney($detalle->valor_cuota, 2, 'pesos', 'centavos');
+
+         // Renderizar la vista Blade en HTML
+        $html = view('admin.creditos.reporte', compact('detalle', 'credito', 'montoLetras'))->render();
+
+        // Crear la instancia de DomPDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html); // Pasar HTML renderizado, no el nombre de la vista
+
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        return $dompdf->stream('reporte.pdf'); // También puedes usar ->download('archivo.pdf');
+    }
 }

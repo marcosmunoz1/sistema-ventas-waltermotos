@@ -25,7 +25,7 @@
                                             <th class="text-center" style="width: 5%">Interes</th>
                                             <th class="text-center" style="width: 5%">Estado</th>
                                             <th class="text-center" style="width: 5%">Cobrar</th>
-
+                                            <th class="text-center" style="width: 5%">Imprimir</th>
 
                                         </tr>
                                     </thead>
@@ -63,7 +63,10 @@
                                                         data-valor-cuota="{{ $detalle->valor_cuota }}"
                                                         @if ($detalle->estado_cuota !== 'Pendiente') disabled @endif>
                                                 </td>
-
+                                                <td class="text-center align-middle"> 
+                                                    <a href="{{ url('/admin/creditos/reporte', $detalle->id) }}"
+                                                        class="btn btn-sm btn-secondary"><i class="fas fa-print"></i></a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

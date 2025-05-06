@@ -11,6 +11,9 @@ class DetalleCredito extends Model
     
     protected $fillable = [
         'interes_mora',
+        'fecha_pago',
+        'valor_cuota',
+
     ];
 
     public function detalle_credito()

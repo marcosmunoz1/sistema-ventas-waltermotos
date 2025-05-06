@@ -23,7 +23,7 @@
                             <h6><strong>Email: </strong> {{ $cliente->email_cliente }}</h6>
                             <h6><strong>CUIT: </strong> {{ $cliente->cuit_cliente }}</h6>
                             <h6><strong>DNI: </strong> {{ $cliente->dni_cliente }}</h6>
-                            <h6><strong>Fecha Nacimienot: </strong> {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}</h6>
+                            <h6><strong>Fecha Nacimiento: </strong> {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}</h6>
                             <h6><strong>Telefono: </strong> {{ $cliente->celular_cliente }}</h6>
                             <h6><strong>Estado Civil: </strong> {{ $cliente->estado_civil_cliente }}
                             </h6>

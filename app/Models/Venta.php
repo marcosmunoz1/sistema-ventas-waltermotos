@@ -25,4 +25,5 @@ class Venta extends Model
     public function creditos(){
         return $this->hasMany(Credito::class, 'id_venta');
     }
+
 }

@@ -335,7 +335,7 @@ return [
         [
             'text' => 'Creditos',
             'url' => 'admin/creditos',
-            'icon' => 'fas fa fa-cash-register',
+            'icon' => 'fa fa-credit-card',
         ],
         [
             'text' => 'Clientes',

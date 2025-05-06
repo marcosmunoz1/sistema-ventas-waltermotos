@@ -74,6 +74,8 @@ Route::get('/admin/creditos/{id}', [App\Http\Controllers\CreditoController::clas
 Route::get('/admin/creditos/{id}/edit', [App\Http\Controllers\CreditoController::class, 'edit'])->name('admin.creditos.edit');
 Route::put('/admin/creditos/{id}', [App\Http\Controllers\CreditoController::class, 'update'])->name('admin.creditos.update');
 Route::delete('/admin/creditos/{id}', [App\Http\Controllers\CreditoController::class, 'destroy'])->name('admin.creditos.destroy');
+Route::get('/admin/creditos/reporte/{id}', [App\Http\Controllers\CreditoController::class, 'reporte'])->name('admin.creditos.reporte');
+
 
 //Rutas para clientes
 Route::get('/admin/clientes', [App\Http\Controllers\ClientesController::class, 'index'])->name('admin.clientes.index');
