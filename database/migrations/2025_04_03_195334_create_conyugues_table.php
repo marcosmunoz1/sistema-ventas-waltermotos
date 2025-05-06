@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nombre_apellido', 20);
             $table->string('dni_conyugue', 11);
             $table->date('fecha_nacimiento_conyugue');
-            $table->string('celular_conyugue', 20); 
+            $table->string('celular_conyugue', 20);
             $table->timestamps();
         });
     }

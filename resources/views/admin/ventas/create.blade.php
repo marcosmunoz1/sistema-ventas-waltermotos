@@ -225,12 +225,12 @@
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle;">
                                                 <button class="btn btn-info"
-                                                    onclick="seleccionarClienteDesdeModal( 
-                                                    '{{ $cliente->id }}', 
-                                                    '{{ $cliente->apellido_cliente }}', 
-                                                    '{{ $cliente->nombre_cliente }}', 
-                                                    '{{ $cliente->dni_cliente }}', 
-                                                    '{{ $cliente->celular_cliente }}', 
+                                                    onclick="seleccionarClienteDesdeModal(
+                                                    '{{ $cliente->id }}',
+                                                    '{{ $cliente->apellido_cliente }}',
+                                                    '{{ $cliente->nombre_cliente }}',
+                                                    '{{ $cliente->dni_cliente }}',
+                                                    '{{ $cliente->celular_cliente }}',
                                                     '{{ $cliente->email_cliente }}',
                                                     '{{ $cliente->estado_civil_cliente }}',
                                                      @if ($cliente->conyugue) '{{ $cliente->conyugue->apellido_conyugue }}',
@@ -239,7 +239,7 @@
                                                         '{{ $cliente->conyugue->celular_conyugue }}',
                                                         '{{ $cliente->conyugue->fecha_nacimiento_conyugue }}'
                                                     @else
-                                                        '', '', '', '', '' @endif    
+                                                        '', '', '', '', '' @endif
                                                     )">
                                                     <i class="fa-solid fa-circle-plus"></i>
                                                 </button>
@@ -518,18 +518,18 @@
                                             <td class="text-center" style="vertical-align: middle;">
                                                 <button class="btn btn-info"
                                                     onclick="seleccionarMotoDesdeModal(
-                                                '{{ $moto->id }}', 
-                                                '{{ $moto->marca->nombre_marca }}', 
+                                                '{{ $moto->id }}',
+                                                '{{ $moto->marca->nombre_marca }}',
                                                 '{{ $moto->modelo_moto }}',
                                                 '{{ $moto->dominio }}',
                                                 '{{ $moto->color_moto }}',
                                                 '{{ $moto->anio_moto }}',
                                                 '{{ $moto->km_moto }}',
-                                                '{{ $moto->cilindrada_moto }}', 
-                                                '{{ $moto->nacionalidad->pais }}', 
-                                                '{{ $moto->nr_motor }}', 
-                                                '{{ $moto->nr_chasis }}', 
-                                                '{{ $moto->nr_certificado }}', 
+                                                '{{ $moto->cilindrada_moto }}',
+                                                '{{ $moto->nacionalidad->pais }}',
+                                                '{{ $moto->nr_motor }}',
+                                                '{{ $moto->nr_chasis }}',
+                                                '{{ $moto->nr_certificado }}',
                                                 '{{ $moto->dnrpa }}',
                                                 '{{ $moto->precio_venta }}'
                                             )">
@@ -621,7 +621,7 @@
                 const nombreCompleto = apellido + ', ' + nombre;
                 document.querySelector('input[name="id_cliente"]').value = id;
 
-                // Mostrar los datos del cliente 
+                // Mostrar los datos del cliente
                 document.getElementById('clienteNombreCompleto').textContent = nombreCompleto;
                 document.getElementById('clienteTelefono').textContent = telefono;
                 document.getElementById('clienteEmail').textContent = email;

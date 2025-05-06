@@ -3,7 +3,7 @@
 @section('title', 'Cargar Compra')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light">Compras/<b>Cargar Compra</b></h2>
+    <h2 class="brand-text font-weight-light">Compras/<b>Editar Compra</b></h2>
     <hr>
 @endsection
 
@@ -16,8 +16,9 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ url('/admin/compras/cargar-compra') }}" id="form_compra" method="post">
+                    <form action="{{ url('/admin/compras',$compra->id) }}" id="form_compra" method="post" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="row">
                             <div class="col-md-5">
                                 <label for="proveedor">Proveedor</label>
@@ -86,8 +87,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" id="nombre_proveedor" disabled>
-                                        <input type="hidden" class="form-control" id="id_proveedor" name="id_proveedor" hidden>
+                                        <input type="text" class="form-control" value="{{$compra->proveedor->nombre_proveedor}}" id="nombre_proveedor" disabled>
+                                        <input type="hidden" class="form-control" value="{{$compra->proveedor->nombre_proveedor}}" id="id_proveedor" name="id_proveedor" hidden>
                                     </div>
 
                                 </div>
@@ -95,20 +96,20 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Factura</label>
-                                    <input type="text" class="form-control" id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
+                                    <input type="text" class="form-control" value="{{$compra->numero_factura}}" id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Remito</label>
-                                    <input type="text" class="form-control" id="numero_remito" name="numero_remito" placeholder="Número de remito">
+                                    <input type="text" class="form-control" value="{{$compra->numero_remito}}" id="numero_remito" name="numero_remito" placeholder="Número de remito">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Fecha compra:</label>
 
-                                        <input type="date" name="fecha_compra" id="fecha_compra" class="form-control datetimepicker-input" data-target="#reservationdate" required>
+                                        <input type="date" name="fecha_compra" value="{{$compra->fecha_compra}}" id="fecha_compra" class="form-control datetimepicker-input" data-target="#reservationdate" required>
 
                                     </div>
                                 </div>
@@ -215,25 +216,25 @@
                                                         <div class="row">
                                                             <div class="col-md-4">
                                                                 <label>Marca</label> <b style="color: red;">*</b>
-                                                                <select class="form-control" name="id_marca" id="id_marca" required>
-                                                                    @foreach ($marcas as $marca )
-                                                                    <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option>
+                                                                <select class="form-control"  name="id_marca" id="id_marca" required>
+                                                                @foreach ($marcas as $marca )
+                                                                    <option value="{{$marca->id}}" >{{$marca->nombre_marca}}</option>
                                                                 @endforeach
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label>Modelo</label> <b style="color: red;">*</b>
-                                                                <input type="text" name="modelo_moto" id="modelo_moto" class="form-control"
+                                                                <input type="text" value="{{$motos->modelo_moto}}" name="modelo_moto" id="modelo_moto" class="form-control"
                                                                     placeholder="Modelo" required>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Dominio</label><b style="color: red;">*</b>
-                                                                <input type="text" name="dominio" id="dominio" class="form-control" required
+                                                                <input type="text" value="{{$motos->dominio}}"  name="dominio" id="dominio" class="form-control" required
                                                                     placeholder="Dominio">
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Cilindrada</label><b style="color: red;">*</b>
-                                                                <input type="number" name="cilindrada_moto" id="cilindrada_moto" class="form-control" id="cilindrada"
+                                                                <input type="number" value="{{$motos->cilindrada_moto}}" name="cilindrada_moto" id="cilindrada_moto" class="form-control" id="cilindrada"
                                                                     placeholder="Cilindrada" required>
                                                             </div>
                                                         </div>
@@ -241,7 +242,7 @@
                                                         <div class="row mt-2">
                                                             <div class="col-md-2">
                                                                 <label>Color</label>
-                                                                <input type="text" name="color_moto" id="color_moto" class="form-control"  placeholder="Color">
+                                                                <input type="text"  value="{{$motos->color_moto}}" name="color_moto" id="color_moto" class="form-control"  placeholder="Color">
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label>Nacionalidad</label>
@@ -253,15 +254,15 @@
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Año</label>
-                                                                <input type="number" name="anio_moto" id="anio_moto" class="form-control" placeholder="Año" required>
+                                                                <input type="number"  value="{{$motos->anio_moto}}" name="anio_moto" id="anio_moto" class="form-control" placeholder="Año" required>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Km</label>
-                                                                <input type="number" name="km_moto" id="km_moto" class="form-control" placeholder="Kilometraje" required>
+                                                                <input type="number"  value="{{$motos->km_moto}}" name="km_moto" id="km_moto" class="form-control" placeholder="Kilometraje" required>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-check mt-4">
-                                                                    <input class="form-check-input" name="es_usada" id="es_usada" type="checkbox" required>
+                                                                    <input class="form-check-input" value="{{$motos->es_usada}}"  name="es_usada" id="es_usada" type="checkbox" required>
                                                                     <label class="form-check-label">¿Es usada?</label>
                                                                 </div>
                                                             </div>
@@ -270,32 +271,32 @@
                                                         <div class="row mt-2">
                                                             <div class="col-md-6">
                                                                 <label>Nro. Motor</label><b style="color: red;">*</b>
-                                                                <input type="text" name="nr_motor" id="nr_motor" class="form-control"  placeholder="Nro. Motor" required>
+                                                                <input type="text" value="{{$motos->nr_motor}}" name="nr_motor" id="nr_motor" class="form-control"  placeholder="Nro. Motor" required>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Nro. Chasis</label><b style="color: red;">*</b>
-                                                                <input type="text" name="nr_chasis" id="nr_chasis" class="form-control" placeholder="Nro. Chasis" required>
+                                                                <input type="text" value="{{$motos->nr_chasis}}" name="nr_chasis" id="nr_chasis" class="form-control" placeholder="Nro. Chasis" required>
                                                             </div>
                                                         </div>
                                                         <!-- Fila 4 -->
                                                         <div class="row mt-2">
                                                             <div class="col-md-6">
                                                                 <label>D.N.R.P.A</label>
-                                                                <input type="text" name="dnrpa" id="dnrpa" class="form-control" placeholder="Nro. DNRPA" required>
+                                                                <input type="text" value="{{$motos->dnrpa}}" name="dnrpa" id="dnrpa" class="form-control" placeholder="Nro. DNRPA" required>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Certificado</label>
-                                                                <input type="text" class="form-control" name="nr_certificado" id="nr_certificado" placeholder="Nro. Certificado" required>
+                                                                <input type="text" value="{{$motos->nr_certificado}}" class="form-control" name="nr_certificado" id="nr_certificado" placeholder="Nro. Certificado" required>
                                                             </div>
                                                         </div>
                                                         <div class="row mt-2">
                                                             <div class="col-md-4">
                                                                 <label>Precio compra</label>
-                                                                <input type="text" class="form-control" name="precio_compra" id="precio_compra" placeholder="Precio compra" required>
+                                                                <input type="text" value="{{$motos->precio_compra}}" class="form-control" name="precio_compra" id="precio_compra" placeholder="Precio compra" required>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label>Precio venta</label>
-                                                                <input type="text" class="form-control" name="precio_venta" id="precio_venta" placeholder="Precio venta" required>
+                                                                <input type="text" value="{{$motos->precio_venta}}" class="form-control" name="precio_venta" id="precio_venta" placeholder="Precio venta" required>
                                                             </div>
 
                                                         <div class="row mt-2">
@@ -510,35 +511,11 @@
                 $('#modalMoto').find('input').not('[type="hidden"]').val('');
 
 
-                $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal 
+                $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal
 
             }
         });
        </script>
-
-     {{--    <script>
-            $(document).ready(function() {
-                $('#btnRegistrar').on('click', function(e) {
-                    e.preventDefault(); // Evita que el formulario se envíe inmediatamente
-
-                    // Mostrar la confirmación antes de continuar
-                    Swal.fire({
-                        title: '¿Deseas actualizar los precios de los productos?',
-                        text: "Esto actualizará los precios de compra y venta de los productos seleccionados.",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Sí, actualizar',
-                        cancelButtonText: 'No, continuar sin cambios',
-                    }).then((result) => {
-                        let actualizarPreciosFlag = result.isConfirmed ? '1' : '0';
-                        $('#actualizar_precios').val(
-                        actualizarPreciosFlag); // Actualizar el valor del campo1
-
-                        $('#form-compra').submit();
-                    });
-                });
-            });
-        </script> --}}
 
 
     @endsection

@@ -14,10 +14,10 @@
         <div class="col-md-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Listgado de Compras</h3>
+                    <h3 class="card-title">Compras registradas</h3>
                     <div class="card-tools">
-                        <a href="{{ url('admin/compras/crear-compra') }}" class="btn btn-primary"><i
-                            class="fas fa-plus"></i>Nueva Compra</a>
+                        <a href="{{ url('admin/compras/crear-compra') }}" class="btn btn-primary"> <i
+                            class="fas fa-plus"></i> Nueva Compra</a>
                     </div>
                 </div>
                 <div class="col-md-12 mx-auto mt-4">
@@ -28,13 +28,12 @@
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
                                         <th class="text-center" style="width: 10%">Fecha</th>
-                                        <th class="text-center" style="width: 10%">nr_compra</th>
+                                        <th class="text-center" style="width: 10%">NR_compra</th>
                                         <th class="text-center" style="width: 10%">Remito</th>
                                         <th class="text-center" style="width: 10%">Factura</th>
                                         <th class="text-center" style="width: 20%">Proveedor</th>
                                         <th class="text-center" style="width: 10%">Total</th>
-                                        <th class="text-center" style="width: 5%">Pagada</th>
-                                        <th class="text-center" style="width: 10%">Acciones</th>
+                                        <th class="text-center" style="width: 15%">Acciones</th>
                                     </tr>
                                 </thead>
                                 <?php $contador = 1; ?>
@@ -50,14 +49,10 @@
                                             <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_factura }}
                                             </td>
                                             <td class="text-center"style="vertical-align: middle">
-                                                {{ $compra->proveedor->nombre_proveedor ?? 'Sin proveedor' }}</td>
+                                                {{ $compra->proveedor->nombre_proveedor}}</td>
                                             <td class="text-center"style="vertical-align: middle">{{ $compra->total_compra }}</td>
-                                            <td class="text-center" style="vertical-align: middle">
-                                                <span
-                                                    class="badge {{ $compra->estado_compra == 1 ? 'bg-success' : 'bg-danger' }}">
-                                                    {{ $compra->estado_compra }}
-                                                </span>
-                                            </td>
+
+
                                             <td class="text-center" style="vertical-align: middle">
                                                 <a href="{{ url('/admin/compras', $compra->id) }}"
                                                     class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
@@ -123,10 +118,10 @@
             "pageLength": 5,
             "language": {
                 "emptyTable": "No hay información.",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Productos",
-                "infoEmpty": "Mostrando 0 a 0 de 0 Productos",
-                "infoFiltered": "(Filtrado de _MAX_ total Productos)",
-                "lengthMenu": "Mostrar _MENU_ Productos",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Compras",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Compras",
+                "infoFiltered": "(Filtrado de _MAX_ total Compras)",
+                "lengthMenu": "Mostrar _MENU_ Compras",
                 "loadingRecords": "Cargando...",
                 "processing": "Procesando...",
                 "search": "Buscador:",

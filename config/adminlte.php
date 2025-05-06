@@ -329,7 +329,7 @@ return [
         ], */
         [
             'text' => 'Ventas',
-            'url' => 'admin/ventas',
+            'url' => 'admin/ventas', 
             'icon' => 'fas fa fa-cash-register',
         ],
         [
@@ -355,7 +355,7 @@ return [
            'icon' => 'fas fa-motorcycle',
 
         ],
-        
+
       /*   [
             'text' => 'Maestros',
             'icon' => 'fas fa-fw fa-gear',
