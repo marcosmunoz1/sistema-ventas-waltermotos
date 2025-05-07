@@ -58,15 +58,26 @@
                                                     </span>
                                                 </td>
                                                 <td class="text-center align-middle">
-                                                    <input type="checkbox" class="fila-check" value="{{ $detalle->id }}"
+                                                    <input type="radio" name="cuota_seleccionada" class="fila-check"
+                                                        value="{{ $detalle->id }}"
                                                         data-numero-cuota="{{ $detalle->numero_cuota }}"
                                                         data-valor-cuota="{{ $detalle->valor_cuota }}"
                                                         @if ($detalle->estado_cuota !== 'Pendiente') disabled @endif>
+
                                                 </td>
-                                                <td class="text-center align-middle"> 
-                                                    <a href="{{ url('/admin/creditos/reporte', $detalle->id) }}"
-                                                        class="btn btn-sm btn-secondary"><i class="fas fa-print"></i></a>
+                                                <td class="text-center align-middle">
+                                                    @if ($detalle->estado_cuota !== 'Pendiente')
+                                                        <a href="{{ url('/admin/creditos/reporte', $detalle->id) }}"
+                                                            class="btn btn-sm btn-secondary">
+                                                            <i class="fas fa-print"></i>
+                                                        </a>
+                                                    @else
+                                                        <a class="btn btn-sm btn-secondary disabled" aria-disabled="true">
+                                                            <i class="fas fa-print"></i>
+                                                        </a>
+                                                    @endif
                                                 </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -120,7 +131,7 @@
                                         <span class="input-group-text">Interes:</span>
                                         <input type="number" id="interes" name="interes" class="form-control">
                                         <span class="input-group-text"
-                                            style="width: 120px; display: inline-block;  text-align: left;">%</span>
+                                            style="width: 100px; display: inline-block;  text-align: left;">%</span>
                                     </div>
                                     <hr>
                                     <div class="input-group">

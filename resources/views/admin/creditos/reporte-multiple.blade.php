@@ -47,8 +47,8 @@
                     <td width="250px" style="font-size: 24pt; text-align: center;">Recibo</td>
                     <td width="200px" style="font-size: 12pt; text-align: end;">
                         Fecha:
-                        <strong>{{ \Carbon\Carbon::parse($detalle->fecha_pago)->format('d-m-Y') }}</strong><br><br>
-                        N°: <strong>{{ sprintf('%04d-%08d', 1, $detalle->id) }}</strong>
+                        <strong>{{ \Carbon\Carbon::parse($fecha_pago)->format('d-m-Y') }}</strong><br><br>
+                        N°: <strong>{{ sprintf('%04d-%08d', 1, $credito->id) }}</strong>
                     </td>
                 </tr>
             </table>
@@ -59,18 +59,13 @@
                 <td style="font-size: 14pt;">
                     <p style="text-align: justify;">
                         En el día de la fecha recibí de
-                        <strong>{{ $credito->venta->cliente->apellido_cliente }},
-                            {{ $credito->venta->cliente->nombre_cliente }}</strong>
-                        número de DNI
-                        <strong>{{ number_format($credito->venta->cliente->dni_cliente, 0, ',', '.') }}</strong>,
-                        la suma en pesos de
-                        <strong>${{ number_format($detalle->valor_cuota + $detalle->interes_mora, 2, ',', '.') }}</strong>
-                        <em>({{ ucfirst($montoLetras) }})</em>
-                        en concepto de pago correspondiente a cancelación de cuota número
-                        <strong>{{ $detalle->numero_cuota }}</strong>
-                        de su crédito personal.
-                    </p>
-                    
+                        <strong>{{ $cliente->apellido_cliente }}, {{ $cliente->nombre_cliente }}</strong>,
+                        número de DNI <strong>{{ number_format($cliente->dni_cliente, 0, ',', '.') }}</strong>,
+                        la suma de <strong>${{ number_format($total_pagado, 2, ',', '.') }}</strong>
+                        <em>({{ $montoLetras }})</em>,
+                        en concepto de pago correspondiente a las cuotas número
+                        <strong>{{ $numerosCuotas }}</strong> de su crédito personal.
+                    </p>            
                 </td>
             </tr>
 

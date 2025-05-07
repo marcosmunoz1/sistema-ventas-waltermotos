@@ -76,43 +76,62 @@ class CreditoController extends Controller
             $credito = Credito::find($request->id_credito);
             $credito->saldo_credito = max(0, $credito->saldo_credito - $total_pagado);
             $credito->total_interes += $interesTotal;
+            if ($credito->saldo_credito = 0) {
+                $credito->estado_credito = 'Pagado';
+            }
             $credito->save();
 
             // Actualizar venta
             $venta = Venta::find($credito->id_venta);
             $venta->total_pago += $total_pagado;
             $venta->total_interes += $interesTotal;
-
             if ($venta->total_pago >= $venta->precio_venta) {
                 $venta->estado_venta = 'Pagado';
             }
-
             $venta->save();
+
+            session([
+                'mostrar_boton_recibo' => true,
+                'recibo_pago_datos' => [
+                    'cuotas' => $cuotasPagadas,
+                    'fecha_pago' => $fecha_pago,
+                    'total_pagado' => $total_pagado,
+                    'id_credito' => $request->id_credito
+                ]
+            ]);
+            
         });
 
-        return redirect()->back()
+       
+
+         return redirect()->back()
             ->with('mensaje', 'Cuotas cobradas correctamente.')
-            ->with('icono', 'success');
+            ->with('icono', 'success');  
+
+           
     }
 
 
     public function reporte($id)
     {
-        $detalle = DetalleCredito::find($id)->first();
+        $detalle = DetalleCredito::find($id);
         $credito = Credito::with('venta')->where('id', $detalle->id_credito)->first();
 
         $formatter = new NumeroALetras();
         $montoLetras = $formatter->toMoney($detalle->valor_cuota, 2, 'pesos', 'centavos');
 
-         // Renderizar la vista Blade en HTML
+        // Renderizar la vista Blade en HTML
         $html = view('admin.creditos.reporte', compact('detalle', 'credito', 'montoLetras'))->render();
 
         // Crear la instancia de DomPDF
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html); // Pasar HTML renderizado, no el nombre de la vista
 
-        $dompdf->setPaper('A4', 'landscape');
+        //$dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         return $dompdf->stream('reporte.pdf'); // También puedes usar ->download('archivo.pdf');
     }
+
+   
+    
 }
