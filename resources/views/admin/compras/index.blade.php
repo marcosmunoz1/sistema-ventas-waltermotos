@@ -3,7 +3,7 @@
 @section('title', 'Compras')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light ">Listado de Compras
+    <h2 class="brand-text font-weight-light "><b>Listado de Compras</b>
         {{-- <b>{{ $empresa->nombre_empresa }}</b> --}}
     </h2>
     <hr>
@@ -41,7 +41,7 @@
                                     @foreach ($compras as $compra)
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->fecha_compra }}</td>
+                                            <td class="text-center"style="vertical-align: middle"> {{ \App\Helpers\Helpers::cambiaFormatoFecha(($compra->fecha_compra))}}</td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_compra }}
                                             </td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_remito }}
@@ -50,7 +50,7 @@
                                             </td>
                                             <td class="text-center"style="vertical-align: middle">
                                                 {{ $compra->proveedor->nombre_proveedor}}</td>
-                                            <td class="text-center"style="vertical-align: middle">{{ $compra->total_compra }}</td>
+                                            <td class="text-center"style="vertical-align: middle">${{ $compra->total_compra }}</td>
 
 
                                             <td class="text-center" style="vertical-align: middle">

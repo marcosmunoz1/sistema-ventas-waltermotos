@@ -1,178 +1,141 @@
-      <!-- Modal para agregar detalle de la moto -->
-      <div class="modal" id="crearMotoModal" tabindex="-1" aria-labelledby="crearRolLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title"><i class="fas fa-file-alt"></i> Agregar detalle de la moto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+<script>
+    function agregarMotoATabla() {
 
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card card-outline card-success">
-                                {{-- <div class="card-header">
-                                    <h5 class="text-center text-success"><i class="fas fa-motorcycle"></i> Datos de la Moto</h5>
-                                </div> --}}
+     // Verificar si ya hay una moto en la tabla
+     const tablaBody = document.getElementById('tabla-motos-body');
+     if (tablaBody && tablaBody.querySelectorAll('tr').length > 0) {
+         alert('Solo puedes tener una moto a la vez. Limpia la tabla primero.');
+         return;
+     }
 
-                                <div class="col-md-12 mx-auto mt-2">
-                                    <div class="card card-info">
-                                        <div
-                                            class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
-                                                <!-- Datos de Moto -->
-                                                <div class="row">
-                                                    <!-- Primera Columna: Datos -->
-                                                    <div class="col-md-9">
-                                                        <!-- Fila 1 -->
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <label>Marca</label> <b style="color: red;">*</b>
-                                                                <select class="form-control" name="id_marca" id="id_marca" required>
-                                                                    @foreach ($marcas as $marca )
-                                                                    <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option>
-                                                                @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Modelo</label> <b style="color: red;">*</b>
-                                                                <input type="text" name="modelo_moto" id="modelo_moto" class="form-control"
-                                                                    placeholder="Modelo" required>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Dominio</label><b style="color: red;">*</b>
-                                                                <input type="text" name="dominio" id="dominio" class="form-control" required
-                                                                    placeholder="Dominio">
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Cilindrada</label><b style="color: red;">*</b>
-                                                                <input type="number" name="cilindrada_moto" id="cilindrada_moto" class="form-control" id="cilindrada"
-                                                                    placeholder="Cilindrada" required>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Fila 2 -->
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-2">
-                                                                <label>Color</label>
-                                                                <input type="text" name="color_moto" id="color_moto" class="form-control"  placeholder="Color">
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Nacionalidad</label>
-                                                                <select class="form-control" name="id_nacionalidad" id="id_nacionalidad">
-                                                                @foreach ($nacionalidades as $nacionalidad )
-                                                                <option value="{{$nacionalidad->id}}">{{$nacionalidad->pais}}</option>
-                                                                @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Año</label>
-                                                                <input type="number" name="anio_moto" id="anio_moto" class="form-control" placeholder="Año" required>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Km</label>
-                                                                <input type="number" name="km_moto" id="km_moto" class="form-control" placeholder="Kilometraje" required>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-check mt-4">
-                                                                    <input class="form-check-input" name="es_usada" id="es_usada" type="checkbox" required>
-                                                                    <label class="form-check-label">¿Es usada?</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Fila 3 -->
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-6">
-                                                                <label>Nro. Motor</label><b style="color: red;">*</b>
-                                                                <input type="text" name="nr_motor" id="nr_motor" class="form-control"  placeholder="Nro. Motor" required>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <label>Nro. Chasis</label><b style="color: red;">*</b>
-                                                                <input type="text" name="nr_chasis" id="nr_chasis" class="form-control" placeholder="Nro. Chasis" required>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Fila 4 -->
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-6">
-                                                                <label>D.N.R.P.A</label>
-                                                                <input type="text" name="dnrpa" id="dnrpa" class="form-control" placeholder="Nro. DNRPA" required>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <label>Certificado</label>
-                                                                <input type="text" class="form-control" name="nr_certificado" id="nr_certificado" placeholder="Nro. Certificado" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-4">
-                                                                <label>Precio compra</label>
-                                                                <input type="text" class="form-control" name="precio_compra" id="precio_compra" placeholder="Precio compra" required>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Precio venta</label>
-                                                                <input type="text" class="form-control" name="precio_venta" id="precio_venta" placeholder="Precio venta" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mt-2">
-                                                        <div class="col-md-6">
-                                                            <label>Deposito</label>
-                                                            <select class="form-control" id="id_deposito" name="id_deposito" required>
-                                                                @foreach ($depositos as $deposito )
-                                                                <option value="{{$deposito->id}}" required>{{$deposito->nombre_deposito}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+    // Primero validar campos
+     if (!validarCampos()) {
+         // Mostrar primer error si la validación falla
+         const primerError = document.querySelector('.is-invalid, .campo-invalido');
+         if (primerError) {
+             primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+         }
+         return; // Detener la ejecución si la validación falla
+     }
 
-                                                        </div>
-                                                    </div>
+     if (!tablaBody) {
+             console.error('Error: No se encontró el elemento #tabla-motos-body');
+             alert('Error interno. Recarga la página e intenta nuevamente.');
+             return;
+         }
 
-                                                    <!-- Segunda Columna: Imagen -->
-                                                    <div class="col-md-3">
-                                                        <div class="text-center">
-                                                            <div class="form-group">
-                                                                <label for="imagen">Imagen</label>
-                                                                <input type="file" id="imagen_moto" name="imagen_moto"
-                                                                    accept=".jpg, jpeg, png" class="form-control">
-                                                                @error('imagen_moto')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                                <br>
-                                                                <center><output id="list"></output></center>
-                                                                <script>
-                                                                    function archivo(evt){
-                                                                    var files = evt.target.files; //file List objet
-                                                                    //Obtenemos la imagen del campo "file"
-                                                                    for(var i = 0, f; f = files[i]; i++ ){
-                                                                        //solo admitimos imagenes
-                                                                        if(!f.type.match('image.*')){
-                                                                            continue;
-                                                                        }
-                                                                        var reader = new FileReader();
-                                                                        reader.onload = (function (theFile){
-                                                                            return function (e) {
-                                                                                //insertamos la imagen
-                                                                                document.getElementById("list").innerHTML = ['<img class="thumb thumbail" src="',e.target.result,'" width="70%" title="',escape(theFile.name),'"/>'].join('');
-                                                                            };
-                                                                        })(f);
-                                                                        reader.readAsDataURL(f);
 
-                                                                    }
 
-                                                                    }
-                                                                    document.getElementById('imagen_moto').addEventListener('change', archivo, false);
-                                                            </script>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        <div class="modal-footer">
-                            <button type="button" id="btn-agregar-moto" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Guardar moto</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
-                        </div>
-                    </div>
-            </div>
-        </div>
-    </div>
+     // Obtener valores (corregido para checkbox)
+
+
+
+         let contador = 1;
+         let id_marca = document.getElementById('id_marca').value;
+         let modelo_moto = document.getElementById('modelo_moto').value;
+         let dominio = document.getElementById('dominio').value;
+         let cilindrada_moto = document.getElementById('cilindrada_moto').value;
+         let km_moto = document.getElementById('km_moto').value;
+         let es_usada = document.getElementById('es_usada').checked ? '1' : '0';
+         let dnrpa = document.getElementById('dnrpa').value;
+         let nr_certificado = document.getElementById('nr_certificado').value;
+         let precio_venta = parseFloat(document.getElementById('precio_venta').value);
+         let id_deposito = document.getElementById('id_deposito').value;
+         let color_moto = document.getElementById('color_moto').value;
+         let anio_moto =   document.getElementById('anio_moto').value;
+         let id_nacionalidad =   document.getElementById('id_nacionalidad').value;
+         let nr_motor =   document.getElementById('nr_motor').value;
+         let nr_chasis =   document.getElementById('nr_chasis').value;
+         let precio_compra = parseFloat(document.getElementById('precio_compra').value);
+         actualizarVariable(precio_compra);
+        // Manejo CORRECTO de la imagen
+         const imagenInput = document.getElementById('imagen_moto');
+         let imagenNombre = 'sin_imagen.jpg';
+         let imagenURL = 'ruta/a/imagen_por_defecto.jpg';
+
+         if (imagenInput.files && imagenInput.files[0]) {
+             imagenNombre = imagenInput.files[0].name;
+             imagenURL = URL.createObjectURL(imagenInput.files[0]);
+         }
+
+
+
+          // 1. Crear fila
+         const fila = document.createElement('tr');
+         fila.innerHTML = `
+                 <td class="text-center" style="vertical-align: middle;">
+                     <input type="hidden" name="contador[]" class="form-control" value="${contador}" min="1" required readonly>
+                     <input type="hidden" name="dominio[]" class="form-control" value="${dominio}" min="1" required readonly>
+                     <input type="hidden" name="cilindrada_moto[]" class="form-control" value="${cilindrada_moto}" min="1" required readonly>
+                     <input type="hidden" name="km_moto[]" class="form-control" value="${km_moto}" min="1" required readonly>
+                     <input type="hidden" name="es_usada[]" class="form-control" value="${es_usada}" min="1" required readonly>
+                     <input type="hidden" name="dnrpa[]" class="form-control" value="${dnrpa}" min="1" required readonly>
+                     <input type="hidden" name="nr_certificado[]" class="form-control" value="${nr_certificado}" min="1" required readonly>
+                     <input type="hidden" name="precio_venta[]" class="form-control" value="${precio_venta}" min="1" required readonly>
+                     <input type="hidden" name="id_deposito[]" class="form-control" value="${id_deposito}" min="1" required readonly>
+                     <input type="hidden" name="precio_compra[]" class="form-control" value="${precio_compra}" min="1" required readonly>
+                     ${contador}
+                 </td>
+                 <td class="text-center" style="vertical-align: middle;">
+                     <input type="hidden" name="id_marca[]" class="form-control" value="${id_marca}" min="1" required readonly>
+                     ${id_marca}
+                 </td>
+                  <td class="text-center" style="vertical-align: middle;">
+                     <input type="hidden" name="modelo_moto[]" class="form-control" value="${modelo_moto}" min="1" required readonly>
+                     ${modelo_moto}
+                 </td>
+                  <td class="text-center" style="vertical-align: middle;">
+                     <input type="hidden" name="color_moto[]" class="form-control" value="${color_moto}" min="1" required readonly >
+                     ${color_moto}
+                 </td>
+                  <td class="text-center" style="vertical-align: middle;">
+                     <input type="hidden" name="anio_moto[]" class="form-control" value="${anio_moto}" min="1" required readonly >
+                     ${anio_moto}
+                 </td>
+                  <td class="text-center" style="vertical-align: middle;">
+                     <input type="hidden" name="id_nacionalidad[]" class="form-control" value="${id_nacionalidad}" min="1" required readonly >
+                     ${id_nacionalidad}
+                 </td>
+                 <td class="text-center" style="vertical-align: middle;">
+                     <input type="hidden" name="nr_motor[]" class="form-control" value="${nr_motor}" min="1" required readonly >
+                     ${nr_motor}
+                 </td>
+                  <td class="text-center" style="vertical-align: middle;">
+                     <input type="hidden" name="nr_chasis[]" class="form-control" value="${nr_chasis}" min="1" required readonly >
+                     ${nr_chasis}
+                 </td>
+                 <td class="text-center" style="vertical-align: middle;">
+                    <input type="hidden" name="imagen_moto[]" value="${imagenNombre}">
+                      <img src="${imagenURL}" width="50" class="img-thumbnail">
+                 </td>
+                 <td class="text-center" style="vertical-align: middle;">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="editarMoto(this)">
+                         <i class="fas fa-edit"></i> Editar
+                     </button>
+                     <button type="button" class="btn btn-danger btn-sm" onclick="limpiarTabla()">
+                         <i class="fas fa-trash"></i>
+                     </button>
+                 </td>
+         `;
+
+           // 4. Agregar fila
+          tablaBody.appendChild(fila);
+
+         // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
+         const form = document.getElementById('formulario-compra');
+
+
+
+         // 3. Resetear solo los campos del modal (no el formulario completo)
+      /*    $('#modalMoto').find('input').not('[type="hidden"]').val(''); */
+         $('#crearMotoModal').find('input').not('[type="hidden"]').val('');
+         $('#crearMotoModal').find('select').val('');
+         document.getElementById('es_usada').checked = false;
+
+         $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal
+
+         actualizarEstadoBotonAgregar();
+
+         return true;
+     }
+</script>

@@ -155,8 +155,12 @@ class ComprasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Compra $compras)
+    public function destroy($id)
     {
-        //
+
+        Compra::destroy($id);
+        return redirect()->route('admin.compras.index')
+        ->with('mensaje','Se elimino la compra exitosamente')
+        ->with('icono','success');
     }
 }

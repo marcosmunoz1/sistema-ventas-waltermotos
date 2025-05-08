@@ -340,12 +340,12 @@ return [
         [
             'text' => 'Compras',
             'icon' => 'fas fa-cart-shopping',
-            'url' => 'admin/compras', 
+            'url' => 'admin/compras',
 
         ],
         [
             'text' => 'Proveedores',
-            'url' => 'proveedores',
+            'url' => 'admin/proveedores',
            'icon' => 'fas fa fa-truck',
 
         ],

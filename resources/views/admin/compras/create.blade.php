@@ -31,7 +31,7 @@
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
-                                                <div class="modal-header">
+                                                <div class="modal-header  text-white" style="background-color: #252652">
                                                     <h1 class="modal-title fs-5" id="exampleModalLabel">Listado de
                                                         Proveedores</h1>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="close">
@@ -51,7 +51,10 @@
                                                                 <th scope="col" style="text-align: center ">
                                                                     Nombre proveedor</th>
                                                                 <th scope="col" style="text-align: center ">Celular</th>
+                                                                <th scope="col" style="text-align: center ">Cuit</th>
+                                                                <th scope="col" style="text-align: center ">Telefono</th>
                                                                 <th scope="col" style="text-align: center ">Correo</th>
+
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -70,6 +73,12 @@
                                                                         <td style="text-align: center">
                                                                             {{ $proveedor->celular }}</td>
                                                                         <td style="text-align: center">
+                                                                            {{$proveedor->cuit}}
+                                                                        </td>
+                                                                        <td style="text-align: center">
+                                                                            {{$proveedor->telefono}}
+                                                                        </td>
+                                                                        <td style="text-align: center">
                                                                             {{ $proveedor->email }}</td>
 
                                                                 </tr>
@@ -78,7 +87,7 @@
                                                     </table>
                                                 </div>
                                                 <div class="modal-footer">
-                                                <a class="btn btn-success" href="{{url('admin/proveedores/create')}}"> <i class="fas fa-save"></i> Agregar proveedor</a>
+                                                <a class="btn btn-success" href="{{url('admin/proveedores/crear-proveedor')}}"> <i class="fas fa-save"></i> Agregar proveedor</a>
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal"><i class="fas fa-cancel"></i> Cerrar</button>
                                                 </div>
@@ -391,7 +400,29 @@
     @section('js')
         {{-- Aquí puedes agregar scripts adicionales --}}
         <script>
-        </script>
+            $('#mitabla2').DataTable({
+              "pageLength":20,
+              "language":{
+                  "emptyTable": "No hay información",
+                  "info": "Mostrando _START_ a _END_ de _TOTAL_ Proveedores",
+                  "infoEmpty": "Mostrando 0 a 0 de 0 Proveedores",
+                  "infoFiltered": "(Filtrado de _MAX_ total Proveedores)",
+                  "infoPostFix": "",
+                  "thousands": ",",
+                  "lengthMenu": "Mostrar _MENU_ Proveedores",
+                  "loadingRecords": "Cargando...",
+                  "processings": "Procesando",
+                  "search": "Buscador",
+                  "zeroRecords": "Sin resultados encontrados",
+                  "paginate": {
+                      "first": "Primero",
+                      "last": "Ultimo",
+                      "next": "Siguiente",
+                      "previous": "Anterior"
+                  }
+              },
+          });
+         </script>
         <script>
                 $(document).on('click', '.seleccionar-btn-proveedor', function () {
                     var id = $(this).data('id');
@@ -405,146 +436,148 @@
                 });
         </script>
         <script>
-           function agregarMotoATabla() {
+            function agregarMotoATabla() {
 
-            // Verificar si ya hay una moto en la tabla
-            const tablaBody = document.getElementById('tabla-motos-body');
-            if (tablaBody && tablaBody.querySelectorAll('tr').length > 0) {
-                alert('Solo puedes tener una moto a la vez. Limpia la tabla primero.');
-                return;
-            }
+             // Verificar si ya hay una moto en la tabla
+             const tablaBody = document.getElementById('tabla-motos-body');
+             if (tablaBody && tablaBody.querySelectorAll('tr').length > 0) {
+                 alert('Solo puedes tener una moto a la vez. Limpia la tabla primero.');
+                 return;
+             }
 
-           // Primero validar campos
-            if (!validarCampos()) {
-                // Mostrar primer error si la validación falla
-                const primerError = document.querySelector('.is-invalid, .campo-invalido');
-                if (primerError) {
-                    primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-                return; // Detener la ejecución si la validación falla
-            }
+            // Primero validar campos
+             if (!validarCampos()) {
+                 // Mostrar primer error si la validación falla
+                 const primerError = document.querySelector('.is-invalid, .campo-invalido');
+                 if (primerError) {
+                     primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                 }
+                 return; // Detener la ejecución si la validación falla
+             }
 
-            if (!tablaBody) {
-                    console.error('Error: No se encontró el elemento #tabla-motos-body');
-                    alert('Error interno. Recarga la página e intenta nuevamente.');
-                    return;
-                }
-
-
-
-            // Obtener valores (corregido para checkbox)
+             if (!tablaBody) {
+                     console.error('Error: No se encontró el elemento #tabla-motos-body');
+                     alert('Error interno. Recarga la página e intenta nuevamente.');
+                     return;
+                 }
 
 
 
-                let contador = 1;
-                let id_marca = document.getElementById('id_marca').value;
-                let modelo_moto = document.getElementById('modelo_moto').value;
-                let dominio = document.getElementById('dominio').value;
-                let cilindrada_moto = document.getElementById('cilindrada_moto').value;
-                let km_moto = document.getElementById('km_moto').value;
-                let es_usada = document.getElementById('es_usada').checked ? '1' : '0';
-                let dnrpa = document.getElementById('dnrpa').value;
-                let nr_certificado = document.getElementById('nr_certificado').value;
-                let precio_venta = parseFloat(document.getElementById('precio_venta').value);
-                let id_deposito = document.getElementById('id_deposito').value;
-                let color_moto = document.getElementById('color_moto').value;
-                let anio_moto =   document.getElementById('anio_moto').value;
-                let id_nacionalidad =   document.getElementById('id_nacionalidad').value;
-                let nr_motor =   document.getElementById('nr_motor').value;
-                let nr_chasis =   document.getElementById('nr_chasis').value;
-                let precio_compra = parseFloat(document.getElementById('precio_compra').value);
-                actualizarVariable(precio_compra);
-               // Manejo CORRECTO de la imagen
-                const imagenInput = document.getElementById('imagen_moto');
-                let imagenNombre = 'sin_imagen.jpg';
-                let imagenURL = 'ruta/a/imagen_por_defecto.jpg';
-
-                if (imagenInput.files && imagenInput.files[0]) {
-                    imagenNombre = imagenInput.files[0].name;
-                    imagenURL = URL.createObjectURL(imagenInput.files[0]);
-                }
+             // Obtener valores (corregido para checkbox)
 
 
 
-                 // 1. Crear fila
-                const fila = document.createElement('tr');
-                fila.innerHTML = `
-                        <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="contador[]" class="form-control" value="${contador}" min="1" required readonly>
-                            <input type="hidden" name="dominio[]" class="form-control" value="${dominio}" min="1" required readonly>
-                            <input type="hidden" name="cilindrada_moto[]" class="form-control" value="${cilindrada_moto}" min="1" required readonly>
-                            <input type="hidden" name="km_moto[]" class="form-control" value="${km_moto}" min="1" required readonly>
-                            <input type="hidden" name="es_usada[]" class="form-control" value="${es_usada}" min="1" required readonly>
-                            <input type="hidden" name="dnrpa[]" class="form-control" value="${dnrpa}" min="1" required readonly>
-                            <input type="hidden" name="nr_certificado[]" class="form-control" value="${nr_certificado}" min="1" required readonly>
-                            <input type="hidden" name="precio_venta[]" class="form-control" value="${precio_venta}" min="1" required readonly>
-                            <input type="hidden" name="id_deposito[]" class="form-control" value="${id_deposito}" min="1" required readonly>
-                            <input type="hidden" name="precio_compra[]" class="form-control" value="${precio_compra}" min="1" required readonly>
-                            ${contador}
-                        </td>
-                        <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="id_marca[]" class="form-control" value="${id_marca}" min="1" required readonly>
-                            ${id_marca}
-                        </td>
+                 let contador = 1;
+                 let id_marca = document.getElementById('id_marca').value;
+                 let modelo_moto = document.getElementById('modelo_moto').value;
+                 let dominio = document.getElementById('dominio').value;
+                 let cilindrada_moto = document.getElementById('cilindrada_moto').value;
+                 let km_moto = document.getElementById('km_moto').value;
+                 let es_usada = document.getElementById('es_usada').checked ? '1' : '0';
+                 let dnrpa = document.getElementById('dnrpa').value;
+                 let nr_certificado = document.getElementById('nr_certificado').value;
+                 let precio_venta = parseFloat(document.getElementById('precio_venta').value);
+                 let id_deposito = document.getElementById('id_deposito').value;
+                 let color_moto = document.getElementById('color_moto').value;
+                 let anio_moto =   document.getElementById('anio_moto').value;
+                 let id_nacionalidad =   document.getElementById('id_nacionalidad').value;
+                 let nr_motor =   document.getElementById('nr_motor').value;
+                 let nr_chasis =   document.getElementById('nr_chasis').value;
+                 let precio_compra = parseFloat(document.getElementById('precio_compra').value);
+                 actualizarVariable(precio_compra);
+                // Manejo CORRECTO de la imagen
+                 const imagenInput = document.getElementById('imagen_moto');
+                 let imagenNombre = 'sin_imagen.jpg';
+                 let imagenURL = 'ruta/a/imagen_por_defecto.jpg';
+
+                 if (imagenInput.files && imagenInput.files[0]) {
+                     imagenNombre = imagenInput.files[0].name;
+                     imagenURL = URL.createObjectURL(imagenInput.files[0]);
+                 }
+
+
+
+                  // 1. Crear fila
+                 const fila = document.createElement('tr');
+                 fila.innerHTML = `
                          <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="modelo_moto[]" class="form-control" value="${modelo_moto}" min="1" required readonly>
-                            ${modelo_moto}
-                        </td>
+                             <input type="hidden" name="contador[]" class="form-control" value="${contador}" min="1" required readonly>
+                             <input type="hidden" name="dominio[]" class="form-control" value="${dominio}" min="1" required readonly>
+                             <input type="hidden" name="cilindrada_moto[]" class="form-control" value="${cilindrada_moto}" min="1" required readonly>
+                             <input type="hidden" name="km_moto[]" class="form-control" value="${km_moto}" min="1" required readonly>
+                             <input type="hidden" name="es_usada[]" class="form-control" value="${es_usada}" min="1" required readonly>
+                             <input type="hidden" name="dnrpa[]" class="form-control" value="${dnrpa}" min="1" required readonly>
+                             <input type="hidden" name="nr_certificado[]" class="form-control" value="${nr_certificado}" min="1" required readonly>
+                             <input type="hidden" name="precio_venta[]" class="form-control" value="${precio_venta}" min="1" required readonly>
+                             <input type="hidden" name="id_deposito[]" class="form-control" value="${id_deposito}" min="1" required readonly>
+                             <input type="hidden" name="precio_compra[]" class="form-control" value="${precio_compra}" min="1" required readonly>
+                             ${contador}
+                         </td>
                          <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="color_moto[]" class="form-control" value="${color_moto}" min="1" required readonly >
-                            ${color_moto}
-                        </td>
+                             <input type="hidden" name="id_marca[]" class="form-control" value="${id_marca}" min="1" required readonly>
+                             ${id_marca}
+                         </td>
+                          <td class="text-center" style="vertical-align: middle;">
+                             <input type="hidden" name="modelo_moto[]" class="form-control" value="${modelo_moto}" min="1" required readonly>
+                             ${modelo_moto}
+                         </td>
+                          <td class="text-center" style="vertical-align: middle;">
+                             <input type="hidden" name="color_moto[]" class="form-control" value="${color_moto}" min="1" required readonly >
+                             ${color_moto}
+                         </td>
+                          <td class="text-center" style="vertical-align: middle;">
+                             <input type="hidden" name="anio_moto[]" class="form-control" value="${anio_moto}" min="1" required readonly >
+                             ${anio_moto}
+                         </td>
+                          <td class="text-center" style="vertical-align: middle;">
+                             <input type="hidden" name="id_nacionalidad[]" class="form-control" value="${id_nacionalidad}" min="1" required readonly >
+                             ${id_nacionalidad}
+                         </td>
                          <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="anio_moto[]" class="form-control" value="${anio_moto}" min="1" required readonly >
-                            ${anio_moto}
-                        </td>
+                             <input type="hidden" name="nr_motor[]" class="form-control" value="${nr_motor}" min="1" required readonly >
+                             ${nr_motor}
+                         </td>
+                          <td class="text-center" style="vertical-align: middle;">
+                             <input type="hidden" name="nr_chasis[]" class="form-control" value="${nr_chasis}" min="1" required readonly >
+                             ${nr_chasis}
+                         </td>
                          <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="id_nacionalidad[]" class="form-control" value="${id_nacionalidad}" min="1" required readonly >
-                            ${id_nacionalidad}
-                        </td>
-                        <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="nr_motor[]" class="form-control" value="${nr_motor}" min="1" required readonly >
-                            ${nr_motor}
-                        </td>
+                            <input type="hidden" name="imagen_moto[]" value="${imagenNombre}">
+                              <img src="${imagenURL}" width="50" class="img-thumbnail">
+                         </td>
                          <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="nr_chasis[]" class="form-control" value="${nr_chasis}" min="1" required readonly >
-                            ${nr_chasis}
-                        </td>
-                        <td class="text-center" style="vertical-align: middle;">
-                           <input type="hidden" name="imagen_moto[]" value="${imagenNombre}">
-                             <img src="${imagenURL}" width="50" class="img-thumbnail">
-                        </td>
-                        <td class="text-center" style="vertical-align: middle;">
-                           <button type="button" class="btn btn-primary btn-sm" onclick="editarMoto(this)">
-                                <i class="fas fa-edit"></i> Editar
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="limpiarTabla()">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                `;
+                            <button type="button" class="btn btn-primary btn-sm" onclick="editarMoto(this)">
+                                 <i class="fas fa-edit"></i> Editar
+                             </button>
+                             <button type="button" class="btn btn-danger btn-sm" onclick="limpiarTabla()">
+                                 <i class="fas fa-trash"></i>
+                             </button>
+                         </td>
+                 `;
 
-                  // 4. Agregar fila
-                 tablaBody.appendChild(fila);
+                   // 4. Agregar fila
+                  tablaBody.appendChild(fila);
 
-                // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
-                const form = document.getElementById('formulario-compra');
+                 // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
+                 const form = document.getElementById('formulario-compra');
 
 
 
-                // 3. Resetear solo los campos del modal (no el formulario completo)
-             /*    $('#modalMoto').find('input').not('[type="hidden"]').val(''); */
-                $('#crearMotoModal').find('input').not('[type="hidden"]').val('');
-                $('#crearMotoModal').find('select').val('');
-                document.getElementById('es_usada').checked = false;
+                 // 3. Resetear solo los campos del modal (no el formulario completo)
+              /*    $('#modalMoto').find('input').not('[type="hidden"]').val(''); */
+                 $('#crearMotoModal').find('input').not('[type="hidden"]').val('');
+                 $('#crearMotoModal').find('select').val('');
+                 document.getElementById('es_usada').checked = false;
 
-                $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal
+                 $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal
 
-                actualizarEstadoBotonAgregar();
+                 actualizarEstadoBotonAgregar();
 
-                return true;
-            }
-       </script>
+                 return true;
+             }
+        </script>
+
+
        <script>
 
         // Función de validación (externa para poder usarla separadamente)
@@ -669,80 +702,4 @@ function limpiarError(grupo) {
             }
 
         </script>
-        <script>
-        function editarMoto(btnEditar) {
-        const fila = btnEditar.closest('tr');
-        const rowData = window.table.row(fila).data();
-
-        // Configurar modal para edición
-        document.getElementById('modalActionText').textContent = 'Editar';
-        document.getElementById('modoEdicion').value = 'editar';
-        document.getElementById('filaEditarIndex').value = fila.rowIndex;
-
-        // Llenar los campos del modal con los datos de la fila
-        document.getElementById('id_marca').value = rowData[1]; // Ajusta los índices según tu estructura
-        document.getElementById('modelo_moto').value = rowData[2];
-        document.getElementById('dominio').value = rowData[3];
-        document.getElementById('cilindrada_moto').value = rowData[4];
-        document.getElementById('km_moto').value = rowData[5];
-        document.getElementById('es_usada').value = rowData[6];
-        document.getElementById('dnrpa').value = rowData[7];
-        document.getElementById('nr_certificado').value = rowData[8];
-        document.getElementById('precio_venta').value = rowData[9];
-        document.getElementById('id_deposito').value = rowData[10];
-        document.getElementById('color_moto').value = rowData[11];
-        document.getElementById('anio_moto').value = rowData[12];
-        document.getElementById('nr_motor').value = rowData[13];
-        document.getElementById('nr_chasis').value = rowData[14];
-        document.getElementById('precio_compra').value = rowData[15];
-        document.getElementById('imagen_moto').value = rowData[16];
-
-        // Mostrar el modal
-        $('#motoModal').modal('show');
-    }
-
-    // Función modificada para guardar (ahora maneja ambos modos)
-    function guardarMoto() {
-        if (!validarCampos()) {
-            return;
-        }
-
-        const modo = document.getElementById('modoEdicion').value;
-        const datosMoto = {
-            id_marca: document.getElementById('id_marca').value,
-            modelo_moto: document.getElementById('modelo_moto').value,
-            dominio: document.getElementById('dominio').value,
-            // ... obtener todos los campos ...
-        };
-
-        if (modo === 'editar') {
-            // Modo edición - actualizar fila existente
-            const filaIndex = document.getElementById('filaEditarIndex').value;
-            const fila = document.getElementById('tabla-motos-body').rows[filaIndex - 1];
-
-            // Actualizar celdas de la fila
-            fila.cells[1].textContent = datosMoto.id_marca;
-            fila.cells[2].textContent = datosMoto.modelo_moto;
-            fila.cells[3].textContent = datosMoto.dominio;
-            // ... actualizar todos los campos ...
-
-            // Si usas DataTables, actualiza los datos internos:
-            if (window.table) {
-                const rowData = window.table.row(fila).data();
-                // Actualizar los valores en rowData según corresponda
-                window.table.row(fila).data(rowData).draw(false);
-            }
-
-            alert('Moto actualizada correctamente');
-        } else {
-            // Modo agregar - crear nueva fila
-            agregarMotoATabla();
-        }
-
-        // Cerrar el modal
-        $('#motoModal').modal('hide');
-        limpiarModal();
-    }
-
-      </script>
     @endsection
