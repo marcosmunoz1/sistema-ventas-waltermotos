@@ -30,7 +30,7 @@ class VentaController extends Controller
     {
         //
         $motos = Moto::whereNull('fecha_venta_moto')->with(['nacionalidad', 'marca'])->get();
-        $clientes = Cliente::with('conyugue')->get();
+        $clientes = Cliente::with('conyugue')->get(); 
 
         return view('admin.ventas.create', compact('clientes', 'motos'));
     }

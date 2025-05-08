@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\New_;
 
 class ProveedoresController extends Controller
 {
@@ -12,7 +13,7 @@ class ProveedoresController extends Controller
      */
     public function index()
     {
-        $proveedores = Proveedor::all(); 
+        $proveedores = Proveedor::all();
         return view('admin.proveedores.index', compact('proveedores'));
 
     }
@@ -22,7 +23,8 @@ class ProveedoresController extends Controller
      */
     public function create()
     {
-        //
+        $proveedores = Proveedor::all();
+        return view('admin.proveedores.create', compact('proveedores'));
     }
 
     /**
@@ -30,7 +32,27 @@ class ProveedoresController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre_proveedor' => 'required',
+            'cuit' => 'required|string|max:255',
+            'telefono' => 'required',
+            'celular' => 'required',
+            'email' => 'nullable'
+        ]);
+
+        $proveedor = New Proveedor();
+        $proveedor->nombre_proveedor = $request->nombre_proveedor;
+        $proveedor->cuit = $request->cuit;
+        $proveedor->telefono = $request->telefono;
+        $proveedor->celular = $request->celular;
+        $proveedor->email = $request->email;
+        $proveedor->estado_proveedor = 1;
+        $proveedor->save();
+
+        return redirect()->route('admin.proveedores.index')
+            ->with('mensaje', 'El proveedor se agrego con exíto')
+            ->with('icono', 'success');
+
     }
 
     /**
@@ -60,8 +82,11 @@ class ProveedoresController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Proveedor $proveedores)
+    public function destroy($id)
     {
-        //
+        Proveedor::destroy($id);
+        return redirect()->route('admin.proveedores.index')
+        ->with('mensaje','Se elimino el proveedor exitosamente')
+        ->with('icono','success');
     }
 }

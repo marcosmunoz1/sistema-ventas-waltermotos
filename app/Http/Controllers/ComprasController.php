@@ -19,7 +19,7 @@ class ComprasController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {    $compras = Compra::with('proveedor')->get();
+    {    $compras = Compra::with('proveedor')->orderBy("id", "desc")->get();
         return view('admin.compras.index', compact('compras'));
     }
 
@@ -40,155 +40,60 @@ class ComprasController extends Controller
      */
     public function store(Request $request)
     {
-        logger($request->all());
-        $validated = $request->validate([
-            'id_proveedor' => 'required|exists:proveedores,id',
-            'fecha_compra' => 'required|date',
-            'numero_factura' => 'required|numeric', // Cambiado de 'number' a 'numeric'
-            'numero_remito' => 'nullable|string|max:255', // Permite que sea opcional
-            'marca' => 'required|array',
-            'marca.*' => 'required|string|max:255',
-            'modelo' => 'required|array',
-            'modelo.*' => 'required|string|max:255',
-            'dominio' => 'required|array',
-            'dominio.*' => 'required|string|max:255',
-            'cilindrada' => 'required|array',
-            'cilindrada.*' => 'required|string|max:255',
-            'km' => 'required|array',
-            'km.*' => 'required|string|max:255',
-            'es_usada' => 'required|array',
-            'es_usada.*' => 'required|string|max:255',
-            'dnrpa' => 'required|array',
-            'dnrpa.*' => 'required|string|max:255',
-            'nr_certificado' => 'required|array',
-            'nr_certificado.*' => 'required|string|max:255',
-            'precio_venta' => 'required|array',
-            'precio_venta.*' => 'numeric|min:0',
-            'deposito' => 'required|array',
-            'deposito.*' => 'required|string|max:255',
-            'color' => 'required|array',
-            'color.*' => 'required|string|max:255',
-            'anio' => 'required|array',
-            'anio.*' => 'required|string|max:255',
-            'nacion' => 'required|array',
-            'nacion.*' => 'required|string|max:255',
-            'nr_motor' => 'required|array',
-            'nr_motor.*' => 'required|string|max:255',
-            'nr_chasis' => 'required|array',
-            'nr_chasis.*' => 'required|string|max:255',
-            'precio_compra' => 'required|array',
-            'precio_compra.*' => 'numeric|min:0'
+        /*   $datos = request()->all();
+         return response()->json($datos); */
 
-        ]);
+             $request->validate([
+                'id_proveedor' => 'required|exists:proveedores,id',
+                'fecha_compra' => 'required',
+                'numero_factura' => 'required|unique:compras,numero_factura', // Cambiado de 'number' a 'numeric'
+                'numero_remito' => 'required', // Permite que sea opcional
+                'total_compra' => 'required',
+                'id_marca' => 'required|array',
+                'id_marca.*' => 'required|string|max:255',
+                'modelo_moto' => 'required|array',
+                'modelo_moto.*' => 'required|string|max:255',
+                'dominio' => 'required|array',
+                'dominio.*' => 'required|string|max:255',
+                'cilindrada_moto' => 'required|array',
+                'cilindrada_moto.*' => 'required|string|max:255',
+                'km_moto' => 'required|array',
+                'km_moto.*' => 'required|string|max:255',
+                'es_usada' => 'required|array',
+                'es_usada.*' => 'required|string|max:255',
+                'dnrpa' => 'required|array',
+                'dnrpa.*' => 'required|string|max:255',
+                'nr_certificado' => 'required|array',
+                'nr_certificado.*' => 'required|string|max:255',
+                'precio_venta' => 'required|array',
+                'precio_venta.*' => 'numeric|min:0',
+                'id_deposito' => 'required|array',
+                'id_deposito.*' => 'required|string|max:255',
+                'color_moto' => 'required|array',
+                'color_moto.*' => 'required|string|max:255',
+                'anio_moto' => 'required|array',
+                'anio_moto.*' => 'required|string|max:255',
+                'id_nacionalidad' => 'required|array',
+                'id_nacionalidad.*' => 'required|string|max:255',
+                'nr_motor' => 'required|array',
+                'nr_motor.*' => 'required|string|max:255',
+                'nr_chasis' => 'required|array',
+                'nr_chasis.*' => 'required|string|max:255',
+                'precio_compra' => 'required|array',
+                'precio_compra.*' => 'numeric|min:0',
+                'imagen_moto' => 'nullable|array',
+                'imagen_moto.*' => 'nullable|string|max:255',
 
-        try {
-            DB::transaction(function () use ($validated) {
-                // 1. Crear la compra principal
-                $compra = Compra::create([
-                    'id_proveedor' => $validated['id_proveedor'],
-                    'fecha_compra' => $validated['fecha_compra'],
-                    'numero_compra' => 12,
-                    'numero_remito' => $validated['numero_remito'] ?? null,
-                    'numero_factura' => $validated['numero_factura'],
-                    'total_compra' => 122,
-                    'estado_compra' => 1,
-
-                ]);
-
-                // 2. Crear los detalles de cada moto
-                foreach ($validated['marca'] as $index => $marca) {
-                    $moto = Moto::create([
-                        'modelo' => $validated['modelo'][$index],
-                        'dominio' => $validated['dominio'][$index],
-                        'id_nacionalidad' => $validated['nacionalidad'][$index] ,
-                        'id_compra' => $compra->id,
-                        'id_deposito' => $validated['deposito'][$index],
-                        'id_marca' => $validated['marca'][$index],
-                        'modelo_moto' => $validated['modelo'][$index],
-                        'dominio' => $validated['dominio'][$index],
-                        'cilindrada_moto' => $validated['cilindrada'][$index],
-                        'color_moto' => $validated['color'][$index],
-                        'anio_moto' => $validated['anio'][$index],
-                        'km_moto' => $validated['km'][$index],
-                        'es_usada' => $validated['es_usada'][$index],
-                        'nr_certificado' => $validated['nr_certificado'][$index],
-                        'dnrpa' => $validated['dnrpa'][$index],
-                        'nr_motor' => $validated['nr_motor'][$index],
-                        'nr_chasis' => $validated['nr_chasis'][$index],
-                        'fecha_compra_moto' => $validated['fecha_compra'],
-                        'fecha_venta_moto' => $validated['fecha_venta'] ?? null,
-                        'precio_compra' => $validated['precio_compra'][$index],
-                        'precio_venta' => $validated['precio_venta'][$index],
-                        'estado_moto' => 1,
-                        'imagen_moto' => $validated['imagen'][$index] ?? null,
-                    ]);
-                }
-            });
-
-            return response()->json([
-                'success' => true,
-                'redirect' => route('compras.index') 
             ]);
 
-            } catch (\Exception $e) {
-                return back()->withInput()
-                    ->with('mensaje', 'Error al registrar la compra: ' . $e->getMessage())
-                    ->with('icono', 'error');
-            }
+            Compra::registrarCompra($request->all());
 
-        // Redirección con mensaje de éxito
-        return redirect()->route('admin.compras.index')
-            ->with('mensaje', 'Compra registrada con éxito')
-            ->with('icono', 'success');
-
+            return redirect()->route('admin.compras.index')
+                ->with('mensaje', 'Compra registrada con éxito')
+                ->with('icono', 'success');
 
     }
 
-    public function agregarMoto(Request $request){
-        {
-
-            $request->validate([
-                'marca' => 'required|string|max:100',
-                'modelo' => 'required|string|max:100',
-                'dominio' => 'nullable|string|max:20',
-                'cilindrada' => 'nullable|string|max:50',
-                'color' => 'nullable|string|max:50',
-                'nacion' => 'nullable|string|max:50',
-                'anio_moto' => 'nullable|integer',
-                'km' => 'nullable|numeric',
-                'es_usada' => 'required|boolean',
-                'nr' => 'nullable|string|max:100',
-                'nr_chasis' => 'nullable|string|max:100',
-                'dnrpa' => 'nullable|string|max:100',
-                'certificado' => 'nullable|string|max:100',
-                'precio_compra' => 'required|numeric',
-                'precio_venta' => 'required|numeric',
-                'deposito' => 'nullable|string|max:100',
-                'imagen' => 'nullable|file|image|max:2048'
-            ]);
-
-            // Guardar la imagen si existe
-            $rutaImagen = null;
-            if ($request->hasFile('imagen')) {
-                $rutaImagen = $request->file('imagen')->store('motos', 'public');
-            }
-            $contador = 1;
-            // Armar array de la moto
-            $moto = $request->except('imagen');
-            $moto['imagen'] = $rutaImagen;
-            $moto['motoId'] = $contador; // ID temporal para poder eliminarla si hiciera falta
-
-            // Reemplazar cualquier moto existente en sesión (solo una)
-            session(['moto_temporal' => $moto]);
-
-            return response()->json([
-                'success' => true,
-                'motos' => [$moto] // lo devolvés como array para que funcione tu función de JS
-            ]);
-
-
-            }
-    }
     public function eliminarMoto(Request $request)
         {
             // Obtener el ID de la moto a eliminar
@@ -221,7 +126,7 @@ class ComprasController extends Controller
     public function show($id)
 
     {
-        //
+
     }
 
     /**
@@ -230,22 +135,32 @@ class ComprasController extends Controller
 
     public function edit( $id)
     {
-        //
+        $proveedores = Proveedor::all();
+        $marcas = Marca::all();
+        $nacionalidades = Nacionalidad::all();
+        $depositos = Deposito::all();
+        $motos = Moto::where('id_compra',$id)->first();
+        $compra = Compra::with('proveedor')->findOrFail($id);
+        return view('admin.compras.edit', compact('proveedores','motos','marcas','nacionalidades','depositos','compra'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Compra $compras)
+    public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Compra $compras)
+    public function destroy($id)
     {
-        //
+
+        Compra::destroy($id);
+        return redirect()->route('admin.compras.index')
+        ->with('mensaje','Se elimino la compra exitosamente')
+        ->with('icono','success');
     }
 }
