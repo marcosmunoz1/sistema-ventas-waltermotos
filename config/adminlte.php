@@ -329,7 +329,7 @@ return [
         ], */
         [
             'text' => 'Ventas',
-            'url' => 'admin/ventas', 
+            'url' => 'admin/ventas',
             'icon' => 'fas fa fa-cash-register',
         ],
         [
@@ -340,7 +340,7 @@ return [
         [
             'text' => 'Compras',
             'icon' => 'fas fa-cart-shopping',
-            'url' => 'compras',
+            'url' => 'admin/compras', 
 
         ],
         [

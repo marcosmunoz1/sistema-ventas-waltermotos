@@ -45,7 +45,7 @@ Route::delete('/admin/motos/{id}', [App\Http\Controllers\MotoController::class, 
 
 Route::get('/proveedores', [App\Http\Controllers\ProveedoresController::class, 'index'])->name('index');
 
-Route::get('/compras', [App\Http\Controllers\ComprasController::class, 'index'])->name('admin.compras.index');
+Route::get('/admin/compras', [App\Http\Controllers\ComprasController::class, 'index'])->name('admin.compras.index');
 Route::get('/admin/compras/crear-compra', [App\Http\Controllers\ComprasController::class, 'create'])->name('admin.compras.create')->middleware('auth');
 Route::post('/admin/compras/cargar-compra', [App\Http\Controllers\ComprasController::class, 'store'])->name('admin.compras.store')->middleware('auth'); //ruta para enviar la informacion del nuevo rol
 Route::get('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'show'])->name('admin.compras.show')->middleware('auth');

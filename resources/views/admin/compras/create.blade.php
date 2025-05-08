@@ -10,14 +10,14 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline card-success">
+            <div class="card card-outline card-secondary">
                 <div class="card-header">
                     <div class="card-title">Datos de Compra </div>
                 </div>
 
-                <div class="card-body">
-                    <form action="{{ url('/admin/compras/cargar-compra') }}" id="form_compra" method="post">
-                        @csrf
+                <form action="{{ url('/admin/compras/cargar-compra') }}" id="form_compra" method="post">
+                 @csrf
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-5">
                                 <label for="proveedor">Proveedor</label>
@@ -95,43 +95,42 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Factura</label>
-                                    <input type="text" class="form-control" id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
+                                    <input type="number" class="form-control" id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Remito</label>
-                                    <input type="text" class="form-control" id="numero_remito" name="numero_remito" placeholder="Número de remito">
+                                    <input type="number" class="form-control" id="numero_remito" name="numero_remito" placeholder="Número de remito" required>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Fecha compra:</label>
+                                    <label>Fecha compra</label>
 
                                         <input type="date" name="fecha_compra" id="fecha_compra" class="form-control datetimepicker-input" data-target="#reservationdate" required>
 
                                     </div>
                                 </div>
                             </div>
-
-                        <div class="row">
-                            <!-- Cantidad -->
+                            <input type="text" id="total_compra" name="total_compra" hidden>
+                        </div>
                         <div class="row" >
                             <div class="col-md-12">
                                 <div class="card card-outline card-secondary">
                                     <div class="card-header">
-                                        <div class="card-title">Detalle de moto </div>
+                                        <div class="card-title">Detalles de moto </div>
                                     </div>
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12 mx-auto mt-4">
-                                                    <a class="btn btn-primary" data-toggle="modal" data-target="#crearMotoModal">
+                                                    <a class="btn btn-success" id="btn-agregar-moto" data-toggle="modal" data-target="#crearMotoModal">
                                                         <i class="fas fa-plus"></i> Agregar moto
                                                     </a>
                                                 </div>
                                                     <div class="card-body">
                                                         <div class="table-responsive">
-                                                            <table id="tabla-motos" class="table table-striped table-responsive" >
+                                                            <table id="tabla-motos" class="table table-striped table-responsive">
                                                                 <thead class="table">
                                                                     <tr>
                                                                         <th class="text-center" style="width: 5%">#</th>
@@ -142,7 +141,7 @@
                                                                         <th class="text-center" style="color:red 5%">Nacionalidad</th>
                                                                         <th class="text-center" style="color:red 5%">Nr_motor</th>
                                                                         <th class="text-center" style="color:red 5%">Nr_chasis</th>
-                                                                        <th class="text-center" style="color:red 5%">Precio_unitario</th>
+                                                                        <th class="text-center" style="color:red 5%">Imagen</th>
                                                                         <th class="text-center" style="width: 20%">Acciones</th>
                                                                     </tr>
                                                                 </thead>
@@ -159,37 +158,34 @@
                                         </div>
                                     </div>
                             </div>
-                        </div>
+                    </div>
 
-                        <!-- Detalle de Productos -->
-
-                        {{-- <div class="card-title ">Detalle de compra</div> --}}
+                    </div>
+                    <div class="card-body" style="justify-items: end">
+                        <h4>
+                            <b>Suma de compra:</b><b id="mostrarVariable"></b>
                         <div class="card-body">
-
-
-                            <!-- Botones de acción -->
-                            <div class="card-footer ">
-                                <button type="submit" class="btn btn-success" >
-                                    <i class="fas fa-save"></i> Registrar
-                                </button>
-                                <a href="{{ url('admin/compras') }}" class="btn btn-secondary">
-                                    <i class="fas fa-times"></i> Cancelar
-                                </a>
-                            </div>
-
+                            <button type="submit" class="btn btn-primary" >
+                                <i class="fas fa-save"></i> Registrar
+                            </button>
+                            <a href="{{ url('admin/compras') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
                         </div>
 
-                    </form>
+                    </div>
+
+                </form>
                 </div>
             </div>
         </div>
 
-         <!-- Modal para agregar detalle de la moto -->
-    <div class="modal" id="crearMotoModal" tabindex="-1" aria-labelledby="crearRolLabel" aria-hidden="true">
+         <!-- Modal para agregar o editar el detalle de la moto -->
+    <div class="modal" id="crearMotoModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="crearRolLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title"><i class="fas fa-file-alt"></i> Agregar detalle de la moto</h5>
+                <div class="modal-header text-white" style="background-color: #252652">
+                    <h5 class="modal-title" id="modalMotoTitle"><i class="fa-solid fa-motorcycle"></i><span id="modalActionText">Agregar</span> detalle de la moto</h5></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -198,11 +194,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card card-outline card-success">
-                                {{-- <div class="card-header">
-                                    <h5 class="text-center text-success"><i class="fas fa-motorcycle"></i> Datos de la Moto</h5>
-                                </div> --}}
-
+                            <div class="card card-outline">
                                 <div class="col-md-12 mx-auto mt-2">
                                     <div class="card card-info">
                                         <div
@@ -216,7 +208,8 @@
                                                             <div class="col-md-4">
                                                                 <label>Marca</label> <b style="color: red;">*</b>
                                                                 <select class="form-control" name="id_marca" id="id_marca" required>
-                                                                    @foreach ($marcas as $marca )
+                                                                    <option value="">Seleccione una marca</option>
+                                                                @foreach ($marcas as $marca )
                                                                     <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option>
                                                                 @endforeach
                                                                 </select>
@@ -240,28 +233,29 @@
                                                         <!-- Fila 2 -->
                                                         <div class="row mt-2">
                                                             <div class="col-md-2">
-                                                                <label>Color</label>
-                                                                <input type="text" name="color_moto" id="color_moto" class="form-control"  placeholder="Color">
+                                                                <label>Color</label><b style="color: red;">*</b>
+                                                                <input type="text" name="color_moto" id="color_moto" class="form-control"  placeholder="Color" required>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <label>Nacionalidad</label>
-                                                                <select class="form-control" name="id_nacionalidad" id="id_nacionalidad">
+                                                                <label>Nacionalidad</label><b style="color: red;">*</b>
+                                                                <select class="form-control" name="id_nacionalidad" id="id_nacionalidad" required>
+                                                                    <option value="">Seleccione una Nacionalidad</option>
                                                                 @foreach ($nacionalidades as $nacionalidad )
                                                                 <option value="{{$nacionalidad->id}}">{{$nacionalidad->pais}}</option>
                                                                 @endforeach
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <label>Año</label>
+                                                                <label>Año</label><b style="color: red;">*</b>
                                                                 <input type="number" name="anio_moto" id="anio_moto" class="form-control" placeholder="Año" required>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <label>Km</label>
+                                                                <label>Km</label><b style="color: red;">*</b>
                                                                 <input type="number" name="km_moto" id="km_moto" class="form-control" placeholder="Kilometraje" required>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-check mt-4">
-                                                                    <input class="form-check-input" name="es_usada" id="es_usada" type="checkbox" required>
+                                                                    <input class="form-check-input" name="es_usada" id="es_usada" type="checkbox">
                                                                     <label class="form-check-label">¿Es usada?</label>
                                                                 </div>
                                                             </div>
@@ -280,36 +274,36 @@
                                                         <!-- Fila 4 -->
                                                         <div class="row mt-2">
                                                             <div class="col-md-6">
-                                                                <label>D.N.R.P.A</label>
+                                                                <label>D.N.R.P.A</label><b style="color: red;">*</b>
                                                                 <input type="text" name="dnrpa" id="dnrpa" class="form-control" placeholder="Nro. DNRPA" required>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <label>Certificado</label>
+                                                                <label>Certificado</label><b style="color: red;">*</b>
                                                                 <input type="text" class="form-control" name="nr_certificado" id="nr_certificado" placeholder="Nro. Certificado" required>
                                                             </div>
                                                         </div>
                                                         <div class="row mt-2">
                                                             <div class="col-md-4">
-                                                                <label>Precio compra</label>
+                                                                <label>Precio compra</label><b style="color: red;">*</b>
                                                                 <input type="text" class="form-control" name="precio_compra" id="precio_compra" placeholder="Precio compra" required>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <label>Precio venta</label>
+                                                                <label>Precio venta</label><b style="color: red;">*</b>
                                                                 <input type="text" class="form-control" name="precio_venta" id="precio_venta" placeholder="Precio venta" required>
                                                             </div>
-
-                                                        <div class="row mt-2">
-                                                        <div class="col-md-6">
-                                                            <label>Deposito</label>
-                                                            <select class="form-control" id="id_deposito" name="id_deposito" required>
-                                                                @foreach ($depositos as $deposito )
-                                                                <option value="{{$deposito->id}}" required>{{$deposito->nombre_deposito}}</option>
-                                                                @endforeach
-                                                            </select>
+                                                            <div class="col-md-4">
+                                                                <label>Deposito</label><b style="color: red;">*</b>
+                                                                <select class="form-control" id="id_deposito" name="id_deposito" required>
+                                                                    <option value="">Seleccione un Deposito</option>
+                                                                    @foreach ($depositos as $deposito )
+                                                                    <option value="{{$deposito->id}}" required>{{$deposito->nombre_deposito}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
                                                         </div>
 
-                                                        </div>
                                                     </div>
+
 
                                                     <!-- Segunda Columna: Imagen -->
                                                     <div class="col-md-3">
@@ -349,16 +343,19 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    </div>
                                                 </div>
+                                                <input type="hidden" id="modoEdicion" value="agregar">
+                                                <input type="hidden" id="filaEditarIndex">
                                         </div>
                                     </div>
-
+                                </div>
                         <div class="modal-footer">
-                            <button type="button" id="btn-agregar-moto" class="btn btn-primary">
+                            <button type="button" onclick="agregarMotoATabla()" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Guardar moto</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
                         </div>
-                </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -366,11 +363,35 @@
     @endsection
 
     @section('css')
-        {{-- Aquí puedes agregar estilos personalizados --}}
+    <style>
+        /* Estilo para botón deshabilitado */
+#btn-agregar-moto:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+}
+
+/* Clase adicional para más énfasis */
+.btn-disabled {
+    position: relative;
+}
+.btn-disabled::after {
+    content: "✖";
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+}
+    </style>
+
     @endsection
 
     @section('js')
         {{-- Aquí puedes agregar scripts adicionales --}}
+        <script>
+        </script>
         <script>
                 $(document).on('click', '.seleccionar-btn-proveedor', function () {
                     var id = $(this).data('id');
@@ -383,46 +404,37 @@
                     });
                 });
         </script>
-
         <script>
-            $(document).ready(function() {
-                // Inicializar DataTable
-                $('#tablaProductos').DataTable({
-                    "pageLength": 5,
-                    "language": {
-                        "emptyTable": "No hay información.",
-                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Productos",
-                        "infoEmpty": "Mostrando 0 a 0 de 0 Productos",
-                        "infoFiltered": "(Filtrado de _MAX_ total Productos)",
-                        "lengthMenu": "Mostrar _MENU_ Productos",
-                        "loadingRecords": "Cargando...",
-                        "processing": "Procesando...",
-                        "search": "Buscador:",
-                        "zeroRecords": "Sin resultados encontrados",
-                        "paginate": {
-                            "first": "Primero",
-                            "last": "Último",
-                            "next": "Siguiente",
-                            "previous": "Anterior"
-                        }
-                    }
-                });
-            });
-        </script>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('btn-agregar-moto').addEventListener('click', agregarMotoATabla);
-
            function agregarMotoATabla() {
 
-             const tablaBody = document.getElementById('tabla-motos-body') ||
-            document.querySelector('table tbody');
+            // Verificar si ya hay una moto en la tabla
+            const tablaBody = document.getElementById('tabla-motos-body');
+            if (tablaBody && tablaBody.querySelectorAll('tr').length > 0) {
+                alert('Solo puedes tener una moto a la vez. Limpia la tabla primero.');
+                return;
+            }
 
-                if (!tablaBody) {
+           // Primero validar campos
+            if (!validarCampos()) {
+                // Mostrar primer error si la validación falla
+                const primerError = document.querySelector('.is-invalid, .campo-invalido');
+                if (primerError) {
+                    primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return; // Detener la ejecución si la validación falla
+            }
+
+            if (!tablaBody) {
                     console.error('Error: No se encontró el elemento #tabla-motos-body');
                     alert('Error interno. Recarga la página e intenta nuevamente.');
                     return;
                 }
+
+
+
+            // Obtener valores (corregido para checkbox)
+
+
 
                 let contador = 1;
                 let id_marca = document.getElementById('id_marca').value;
@@ -430,7 +442,7 @@
                 let dominio = document.getElementById('dominio').value;
                 let cilindrada_moto = document.getElementById('cilindrada_moto').value;
                 let km_moto = document.getElementById('km_moto').value;
-                let es_usada = document.getElementById('es_usada').value;
+                let es_usada = document.getElementById('es_usada').checked ? '1' : '0';
                 let dnrpa = document.getElementById('dnrpa').value;
                 let nr_certificado = document.getElementById('nr_certificado').value;
                 let precio_venta = parseFloat(document.getElementById('precio_venta').value);
@@ -441,7 +453,18 @@
                 let nr_motor =   document.getElementById('nr_motor').value;
                 let nr_chasis =   document.getElementById('nr_chasis').value;
                 let precio_compra = parseFloat(document.getElementById('precio_compra').value);
-                let imagen_moto = 'sin_imagen.jpg';
+                actualizarVariable(precio_compra);
+               // Manejo CORRECTO de la imagen
+                const imagenInput = document.getElementById('imagen_moto');
+                let imagenNombre = 'sin_imagen.jpg';
+                let imagenURL = 'ruta/a/imagen_por_defecto.jpg';
+
+                if (imagenInput.files && imagenInput.files[0]) {
+                    imagenNombre = imagenInput.files[0].name;
+                    imagenURL = URL.createObjectURL(imagenInput.files[0]);
+                }
+
+
 
                  // 1. Crear fila
                 const fila = document.createElement('tr');
@@ -456,7 +479,7 @@
                             <input type="hidden" name="nr_certificado[]" class="form-control" value="${nr_certificado}" min="1" required readonly>
                             <input type="hidden" name="precio_venta[]" class="form-control" value="${precio_venta}" min="1" required readonly>
                             <input type="hidden" name="id_deposito[]" class="form-control" value="${id_deposito}" min="1" required readonly>
-                            <input type="hidden" name="imagen_moto[]" class="form-control" value="${imagen_moto}" min="1" required readonly>
+                            <input type="hidden" name="precio_compra[]" class="form-control" value="${precio_compra}" min="1" required readonly>
                             ${contador}
                         </td>
                         <td class="text-center" style="vertical-align: middle;">
@@ -488,11 +511,14 @@
                             ${nr_chasis}
                         </td>
                         <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="precio_compra[]" class="form-control" value="${precio_compra}" min="1" required readonly oninput="calcularSubtotal(this)">
-                            ${precio_compra}
+                           <input type="hidden" name="imagen_moto[]" value="${imagenNombre}">
+                             <img src="${imagenURL}" width="50" class="img-thumbnail">
                         </td>
                         <td class="text-center" style="vertical-align: middle;">
-                            <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove()">
+                           <button type="button" class="btn btn-primary btn-sm" onclick="editarMoto(this)">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="limpiarTabla()">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
@@ -507,38 +533,216 @@
 
 
                 // 3. Resetear solo los campos del modal (no el formulario completo)
-                $('#modalMoto').find('input').not('[type="hidden"]').val('');
+             /*    $('#modalMoto').find('input').not('[type="hidden"]').val(''); */
+                $('#crearMotoModal').find('input').not('[type="hidden"]').val('');
+                $('#crearMotoModal').find('select').val('');
+                document.getElementById('es_usada').checked = false;
 
+                $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal
 
-                $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal 
+                actualizarEstadoBotonAgregar();
 
+                return true;
+            }
+       </script>
+       <script>
+
+        // Función de validación (externa para poder usarla separadamente)
+    function validarCampos() {
+        let valido = true;
+        const camposObligatorios = [
+            'id_marca', 'modelo_moto', 'dominio', 'cilindrada_moto',
+            'nr_motor', 'nr_chasis', 'precio_compra', 'precio_venta',
+            'anio_moto', 'id_deposito', 'color_moto', 'km_moto', 'id_nacionalidad', 'dnrpa',
+            'nr_certificado', 'id_deposito'
+        ];
+
+        camposObligatorios.forEach(id => {
+            const campo = document.getElementById(id);
+            if (!campo) return;
+
+            const grupo = campo.closest('.form-group') || campo.closest('[class^="col-"]');
+
+            if (campo.type === 'checkbox') {
+                // Validación para checkbox
+                if (!campo.checked) {
+                    mostrarError(grupo, 'Este campo es requerido');
+                    valido = false;
+                } else {
+                    limpiarError(grupo);
+                }
+            } else {
+                // Validación para otros campos
+                if (!campo.value.trim()) {
+                    mostrarError(grupo, 'Este campo es requerido');
+                    valido = false;
+                } else {
+                    limpiarError(grupo);
+                }
             }
         });
-       </script>
 
-     {{--    <script>
-            $(document).ready(function() {
-                $('#btnRegistrar').on('click', function(e) {
-                    e.preventDefault(); // Evita que el formulario se envíe inmediatamente
+        return valido;
+    }
 
-                    // Mostrar la confirmación antes de continuar
-                    Swal.fire({
-                        title: '¿Deseas actualizar los precios de los productos?',
-                        text: "Esto actualizará los precios de compra y venta de los productos seleccionados.",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Sí, actualizar',
-                        cancelButtonText: 'No, continuar sin cambios',
-                    }).then((result) => {
-                        let actualizarPreciosFlag = result.isConfirmed ? '1' : '0';
-                        $('#actualizar_precios').val(
-                        actualizarPreciosFlag); // Actualizar el valor del campo1
+// Funciones auxiliares para mostrar/limpiar errores
+function mostrarError(grupo, mensaje) {
+    if (!grupo) return;
 
-                        $('#form-compra').submit();
-                    });
+    grupo.classList.add('campo-invalido');
+    grupo.querySelector('.invalid-feedback')?.remove();
+
+    const mensajeError = document.createElement('div');
+    mensajeError.className = 'invalid-feedback d-block';
+    mensajeError.textContent = mensaje;
+    grupo.appendChild(mensajeError);
+}
+
+function limpiarError(grupo) {
+    if (!grupo) return;
+
+    grupo.classList.remove('campo-invalido');
+    grupo.querySelector('.invalid-feedback')?.remove();
+}
+
+      </script>
+      <script>
+     function actualizarVariable(nuevoValor) {
+    // Formatear si es número
+    const valorFormateado = typeof nuevoValor === 'number'
+        ? nuevoValor.toFixed(2)
+        : nuevoValor;
+
+    // Actualizar UI
+    const elementos = [
+        {id: "mostrarVariable", prop: "textContent"},
+        {id: "total_compra", prop: "value"}
+    ];
+
+    elementos.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (el) el[item.prop] = valorFormateado;
+    });
+    }
+      </script>
+      <script>
+         function limpiarTabla() {
+                        const tablaBody = document.getElementById('tabla-motos-body');
+                if (tablaBody) {
+                    tablaBody.innerHTML = '';
+
+                    // Actualizar estado inmediatamente
+                    actualizarEstadoBotonAgregar();
+
+                    // Reiniciar completamente el tooltip
+                    const btnAgregar = document.getElementById('btn-agregar-moto');
+                    if (btnAgregar) {
+                        $(btnAgregar).tooltip('dispose');
+                        btnAgregar.removeAttribute('data-original-title');
+                    }
+
+                    console.log('Tabla limpiada y estado actualizado'); // Para depuración
+                }
+            }
+      </script>
+      <script>
+       function actualizarEstadoBotonAgregar() {
+        const tablaBody = document.getElementById('tabla-motos-body');
+        const btnAgregar = document.getElementById('btn-agregar-moto');
+
+        if (!tablaBody || !btnAgregar) return;
+
+        const tieneMotos = tablaBody.querySelector('tr') !== null;
+        btnAgregar.disabled = tieneMotos;
+
+        btnAgregar.onclick = function(e) {
+            if (btnAgregar.disabled) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Acción no permitida',
+                    text: 'Debe limpiar la tabla primero antes de agregar otra moto',
+                    confirmButtonText: 'Entendido'
                 });
-            });
-        </script> --}}
+            }
+        };
+            }
 
+        </script>
+        <script>
+        function editarMoto(btnEditar) {
+        const fila = btnEditar.closest('tr');
+        const rowData = window.table.row(fila).data();
 
+        // Configurar modal para edición
+        document.getElementById('modalActionText').textContent = 'Editar';
+        document.getElementById('modoEdicion').value = 'editar';
+        document.getElementById('filaEditarIndex').value = fila.rowIndex;
+
+        // Llenar los campos del modal con los datos de la fila
+        document.getElementById('id_marca').value = rowData[1]; // Ajusta los índices según tu estructura
+        document.getElementById('modelo_moto').value = rowData[2];
+        document.getElementById('dominio').value = rowData[3];
+        document.getElementById('cilindrada_moto').value = rowData[4];
+        document.getElementById('km_moto').value = rowData[5];
+        document.getElementById('es_usada').value = rowData[6];
+        document.getElementById('dnrpa').value = rowData[7];
+        document.getElementById('nr_certificado').value = rowData[8];
+        document.getElementById('precio_venta').value = rowData[9];
+        document.getElementById('id_deposito').value = rowData[10];
+        document.getElementById('color_moto').value = rowData[11];
+        document.getElementById('anio_moto').value = rowData[12];
+        document.getElementById('nr_motor').value = rowData[13];
+        document.getElementById('nr_chasis').value = rowData[14];
+        document.getElementById('precio_compra').value = rowData[15];
+        document.getElementById('imagen_moto').value = rowData[16];
+
+        // Mostrar el modal
+        $('#motoModal').modal('show');
+    }
+
+    // Función modificada para guardar (ahora maneja ambos modos)
+    function guardarMoto() {
+        if (!validarCampos()) {
+            return;
+        }
+
+        const modo = document.getElementById('modoEdicion').value;
+        const datosMoto = {
+            id_marca: document.getElementById('id_marca').value,
+            modelo_moto: document.getElementById('modelo_moto').value,
+            dominio: document.getElementById('dominio').value,
+            // ... obtener todos los campos ...
+        };
+
+        if (modo === 'editar') {
+            // Modo edición - actualizar fila existente
+            const filaIndex = document.getElementById('filaEditarIndex').value;
+            const fila = document.getElementById('tabla-motos-body').rows[filaIndex - 1];
+
+            // Actualizar celdas de la fila
+            fila.cells[1].textContent = datosMoto.id_marca;
+            fila.cells[2].textContent = datosMoto.modelo_moto;
+            fila.cells[3].textContent = datosMoto.dominio;
+            // ... actualizar todos los campos ...
+
+            // Si usas DataTables, actualiza los datos internos:
+            if (window.table) {
+                const rowData = window.table.row(fila).data();
+                // Actualizar los valores en rowData según corresponda
+                window.table.row(fila).data(rowData).draw(false);
+            }
+
+            alert('Moto actualizada correctamente');
+        } else {
+            // Modo agregar - crear nueva fila
+            agregarMotoATabla();
+        }
+
+        // Cerrar el modal
+        $('#motoModal').modal('hide');
+        limpiarModal();
+    }
+
+      </script>
     @endsection

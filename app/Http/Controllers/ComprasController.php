@@ -48,6 +48,7 @@ class ComprasController extends Controller
                 'fecha_compra' => 'required',
                 'numero_factura' => 'required|unique:compras,numero_factura', // Cambiado de 'number' a 'numeric'
                 'numero_remito' => 'required', // Permite que sea opcional
+                'total_compra' => 'required',
                 'id_marca' => 'required|array',
                 'id_marca.*' => 'required|string|max:255',
                 'modelo_moto' => 'required|array',
@@ -80,8 +81,8 @@ class ComprasController extends Controller
                 'nr_chasis.*' => 'required|string|max:255',
                 'precio_compra' => 'required|array',
                 'precio_compra.*' => 'numeric|min:0',
-                'imagen' => 'nullable|array',
-                'imagen.*' => 'nullable|string|max:255',
+                'imagen_moto' => 'nullable|array',
+                'imagen_moto.*' => 'nullable|string|max:255',
 
             ]);
 

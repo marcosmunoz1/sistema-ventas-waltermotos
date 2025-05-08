@@ -36,10 +36,10 @@ class Compra extends Model
             $compra = self::create([
                 'id_proveedor' => $data['id_proveedor'],
                 'fecha_compra' => $data['fecha_compra'],
-                'numero_compra' => 12,
+                'numero_compra' => 12, 
                 'numero_remito' => $data['numero_remito'] ?? null,
                 'numero_factura' => $data['numero_factura'],
-                'total_compra' => 111,  // Calcula el total real
+                'total_compra' => $data['total_compra'],  // Calcula el total real
                 'estado_compra' => 1,
             ]);
 
