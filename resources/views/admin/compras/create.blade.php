@@ -137,29 +137,29 @@
                                                         <i class="fas fa-plus"></i> Agregar moto
                                                     </a>
                                                 </div>
-                                                    <div class="card-body">
-                                                        <div class="table-responsive">
-                                                            <table id="tabla-motos" class="table table-striped table-responsive">
-                                                                <thead class="table">
-                                                                    <tr>
-                                                                        <th class="text-center" style="width: 5%">#</th>
-                                                                        <th class="text-center" style="width: 10%">Marca</th>
-                                                                        <th class="text-center" style="width: 15%">Modelo</th>
-                                                                        <th class="text-center" style="width: 15%">Color</th>
-                                                                        <th class="text-center" style="width: 15%">Año</th>
-                                                                        <th class="text-center" style="color:red 5%">Nacionalidad</th>
-                                                                        <th class="text-center" style="color:red 5%">Nr_motor</th>
-                                                                        <th class="text-center" style="color:red 5%">Nr_chasis</th>
-                                                                        <th class="text-center" style="color:red 5%">Imagen</th>
-                                                                        <th class="text-center" style="width: 20%">Acciones</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="tabla-motos-body">
-
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                                                      <table id="tabla-motos" class="table table-bordered table-nowrap">
+                                                        <thead class="thead-light">
+                                                          <tr>
+                                                            <th class="text-center sticky-column">#</th>
+                                                            <th class="text-center">Marca</th>
+                                                            <th class="text-center">Modelo</th>
+                                                            <th class="text-center d-none d-sm-table-cell">Color</th>
+                                                            <th class="text-center d-none d-md-table-cell">Año</th>
+                                                            <th class="text-center d-none d-lg-table-cell">Nacionalidad</th>
+                                                            <th class="text-center d-none d-xl-table-cell">Nr_motor</th>
+                                                            <th class="text-center d-none d-xl-table-cell">Nr_chasis</th>
+                                                            <th class="text-center d-none d-md-table-cell">Imagen</th>
+                                                            <th class="text-center sticky-column">Acciones</th>
+                                                          </tr>
+                                                        </thead>
+                                                        <tbody id="tabla-motos-body">
+                                                          <!-- Filas se generarán dinámicamente -->
+                                                        </tbody>
+                                                      </table>
                                                     </div>
+                                                  </div>
                                                 </div>
 
 
@@ -219,7 +219,7 @@
                                                                 <select class="form-control" name="id_marca" id="id_marca" required>
                                                                     <option value="">Seleccione una marca</option>
                                                                 @foreach ($marcas as $marca )
-                                                                    <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option>
+                                                                    <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option> 
                                                                 @endforeach
                                                                 </select>
                                                             </div>
@@ -393,7 +393,49 @@
     transform: translateY(-50%);
     color: #fff;
 }
-    </style>
+@media (max-width: 767px) {
+  .responsive-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Estilos para la tabla responsive */
+.table-nowrap {
+  white-space: nowrap;
+}
+
+.sticky-column {
+  position: sticky;
+  left: 0;
+  background-color: #f8f9fa;
+  z-index: 1;
+}
+
+/* Ajustar tamaño de columnas en móviles */
+@media (max-width: 360px) {
+  .table-responsive {
+    border: 0;
+  }
+
+  #tabla-motos {
+    width: auto;
+    min-width: 600px; /* Ancho mínimo para mantener estructura */
+  }
+
+  .table td, .table th {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  /* Ocultar columnas menos importantes en móviles */
+  .d-priority-1 {
+    display: none;
+  }
+}
+}
+</style>
 
     @endsection
 
@@ -546,9 +588,6 @@
                               <img src="${imagenURL}" width="50" class="img-thumbnail">
                          </td>
                          <td class="text-center" style="vertical-align: middle;">
-                            <button type="button" class="btn btn-primary btn-sm" onclick="editarMoto(this)">
-                                 <i class="fas fa-edit"></i> Editar
-                             </button>
                              <button type="button" class="btn btn-danger btn-sm" onclick="limpiarTabla()">
                                  <i class="fas fa-trash"></i>
                              </button>

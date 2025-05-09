@@ -31,7 +31,7 @@
                                         <th class="text-center" style="width: 10%">NR_compra</th>
                                         <th class="text-center" style="width: 10%">Remito</th>
                                         <th class="text-center" style="width: 10%">Factura</th>
-                                        <th class="text-center" style="width: 20%">Proveedor</th>
+                                        <th class="text-center" style="width: 10%">Proveedor</th>
                                         <th class="text-center" style="width: 10%">Total</th>
                                         <th class="text-center" style="width: 15%">Acciones</th>
                                     </tr>
