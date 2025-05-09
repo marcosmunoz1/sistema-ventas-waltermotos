@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_proveedor');
             $table->foreign('id_proveedor')->references('id')->on(table: 'proveedores')->onDelete('cascade');
             $table->date('fecha_compra');
-            $table->integer('numero_compra');
             $table->integer('numero_remito');
             $table->integer('numero_factura');
             $table->decimal('total_compra',8,2);
