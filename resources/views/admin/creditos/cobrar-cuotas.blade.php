@@ -154,92 +154,93 @@
                     </div>
                 </div>
             </div>
-
         </div>
+    </div>
 
-        <!-- Botones de acción -->
-        <div class="card-footer text-right">
-            <a href="{{ url('admin/creditos') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Volver
-            </a>
-        </div>
+    <!-- Botones de acción -->
+    <div class="card-footer text-right">
+        <a href="{{ url('admin/creditos') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+    </div>
 
 
 
-    @endsection
+@endsection
 
-    @section('css')
-        {{-- Aquí puedes agregar estilos personalizados --}}
-        <style>
-            .input-group-text {
-                width: 50%;
-                display: inline-block;
-                text-align: right;
-            }
-        </style>
-    @endsection
+@section('css')
+    {{-- Aquí puedes agregar estilos personalizados --}}
+    <style>
+        .input-group-text {
+            width: 50%;
+            display: inline-block;
+            text-align: right;
+        }
+    </style>
+@endsection
 
-    @section('js')
-        {{-- Aquí puedes agregar scripts adicionales --}}
-        <script>
-            const checkboxes = document.querySelectorAll('.fila-check');
-            const totalInput = document.getElementById('precioTotal');
-            const cuotasInput = document.getElementById('cuotas');
-            const interesInput = document.getElementById('interes');
-            const totalConInteresInput = document.getElementById('total');
-            const cuotasContainer = document.getElementById('cuotasInputsContainer');
+@section('js')
+    {{-- Aquí puedes agregar scripts adicionales --}}
+    <script>
+        const checkboxes = document.querySelectorAll('.fila-check');
+        const totalInput = document.getElementById('precioTotal');
+        const cuotasInput = document.getElementById('cuotas');
+        const interesInput = document.getElementById('interes');
+        const totalConInteresInput = document.getElementById('total');
+        const cuotasContainer = document.getElementById('cuotasInputsContainer');
 
-            let cuotasSeleccionadas = [];
+        let cuotasSeleccionadas = [];
 
-            function actualizarTotalConInteres() {
-                const subtotal = parseFloat(totalInput.value) || 0;
-                const interes = parseFloat(interesInput.value) || 0;
-                const totalFinal = subtotal + (subtotal * interes / 100);
-                totalConInteresInput.value = totalFinal.toFixed(2);
-            }
+        function actualizarTotalConInteres() {
+            const subtotal = parseFloat(totalInput.value) || 0;
+            const interes = parseFloat(interesInput.value) || 0;
+            const totalFinal = subtotal + (subtotal * interes / 100);
+            totalConInteresInput.value = totalFinal.toFixed(2);
+        }
 
-            interesInput.addEventListener('input', actualizarTotalConInteres);
+        interesInput.addEventListener('input', actualizarTotalConInteres);
 
-            function renderizarInputsOcultos() {
-                cuotasContainer.innerHTML = ''; // Limpiar anteriores
-                cuotasSeleccionadas.forEach((cuota, index) => {
-                    cuotasContainer.insertAdjacentHTML('beforeend', `
+        function renderizarInputsOcultos() {
+            cuotasContainer.innerHTML = ''; // Limpiar anteriores
+            cuotasSeleccionadas.forEach((cuota, index) => {
+                cuotasContainer.insertAdjacentHTML('beforeend', `
                     <input type="hidden" name="cuotas[${index}][id]" value="${cuota.id}">
                     <input type="hidden" name="cuotas[${index}][numero_cuota]" value="${cuota.numero_cuota}">
                     <input type="hidden" name="cuotas[${index}][valor_cuota]" value="${cuota.valor_cuota}">
                 `);
-                });
-            }
-
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const id = this.value;
-                    const numero_cuota = this.dataset.numeroCuota;
-                    const valor_cuota = parseFloat(this.dataset.valorCuota);
-
-                    if (this.checked) {
-                        cuotasSeleccionadas.push({
-                            id,
-                            numero_cuota,
-                            valor_cuota
-                        });
-                    } else {
-                        cuotasSeleccionadas = cuotasSeleccionadas.filter(c => c.id !== id);
-                    }
-
-                    const total = cuotasSeleccionadas.reduce((sum, cuota) => sum + cuota.valor_cuota, 0);
-                    totalInput.value = total.toFixed(2);
-
-                    const numeros = cuotasSeleccionadas.map(c => c.numero_cuota);
-                    cuotasInput.value = numeros.join(', ');
-
-                    actualizarTotalConInteres();
-                    renderizarInputsOcultos();
-                });
             });
-        </script>
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const id = this.value;
+                const numero_cuota = this.dataset.numeroCuota;
+                const valor_cuota = parseFloat(this.dataset.valorCuota);
+
+                if (this.checked) {
+                    cuotasSeleccionadas.push({
+                        id,
+                        numero_cuota,
+                        valor_cuota
+                    });
+                } else {
+                    cuotasSeleccionadas = cuotasSeleccionadas.filter(c => c.id !== id);
+                }
+
+                const total = cuotasSeleccionadas.reduce((sum, cuota) => sum + cuota.valor_cuota, 0);
+                totalInput.value = total.toFixed(2);
+
+                const numeros = cuotasSeleccionadas.map(c => c.numero_cuota);
+                cuotasInput.value = numeros.join(', ');
+
+                actualizarTotalConInteres();
+                renderizarInputsOcultos();
+            });
+        });
+    </script>
 
 
 
 
-    @endsection
+@endsection

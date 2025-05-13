@@ -73,7 +73,7 @@ class VentaController extends Controller
         } else {
             $venta->total_pago   = $validated['precio_venta'];
             $venta->precio_venta = $validated['precio_venta'];
-            $venta->estado_venta = 'Pagada';
+            $venta->estado_venta = 'Paga';
         }
 
         $venta->save();
@@ -174,7 +174,8 @@ class VentaController extends Controller
             if ($credito) {
                 // Elimina los detalles correctamente
                 DetalleCredito::where('id_credito', $credito->id)->delete();
-                $credito->delete();
+
+                               $credito->delete();
             }
 
             $venta->delete();

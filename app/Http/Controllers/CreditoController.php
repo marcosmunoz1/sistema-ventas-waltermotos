@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Credito;
 use App\Models\DetalleCredito;
+use App\Models\Moto;
 use App\Models\Venta;
 use Carbon\Carbon;
 use Dompdf\Adapter\PDFLib;
@@ -74,9 +75,10 @@ class CreditoController extends Controller
 
             // Actualizar crédito
             $credito = Credito::find($request->id_credito);
-            $credito->saldo_credito = max(0, $credito->saldo_credito - $total_pagado);
+            $credito->saldo_credito =  $credito->saldo_credito - $valorCuota;
             $credito->total_interes += $interesTotal;
-            if ($credito->saldo_credito = 0) {
+            //  dd($credito->saldo_credito);
+            if ($credito->saldo_credito <= 0) {
                 $credito->estado_credito = 'Pagado';
             }
             $credito->save();
@@ -86,7 +88,7 @@ class CreditoController extends Controller
             $venta->total_pago += $total_pagado;
             $venta->total_interes += $interesTotal;
             if ($venta->total_pago >= $venta->precio_venta) {
-                $venta->estado_venta = 'Pagado';
+                $venta->estado_venta = 'Paga';
             }
             $venta->save();
 
@@ -99,16 +101,13 @@ class CreditoController extends Controller
                     'id_credito' => $request->id_credito
                 ]
             ]);
-            
         });
 
-       
 
-         return redirect()->back()
+
+        return redirect()->back()
             ->with('mensaje', 'Cuotas cobradas correctamente.')
-            ->with('icono', 'success');  
-
-           
+            ->with('icono', 'success');
     }
 
 
@@ -125,13 +124,46 @@ class CreditoController extends Controller
 
         // Crear la instancia de DomPDF
         $dompdf = new Dompdf();
-        $dompdf->loadHtml($html); // Pasar HTML renderizado, no el nombre de la vista
-
-        //$dompdf->setPaper('A4', 'landscape');
+        $dompdf->loadHtml($html);
         $dompdf->render();
-        return $dompdf->stream('reporte.pdf'); // También puedes usar ->download('archivo.pdf');
+
+        // Crear el nombre del archivo
+        $fecha = \Carbon\Carbon::parse($detalle->fecha_pago)->format('d-m-Y');
+        $idCredito = $credito->id;
+        $numeroRecibo = $detalle->id ?? 'recibo';
+        $nombreArchivo = "{$fecha}_{$idCredito}_{$numeroRecibo}.pdf";
+
+        // Retornar el PDF como descarga con el nombre generado
+        return $dompdf->stream($nombreArchivo);
     }
 
-   
-    
+    public function destroy($id)
+    {
+        $credito = Credito::findOrFail($id);
+
+        DB::transaction(function () use ($credito) {
+
+            $venta = Venta::where('id_venta', $credito->id_venta)->first();
+
+            if ($credito) {
+                // Elimina los detalles correctamente
+                DetalleCredito::where('id_credito', $credito->id)->delete();
+                $credito->delete();
+            }
+
+            //actualizamos la condicion de la moto
+            $moto = Moto::find($venta->id_moto);
+            $moto->condicion = 'en_stock';
+            $moto->fecha_venta_moto = null;
+            $moto->save();
+
+            $venta->delete();
+        });
+
+
+
+        return redirect()->back()
+            ->with('mensaje', 'Credito y Venta eliminada correctamente.')
+            ->with('icono', 'success');
+    }
 }

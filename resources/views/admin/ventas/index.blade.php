@@ -43,7 +43,9 @@
                                     @foreach ($ventas as $venta)
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $venta->fecha_venta }}
+                                            <td class="text-center"style="vertical-align: middle"> 
+                                                {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}
+                                               
                                             </td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $venta->id_venta }}
                                             <td style="vertical-align: middle">
@@ -65,7 +67,7 @@
 
                                             <td class="text-center" style="vertical-align: middle">
                                                 <span
-                                                    class="badge {{ $venta->estado_venta == 'Pagado' ? 'bg-success' : 'bg-danger' }}">
+                                                    class="badge {{ $venta->estado_venta == 'Paga' ? 'bg-success' : 'bg-danger' }}">
                                                     {{ $venta->estado_venta }}
                                                 </span>
                                             </td>
