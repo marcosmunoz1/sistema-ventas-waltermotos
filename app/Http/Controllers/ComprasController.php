@@ -10,6 +10,8 @@ use App\Models\Moto;
 use App\Models\Nacionalidad;
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ComprasController extends Controller
 {
@@ -41,7 +43,10 @@ class ComprasController extends Controller
         /*   $datos = request()->all();
          return response()->json($datos); */
 
-             $request->validate([
+      /*     dd($request->file('imagen_moto'));  */
+
+
+           $request->validate([
                 'id_proveedor' => 'required|exists:proveedores,id',
                 'fecha_compra' => 'required',
                 'numero_factura' => 'required|unique:compras,numero_factura', // Cambiado de 'number' a 'numeric'
@@ -80,43 +85,53 @@ class ComprasController extends Controller
                 'precio_compra' => 'required|array',
                 'precio_compra.*' => 'numeric|min:0',
                 'imagen_moto' => 'nullable|array',
-                'imagen_moto.*' => 'nullable|string|max:255',
-
+                'imagen_moto.*' => 'image|mimes:jpeg,png,jpg',
             ]);
 
-            Compra::registrarCompra($request->all());
+             // Procesar imágenes
+            $imagenesPaths = [];
+            if ($request->hasFile('imagen_moto')) {
+            foreach ($request->file('imagen_moto') as $index => $file) {
+                if ($file->isValid()) {
+                    // Generar nombre único
+                    $nombreArchivo = 'moto_'.time().'_'.$index.'.'.$file->extension();
 
-            return redirect()->route('admin.compras.index')
-                ->with('mensaje', 'Compra registrada con éxito')
-                ->with('icono', 'success');
+                    // Guardar en storage
+                    $path = $file->store('motos', 'public');
+
+                    // Guardar ruta accesible
+                    $imagenesPaths[$index] = 'storage/motos/'.$nombreArchivo;
+
+                    Log::info("Imagen guardada: ".$path); // Para depuración
+                }
+            }
+        }
+
+            // Preparar datos para el modelo
+            $datosCompletos = array_merge($request->except('imagen_moto'), [
+                'imagen_moto' => $imagenesPaths
+            ]);
+
+            try {
+                Compra::registrarCompra($datosCompletos);
+
+                return redirect()->route('admin.compras.index')
+                    ->with('success', 'Compra registrada correctamente')
+                    ->with('icono', 'success');
+
+            } catch (\Exception $e) {
+                // Eliminar imágenes si hay error
+                foreach ($imagenesPaths as $path) {
+                    Storage::delete(str_replace('storage/', 'public/', $path));
+                }
+
+                return back()->withInput()
+                    ->with('error', 'Error al guardar: '.$e->getMessage())
+                    ->with('icono', 'error');
+            }
 
     }
 
-    public function eliminarMoto(Request $request)
-        {
-            // Obtener el ID de la moto a eliminar
-            $motoId = $request->input('motoId');
-
-            // Recuperar la moto temporal almacenada en la sesión
-            $moto_temporal = session('moto_temporal');
-
-            if ($moto_temporal && isset($moto_temporal['motoId']) && $moto_temporal['motoId'] == $motoId) {
-                // Eliminar la moto de la sesión
-                session()->forget('moto_temporal');
-
-                // Retornar una respuesta indicando éxito y enviando un array vacío
-                return response()->json([
-                    'success' => true,
-                    'motos'   => []  // Ya que no hay motos temporales
-                ]);
-            }
-
-            // Si no se encuentra la moto en la sesión
-            return response()->json([
-                'success' => false,
-                'message' => 'Moto no encontrada en la sesión'
-            ]);
-        }
 
     /**
      * Display the specified resource.
@@ -131,13 +146,13 @@ class ComprasController extends Controller
      * Show the form for editing the specified resource.
      */
 
-    public function edit( $id)
+    public function edit($id)
     {
         $proveedores = Proveedor::all();
         $marcas = Marca::all();
         $nacionalidades = Nacionalidad::all();
         $depositos = Deposito::all();
-        $motos = Moto::where('id_compra',$id)->first();
+        $motos = Moto::with('marca','nacionalidad','deposito')->where('id_compra',$id)->get();
         $compra = Compra::with('proveedor')->findOrFail($id);
         return view('admin.compras.edit', compact('proveedores','motos','marcas','nacionalidades','depositos','compra'));
     }

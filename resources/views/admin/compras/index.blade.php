@@ -28,7 +28,6 @@
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
                                         <th class="text-center" style="width: 10%">Fecha</th>
-                                        <th class="text-center" style="width: 10%">NR_compra</th>
                                         <th class="text-center" style="width: 10%">Remito</th>
                                         <th class="text-center" style="width: 10%">Factura</th>
                                         <th class="text-center" style="width: 10%">Proveedor</th>
@@ -42,7 +41,6 @@
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
                                             <td class="text-center"style="vertical-align: middle"> {{ \App\Helpers\Helpers::cambiaFormatoFecha(($compra->fecha_compra))}}</td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_compra }}
                                             </td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_remito }}
                                             </td>

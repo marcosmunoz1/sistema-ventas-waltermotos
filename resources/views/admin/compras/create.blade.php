@@ -15,7 +15,7 @@
                     <div class="card-title">Datos de Compra </div>
                 </div>
 
-                <form action="{{ url('/admin/compras/cargar-compra') }}" id="form_compra" method="post">
+                <form action="{{ url('/admin/compras/cargar-compra') }}" id="form_compra" method="POST"  enctype="multipart/form-data">
                  @csrf
                     <div class="card-body">
                         <div class="row">
@@ -219,7 +219,7 @@
                                                                 <select class="form-control" name="id_marca" id="id_marca" required>
                                                                     <option value="">Seleccione una marca</option>
                                                                 @foreach ($marcas as $marca )
-                                                                    <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option> 
+                                                                    <option value="{{$marca->id}}" data-nombre_marca="{{ $marca->nombre_marca }}">{{$marca->nombre_marca}}</option>
                                                                 @endforeach
                                                                 </select>
                                                             </div>
@@ -250,7 +250,7 @@
                                                                 <select class="form-control" name="id_nacionalidad" id="id_nacionalidad" required>
                                                                     <option value="">Seleccione una Nacionalidad</option>
                                                                 @foreach ($nacionalidades as $nacionalidad )
-                                                                <option value="{{$nacionalidad->id}}">{{$nacionalidad->pais}}</option>
+                                                                <option value="{{$nacionalidad->id}}" data-nombre_nacionalidad="{{ $nacionalidad->pais }}">{{$nacionalidad->pais}}</option>
                                                                 @endforeach
                                                                 </select>
                                                             </div>
@@ -319,8 +319,8 @@
                                                         <div class="text-center">
                                                             <div class="form-group">
                                                                 <label for="imagen">Imagen</label>
-                                                                <input type="file" id="imagen_moto" name="imagen_moto"
-                                                                    accept=".jpg, jpeg, png" class="form-control">
+                                                                <input type="file" id="imagen_moto" name="imagen_moto[]"
+                                                                    accept=".jpg, .jpeg, .png" class="form-control" multiple>
                                                                 @error('imagen_moto')
                                                                     <small style="color: red;">{{ $message }}</small>
                                                                 @enderror
@@ -350,12 +350,13 @@
                                                                     document.getElementById('imagen_moto').addEventListener('change', archivo, false);
                                                             </script>
                                                             </div>
+                                                            <!-- Contenedor para previsualización (añade esto en tu modal) -->
+                                                             <div id="preview-container" class="mt-2"></div>
                                                         </div>
                                                     </div>
                                                     </div>
                                                 </div>
-                                                <input type="hidden" id="modoEdicion" value="agregar">
-                                                <input type="hidden" id="filaEditarIndex">
+
                                         </div>
                                     </div>
                                 </div>
@@ -478,6 +479,47 @@
                 });
         </script>
         <script>
+           $('#id_marca').change(function() {
+                    var selectedOption = $(this).find('option:selected');
+                    var marcaId = selectedOption.val(); // ID de la marca (para el value)
+                    var marcaNombre = selectedOption.data('nombre_marca'); // Nombre de la marca (para mostrar)
+
+                    // Guarda el nombre en una variable global o pásalo a donde necesites
+                    window.marcaNombreSeleccionada = marcaNombre; // Opcional (solución rápida)
+                });
+              $('#id_nacionalidad').change(function() {
+                    var selectedOption = $(this).find('option:selected');
+                    var nacionalidadId = selectedOption.val(); // ID de la marca (para el value)
+                    var nacionalidadNombre = selectedOption.data('pais'); // Nombre de la marca (para mostrar)
+
+                    // Guarda el nombre en una variable global o pásalo a donde necesites
+                    window.nacionalidadNombreSeleccionada = nacionalidadNombre; // Opcional (solución rápida)
+                });
+        </script>
+        <script>
+             document.getElementById('boton-subir-imagen').addEventListener('click', function() {
+                const previewDiv = document.createElement('div');
+                        previewDiv.className = 'd-inline-block m-1';
+                    document.getElementById('imagen_moto').click();
+        });
+
+        document.getElementById('imagen_moto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('preview-imagen');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" width="150" class="img-thumbnail">
+                        <p class="small">${file.name}</p>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        </script>
+        <script>
             function agregarMotoATabla() {
 
              // Verificar si ya hay una moto en la tabla
@@ -503,14 +545,9 @@
                      return;
                  }
 
-
-
-             // Obtener valores (corregido para checkbox)
-
-
-
                  let contador = 1;
                  let id_marca = document.getElementById('id_marca').value;
+                 var marcaNombre = $('#id_marca').find('option:selected').data('nombre_marca');
                  let modelo_moto = document.getElementById('modelo_moto').value;
                  let dominio = document.getElementById('dominio').value;
                  let cilindrada_moto = document.getElementById('cilindrada_moto').value;
@@ -523,11 +560,12 @@
                  let color_moto = document.getElementById('color_moto').value;
                  let anio_moto =   document.getElementById('anio_moto').value;
                  let id_nacionalidad =   document.getElementById('id_nacionalidad').value;
+                 var nacionalidadNombre = $('#id_nacionalidad').find('option:selected').data('nombre_nacionalidad');
                  let nr_motor =   document.getElementById('nr_motor').value;
                  let nr_chasis =   document.getElementById('nr_chasis').value;
                  let precio_compra = parseFloat(document.getElementById('precio_compra').value);
                  actualizarVariable(precio_compra);
-                // Manejo CORRECTO de la imagen
+                /* // Manejo CORRECTO de la imagen
                  const imagenInput = document.getElementById('imagen_moto');
                  let imagenNombre = 'sin_imagen.jpg';
                  let imagenURL = 'ruta/a/imagen_por_defecto.jpg';
@@ -535,7 +573,26 @@
                  if (imagenInput.files && imagenInput.files[0]) {
                      imagenNombre = imagenInput.files[0].name;
                      imagenURL = URL.createObjectURL(imagenInput.files[0]);
-                 }
+                 } */
+                // Manejo CORREGIDO de la imagen
+                const imagenInput = document.getElementById('imagen_moto');
+                let imagenHTML = '';
+                let fileInputHTML = '';
+
+                if (imagenInput.files && imagenInput.files[0]) {
+                    const imagenFile = imagenInput.files[0];
+                    const imagenURL = URL.createObjectURL(imagenFile);
+
+                    imagenHTML = `<img src="${imagenURL}" width="50" class="img-thumbnail">`;
+
+                    // Crear un nuevo input file para el envío
+                    fileInputHTML = `
+                        <input type="file" name="imagen_moto[]" class="d-none"
+                            data-file-name="${imagenFile.name}" multiple>
+                    `;
+                } else {
+                    imagenHTML = '<span class="text-muted">Sin imagen</span>';
+                }
 
 
 
@@ -557,7 +614,7 @@
                          </td>
                          <td class="text-center" style="vertical-align: middle;">
                              <input type="hidden" name="id_marca[]" class="form-control" value="${id_marca}" min="1" required readonly>
-                             ${id_marca}
+                             ${marcaNombre}
                          </td>
                           <td class="text-center" style="vertical-align: middle;">
                              <input type="hidden" name="modelo_moto[]" class="form-control" value="${modelo_moto}" min="1" required readonly>
@@ -573,7 +630,7 @@
                          </td>
                           <td class="text-center" style="vertical-align: middle;">
                              <input type="hidden" name="id_nacionalidad[]" class="form-control" value="${id_nacionalidad}" min="1" required readonly >
-                             ${id_nacionalidad}
+                             ${nacionalidadNombre} 
                          </td>
                          <td class="text-center" style="vertical-align: middle;">
                              <input type="hidden" name="nr_motor[]" class="form-control" value="${nr_motor}" min="1" required readonly >
@@ -582,11 +639,10 @@
                           <td class="text-center" style="vertical-align: middle;">
                              <input type="hidden" name="nr_chasis[]" class="form-control" value="${nr_chasis}" min="1" required readonly >
                              ${nr_chasis}
-                         </td>
-                         <td class="text-center" style="vertical-align: middle;">
-                            <input type="hidden" name="imagen_moto[]" value="${imagenNombre}">
-                              <img src="${imagenURL}" width="50" class="img-thumbnail">
-                         </td>
+                        <td class="text-center" style="vertical-align: middle;">
+                            ${imagenHTML}
+                            ${fileInputHTML}
+                        </td>
                          <td class="text-center" style="vertical-align: middle;">
                              <button type="button" class="btn btn-danger btn-sm" onclick="limpiarTabla()">
                                  <i class="fas fa-trash"></i>
@@ -594,11 +650,18 @@
                          </td>
                  `;
 
+                 // Transferir el archivo al nuevo input
+                if (imagenInput.files && imagenInput.files[0]) {
+                    const newFileInput = fila.querySelector('input[name="imagen_moto[]"]');
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(imagenInput.files[0]);
+                    newFileInput.files = dataTransfer.files;
+                }
+
+
                    // 4. Agregar fila
                   tablaBody.appendChild(fila);
 
-                 // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
-                 const form = document.getElementById('formulario-compra');
 
 
 
@@ -607,6 +670,10 @@
                  $('#crearMotoModal').find('input').not('[type="hidden"]').val('');
                  $('#crearMotoModal').find('select').val('');
                  document.getElementById('es_usada').checked = false;
+
+                   // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
+                   const form = document.getElementById('formulario-compra');
+
 
                  $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal
 
