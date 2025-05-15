@@ -27,10 +27,10 @@
                                 <thead class="table-primary">
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
-                                        <th class="text-center" style="width: 10%">Fecha</th>
-                                        <th class="text-center" style="width: 10%">Remito</th>
-                                        <th class="text-center" style="width: 10%">Factura</th>
                                         <th class="text-center" style="width: 10%">Proveedor</th>
+                                        <th class="text-center" style="width: 10%">Telefono</th>
+                                        <th class="text-center" style="width: 10%">Fecha</th>
+                                        <th class="text-center" style="width: 10%">Factura</th>
                                         <th class="text-center" style="width: 10%">Total</th>
                                         <th class="text-center" style="width: 15%">Acciones</th>
                                     </tr>
@@ -40,15 +40,15 @@
                                     @foreach ($compras as $compra)
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ \App\Helpers\Helpers::cambiaFormatoFecha(($compra->fecha_compra))}}</td>
-                                            </td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_remito }}
+                                            <td class="text-center"style="vertical-align: middle">
+                                                {{ $compra->proveedor->nombre_proveedor}}</td>
+                                                <td class="text-center"style="vertical-align: middle"> {{ $compra->proveedor->telefono }}
+                                                <td class="text-center"style="vertical-align: middle"> {{ \App\Helpers\Helpers::cambiaFormatoFecha(($compra->fecha_compra))}}</td>
+                                                </td>
                                             </td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_factura }}
                                             </td>
-                                            <td class="text-center"style="vertical-align: middle">
-                                                {{ $compra->proveedor->nombre_proveedor}}</td>
-                                            <td class="text-center"style="vertical-align: middle">${{ $compra->total_compra }}</td>
+                                            <td class="text-center"style="vertical-align: middle;color:red;">${{ $compra->total_compra }}</td>
 
 
                                             <td class="text-center" style="vertical-align: middle">

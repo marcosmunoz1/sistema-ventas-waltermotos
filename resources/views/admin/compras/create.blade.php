@@ -564,7 +564,8 @@
                  let nr_motor =   document.getElementById('nr_motor').value;
                  let nr_chasis =   document.getElementById('nr_chasis').value;
                  let precio_compra = parseFloat(document.getElementById('precio_compra').value);
-                 actualizarVariable(precio_compra);
+                const nuevoTotal = calcularTotalCompra() + parseFloat(precio_compra);
+                actualizarVariable(nuevoTotal); 
                 /* // Manejo CORRECTO de la imagen
                  const imagenInput = document.getElementById('imagen_moto');
                  let imagenNombre = 'sin_imagen.jpg';
@@ -630,7 +631,7 @@
                          </td>
                           <td class="text-center" style="vertical-align: middle;">
                              <input type="hidden" name="id_nacionalidad[]" class="form-control" value="${id_nacionalidad}" min="1" required readonly >
-                             ${nacionalidadNombre} 
+                             ${nacionalidadNombre}
                          </td>
                          <td class="text-center" style="vertical-align: middle;">
                              <input type="hidden" name="nr_motor[]" class="form-control" value="${nr_motor}" min="1" required readonly >
@@ -770,6 +771,9 @@ function limpiarError(grupo) {
                 if (tablaBody) {
                     tablaBody.innerHTML = '';
 
+                    // Actualizar el total a 0 cuando se limpia la tabla
+                    actualizarVariable(0);
+
                     // Actualizar estado inmediatamente
                     actualizarEstadoBotonAgregar();
 
@@ -807,5 +811,20 @@ function limpiarError(grupo) {
         };
             }
 
+        </script>
+        <script>
+            function calcularTotalCompra() {
+            const filas = document.querySelectorAll('#tabla-motos-body tr');
+            let total = 0;
+
+            filas.forEach(fila => {
+                const inputPrecio = fila.querySelector('input[name="precio_compra[]"]');
+                if (inputPrecio) {
+                    total += parseFloat(inputPrecio.value) || 0;
+                }
+            });
+
+            return total;
+        }
         </script>
     @endsection
