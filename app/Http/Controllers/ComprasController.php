@@ -91,45 +91,31 @@ class ComprasController extends Controller
              // Procesar imágenes
             $imagenesPaths = [];
             if ($request->hasFile('imagen_moto')) {
-            foreach ($request->file('imagen_moto') as $index => $file) {
-                if ($file->isValid()) {
-                    // Generar nombre único
-                    $nombreArchivo = 'moto_'.time().'_'.$index.'.'.$file->extension();
+                foreach ($request->file('imagen_moto') as $index => $file) {
+                    if ($file->isValid()) {
+                        // Generar nombre único
+                        $nombreArchivo = 'moto_'.time().'_'.$index.'.'.$file->extension();
 
-                    // Guardar en storage
-                    $path = $file->store('motos', 'public');
+                        // Guardar en storage
+                        $path = $file->store('motos', 'public');
 
-                    // Guardar ruta accesible
-                    $imagenesPaths[$index] = 'storage/motos/'.$nombreArchivo;
+                        // Guardar ruta accesible
+                        $imagenesPaths[$index] = 'storage/motos/'.$nombreArchivo;
 
-                    Log::info("Imagen guardada: ".$path); // Para depuración
+                        Log::info("Imagen guardada: ".$path); // Para depuración
+                    }
                 }
             }
-        }
 
             // Preparar datos para el modelo
             $datosCompletos = array_merge($request->except('imagen_moto'), [
                 'imagen_moto' => $imagenesPaths
             ]);
 
-            try {
-                Compra::registrarCompra($datosCompletos);
-
-                return redirect()->route('admin.compras.index')
-                    ->with('success', 'Compra registrada correctamente')
-                    ->with('icono', 'success');
-
-            } catch (\Exception $e) {
-                // Eliminar imágenes si hay error
-                foreach ($imagenesPaths as $path) {
-                    Storage::delete(str_replace('storage/', 'public/', $path));
-                }
-
-                return back()->withInput()
-                    ->with('error', 'Error al guardar: '.$e->getMessage())
-                    ->with('icono', 'error');
-            }
-
+            Compra::registrarCompra($datosCompletos);
+            return redirect()->route('admin.compras.index')
+            ->with('mensaje','Se agrego la compra exitosamente')
+            ->with('icono','success'); 
     }
 
 
