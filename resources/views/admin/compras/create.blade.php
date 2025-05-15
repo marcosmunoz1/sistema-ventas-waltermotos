@@ -483,7 +483,6 @@
                     var selectedOption = $(this).find('option:selected');
                     var marcaId = selectedOption.val(); // ID de la marca (para el value)
                     var marcaNombre = selectedOption.data('nombre_marca'); // Nombre de la marca (para mostrar)
-
                     // Guarda el nombre en una variable global o pásalo a donde necesites
                     window.marcaNombreSeleccionada = marcaNombre; // Opcional (solución rápida)
                 });
@@ -491,7 +490,6 @@
                     var selectedOption = $(this).find('option:selected');
                     var nacionalidadId = selectedOption.val(); // ID de la marca (para el value)
                     var nacionalidadNombre = selectedOption.data('pais'); // Nombre de la marca (para mostrar)
-
                     // Guarda el nombre en una variable global o pásalo a donde necesites
                     window.nacionalidadNombreSeleccionada = nacionalidadNombre; // Opcional (solución rápida)
                 });
