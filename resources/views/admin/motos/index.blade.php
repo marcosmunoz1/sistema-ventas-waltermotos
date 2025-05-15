@@ -47,7 +47,7 @@
                                                     <!-- Marca de la moto, usando la relación -->
                                                     <td class="text-center" style="vertical-align: middle">{{ $moto->marca->nombre_marca }}</td>
                                                     <td class="text-center" style="vertical-align: middle">{{ $moto->modelo_moto }}</td>
-                                                
+
                                                     <td class="text-center" style="vertical-align: middle">{{ $moto->anio_moto }}</td>
                                                     <td class="text-center" style="vertical-align: middle">{{ $moto->nacionalidad->pais }}</td>
                                                     <td class="text-end text-success bg-light fs-5" style="vertical-align: middle">
@@ -55,7 +55,7 @@
                                                     <td class="text-end text-danger bg-light fs-5" style="vertical-align: middle">
                                                         ${{ number_format($moto->precio_venta, 2, ',', '.') }}</td>
                                                     <td class="text-center" style="vertical-align: middle">
-                                                        <img src="{{ asset('storage/' . $moto->imagen_moto) }}" width="80%"
+                                                        <img src="{{ asset($moto->imagen_moto) }}" width="80%" 
                                                         alt="">
                                                     </td>
                                                     <td class="text-center" style="vertical-align: middle">
