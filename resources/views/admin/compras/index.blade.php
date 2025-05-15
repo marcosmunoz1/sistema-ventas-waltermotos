@@ -28,9 +28,9 @@
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
                                         <th class="text-center" style="width: 10%">Proveedor</th>
-                                        <th class="text-center" style="width: 10%">Telefono</th>
+                                        <th class="text-center" style="width: 10%">Celular</th>
                                         <th class="text-center" style="width: 10%">Fecha</th>
-                                        <th class="text-center" style="width: 10%">Factura</th>
+                                        <th class="text-center" style="width: 10%">N.Factura</th>
                                         <th class="text-center" style="width: 10%">Total</th>
                                         <th class="text-center" style="width: 15%">Acciones</th>
                                     </tr>
@@ -42,13 +42,13 @@
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
                                             <td class="text-center"style="vertical-align: middle">
                                                 {{ $compra->proveedor->nombre_proveedor}}</td>
-                                                <td class="text-center"style="vertical-align: middle"> {{ $compra->proveedor->telefono }}
+                                                <td class="text-center"style="vertical-align: middle"> {{ $compra->proveedor->celular }}
                                                 <td class="text-center"style="vertical-align: middle"> {{ \App\Helpers\Helpers::cambiaFormatoFecha(($compra->fecha_compra))}}</td>
                                                 </td>
                                             </td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_factura }}
                                             </td>
-                                            <td class="text-center"style="vertical-align: middle;color:red;">${{ $compra->total_compra }}</td>
+                                            <td class="text-center"style="vertical-align: middle;color:red;">${{number_format($compra->total_compra, 2, ',', '.')  }}</td>
 
 
                                             <td class="text-center" style="vertical-align: middle">
