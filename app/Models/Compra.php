@@ -14,6 +14,11 @@ class Compra extends Model
     public function proveedor(){
         return $this->belongsTo(Proveedor::class, 'id_proveedor');
     }
+    public function moto()
+    {
+        return $this->hasMany(Moto::class, 'id_compra');
+        // Esto asume que en la tabla `motos` hay un campo `id_compra`
+    }
 
     protected $table = 'compras';
 
@@ -73,7 +78,7 @@ private function guardardetalledemoto(array $data)
             'precio_compra' => $data['precio_compra'][$index],
             'precio_venta' => $data['precio_venta'][$index],
             'estado_moto' => 'En_stock',
-            'imagen_moto' => $data['imagen_moto'][$index] ?? null  
+            'imagen_moto' => $data['imagen_moto'][$index] ?? null
         ];
 
 

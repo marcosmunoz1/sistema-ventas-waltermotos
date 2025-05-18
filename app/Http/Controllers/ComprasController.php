@@ -19,8 +19,8 @@ class ComprasController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {    $compras = Compra::with('proveedor')->orderBy("id", "desc")->get();
-        return view('admin.compras.index', compact('compras'));
+    {    $motos = Moto::with('marca','compra','nacionalidad','deposito')->orderBy("id", "desc")->get();
+        return view('admin.compras.index', compact('motos'));
     }
 
     /**
@@ -102,7 +102,7 @@ class ComprasController extends Controller
                         // Guardar ruta accesible
                         $imagenesPaths[$index] = 'storage/' . $path ;
 
-                        /* Log::info("Imagen guardada: ".$path); // Para depuración */ 
+                        /* Log::info("Imagen guardada: ".$path); // Para depuración */
                     }
                 }
             }
@@ -125,7 +125,23 @@ class ComprasController extends Controller
     public function show($id)
 
     {
+        $compra = Compra::with(['moto.marca', 'proveedor'])->findOrFail($id);
 
+        $motos = $compra->moto->map(function($moto) {
+            return [
+                'marca_nombre' => $moto->marca->nombre_marca ?? 'Sin marca',
+                'modelo' => $moto->modelo_moto,
+                'color' => $moto->color_moto,
+                'precio' => number_format($moto->precio_compra, 2) // Asumo que precio_compra está en Moto
+            ];
+        });
+
+        return response()->json([
+            'fecha_formateada' => $compra->fecha_compra, 
+            'total_formateado' => number_format($compra->total_compra, 2),
+            'proveedor_nombre' => $compra->proveedor->nombre_proveedor ?? 'N/A', // Añadido
+            'motos' => $motos
+        ]);
     }
 
     /**

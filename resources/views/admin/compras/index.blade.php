@@ -37,28 +37,35 @@
                                 </thead>
                                 <?php $contador = 1; ?>
                                 <tbody>
-                                    @foreach ($compras as $compra)
+                                    @foreach ($motos as $moto)
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
                                             <td class="text-center"style="vertical-align: middle">
-                                                {{ $compra->proveedor->nombre_proveedor}}</td>
-                                                <td class="text-center"style="vertical-align: middle"> {{ $compra->proveedor->celular }}
-                                                <td class="text-center"style="vertical-align: middle"> {{ \App\Helpers\Helpers::cambiaFormatoFecha(($compra->fecha_compra))}}</td>
+                                                {{ $moto->compra->proveedor->nombre_proveedor}}</td>
+                                                <td class="text-center"style="vertical-align: middle"> {{ $moto->compra->proveedor->celular }}
+                                                <td class="text-center"style="vertical-align: middle"> {{ \App\Helpers\Helpers::cambiaFormatoFecha(($moto->compra->fecha_compra))}}</td>
                                                 </td>
                                             </td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $compra->numero_factura }}
+                                            <td class="text-center"style="vertical-align: middle"> {{ $moto->compra->numero_factura }}
                                             </td>
-                                            <td class="text-center"style="vertical-align: middle;color:red;">${{number_format($compra->total_compra, 2, ',', '.')  }}</td>
+                                            <td class="text-center"style="vertical-align: middle;color:red;">${{number_format($moto->compra->total_compra, 2, ',', '.')  }}</td>
 
 
                                             <td class="text-center" style="vertical-align: middle">
-                                                <a href="{{ url('/admin/compras', $compra->id) }}"
-                                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                <a href="{{ url('/admin/compras/' . $compra->id . '/edit') }}"
+                                               <button class="btn btn-sm btn-info"
+                                                        onclick="abrir_modal(
+                                                            'ventana_modal',
+                                                            'Detalle Compra: {{$moto->compra->numero_factura}}',
+                                                            ['numero_factura', 'numero_remito'],
+                                                            {{ json_encode($moto->compra->toArray()) }}
+                                                        )">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <a href="{{ url('/admin/compras/' . $moto->compra->id . '/edit') }}"
                                                     class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                <form action="{{ url('/admin/compras', $compra->id) }}" method="post"
-                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $compra->id }})"
-                                                    id="miFormulario{{ $compra->id }}">
+                                                <form action="{{ url('/admin/compras', $moto->compra->id) }}" method="post"
+                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $moto->compra->id }})"
+                                                    id="miFormulario{{ $moto->compra->id }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger">
@@ -77,6 +84,69 @@
             </div>
         </div>
     </div>
+  <div class="row">
+   <div class="modal fade" id="ventana_modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="ventana_modal_titulo"></h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="ventana_modal_body">
+                <!-- Contenido dinámico -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="font-weight-bold">N° Factura</label>
+                            <input type="text" id="numero_factura" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">N° Remito</label>
+                            <input type="text" id="numero_remito" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Fecha Compra</label>
+                            <input type="text" id="fecha_compra" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">Total</label>
+                            <input type="text" id="total_compra" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h5 class="font-weight-bold mb-3">Detalle de moto</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Color</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_motos">
+                            <!-- Filas de motos se agregarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times"></i> Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
 @endsection
 
@@ -133,4 +203,70 @@
             }
         });
     </script>
+<script>
+  function abrir_modal(modal, title, campos, dato) {
+    // Mostrar el modal y establecer título
+    $(`#${modal}`).modal('show');
+    $(`#${modal}_titulo`).text(title);
+    const $tablaMotos = $('#tabla_motos'); // Definir aquí
+
+    // Limpiar tabla de motos
+    $('#tabla_motos').empty();
+/*
+    // Mostrar spinner mientras se cargan los detalles completos
+    $('#tabla_motos').html('<tr><td colspan="4" class="text-center"><div class="spinner-border"></div></td></tr>'); */
+
+    // Llenar campos básicos
+    if(campos && campos.length >= 1) {
+        campos.forEach((campo) => {
+            const $element = $(`#${campo}`);
+            if($element.length) {
+                $element.val(dato[campo] || 'N/A');
+            }
+        });
+        $('#id').val(dato.id || 0);
+    }
+
+    // Cargar detalles asíncronos solo si hay ID
+    if(dato?.id) {
+        $.ajax({
+            url: "{{url('admin/compras/show')}}/"+dato.id,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                // Validar respuesta
+                if(!response || !response.motos) {
+                    throw new Error('Respuesta inválida');
+                }
+
+                // Actualizar campos
+                $('#fecha_compra').val(response.fecha_formateada || 'N/A');
+                $('#total_compra').val(response.total_formateado ? '$' + response.total_formateado : '$0.00');
+
+                // Generar filas de motos
+                const motosHtml = response.motos.map(moto => `
+                    <tr>
+                        <td>${moto.marca_nombre || 'Sin marca'}</td>
+                        <td>${moto.modelo || 'N/A'}</td>
+                        <td>${moto.color || 'N/A'}</td>
+                        <td>${moto.precio ? '$' + moto.precio : '$0.00'}</td>
+                    </tr>
+                `).join('');
+
+                $tablaMotos.html(motosHtml);
+            },
+            error: function(xhr, status, error) {
+                let errorMsg = 'Error al cargar detalles';
+                if(xhr.responseJSON?.message) {
+                    errorMsg += `: ${xhr.responseJSON.message}`;
+                }
+                $tablaMotos.html(`<tr><td colspan="4" class="text-danger">${errorMsg}</td></tr>`);
+            }
+        });
+    } else {
+        $tablaMotos.html('<tr><td colspan="4" class="text-warning">No hay datos de motos disponibles</td></tr>');
+    }
+    }
+</script>
+
 @endsection
