@@ -137,9 +137,15 @@ class ComprasController extends Controller
         });
 
         return response()->json([
-            'fecha_formateada' => $compra->fecha_compra, 
+            'fecha_formateada' => $compra->fecha_compra,
             'total_formateado' => number_format($compra->total_compra, 2),
-            'proveedor_nombre' => $compra->proveedor->nombre_proveedor ?? 'N/A', // Añadido
+              'proveedor' => [ // Datos adicionales del proveedor
+                    'nombre_proveedor' => $compra->proveedor->nombre_proveedor ?? 'N/A',
+                    'celular' => $compra->proveedor->celular ?? 'N/A',
+                    'telefono' => $compra->proveedor->telefono ?? 'N/A',
+                    'cuit' => $compra->proveedor->cuit ?? 'N/A',
+                    'email' => $compra->proveedor->email ?? 'N/A',
+                ],
             'motos' => $motos
         ]);
     }

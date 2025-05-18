@@ -84,75 +84,133 @@
             </div>
         </div>
     </div>
-  <div class="row">
-   <div class="modal fade" id="ventana_modal" tabindex="-1" aria-hidden="true">
+ <div class="modal fade" id="ventana_modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="ventana_modal_titulo"></h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="ventana_modal_body">
-                <!-- Contenido dinámico -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="font-weight-bold">N° Factura</label>
-                            <input type="text" id="numero_factura" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label class="font-weight-bold">N° Remito</label>
-                            <input type="text" id="numero_remito" class="form-control" readonly>
+                <h5 class="modal-title" id="ventana_modal_titulo">Detalle de Compra</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>            </div>
+            <div class="modal-body">
+                <!-- Pestañas -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="compra-tab" data-toggle="tab" data-target="#compra" type="button" role="tab">
+                            <i class="fas fa-receipt"></i> Compra
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="moto-tab" data-toggle="tab" data-target="#moto" type="button" role="tab">
+                            <i class="fas fa-motorcycle"></i> Moto
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="proveedor-tab" data-toggle="tab" data-target="#proveedor" type="button" role="tab">
+                            <i class="fas fa-truck"></i> Proveedor
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Contenido de las pestañas -->
+                <div class="tab-content p-3 border border-top-0 rounded-bottom" id="myTabContent">
+                    <!-- Pestaña Compra -->
+                    <div class="tab-pane fade show active" id="compra" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="fw-bold">N° Factura</label>
+                                    <input type="text" id="numero_factura" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold">N° Remito</label>
+                                    <input type="text" id="numero_remito" class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="fw-bold">Fecha Compra</label>
+                                    <input type="text" id="fecha_compra" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold">Total</label>
+                                    <input type="text" id="total_compra" class="form-control" readonly>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="font-weight-bold">Fecha Compra</label>
-                            <input type="text" id="fecha_compra" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label class="font-weight-bold">Total</label>
-                            <input type="text" id="total_compra" class="form-control" readonly>
+
+                    <!-- Pestaña Moto -->
+                    <div class="tab-pane fade" id="moto" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th>Marca</th>
+                                        <th>Modelo</th>
+                                        <th>Color</th>
+                                        <th>Precio</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla_motos">
+                                    <!-- Datos de motos se cargarán aquí -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </div>
 
-                <hr>
-
-                <h5 class="font-weight-bold mb-3">Detalle de moto</h5>
-                <div class="table-responsive">
-                    <table class="table table-sm table-bordered">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>Marca</th>
-                                <th>Modelo</th>
-                                <th>Color</th>
-                                <th>Precio</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla_motos">
-                            <!-- Filas de motos se agregarán aquí -->
-                        </tbody>
-                    </table>
+                    <!-- Pestaña Proveedor -->
+                    <div class="tab-pane fade" id="proveedor" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="fw-bold">Nombre</label>
+                                    <input type="text" id="proveedor_nombre" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold">Cuit</label>
+                                    <input type="text" id="proveedor_cuit" class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="fw-bold">Teléfono</label>
+                                    <input type="text" id="proveedor_telefono" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold">Email</label>
+                                    <input type="text" id="proveedor_email" class="form-control" readonly>
+                                </div>
+                                  <div class="form-group">
+                                    <label class="fw-bold">Celular</label>
+                                    <input type="text" id="proveedor_celular" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    <i class="fas fa-times"></i> Cerrar
+                  <i class="fas fa-times"></i>   Cerrar
                 </button>
             </div>
         </div>
     </div>
 </div>
-</div>
 
 @endsection
 
 @section('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+<style>
+    .nav-tabs .nav-link {
+    font-weight: 500;
+}
+.nav-tabs .nav-link.active {
+    background-color: #f8f9fa;
+    border-bottom-color: #f8f9fa;
+}
+</style>
 @endsection
 
 @section('js')
@@ -212,6 +270,7 @@
 
     // Limpiar tabla de motos
     $('#tabla_motos').empty();
+    $('#proveedor_nombre, #proveedor_cuit, #proveedor_telefono, #proveedor_email', '#proveedor_celular').val('');
 /*
     // Mostrar spinner mientras se cargan los detalles completos
     $('#tabla_motos').html('<tr><td colspan="4" class="text-center"><div class="spinner-border"></div></td></tr>'); */
@@ -243,30 +302,45 @@
                 $('#fecha_compra').val(response.fecha_formateada || 'N/A');
                 $('#total_compra').val(response.total_formateado ? '$' + response.total_formateado : '$0.00');
 
-                // Generar filas de motos
-                const motosHtml = response.motos.map(moto => `
-                    <tr>
-                        <td>${moto.marca_nombre || 'Sin marca'}</td>
-                        <td>${moto.modelo || 'N/A'}</td>
-                        <td>${moto.color || 'N/A'}</td>
-                        <td>${moto.precio ? '$' + moto.precio : '$0.00'}</td>
-                    </tr>
-                `).join('');
 
-                $tablaMotos.html(motosHtml);
+                 // Pestaña Moto
+                if (response.motos && response.motos.length) {
+                    const motosHtml = response.motos.map(moto => `
+                        <tr>
+                            <td>${moto.marca_nombre || 'Sin marca'}</td>
+                            <td>${moto.modelo || 'N/A'}</td>
+                            <td>${moto.color || 'N/A'}</td>
+                            <td>${moto.precio ? '$' + moto.precio : '$0.00'}</td>
+                        </tr>
+                    `).join('');
+                    $tablaMotos.html(motosHtml);
+                } else {
+                    $tablaMotos.html('<tr><td colspan="4" class="text-warning">No hay motos registradas</td></tr>');
+                }
+
+                // Pestaña Proveedor (¡Aquí estaba el error!)
+                if (response.proveedor) {
+                    $('#proveedor_nombre').val(response.proveedor.nombre_proveedor || 'N/A');
+                    $('#proveedor_cuit').val(response.proveedor.cuit || 'N/A');  // Cambiado de 'ruc' a 'cuit'
+                    $('#proveedor_telefono').val(response.proveedor.telefono || 'N/A');
+                    $('#proveedor_email').val(response.proveedor.email || 'N/A');
+                    $('#proveedor_celular').val(response.proveedor.celular || 'N/A'); // Añadido
+                }
             },
             error: function(xhr, status, error) {
                 let errorMsg = 'Error al cargar detalles';
-                if(xhr.responseJSON?.message) {
+                if (xhr.responseJSON?.message) {
                     errorMsg += `: ${xhr.responseJSON.message}`;
                 }
                 $tablaMotos.html(`<tr><td colspan="4" class="text-danger">${errorMsg}</td></tr>`);
+                console.error("Error en AJAX:", error);
             }
         });
     } else {
-        $tablaMotos.html('<tr><td colspan="4" class="text-warning">No hay datos de motos disponibles</td></tr>');
+        $tablaMotos.html('<tr><td colspan="4" class="text-warning">No hay ID de compra</td></tr>');
     }
     }
+
 </script>
 
 @endsection
