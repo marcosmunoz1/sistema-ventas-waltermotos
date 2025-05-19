@@ -23,15 +23,16 @@
                 <div class="col-md-12 mx-auto">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped" id="miTabla">
+                            <table class="table table-striped table-sm" id="miTabla">
                                 <thead class="table-primary">
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
-                                        <th class="text-center" style="width: 5%">Fecha</th>
+                                        <th class="text-center" style="width: 10%">Fecha</th>
                                         <th class="text-center" style="width: 5%">Numero</th>
                                         <th class="text-center" style="width: 15%">Cliente</th>
                                         <th class="text-center" style="width: 5%">P. Venta</th>
-                                        <th class="text-center" style="width: 5%">Pagado</th>
+                                        <th class="text-center" style="width: 5%">Interes Mora</th>
+                                        <th class="text-center" style="width: 5%">Total Pagado</th>
                                         <th class="text-center" style="width: 5%">Forma</th>
                                         <th class="text-center" style="width: 5%">Estado</th>
                                         <th class="text-center" style="width: 10%">Acciones</th>
@@ -42,7 +43,9 @@
                                     @foreach ($ventas as $venta)
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $venta->fecha_venta }}
+                                            <td class="text-center"style="vertical-align: middle"> 
+                                                {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}
+                                               
                                             </td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $venta->id_venta }}
                                             <td style="vertical-align: middle">
@@ -50,25 +53,32 @@
                                                 {{ $venta->cliente->nombre_cliente }} </td>
                                             <td class="text-success text-right" style="vertical-align: middle">
                                                 ${{ number_format($venta->precio_venta, 2, ',', '.') }}</td>
-                                                <td class="text-danger text-right" style="vertical-align: middle">
-                                                    ${{ number_format($venta->total_pago, 2, ',', '.') }}</td>
-                                            <td class="text-center"style="vertical-align: middle">
-                                                <span class="badge bg-primary">{{ $venta->forma_pago }}</span>
+                                                <td class="text-right" style="vertical-align: middle">
+                                                    ${{ number_format($venta->total_interes, 2, ',', '.') }}</td>
+                                            <td class="text-danger text-right" style="vertical-align: middle">
+                                                ${{ number_format($venta->total_pago, 2, ',', '.') }}</td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                @php
+                                                    $color = $venta->forma_pago === 'Contado' ? 'primary' : 'warning';
+                                                @endphp
+                                                <span
+                                                    class="badge bg-{{ $color }}">{{ ucfirst($venta->forma_pago) }}</span>
                                             </td>
+
                                             <td class="text-center" style="vertical-align: middle">
                                                 <span
-                                                    class="badge {{ $venta->estado_venta == 'Pagado' ? 'bg-success' : 'bg-danger' }}">
+                                                    class="badge {{ $venta->estado_venta == 'Paga' ? 'bg-success' : 'bg-danger' }}">
                                                     {{ $venta->estado_venta }}
                                                 </span>
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">
-                                                <a href="{{ url('/admin/ventas/'. $venta->id_venta) }}"
+                                                <a href="{{ url('/admin/ventas/' . $venta->id_venta) }}"
                                                     class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                <a href="{{ url('/admin/ventas/' . $venta->id . '/edit') }}"
+                                                <a href="{{ url('/admin/ventas/' . $venta->id_venta . '/edit') }}"
                                                     class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                <form action="{{ url('/admin/ventas', $venta->id) }}" method="post"
-                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $venta->id }})"
-                                                    id="miFormulario{{ $venta->id }}">
+                                                <form action="{{ url('/admin/ventas', $venta->id_venta) }}" method="post"
+                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $venta->id_venta }})"
+                                                    id="miFormulario{{ $venta->id_venta }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger">
@@ -123,7 +133,7 @@
 
     <script>
         $('#miTabla').DataTable({
-            "pageLength": 5,
+            ordering: false,
             "language": {
                 "emptyTable": "No hay información.",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Ventas",

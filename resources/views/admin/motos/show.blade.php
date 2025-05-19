@@ -104,10 +104,10 @@
                                         <div class="text-center">
                                             <div class="form-group">
                                                 <label for="imagen">Imagen</label>
-                                                <center> 
+                                                <center>
                                                     <output id="list">
-                                                        <img src="{{ asset('storage/' . $moto->imagen_moto) }}" width="100%"
-                                                            alt="">
+                                                        <img src="{{ asset('storage/' . $moto->imagen_moto) }}"
+                                                            width="100%" alt="">
                                                     </output>
                                                 </center>
                                             </div>
@@ -161,12 +161,14 @@
                                                 <div class="mb-3">
                                                     <label>Nro. de Factura</label>
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" value="{{ $moto->compra->numero_factura }}" disabled>
-                                                        <button class="btn btn-outline-info" type="button" id="btnVerCompra"
-                                                                data-fecha="{{ $moto->compra->fecha_compra }}"
-                                                                data-factura="{{ $moto->compra->numero_factura }}"
-                                                                data-remito="{{ $moto->compra->numero_remito }}"
-                                                                data-total="{{ '$' . number_format($moto->compra->total_compra , 0, ',', '.')   }}">
+                                                        <input type="text" class="form-control"
+                                                            value="{{ $moto->compra->numero_factura }}" disabled>
+                                                        <button class="btn btn-outline-info" type="button"
+                                                            id="btnVerCompra"
+                                                            data-fecha="{{ $moto->compra->fecha_compra }}"
+                                                            data-factura="{{ $moto->compra->numero_factura }}"
+                                                            data-remito="{{ $moto->compra->numero_remito }}"
+                                                            data-total="{{ '$' . number_format($moto->compra->total_compra, 0, ',', '.') }}">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </div>
@@ -188,9 +190,18 @@
                                                 <div class="mb-3">
                                                     <label for="nroFactura" class="form-label">Cliente</label>
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" disabled>
-                                                        <button class="btn btn-outline-secondary" type="button"
-                                                            id="btnVerFactura">
+                                                        <input type="text" class="form-control"
+                                                            value="{{ $venta->cliente->apellido_cliente }}, {{ $venta->cliente->nombre_cliente }}"
+                                                            disabled>
+                                                        <button class="btn btn-outline-info" type="button"
+                                                            id="btnVerCliente"
+                                                            data-nombre-cliente="{{ $venta->cliente->apellido_cliente }}, {{ $venta->cliente->nombre_cliente }}"
+                                                            data-cuit-cliente="{{ $venta->cliente->cuit_cliente }}"
+                                                            data-dni-cliente="{{ $venta->cliente->dni_cliente }}"
+                                                            data-nacido-cliente="{{ \Carbon\Carbon::parse($venta->cliente->fecha_nacimiento)->format('d-m-Y') }}"
+                                                            data-email-cliente="{{ $venta->cliente->email_cliente }}"
+                                                            data-celular-cliente="{{ $venta->cliente->celular_cliente }}"
+                                                            data-estadoCivil-cliente="{{ $venta->cliente->estado_civil_cliente }}">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </div>
@@ -201,7 +212,7 @@
                                                 <div class="mb-3">
                                                     <label for="fechaIngreso" class="form-label">Fecha de Egreso</label>
                                                     <input type="date" class="form-control"
-                                                        value="{{ $moto->compra->numero_remito }}" disabled>
+                                                        value="{{ $venta->fecha_venta }}" disabled>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="precioVenta" class="form-label">Precio de Venta</label>
@@ -214,14 +225,13 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label for="precioCompra" class="form-label">Número de Remito</label>
-                                                    <input type="number" class="form-control"
-                                                        value="{{ $moto->compra->numero_remito }}" disabled>
+                                                    <input type="number" class="form-control" disabled>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="nroFactura" class="form-label">Nro. de Factura</label>
                                                     <div class="input-group">
                                                         <input type="text" class="form-control"
-                                                            value="{{ $moto->compra->numero_remito }}" disabled>
+                                                            value="{{ $venta->id_venta }}" disabled>
                                                         <button class="btn btn-outline-secondary" type="button"
                                                             id="btnVerFactura">
                                                             <i class="fas fa-eye"></i>
@@ -254,7 +264,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-info text-white">
                     <h5 class="modal-title" id="modalProveedorLabel">Información del Proveedor</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p><strong>Nombre:</strong> <span id="nombreProveedor"></span></p>
@@ -272,7 +282,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-info text-white">
                     <h5 class="modal-title" id="modalCompraLabel">Información de la Compra</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p><strong>Fecha:</strong> <span id="fechaCompra"></span></p>
@@ -280,6 +290,27 @@
                     <p><strong>Remito:</strong> <span id="remitoCompra"></span></p>
                     <p><strong>Total:</strong> <span id="totalCompra"></span></p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="modalProveedorLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="modalProveedorLabel">Información del Cliente</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Nombre:</strong> <span id="nombreCliente"></span></p>
+                    <p><strong>DNI:</strong> <span id="dniCliente"></span></p>
+                    <p><strong>CUIT:</strong> <span id="cuitCliente"></span></p>
+                    <p><strong>Nacido:</strong> <span id="nacidoCliente"></span></p>
+                    <p><strong>Teléfono:</strong> <span id="celularCliente"></span></p>
+                    <p><strong>e-Mail:</strong> <span id="emailCliente"></span></p>
+                    <p><strong>Estado Civil:</strong> <span id="estadoCivilCliente"></span></p>
+                </div>
+
             </div>
         </div>
     </div>
@@ -303,6 +334,27 @@
             document.getElementById('telefonoProveedor').textContent = telefono;
 
             var myModal = new bootstrap.Modal(document.getElementById('modalProveedor'));
+            myModal.show();
+        });
+
+        document.getElementById('btnVerCliente').addEventListener('click', function() {
+            const nombre = this.getAttribute('data-nombre-cliente');
+            const dni = this.getAttribute('data-dni-cliente');
+            const cuit = this.getAttribute('data-cuit-cliente');
+            const nacido = this.getAttribute('data-nacido-cliente');
+            const email = this.getAttribute('data-email-cliente');
+            const estadoCivil = this.getAttribute('data-estadoCivil-cliente');
+            const celular = this.getAttribute('data-celular-cliente');
+
+            document.getElementById('nombreCliente').textContent = nombre;
+            document.getElementById('dniCliente').textContent = dni;
+            document.getElementById('cuitCliente').textContent = cuit;
+            document.getElementById('nacidoCliente').textContent = nacido;
+            document.getElementById('emailCliente').textContent = email;
+            document.getElementById('estadoCivilCliente').textContent = estadoCivil;
+            document.getElementById('celularCliente').textContent = celular;
+
+            var myModal = new bootstrap.Modal(document.getElementById('modalCliente'));
             myModal.show();
         });
 

@@ -17,34 +17,41 @@
                             <h6 class="text-center text-info"><i class="fas fa-user"></i> Cliente </h6>
                         </div>
                         <div class="card-body">
-                            <h6><strong>Cliente: </strong> {{ $cliente->apellido_cliente }}, {{ $cliente->nombre_cliente }}
+                            <h6><strong>Cliente: </strong> {{ $cliente->apellido_cliente }},
+                                {{ $cliente->nombre_cliente }}
                             </h6>
                             <h6><strong>Email: </strong> {{ $cliente->email_cliente }}</h6>
+                            <h6><strong>CUIT: </strong> {{ $cliente->cuit_cliente }}</h6>
                             <h6><strong>DNI: </strong> {{ $cliente->dni_cliente }}</h6>
-                            <h6><strong>Estado Civil: </strong> {{ $cliente->estado_civil_cliente }}</h6>
+                            <h6><strong>Fecha Nacimiento: </strong> {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}</h6>
+                            <h6><strong>Telefono: </strong> {{ $cliente->celular_cliente }}</h6>
+                            <h6><strong>Estado Civil: </strong> {{ $cliente->estado_civil_cliente }}
+                            </h6>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card-header">
-                            <h6 class="text-center text-info"><i class="fas fa-user"></i> Conyuge </h6>
+                            <h6 class="text-center text-info"><i class="fas fa-user-friends"></i> Conyuge </h6>
                         </div>
                         <div class="card-body">
                             <div class="mx-2 mt-2">
                                 <h6><strong>Conyugue:</strong>
-                                    {{ $cliente->conyugue->apellido_conyugue }}, {{ $cliente->conyugue->nombre_conyugue }}
-                                </h6>
-                                <h6><strong>Teléfono:</strong> {{ $cliente->conyugue->celular_conyugue }}</h6>
-                                <h6><strong>Fecha Nacimiento:</strong>
-                                    {{ \Carbon\Carbon::parse($cliente->conyugue->fecha_nacimiento_conyugue)->format('d-m-Y') }}
+                                    {{ $cliente->conyugue->apellido_conyugue }},
+                                    {{ $cliente->conyugue->nombre_conyugue }}
                                 </h6>
                                 <h6><strong>DNI:</strong> {{ $cliente->conyugue->dni_conyugue }}</h6>
-                                <br>
+                                <h6><strong>Fecha Nacimiento:</strong>
+                                    {{ \Carbon\Carbon::parse($cliente->conyugue->fecha_nacimiento_conyugue)->format('d-m-Y') }}
+                                </h6>                  
+                                <h6><strong>Teléfono:</strong>
+                                    {{ $cliente->conyugue->celular_conyugue }}</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card-header">
-                            <h6 class="text-center text-info"><i class="fas fa-user"></i> Valores </h6>
+                            <h6 class="text-center text-info"><i class="fas fa-file-invoice-dollar"></i>
+                                Valores </h6>
                         </div>
                         <div class="card-body">
                             <div class="d-flex">
@@ -63,7 +70,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card-header">
-                            <h6 class="text-center text-info"><i class="fas fa-user"></i> Moto </h6>
+                            <h6 class="text-center text-info"><i class="fas fa-motorcycle"></i>
+                                Moto </h6>
                         </div>
                         <div class="card-body">
                             <div class="mx-2 mt-2">
