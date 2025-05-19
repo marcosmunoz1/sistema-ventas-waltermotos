@@ -55,7 +55,7 @@
 @section('adminlte_js')
     @stack('js')
     @yield('js')
-    <script src="{{asset('js/funciones.js')}}"></script>
+
 
     @if (Session::has('mensaje') && Session::has('icono'))
         <script>
@@ -69,7 +69,7 @@
                 timer: 4000 // Se cerrará automáticamente después de 4 segundos
             });
         </script>
-        <script src="{{asset('js/funciones.js')}}"></script>
+        
     @endif
 
 @stop
