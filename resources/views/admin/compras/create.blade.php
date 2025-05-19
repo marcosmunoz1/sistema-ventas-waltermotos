@@ -563,7 +563,7 @@
                  let nr_chasis =   document.getElementById('nr_chasis').value;
                  let precio_compra = parseFloat(document.getElementById('precio_compra').value);
                 const nuevoTotal = calcularTotalCompra() + parseFloat(precio_compra);
-                actualizarVariable(nuevoTotal); 
+                actualizarVariable(nuevoTotal);
                 /* // Manejo CORRECTO de la imagen
                  const imagenInput = document.getElementById('imagen_moto');
                  let imagenNombre = 'sin_imagen.jpg';
