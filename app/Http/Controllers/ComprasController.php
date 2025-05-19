@@ -9,6 +9,7 @@ use App\Models\Marca;
 use App\Models\Moto;
 use App\Models\Nacionalidad;
 use App\Models\Proveedor;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -125,15 +126,28 @@ class ComprasController extends Controller
     public function show($id)
 
     {
-        $compra = Compra::with(['moto.marca', 'proveedor'])->findOrFail($id);
+        $compra = Compra::with(['moto.marca','moto.nacionalidad','moto.deposito', 'proveedor'])->findOrFail($id);
 
         $motos = $compra->moto->map(function($moto) {
             return [
-                'marca_nombre' => $moto->marca->nombre_marca ?? 'Sin marca',
+                 'marca_nombre' => $moto->marca->nombre_marca ?? 'Sin marca',
                 'modelo' => $moto->modelo_moto,
+                'dominio' => $moto->dominio,
+                'cilindrada_moto' => $moto->cilindrada_moto,
                 'color' => $moto->color_moto,
-                'precio' => number_format($moto->precio_compra, 2) // Asumo que precio_compra está en Moto
-            ];
+                'nacionalidad' => $moto->nacionalidad->pais ?? 'N/A',
+                'anio_moto' => $moto->anio_moto,
+                'km_moto' => $moto->km_moto,
+                'es_usada' => $moto->es_usada,
+                'nr_motor' => $moto->nr_motor,
+                'nr_chasis' => $moto->nr_chasis,
+                'dnrpa' => $moto->dnrpa,
+                'nr_certificado' => $moto->nr_certificado,
+                'precio_compra' => $moto->precio_compra,
+                'precio_venta' => $moto->precio_venta,
+                'deposito' => $moto->deposito->nombre_deposito ?? 'N/A',
+                'imagen_moto' => $moto->imagen_moto
+                ];
         });
 
         return response()->json([
@@ -178,10 +192,44 @@ class ComprasController extends Controller
      */
     public function destroy($id)
     {
+      try {
+        $compra = Compra::findOrFail($id);
+        $moto = Moto::where('id_compra', $id)->first();
 
-        Compra::destroy($id);
+        // Verificar si existe venta asociada
+        if ($moto) {
+            $existeVenta = Venta::where('id_moto', $moto->id)->exists();
+
+            if ($existeVenta) {
+                return redirect()->route('admin.compras.index')
+                    ->with('swal', [
+                        'title' => 'Error',
+                        'text' => 'No se puede eliminar la compra porque la moto tiene ventas asociadas',
+                        'icon' => 'error'
+                    ]);
+            }
+
+            // Eliminar la moto primero si existe
+            $moto->delete();
+        }
+
+        // Eliminar la compra
+        $compra->delete();
+
         return redirect()->route('admin.compras.index')
-        ->with('mensaje','Se elimino la compra exitosamente')
-        ->with('icono','success');
-    }
+            ->with('swal', [
+                'title' => 'Éxito',
+                'text' => 'Compra eliminada correctamente',
+                'icon' => 'success'
+            ]);
+
+    } catch (\Exception $e) {
+        return redirect()->route('admin.compras.index')
+            ->with('swal', [
+                'title' => 'Error',
+                'text' => 'Ocurrió un error al eliminar: ' . $e->getMessage(),
+                'icon' => 'error'
+            ]);
+    } 
+}
 }

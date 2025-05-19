@@ -21,6 +21,18 @@
                     </div>
                 </div>
                 <div class="col-md-12 mx-auto mt-4">
+                     @if(Session::has('swal'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                title: '{{ Session::get("swal.title") }}',
+                                text: '{{ Session::get("swal.text") }}',
+                                icon: '{{ Session::get("swal.icon") }}',
+                                confirmButtonText: 'Aceptar'
+                            });
+                        });
+                    </script>
+                    @endif
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped" id="tablaCompras">
@@ -55,7 +67,7 @@
                                                <button class="btn btn-sm btn-info"
                                                         onclick="abrir_modal(
                                                             'ventana_modal',
-                                                            'Detalle Compra: {{$moto->compra->numero_factura}}',
+                                                            'Detalle de Compra: NR.FACTURA {{$moto->compra->numero_factura}}',
                                                             ['numero_factura', 'numero_remito'],
                                                             {{ json_encode($moto->compra->toArray()) }}
                                                         )">
@@ -85,10 +97,10 @@
         </div>
     </div>
  <div class="modal fade" id="ventana_modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="ventana_modal_titulo">Detalle de Compra</h5>
+                <h5 class="modal-title" id="ventana_modal_titulo"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="close">
                         <span aria-hidden="true">&times;</span>
                     </button>            </div>
@@ -141,21 +153,114 @@
                     </div>
 
                     <!-- Pestaña Moto -->
+                       <!-- Pestaña Moto -->
                     <div class="tab-pane fade" id="moto" role="tabpanel">
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered">
-                                <thead class="bg-light">
-                                    <tr>
-                                        <th>Marca</th>
-                                        <th>Modelo</th>
-                                        <th>Color</th>
-                                        <th>Precio</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabla_motos">
-                                    <!-- Datos de motos se cargarán aquí -->
-                                </tbody>
-                            </table>
+                        <div class="card card-outline">
+                            <div class="col-md-12 mx-auto mt-2">
+                                <div class="card card-info">
+                                    <div class="card-body">
+                                        <!-- Datos de Moto -->
+                                        <div class="row">
+                                            <!-- Primera Columna: Datos -->
+                                            <div class="col-md-9">
+                                                <!-- Fila 1 -->
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label>Marca</label>
+                                                        <input type="text" id="moto_marca" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label>Modelo</label>
+                                                        <input type="text" id="moto_modelo" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Dominio</label>
+                                                        <input type="text" id="moto_dominio" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Cilindrada</label>
+                                                        <input type="text" id="moto_cilindrada" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                                <!-- Fila 2 -->
+                                                <div class="row mt-2">
+                                                    <div class="col-md-2">
+                                                        <label>Color</label>
+                                                        <input type="text" id="moto_color" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label>Nacionalidad</label>
+                                                        <input type="text" id="moto_nacionalidad" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Año</label>
+                                                        <input type="text" id="moto_anio" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Km</label>
+                                                        <input type="text" id="moto_km" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-check mt-4">
+                                                            <input class="form-check-input" id="moto_usada" type="checkbox" disabled>
+                                                            <label class="form-check-label">¿Es usada?</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Fila 3 -->
+                                                <div class="row mt-2">
+                                                    <div class="col-md-6">
+                                                        <label>Nro. Motor</label>
+                                                        <input type="text" id="moto_motor" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>Nro. Chasis</label>
+                                                        <input type="text" id="moto_chasis" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                                <!-- Fila 4 -->
+                                                <div class="row mt-2">
+                                                    <div class="col-md-6">
+                                                        <label>D.N.R.P.A</label>
+                                                        <input type="text" id="moto_dnrpa" class="form-control" readonly>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>Certificado</label>
+                                                        <input type="text" class="form-control" id="moto_certificado" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="col-md-4">
+                                                        <label>Precio compra</label>
+                                                        <input type="text" class="form-control" id="moto_precio_compra" readonly>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label>Precio venta</label>
+                                                        <input type="text" class="form-control" id="moto_precio_venta" readonly>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label>Deposito</label>
+                                                        <input type="text" class="form-control" id="moto_deposito" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Segunda Columna: Imagen -->
+                                           <div class="col-md-3">
+                                                <div class="text-center">
+                                                    <div class="form-group">
+                                                        <label for="imagen">Imagen</label>
+                                                        <div id="moto_imagen_container" class="mt-2">
+                                                            <img id="moto_imagen" src="" class="img-fluid" style="max-height: 200px; display: none;">
+                                                            <p class="text-muted" id="no-image-message">No hay imagen disponible</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -181,7 +286,9 @@
                                     <label class="fw-bold">Email</label>
                                     <input type="text" id="proveedor_email" class="form-control" readonly>
                                 </div>
-                                  <div class="form-group">
+                            </div>
+                             <div class="col-md-6">
+                                <div class="form-group">
                                     <label class="fw-bold">Celular</label>
                                     <input type="text" id="proveedor_celular" class="form-control" readonly>
                                 </div>
@@ -191,6 +298,10 @@
                 </div>
             </div>
             <div class="modal-footer">
+               <a type="button" class="btn btn-warning" id="editarCompraLink" style="display: none;"
+                data-toggle="tooltip" title="Editar esta compra">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                   <i class="fas fa-times"></i>   Cerrar
                 </button>
@@ -263,6 +374,69 @@
     </script>
 <script>
   function abrir_modal(modal, title, campos, dato) {
+     compraActualId = dato.id || null;
+
+    const editLink = $('#editarCompraLink');
+    if (compraActualId) {
+        editLink.show();
+        // Remover cualquier evento previo
+        editLink.off('click');
+
+        // Asignar nuevo evento con SweetAlert2
+    editLink.on('click', async function(e) {
+        e.preventDefault();
+
+        // Obtener imagen y verificar si carga correctamente
+        const imagenMotoUrl = $('#moto_imagen').attr('src');
+        let imagenValida = false;
+
+        if (imagenMotoUrl) {
+            imagenValida = await verificarImagen(imagenMotoUrl);
+        }
+
+        const imagenMostrar = imagenValida ? imagenMotoUrl : '{{ asset("images/default-moto.png") }}';
+
+        Swal.fire({
+            title: '¿Editar esta compra?',
+            text: "Serás redirigido al formulario de edición",
+            html: `
+            <div class="text-center">
+                <img src="${imagenMostrar}"
+                class="img-fluid rounded mb-2 border"
+                style="max-height: 100px;"
+                alt="Imagen de la moto">
+                <p>Serás redirigido al formulario de edición</p>
+                </div>
+                `,
+                showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, editar',
+            cancelButtonText: 'Cancelar',
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `{{ url('/admin/compras') }}/${compraActualId}/edit`;
+            }
+        });
+    });
+
+    // Función para verificar si la imagen existe
+    function verificarImagen(url) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = url;
+        });
+    }
+    } else {
+        editLink.hide();
+    }
+
+
+    // Inicializar tooltip
+    $('[data-toggle="tooltip"]').tooltip();
     // Mostrar el modal y establecer título
     $(`#${modal}`).modal('show');
     $(`#${modal}_titulo`).text(title);
@@ -271,6 +445,8 @@
     // Limpiar tabla de motos
     $('#tabla_motos').empty();
     $('#proveedor_nombre, #proveedor_cuit, #proveedor_telefono, #proveedor_email', '#proveedor_celular').val('');
+    $('#moto_imagen').attr('src', '');
+
 /*
     // Mostrar spinner mientras se cargan los detalles completos
     $('#tabla_motos').html('<tr><td colspan="4" class="text-center"><div class="spinner-border"></div></td></tr>'); */
@@ -303,19 +479,74 @@
                 $('#total_compra').val(response.total_formateado ? '$' + response.total_formateado : '$0.00');
 
 
-                 // Pestaña Moto
-                if (response.motos && response.motos.length) {
-                    const motosHtml = response.motos.map(moto => `
-                        <tr>
-                            <td>${moto.marca_nombre || 'Sin marca'}</td>
-                            <td>${moto.modelo || 'N/A'}</td>
-                            <td>${moto.color || 'N/A'}</td>
-                            <td>${moto.precio ? '$' + moto.precio : '$0.00'}</td>
-                        </tr>
-                    `).join('');
-                    $tablaMotos.html(motosHtml);
-                } else {
-                    $tablaMotos.html('<tr><td colspan="4" class="text-warning">No hay motos registradas</td></tr>');
+                // Pestaña Moto (solo mostramos la primera moto si hay varias)
+                if(response.motos && response.motos.length) {
+                    const moto = response.motos[0]; // Tomamos la primera moto
+
+                    $('#moto_marca').val(moto.marca_nombre || 'N/A');
+                    $('#moto_modelo').val(moto.modelo || 'N/A');
+                    $('#moto_dominio').val(moto.dominio || 'N/A');
+                    $('#moto_cilindrada').val(moto.cilindrada_moto || 'N/A');
+                    $('#moto_color').val(moto.color || 'N/A');
+                    $('#moto_nacionalidad').val(moto.nacionalidad || 'N/A');
+                    $('#moto_anio').val(moto.anio_moto || 'N/A');
+                    $('#moto_km').val(moto.km_moto || 'N/A');
+                    $('#moto_usada').prop('checked', moto.es_usada == 1);
+                    $('#moto_motor').val(moto.nr_motor || 'N/A');
+                    $('#moto_chasis').val(moto.nr_chasis || 'N/A');
+                    $('#moto_dnrpa').val(moto.dnrpa || 'N/A');
+                    $('#moto_certificado').val(moto.nr_certificado || 'N/A');
+                    $('#moto_precio_compra').val(moto.precio_compra ? '$' + moto.precio_compra : '$0.00');
+                    $('#moto_precio_venta').val(moto.precio_venta ? '$' + moto.precio_venta : '$0.00');
+                    $('#moto_deposito').val(moto.deposito || 'N/A');
+
+                  if (moto.imagen_moto) {
+                    // Construir la URL correctamente
+                    const imageUrl = "{{ asset('storage') }}/" + moto.imagen_moto.replace('storage/', '');
+
+                    // Crear elemento de imagen
+                    const imgElement = $('#moto_imagen');
+
+                    // Configurar eventos
+                    imgElement.off('error.load').on({
+                        'load': function() {
+                            $(this).show();
+                            $('#no-image-message').hide();
+                            console.log('Imagen cargada con éxito:', imageUrl);
+                        },
+                        'error': function() {
+                            $(this).hide();
+                            $('#no-image-message').show().html(`
+                                <div class="alert alert-warning p-2">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    No se pudo cargar la imagen
+                                </div>
+                            `);
+                            console.error('Error al cargar imagen:', imageUrl);
+
+                            // Depuración adicional
+                            fetch(imageUrl, { method: 'HEAD' })
+                                .then(response => {
+                                    console.log('Estado de la imagen:', response.status);
+                                    if (response.status === 404) {
+                                        console.warn('La imagen no existe en el servidor');
+                                    }
+                                })
+                                .catch(error => console.error('Error en verificación:', error));
+                        }
+                    });
+
+                        // Asignar la fuente
+                        imgElement.attr('src', imageUrl);
+                    } else {
+                        $('#moto_imagen').hide();
+                        $('#no-image-message').show().html(`
+                            <div class="text-muted">
+                                <i class="fas fa-image fa-2x mb-2"></i>
+                                <p>No hay imagen registrada</p>
+                            </div>
+                        `);
+                    }
                 }
 
                 // Pestaña Proveedor (¡Aquí estaba el error!)
