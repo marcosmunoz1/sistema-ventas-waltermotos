@@ -47,7 +47,7 @@
                                                 <td class="text-success text-center" style="vertical-align: middle">
                                                     ${{ number_format($detalle->valor_cuota, 2, ',', '.') }}
                                                 </td>
-                                                <td class="text-success text-center" style="vertical-align: middle">
+                                                <td class="text-info text-right" style="vertical-align: middle">
                                                     ${{ number_format($detalle->interes_mora, 2, ',', '.') }}
                                                 </td>
                                                 <td class="text-center" style="vertical-align: middle">
@@ -92,7 +92,7 @@
                                 <p class="mb-0 mx-2">{{ $credito->cantidad_cuotas }} </p>
                             </div>
                             <div class="d-flex"><label>Interés por Mora:</label>
-                                <p class="mb-0 mx-2 text-warning">$
+                                <p class="mb-0 mx-2 text-info">$
                                     {{ number_format($credito->total_interes, 2, ',', '.') }}</p>
                                     
                             </div>
