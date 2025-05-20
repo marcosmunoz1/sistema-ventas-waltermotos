@@ -211,12 +211,12 @@
                             <table id="tablaClientes" class="table table-striped table-bordered table-hover table-sm">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th scope="col" class="text-center" style="width: 5%;">...</th>
-                                        <th scope="col" style="width: 25%;">Apellido</th>
-                                        <th scope="col" style="width: 25%;">Nombre</th>
-                                        <th scope="col" style="width: 10%;">DNI</th>
-                                        <th scope="col" style="width: 20%;">Teléfono</th>
-                                        <th scope="col" style="width: 20%;">e-Mail</th>
+                                        <th scope="col" class="text-center" >...</th>
+                                        <th scope="col" >Apellido</th>
+                                        <th scope="col" >Nombre</th>
+                                        <th scope="col" >DNI</th>
+                                        <th scope="col" >Teléfono</th>
+                                        <th scope="col" >e-Mail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -593,59 +593,60 @@
         {{-- Script de Clientes --}}
         <script>
             $(document).ready(function() {
-                        $('#tablaClientes').DataTable({
-                                "pageLength": 5,
-                                "language": {
-                                    "emptyTable": "No hay información.",
-                                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Clientes",
-                                    "infoEmpty": "Mostrando 0 a 0 de 0 Clientes",
-                                    "infoFiltered": "(Filtrado de _MAX_ total Clientes)",
-                                    "lengthMenu": "Mostrar _MENU_ Clientes",
-                                    "loadingRecords": "Cargando...",
-                                    "processing": "Procesando...",
-                                    "search": "Buscador:",
-                                    "zeroRecords": "Sin resultados encontrados",
-                                    "paginate": {
-                                        "first": "Primero",
-                                        "last": "Último",
-                                        "next": "Siguiente",
-                                        "previous": "Anterior"
-                                    }
-                                });
-                        });
-
-
-                    // Función para seleccionar el cliente desde el modal
-                    function seleccionarClienteDesdeModal(id, apellido, nombre, dni, telefono, email, estado_civil_cliente,
-                        apellido_conyugue, nombre_conyugue, dni_conyugue, celular_conyugue, fecha_nacimiento_conyugue) {
-
-                        const nombreCompleto = apellido + ', ' + nombre;
-                        document.querySelector('input[name="id_cliente"]').value = id;
-
-                        // Mostrar los datos del cliente 
-                        document.getElementById('clienteNombreCompleto').textContent = nombreCompleto;
-                        document.getElementById('clienteTelefono').textContent = telefono;
-                        document.getElementById('clienteEmail').textContent = email;
-                        document.getElementById('clienteDni').textContent = dni;
-                        document.getElementById('clienteEstado').textContent = estado_civil_cliente;
-
-                        // Mostrar los datos del cónyuge, solo si existen
-                        if (apellido_conyugue && nombre_conyugue) {
-                            const nombreCompletoConyugue = apellido_conyugue + ', ' + nombre_conyugue;
-                            document.getElementById('conyugueNombreCompleto').textContent = nombreCompletoConyugue;
-                            document.getElementById('conyugueTelefono').textContent = celular_conyugue || 'No disponible';
-                            document.getElementById('conyugueFecha').textContent = fecha_nacimiento_conyugue || 'No disponible';
-                            document.getElementById('conyugueDni').textContent = dni_conyugue || 'No disponible';
-                        } else {
-                            document.getElementById('conyugueNombreCompleto').textContent = 'No Tiene';
-                            document.getElementById('conyugueTelefono').textContent = '';
-                            document.getElementById('conyugueFecha').textContent = '';
-                            document.getElementById('conyugueDni').textContent = '';
+                $('#tablaClientes').DataTable({
+                    "pageLength": 5,
+                    "language": {
+                        "emptyTable": "No hay información.",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Clientes",
+                        "infoEmpty": "Mostrando 0 a 0 de 0 Clientes",
+                        "infoFiltered": "(Filtrado de _MAX_ total Clientes)",
+                        "lengthMenu": "Mostrar _MENU_ Clientes",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscador:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Último",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
                         }
+                    },
+                });
+            });
 
-                        // Cerrar el modal
-                        $('#buscarClienteModal').modal('hide');
-                    }
+
+            // Función para seleccionar el cliente desde el modal
+            function seleccionarClienteDesdeModal(id, apellido, nombre, dni, telefono, email, estado_civil_cliente,
+                apellido_conyugue, nombre_conyugue, dni_conyugue, celular_conyugue, fecha_nacimiento_conyugue) {
+
+                const nombreCompleto = apellido + ', ' + nombre;
+                document.querySelector('input[name="id_cliente"]').value = id;
+
+                // Mostrar los datos del cliente 
+                document.getElementById('clienteNombreCompleto').textContent = nombreCompleto;
+                document.getElementById('clienteTelefono').textContent = telefono;
+                document.getElementById('clienteEmail').textContent = email;
+                document.getElementById('clienteDni').textContent = dni;
+                document.getElementById('clienteEstado').textContent = estado_civil_cliente;
+
+                // Mostrar los datos del cónyuge, solo si existen
+                if (apellido_conyugue && nombre_conyugue) {
+                    const nombreCompletoConyugue = apellido_conyugue + ', ' + nombre_conyugue;
+                    document.getElementById('conyugueNombreCompleto').textContent = nombreCompletoConyugue;
+                    document.getElementById('conyugueTelefono').textContent = celular_conyugue || 'No disponible';
+                    document.getElementById('conyugueFecha').textContent = fecha_nacimiento_conyugue || 'No disponible';
+                    document.getElementById('conyugueDni').textContent = dni_conyugue || 'No disponible';
+                } else {
+                    document.getElementById('conyugueNombreCompleto').textContent = 'No Tiene';
+                    document.getElementById('conyugueTelefono').textContent = '';
+                    document.getElementById('conyugueFecha').textContent = '';
+                    document.getElementById('conyugueDni').textContent = '';
+                }
+
+                // Cerrar el modal
+                $('#buscarClienteModal').modal('hide');
+            }
         </script>
 
         {{-- Script de Motos --}}
