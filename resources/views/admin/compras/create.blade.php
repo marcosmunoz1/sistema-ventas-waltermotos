@@ -192,11 +192,12 @@
                 aria-labelledby="crearRolLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
-                        <div class="modal-header text-white" style="background-color: #252652">
-                            <h5 class="modal-title" id="modalMotoTitle"><i class="fa-solid fa-motorcycle"></i><span
-                                    id="modalActionText">Agregar</span> detalle de la moto</h5>
-                            </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                         <div class="modal-header text-white d-flex justify-content-center" style="background-color: #252652"  >
+                            <h4 class="modal-title text-center">
+                                <i class="fa-solid fa-motorcycle"></i>
+                                <span id="modalActionText">Agregar</span> detalle de la moto  <i class="fa-solid fa-motorcycle"></i>
+                            </h4>
+                            <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal" aria-label="close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -344,10 +345,7 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-
                                                         </div>
-
-
                                                         <!-- Segunda Columna: Imagen -->
                                                         <div class="col-md-3">
                                                             <div class="text-center">
@@ -361,31 +359,6 @@
                                                                     @enderror
                                                                     <br>
                                                                     <center><output id="list"></output></center>
-                                                                    <script>
-                                                                        function archivo(evt) {
-                                                                            var files = evt.target.files; //file List objet
-                                                                            //Obtenemos la imagen del campo "file"
-                                                                            for (var i = 0, f; f = files[i]; i++) {
-                                                                                //solo admitimos imagenes
-                                                                                if (!f.type.match('image.*')) {
-                                                                                    continue;
-                                                                                }
-                                                                                var reader = new FileReader();
-                                                                                reader.onload = (function(theFile) {
-                                                                                    return function(e) {
-                                                                                        //insertamos la imagen
-                                                                                        document.getElementById("list").innerHTML = ['<img class="thumb thumbail" src="', e
-                                                                                            .target.result, '" width="70%" title="', escape(theFile.name), '"/>'
-                                                                                        ].join('');
-                                                                                    };
-                                                                                })(f);
-                                                                                reader.readAsDataURL(f);
-
-                                                                            }
-
-                                                                        }
-                                                                        document.getElementById('imagen_moto').addEventListener('change', archivo, false);
-                                                                    </script>
                                                                 </div>
                                                                 <!-- Contenedor para previsualización (añade esto en tu modal) -->
                                                                 <div id="preview-container" class="mt-2"></div>
@@ -522,6 +495,31 @@
                     });
                 });
             </script>
+             <script>
+                function archivo(evt) {
+                    var files = evt.target.files; //file List objet
+                    //Obtenemos la imagen del campo "file"
+                    for (var i = 0, f; f = files[i]; i++) {
+                        //solo admitimos imagenes
+                        if (!f.type.match('image.*')) {
+                            continue;
+                        }
+                        var reader = new FileReader();
+                        reader.onload = (function(theFile) {
+                            return function(e) {
+                                //insertamos la imagen
+                                document.getElementById("list").innerHTML = ['<img class="thumb thumbail" src="', e
+                                    .target.result, '" width="70%" title="', escape(theFile.name), '"/>'
+                                ].join('');
+                            };
+                        })(f);
+                        reader.readAsDataURL(f);
+
+                    }
+
+                }
+                document.getElementById('imagen_moto').addEventListener('change', archivo, false);
+            </script>
             <script>
                 $('#id_marca').change(function() {
                     var selectedOption = $(this).find('option:selected');
@@ -614,7 +612,6 @@
                     const fila = document.createElement('tr');
                     fila.innerHTML = `
                          <td class="text-center" style="vertical-align: middle;">
-                             <input type="hidden" name="contador[]" class="form-control" value="${contador}" min="1" required readonly>
                              <input type="hidden" name="dominio[]" class="form-control" value="${dominio}" min="1" required readonly>
                              <input type="hidden" name="cilindrada_moto[]" class="form-control" value="${cilindrada_moto}" min="1" required readonly>
                              <input type="hidden" name="km_moto[]" class="form-control" value="${km_moto}" min="1" required readonly>

@@ -41,7 +41,7 @@ class ComprasController extends Controller
      */
     public function store(Request $request)
     {
-        /*   $datos = request()->all();
+         /*  $datos = request()->all();
          return response()->json($datos); */
 
       /*     dd($request->file('imagen_moto'));  */
@@ -150,7 +150,7 @@ class ComprasController extends Controller
         });
 
         return response()->json([
-            'fecha_formateada' => $compra->fecha_compra,
+            'fecha_formateada' => \App\Helpers\Helpers::cambiaFormatoFecha(($compra->fecha_compra)),
             'total_formateado' => number_format($compra->total_compra, 2),
               'proveedor' => [ // Datos adicionales del proveedor
                     'nombre_proveedor' => $compra->proveedor->nombre_proveedor ?? 'N/A',
@@ -183,8 +183,87 @@ class ComprasController extends Controller
      */
     public function update(Request $request, $id)
     {
+         /*  $datos = request()->all();
+         return response()->json($datos); */
+
+          $request->validate([
+                'id_proveedor' => 'required|exists:proveedores,id',
+                'fecha_compra' => 'required',
+                'numero_factura' => 'required|unique:compras,numero_factura', // Cambiado de 'number' a 'numeric'
+                'numero_remito' => 'required', // Permite que sea opcional
+                'total_compra' => 'required',
+                'id_marca' => 'required|array',
+                'id_marca.*' => 'required|string|max:255',
+                'modelo_moto' => 'required|array',
+                'modelo_moto.*' => 'required|string|max:255',
+                'dominio' => 'required|array',
+                'dominio.*' => 'required|string|max:255',
+                'cilindrada_moto' => 'required|array',
+                'cilindrada_moto.*' => 'required|string|max:255',
+                'km_moto' => 'required|array',
+                'km_moto.*' => 'required|string|max:255',
+                'es_usada' => 'required|array',
+                'es_usada.*' => 'required|string|max:255',
+                'dnrpa' => 'required|array',
+                'dnrpa.*' => 'required|string|max:255',
+                'nr_certificado' => 'required|array',
+                'nr_certificado.*' => 'required|string|max:255',
+                'precio_venta' => 'required|array',
+                'precio_venta.*' => 'numeric|min:0',
+                'id_deposito' => 'required|array',
+                'id_deposito.*' => 'required|string|max:255',
+                'color_moto' => 'required|array',
+                'color_moto.*' => 'required|string|max:255',
+                'anio_moto' => 'required|array',
+                'anio_moto.*' => 'required|string|max:255',
+                'id_nacionalidad' => 'required|array',
+                'id_nacionalidad.*' => 'required|string|max:255',
+                'nr_motor' => 'required|array',
+                'nr_motor.*' => 'required|string|max:255',
+                'nr_chasis' => 'required|array',
+                'nr_chasis.*' => 'required|string|max:255',
+                'precio_compra' => 'required|array',
+                'precio_compra.*' => 'numeric|min:0',
+                'imagen_moto' => 'nullable|array',
+                'imagen_moto.*' => 'nullable',
+                'imagen_moto_nueva' => 'nullable|array', // Para nuevas imágenes
+                'imagen_moto_nueva.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            ]);
+
+
+            // Procesar imágenes
+            $imagenesPaths = [];
+            if ($request->has('imagen_moto')) {
+                // Para imágenes existentes (rutas)
+                $imagenesPaths = $request->input('imagen_moto');
+            }
+
+            // Procesar nuevas imágenes subidas
+            if ($request->hasFile('imagen_moto_nueva')) {
+                foreach ($request->file('imagen_moto_nueva') as $index => $file) {
+                    if ($file && $file->isValid()) {
+                        $nombreArchivo = 'moto_'.time().'_'.$index.'.'.$file->extension();
+                        $path = $file->storeAs('motos', $nombreArchivo, 'public');
+                        $imagenesPaths[$index] = 'storage/' . $path;
+                    }
+                }
+            }
+
+            // Preparar datos para el modelo
+            $datosCompletos = array_merge($request->except(['imagen_moto', 'imagen_moto_nueva']), [
+                'imagen_moto' => $imagenesPaths
+            ]);
+
+            Compra::ActualizarCompra($datosCompletos);
+
+            return redirect()->route('admin.compras.index')
+            ->with('mensaje','Se Actualizo la compra exitosamente')
+            ->with('icono','success');
 
     }
+
+
+
 
     /**
      * Remove the specified resource from storage.

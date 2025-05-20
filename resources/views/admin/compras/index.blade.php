@@ -96,6 +96,8 @@
             </div>
         </div>
     </div>
+
+   <!-- Modal para mostrar los detalles de la compra -->
  <div class="modal fade" id="ventana_modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">

@@ -30,7 +30,7 @@
                                         class="btn btn-success"><i class="fas fa-plus"></i></a>
                                     <div class="col-md-8">
                                         <input type="text" class="form-control" value="{{$compra->proveedor->nombre_proveedor}}" id="nombre_proveedor" disabled>
-                                        <input type="hidden" value="{{$compra->proveedor->nombre_proveedor}}" class="form-control" id="id_proveedor" name="id_proveedor" hidden>
+                                        <input type="hidden" value="{{$compra->proveedor->id}}" class="form-control" id="id_proveedor" name="id_proveedor" hidden>
                                     </div>
 
                                 </div>
@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="text" id="total_compra" name="total_compra" hidden>
+                            <input type="text" value="{{$compra->total_compra}}" id="total_compra" name="total_compra" hidden>
                         </div>
                         <div class="row" >
                             <div class="col-md-12">
@@ -94,7 +94,16 @@
                                                                 <td>
                                                                     1
                                                                 </td>
-                                                                <td class="text-center">
+                                                                <td class="text-center" style="vertical-align: middle;">
+                                                                    <input type="hidden" name="dominio[]" class="form-control" value="{{$moto->dominio}}" min="1" required readonly>
+                                                                    <input type="hidden" name="cilindrada_moto[]" class="form-control" value="{{$moto->cilindrada_moto}}" min="1" required readonly>
+                                                                    <input type="hidden" name="km_moto[]" class="form-control" value="{{$moto->km_moto}}" min="1" required readonly>
+                                                                    <input type="hidden" name="es_usada[]" class="form-control" value="{{$moto->estado_moto}}" min="1" required readonly>
+                                                                    <input type="hidden" name="dnrpa[]" class="form-control" value="{{$moto->dnrpa}}" min="1" required readonly>
+                                                                    <input type="hidden" name="nr_certificado[]" class="form-control" value="{{$moto->nr_certificado}}" min="1" required readonly>
+                                                                    <input type="hidden" name="precio_venta[]" class="form-control" value="{{$moto->precio_venta}}" min="1" required readonly>
+                                                                    <input type="hidden" name="id_deposito[]" class="form-control" value="{{$moto->id_deposito}}" min="1" required readonly>
+                                                                    <input type="hidden" name="precio_compra[]" class="form-control" value="{{$moto->precio_compra}}" min="1" required readonly>
                                                                     <input type="hidden" name="id_marca[]" class="form-control"
                                                                         value="{{ $moto->marca->nombre_marca }}" min="1" required>
                                                                     {{$moto->marca->nombre_marca}}
@@ -112,7 +121,7 @@
                                                                      {{$moto->anio_moto}}
                                                                 </td>
                                                                 <td class="text-center" style="vertical-align: middle;">
-                                                                    <input type="hidden" name="id_nacionalidad[]" class="form-control" value="{{$moto->nacionalidad->pais}}" min="1" required readonly >
+                                                                    <input type="hidden" name="id_nacionalidad[]" class="form-control" value="{{$moto->nacionalidad->id}}" min="1" required readonly >
                                                                     {{$moto->nacionalidad->pais}}
                                                                 </td>
                                                                 <td class="text-center" style="vertical-align: middle;">
@@ -124,9 +133,13 @@
                                                                     {{$moto->nr_chasis}}
                                                                 </td>
                                                                 <td class="text-center" style="vertical-align: middle;">
-                                                                    <input type="hidden" name="imagen_moto[]" value="{{$moto->imagen_moto}}">
-                                                                    <img src="{{asset($moto->imagen_moto)}}" width="50" class="img-thumbnail">
-                                                                 </td>
+                                                                    @if(isset($moto->imagen_moto))
+                                                                        <input type="hidden" name="imagen_moto[]" value="{{ $moto->imagen_moto }}">
+                                                                        <img src="{{ asset($moto->imagen_moto) }}" width="50" class="img-thumbnail">
+                                                                    @else
+                                                                        <input type="file" id="imagen_moto_nueva" name="imagen_moto_nueva[]" class="form-control-file">
+                                                                    @endif
+                                                                </td>
                                                                  <td class="text-center" style="vertical-align: middle;">
                                                                      <button type="button" class="btn btn-danger btn-sm" onclick="limpiarTabla()">
                                                                          <i class="fas fa-trash"></i>
@@ -156,7 +169,7 @@
                     </div>
                     <div class="card-body" style="justify-items: end">
                         <h4>
-                            <b>Suma de compra:</b><b value="{{$compra->total_compra}}" id="mostrarVariable"></b>
+                            <b>Suma de compra</b> <input type="number" value="{{$compra->total_compra}}" id="mostrarVariable" class="form-control" readonly>
                         <div class="card-body">
                             <button type="submit" class="btn btn-warning" >
                                 <i class="fas fa-edit"></i> Actualizar
@@ -378,47 +391,29 @@
 
                                                     <!-- Segunda Columna: Imagen -->
                                                     <div class="col-md-3">
-                                                        <div class="text-center">
-                                                            <div class="form-group">
-                                                                <label for="imagen">Imagen</label>
-                                                                <input type="file" value="{{$moto->imagen_moto}}" id="imagen_moto" name="imagen_moto[]"
-                                                                    accept=".jpg, .jpeg, .png" class="form-control" multiple>
-                                                                @error('imagen_moto')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                                <br>
-                                                                <center>
-                                                                    <output id="list">
-                                                                        <img src="{{ asset($moto->imagen_moto) }}"
-                                                                            width="100%" alt="">
-                                                                    </output>
-                                                                </center>
-                                                                <script>
-                                                                    function archivo(evt){
-                                                                    var files = evt.target.files; //file List objet
-                                                                    //Obtenemos la imagen del campo "file"
-                                                                    for(var i = 0, f; f = files[i]; i++ ){
-                                                                        //solo admitimos imagenes
-                                                                        if(!f.type.match('image.*')){
-                                                                            continue;
-                                                                        }
-                                                                        var reader = new FileReader();
-                                                                        reader.onload = (function (theFile){
-                                                                            return function (e) {
-                                                                                //insertamos la imagen
-                                                                                document.getElementById("list").innerHTML = ['<img class="thumb thumbail" src="',e.target.result,'" width="70%" title="',escape(theFile.name),'"/>'].join('');
-                                                                            };
-                                                                        })(f);
-                                                                        reader.readAsDataURL(f);
-
-                                                                    }
-
-                                                                    }
-                                                                    document.getElementById('imagen_moto').addEventListener('change', archivo, false);
-                                                            </script>
+                                                            <div class="text-center">
+                                                                <div class="form-group">
+                                                                    <label for="imagen">Imagen</label>
+                                                                    <input type="file" id="imagen_moto_nueva" name="imagen_moto_nueva[]"
+                                                                        accept=".jpg, .jpeg, .png" class="form-control">
+                                                                    @error('imagen_moto')
+                                                                        <small style="color: red;">{{ $message }}</small>
+                                                                    @enderror
+                                                                    <br>
+                                                                    <center>
+                                                                        <!-- Mostrar imagen existente o previsualización -->
+                                                                        <div id="image-container">
+                                                                            @if($moto->imagen_moto)
+                                                                                <img id="current-image" src="{{ asset($moto->imagen_moto) }}" width="50%" alt="Imagen actual">
+                                                                                <input type="hidden" name="imagen_moto_existente" value="{{ $moto->imagen_moto }}">
+                                                                            @else
+                                                                                <span id="no-image-text">No hay imagen</span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </center>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
                                                     </div>
                                                 </div>
 
@@ -561,6 +556,53 @@
                 });
         </script>
         <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const imagenInput = document.getElementById('imagen_moto_nueva');
+
+                imagenInput.addEventListener('change', function(evt) {
+                    const files = evt.target.files;
+                    const imageContainer = document.getElementById('image-container');
+
+                    // Limpiar contenedor
+                    imageContainer.innerHTML = '';
+
+                    if (files && files[0]) {
+                        if (!files[0].type.match('image.*')) {
+                            alert('Por favor selecciona una imagen válida');
+                            return;
+                        }
+
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            // Mostrar previsualización de la nueva imagen
+                            imageContainer.innerHTML = `<img class="thumb thumbnail" src="${e.target.result}" width="70%">`;
+
+                            // Ocultar/mantener referencia a la imagen existente
+                            const currentImage = document.getElementById('current-image');
+                            if (currentImage) {
+                                currentImage.style.display = 'none';
+                            }
+
+                            const noImageText = document.getElementById('no-image-text');
+                            if (noImageText) {
+                                noImageText.style.display = 'none';
+                            }
+                        };
+
+                        reader.readAsDataURL(files[0]);
+                    } else {
+                        // Si no se seleccionó archivo, mostrar la imagen existente o texto
+                        @if($moto->imagen_moto)
+                            imageContainer.innerHTML = `<img id="current-image" src="{{ asset($moto->imagen_moto) }}" width="50%" alt="Imagen actual">`;
+                        @else
+                            imageContainer.innerHTML = '<span id="no-image-text">No hay imagen</span>';
+                        @endif
+                    }
+                });
+            });
+        </script>
+        <script>
             function agregarMotoATabla() {
 
              // Verificar si ya hay una moto en la tabla
@@ -607,23 +649,36 @@
                  let precio_compra = parseFloat(document.getElementById('precio_compra').value);
                 const nuevoTotal = calcularTotalCompra() + parseFloat(precio_compra);
                 actualizarVariable(nuevoTotal);
-                const imagenInput = document.getElementById('imagen_moto');
+               const imagenInput = document.getElementById('imagen_moto_nueva'); // Cambiado el ID
+               // Validar que el input existe
+               // Validar que el input existe
+                if (!imagenInput) {
+                    console.error('Input de imagen no encontrado');
+                    return;
+                }
+
                 let imagenHTML = '';
                 let fileInputHTML = '';
+                let imagenValue = '';
 
+                // Manejar tanto imágenes existentes como nuevas
                 if (imagenInput.files && imagenInput.files[0]) {
+                    // Nueva imagen subida
                     const imagenFile = imagenInput.files[0];
                     const imagenURL = URL.createObjectURL(imagenFile);
 
                     imagenHTML = `<img src="${imagenURL}" width="50" class="img-thumbnail">`;
-
-                    // Crear un nuevo input file para el envío
                     fileInputHTML = `
-                        <input type="file" name="imagen_moto[]" class="d-none"
-                            data-file-name="${imagenFile.name}" multiple>
+                        <input type="file" name="imagen_moto_nueva[]" class="d-none"
+                            data-file-name="${imagenFile.name}">
                     `;
+                    imagenValue = '';
                 } else {
+                    // Imagen existente o sin imagen
                     imagenHTML = '<span class="text-muted">Sin imagen</span>';
+                    fileInputHTML = `
+                        <input type="hidden" name="imagen_moto[]" value="">
+                    `;
                 }
 
 
@@ -632,7 +687,6 @@
                  const fila = document.createElement('tr');
                  fila.innerHTML = `
                          <td class="text-center" style="vertical-align: middle;">
-                             <input type="hidden" name="contador[]" class="form-control" value="${contador}" min="1" required readonly>
                              <input type="hidden" name="dominio[]" class="form-control" value="${dominio}" min="1" required readonly>
                              <input type="hidden" name="cilindrada_moto[]" class="form-control" value="${cilindrada_moto}" min="1" required readonly>
                              <input type="hidden" name="km_moto[]" class="form-control" value="${km_moto}" min="1" required readonly>
@@ -682,9 +736,9 @@
                          </td>
                  `;
 
-                 // Transferir el archivo al nuevo input
+                 // Transferir el archivo si existe
                 if (imagenInput.files && imagenInput.files[0]) {
-                    const newFileInput = fila.querySelector('input[name="imagen_moto[]"]');
+                    const newFileInput = fila.querySelector('input[name="imagen_moto_nueva[]"]');
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(imagenInput.files[0]);
                     newFileInput.files = dataTransfer.files;

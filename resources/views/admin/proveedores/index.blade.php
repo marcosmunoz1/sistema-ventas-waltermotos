@@ -3,7 +3,7 @@
 @section('title', 'Proveedores')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light ">Listado de Proveedores
+    <h2 class="brand-text font-weight-light "><b>Listado de Proveedores</b>
         {{-- <b>{{ $empresa->nombre_empresa }}</b> --}}
     </h2>
     <hr>
@@ -115,7 +115,7 @@
 
     <script>
         $('#tablaProveedores').DataTable({
-           ordering: false, 
+           ordering: false,
             "language": {
                 "emptyTable": "No hay información.",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Productos",
