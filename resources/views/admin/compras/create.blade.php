@@ -141,11 +141,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="table">
-                        <table id="tablaClientes" class="table table-striped table-bordered table-hover table-sm">
+                        <table id="tablaProveedores" class="table table-striped table-bordered table-hover table-sm">
                             <thead class="table-primary">
                                 <tr>
                                     <th scope="col" style="text-align: center ">Acción</th>
-                                    <th scope="col" style="text-align: center ">Razon Social</th>
+                                    <th scope="col" style="text-align: center ">Nombre</th>
                                     <th scope="col" style="text-align: center ">Celular</th>
                                     <th scope="col" style="text-align: center ">Cuit</th>
                                     <th scope="col" style="text-align: center ">Correo</th>
@@ -409,8 +409,8 @@
                     </div>
                 </div>
             </div>
-     
- @endsection
+
+        @endsection
 
         @section('css')
             <style>
@@ -487,8 +487,8 @@
         @section('js')
             {{-- Aquí puedes agregar scripts adicionales --}}
             <script>
-                $('#mitabla2').DataTable({
-                    "pageLength": 20,
+                $('#tablaProveedores').DataTable({
+                    ordering: false,
                     "language": {
                         "emptyTable": "No hay información",
                         "info": "Mostrando _START_ a _END_ de _TOTAL_ Proveedores",
@@ -588,15 +588,6 @@
                     let precio_compra = parseFloat(document.getElementById('precio_compra').value);
                     const nuevoTotal = calcularTotalCompra() + parseFloat(precio_compra);
                     actualizarVariable(nuevoTotal);
-                    /* // Manejo CORRECTO de la imagen
-                     const imagenInput = document.getElementById('imagen_moto');
-                     let imagenNombre = 'sin_imagen.jpg';
-                     let imagenURL = 'ruta/a/imagen_por_defecto.jpg';
-
-                     if (imagenInput.files && imagenInput.files[0]) {
-                         imagenNombre = imagenInput.files[0].name;
-                         imagenURL = URL.createObjectURL(imagenInput.files[0]);
-                     } */
                     // Manejo CORREGIDO de la imagen
                     const imagenInput = document.getElementById('imagen_moto');
                     let imagenHTML = '';

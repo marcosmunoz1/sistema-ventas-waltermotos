@@ -41,7 +41,8 @@
                                         <div class="card-footer text-center">
                                             <button type="button" class="btn btn-outline-warning" data-toggle="modal"
                                                 data-target="#buscarConyugeModal">
-                                                <i class="fas fa-edit"></i> Editar Conyugue <i class="fas fa-user"></i>
+                                                <i class="fas fa-edit"></i> Editar Conyugue <i
+                                                    class="fas fa-user-friends"></i>
                                             </button>
                                         </div>
 
@@ -121,10 +122,6 @@
                                                     {{ old('forma_pago') == 'Contado' ? 'selected' : '' }}>Contado</option>
                                                 <option value="Credito"
                                                     {{ old('forma_pago') == 'Credito' ? 'selected' : '' }}>Crédito</option>
-                                                <option value="Tarjeta"
-                                                    {{ old('forma_pago') == 'Tarjeta' ? 'selected' : '' }}>Tarjeta</option>
-                                                <option value="Otro" {{ old('forma_pago') == 'Otro' ? 'selected' : '' }}>
-                                                    Otro</option>
                                             </select>
                                             @error('forma_pago')
                                                 <small class="text-danger">{{ $message }}</small>
@@ -205,12 +202,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title fs-5" id="clientesModalLabel">Buscar Cliente</h3>
-                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="table">
-                            <table class="table table-ms table-striped" id="tablaClientes"
-                                style="table-layout: fixed; width: 100%;">
+                            <table id="tablaClientes" class="table table-striped table-bordered table-hover table-sm">
                                 <thead class="table-primary">
                                     <tr>
                                         <th scope="col" class="text-center" style="width: 5%;">...</th>
@@ -218,6 +216,7 @@
                                         <th scope="col" style="width: 25%;">Nombre</th>
                                         <th scope="col" style="width: 10%;">DNI</th>
                                         <th scope="col" style="width: 20%;">Teléfono</th>
+                                        <th scope="col" style="width: 20%;">e-Mail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -254,7 +253,7 @@
                                                 {{ $cliente->dni_cliente }}
                                             </td>
                                             <td class="text-center" style="vertical-align: middle;">
-                                                {{ $cliente->telefono_cliente }}
+                                                {{ $cliente->celular_cliente }} 
                                             </td>
                                             <td class="text-center" style="vertical-align: middle;">
                                                 {{ $cliente->email_cliente }}
@@ -268,7 +267,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                                class="fas fa-cancel"></i> Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -276,11 +276,14 @@
 
         <!-- Modal Nuevo Cliente -->
         <div class="modal fade" id="nuevoClientesModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="">
+            aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title fs-5">Nuevo Cliente</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="col-md-12 mx-auto mt-4">
@@ -491,7 +494,7 @@
         <!-- Modal para Buscar Moto -->
         <div class="modal fade" id="buscarMotoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-xl">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title fs-5" id="clientesModalLabel">Buscar Moto</h3>
@@ -499,16 +502,16 @@
                     </div>
                     <div class="modal-body">
                         <div class="table">
-                            <table class="table table-ms table-striped" id="tablaMotos">
-                                <thead class="table-primary">
+                            <table class="table table-sm table-striped" id="tablaMotos">
+                                <thead class="table-info">
                                     <tr>
                                         <th scope="col" class="text-center" style="width: 5%;">...</th>
                                         <th class="text-center" style="width: 10%">Marca</th>
                                         <th class="text-center" style="width: 10%">Modelo</th>
                                         <th class="text-center" style="width: 5%">Año</th>
                                         <th class="text-center" style="width: 10%">Nacionalidad</th>
-                                        <th class="text-center" style="width: 10%">P. Compra</th>
-                                        <th class="text-center" style="width: 10%">P. Venta</th>
+                                        <th class="text-center" style="width: 5%">P. Compra</th>
+                                        <th class="text-center" style="width: 5%">P. Venta</th>
                                         <th class="text-center" style="width: 10%">Imagen</th>
                                     </tr>
                                 </thead>
@@ -545,11 +548,10 @@
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">
                                                 {{ $moto->nacionalidad->pais }}</td>
-                                            <td class="text-end text-success bg-light fs-5"
-                                                style="vertical-align: middle">
+                                            <td class="text-right text-success" style="vertical-align: middle">
                                                 ${{ number_format($moto->precio_compra, 2, ',', '.') }}
                                             </td>
-                                            <td class="text-end text-danger bg-light fs-5" style="vertical-align: middle">
+                                            <td class="text-right text-danger" style="vertical-align: middle">
                                                 ${{ number_format($moto->precio_venta, 2, ',', '.') }}
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">
@@ -591,60 +593,62 @@
         {{-- Script de Clientes --}}
         <script>
             $(document).ready(function() {
-                $('#tablaClientes').DataTable({
-                    "pageLength": 5,
-                    "language": {
-                        "emptyTable": "No hay información.",
-                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Clientes",
-                        "infoEmpty": "Mostrando 0 a 0 de 0 Clientes",
-                        "infoFiltered": "(Filtrado de _MAX_ total Clientes)",
-                        "lengthMenu": "Mostrar _MENU_ Clientes",
-                        "loadingRecords": "Cargando...",
-                        "processing": "Procesando...",
-                        "search": "Buscador:",
-                        "zeroRecords": "Sin resultados encontrados",
-                        "paginate": {
-                            "first": "Primero",
-                            "last": "Último",
-                            "next": "Siguiente",
-                            "previous": "Anterior"
+                        $('#tablaClientes').DataTable({
+                                "pageLength": 5,
+                                "language": {
+                                    "emptyTable": "No hay información.",
+                                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Clientes",
+                                    "infoEmpty": "Mostrando 0 a 0 de 0 Clientes",
+                                    "infoFiltered": "(Filtrado de _MAX_ total Clientes)",
+                                    "lengthMenu": "Mostrar _MENU_ Clientes",
+                                    "loadingRecords": "Cargando...",
+                                    "processing": "Procesando...",
+                                    "search": "Buscador:",
+                                    "zeroRecords": "Sin resultados encontrados",
+                                    "paginate": {
+                                        "first": "Primero",
+                                        "last": "Último",
+                                        "next": "Siguiente",
+                                        "previous": "Anterior"
+                                    }
+                                }
+
+                        });
+
+                    // Función para seleccionar el cliente desde el modal
+                    function seleccionarClienteDesdeModal(id, apellido, nombre, dni, telefono, email, estado_civil_cliente,
+                        apellido_conyugue, nombre_conyugue, dni_conyugue, celular_conyugue, fecha_nacimiento_conyugue) {
+
+                        const nombreCompleto = apellido + ', ' + nombre;
+                        document.querySelector('input[name="id_cliente"]').value = id;
+
+                        // Mostrar los datos del cliente
+                        document.getElementById('clienteNombreCompleto').textContent = nombreCompleto;
+                        document.getElementById('clienteTelefono').textContent = telefono;
+                        document.getElementById('clienteEmail').textContent = email;
+                        document.getElementById('clienteDni').textContent = dni;
+                        document.getElementById('clienteEstado').textContent = estado_civil_cliente;
+
+                        // Mostrar los datos del cónyuge, solo si existen
+                        if (apellido_conyugue && nombre_conyugue) {
+                            const nombreCompletoConyugue = apellido_conyugue + ', ' + nombre_conyugue;
+                            document.getElementById('conyugueNombreCompleto').textContent = nombreCompletoConyugue;
+                            document.getElementById('conyugueTelefono').textContent = celular_conyugue || 'No disponible';
+                            document.getElementById('conyugueFecha').textContent = fecha_nacimiento_conyugue || 'No disponible';
+                            document.getElementById('conyugueDni').textContent = dni_conyugue || 'No disponible';
+                        } else {
+                            document.getElementById('conyugueNombreCompleto').textContent = 'No Tiene';
+                            document.getElementById('conyugueTelefono').textContent = '';
+                            document.getElementById('conyugueFecha').textContent = '';
+                            document.getElementById('conyugueDni').textContent = '';
                         }
+
+                        // Cerrar el modal
+                        $('#buscarClienteModal').modal('hide');
                     }
-                });
-            });
+                    });
 
 
-            // Función para seleccionar el cliente desde el modal
-            function seleccionarClienteDesdeModal(id, apellido, nombre, dni, telefono, email, estado_civil_cliente,
-                apellido_conyugue, nombre_conyugue, dni_conyugue, celular_conyugue, fecha_nacimiento_conyugue) {
-
-                const nombreCompleto = apellido + ', ' + nombre;
-                document.querySelector('input[name="id_cliente"]').value = id;
-
-                // Mostrar los datos del cliente
-                document.getElementById('clienteNombreCompleto').textContent = nombreCompleto;
-                document.getElementById('clienteTelefono').textContent = telefono;
-                document.getElementById('clienteEmail').textContent = email;
-                document.getElementById('clienteDni').textContent = dni;
-                document.getElementById('clienteEstado').textContent = estado_civil_cliente;
-
-                // Mostrar los datos del cónyuge, solo si existen
-                if (apellido_conyugue && nombre_conyugue) {
-                    const nombreCompletoConyugue = apellido_conyugue + ', ' + nombre_conyugue;
-                    document.getElementById('conyugueNombreCompleto').textContent = nombreCompletoConyugue;
-                    document.getElementById('conyugueTelefono').textContent = celular_conyugue || 'No disponible';
-                    document.getElementById('conyugueFecha').textContent = fecha_nacimiento_conyugue || 'No disponible';
-                    document.getElementById('conyugueDni').textContent = dni_conyugue || 'No disponible';
-                } else {
-                    document.getElementById('conyugueNombreCompleto').textContent = 'No Tiene';
-                    document.getElementById('conyugueTelefono').textContent = '';
-                    document.getElementById('conyugueFecha').textContent = '';
-                    document.getElementById('conyugueDni').textContent = '';
-                }
-
-                // Cerrar el modal
-                $('#buscarClienteModal').modal('hide');
-            }
         </script>
 
         {{-- Script de Motos --}}

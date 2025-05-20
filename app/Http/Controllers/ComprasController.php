@@ -46,7 +46,6 @@ class ComprasController extends Controller
 
       /*     dd($request->file('imagen_moto'));  */
 
-
            $request->validate([
                 'id_proveedor' => 'required|exists:proveedores,id',
                 'fecha_compra' => 'required',
@@ -204,7 +203,7 @@ class ComprasController extends Controller
                 return redirect()->route('admin.compras.index')
                     ->with('swal', [
                         'title' => 'Error',
-                        'text' => 'No se puede eliminar la compra porque la moto tiene ventas asociadas',
+                        'text' => 'No se puede eliminar la compra porque la moto tiene una venta asociada',
                         'icon' => 'error'
                     ]);
             }
@@ -230,6 +229,6 @@ class ComprasController extends Controller
                 'text' => 'Ocurrió un error al eliminar: ' . $e->getMessage(),
                 'icon' => 'error'
             ]);
-    } 
+    }
 }
 }

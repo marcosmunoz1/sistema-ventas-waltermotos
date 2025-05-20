@@ -8,7 +8,7 @@
     </h2>
     <hr>
 @stop
- 
+
 @section('content')
     <div class="row">
         <div class="col-md-12">
@@ -115,7 +115,7 @@
 
     <script>
         $('#tablaProveedores').DataTable({
-            "pageLength": 5,
+           ordering: false, 
             "language": {
                 "emptyTable": "No hay información.",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Productos",

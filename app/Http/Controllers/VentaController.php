@@ -10,6 +10,7 @@ use App\Models\Moto;
 use App\Models\Venta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VentaController extends Controller
 {
@@ -18,7 +19,10 @@ class VentaController extends Controller
      */
     public function index()
     {
-        $ventas = Venta::with('moto', 'cliente')->get();
+        $ventas = Venta::with('moto', 'cliente')
+            ->orderBy('id_venta', 'desc')
+            ->get();
+
         return view('admin.ventas.index', compact('ventas'));
     }
 
@@ -28,9 +32,9 @@ class VentaController extends Controller
      */
     public function create()
     {
-        //
-        $motos = Moto::whereNull('fecha_venta_moto')->with(['nacionalidad', 'marca'])->get();
-        $clientes = Cliente::with('conyugue')->get(); 
+        $motos = Moto::where('condicion', 'en_stock')->with(['nacionalidad', 'marca'])->get();
+        $clientes = Cliente::with('conyugue')->get();
+
 
         return view('admin.ventas.create', compact('clientes', 'motos'));
     }
@@ -64,15 +68,22 @@ class VentaController extends Controller
             $entrega = $validated['entrega'] ?? 0;
             $cuotas = $validated['cuotas'];
             $valor_cuota = $validated['valor_cuota'];
-
             $venta->total_pago   = $entrega;
             $venta->precio_venta = $entrega + ($cuotas * $valor_cuota);
         } else {
             $venta->total_pago   = $validated['precio_venta'];
             $venta->precio_venta = $validated['precio_venta'];
+            $venta->estado_venta = 'Paga';
         }
 
         $venta->save();
+
+        //actualizamos la condicion de la moto
+        $moto = Moto::find($validated['id_moto']);
+        $moto->condicion = 'vendida';
+        $moto->fecha_venta_moto = now();
+        $moto->save();
+
 
         if ($validated['forma_pago'] === 'Credito') {
             $credito = new Credito();
@@ -115,13 +126,13 @@ class VentaController extends Controller
     {
         $venta = Venta::find($id);
         $cliente = Cliente::with('conyugue')->where('id', $venta->id_cliente)->first();
-        $moto = Moto::with('marca','nacionalidad')->where('id', $venta->id_moto)->first();
+        $moto = Moto::with('marca', 'nacionalidad')->where('id', $venta->id_moto)->first();
         if ($venta->forma_pago === 'Credito') {
             $credito = Credito::with('detalles')->where('id_venta', $venta->id_venta)->first();
 
-            return view('admin.ventas.show_credito', compact('venta', 'credito', 'cliente','moto'));
+            return view('admin.ventas.show_credito', compact('venta', 'credito', 'cliente', 'moto'));
         } else {
-            return view('admin.ventas.show', compact('venta', 'cliente','moto'));
+            return view('admin.ventas.show', compact('venta', 'cliente', 'moto'));
         }
     }
 
@@ -146,8 +157,32 @@ class VentaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Venta $venta)
+
+
+    public function destroy($id)
     {
-        //
+        $venta = Venta::findOrFail($id);
+        /*  if ($venta->total_pago > 0) {
+        return redirect()->back()
+            ->with('mensaje', 'No se puede eliminar una venta con pagos registrados. Contacte al administrador')
+            ->with('icono', 'error');
+       */
+        DB::transaction(function () use ($venta) {
+
+            $credito = Credito::where('id_venta', $venta->id_venta)->first();
+
+            if ($credito) {
+                // Elimina los detalles correctamente
+                DetalleCredito::where('id_credito', $credito->id)->delete();
+
+                               $credito->delete();
+            }
+
+            $venta->delete();
+        });
+
+        return redirect()->back()
+            ->with('mensaje', 'Venta eliminada correctamente.')
+            ->with('icono', 'success');
     }
 }

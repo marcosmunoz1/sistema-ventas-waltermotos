@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Compra;
 use App\Models\Deposito;
 use App\Models\Marca;
 use App\Models\Moto;
 use App\Models\Nacionalidad;
 use App\Models\Proveedor;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -47,8 +49,9 @@ class MotoController extends Controller
     {
         $moto = Moto::with(['marca', 'nacionalidad', 'compra', 'deposito'])->findOrFail($id);
         $proveedor = Proveedor::where('id', $moto->compra->id_proveedor)->first();
-
-        return view('admin.motos.show', compact('moto', 'proveedor'));
+        $venta = Venta::with(['cliente'])-> where('id_moto', $id)->first();
+      
+        return view('admin.motos.show', compact('moto', 'proveedor', 'venta'));
     }
 
     /**

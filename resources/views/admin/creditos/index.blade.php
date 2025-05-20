@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Compras')
+@section('title', 'Creditos')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light "><b>Listado de Compras</b>
+    <h2 class="brand-text font-weight-light ">Listado de Creditos
         {{-- <b>{{ $empresa->nombre_empresa }}</b> --}}
     </h2>
     <hr>
@@ -14,70 +14,73 @@
         <div class="col-md-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Compras registradas</h3>
-                    <div class="card-tools">
-                        <a href="{{ url('admin/compras/crear-compra') }}" class="btn btn-primary"> <i
-                            class="fas fa-plus"></i> Nueva Compra</a>
-                    </div>
+                    <h3 class="card-title">Datos de Creditos</h3>
+                    {{--  <div class="card-tools">
+                        <a href="{{ url('admin/ventas/crear-venta') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
+                            Nueva Venta</a>
+                    </div> --}}
                 </div>
-                <div class="col-md-12 mx-auto mt-4">
-                     @if(Session::has('swal'))
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            Swal.fire({
-                                title: '{{ Session::get("swal.title") }}',
-                                text: '{{ Session::get("swal.text") }}',
-                                icon: '{{ Session::get("swal.icon") }}',
-                                confirmButtonText: 'Aceptar'
-                            });
-                        });
-                    </script>
-                    @endif
+                <div class="col-md-12 mx-auto">
+
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped" id="tablaCompras">
+                            <table class="table table-striped table-sm" id="miTabla">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th class="text-center" style="width: 5%">#</th>
-                                        <th class="text-center" style="width: 10%">Proveedor</th>
-                                        <th class="text-center" style="width: 10%">Celular</th>
+                                        <th class="text-center" style="width: 3%">#</th>
                                         <th class="text-center" style="width: 10%">Fecha</th>
-                                        <th class="text-center" style="width: 10%">N.Factura</th>
-                                        <th class="text-center" style="width: 10%">Total</th>
+                                        <th class="text-center" style="width: 5%">Venta</th>
+                                        <th class="text-center" style="width: 15%">Cliente</th>
+                                        <th class="text-center" style="width: 5%">Cuotas</th>
+                                        <th class="text-center" style="width: 5%">Valor Financiado</th>
+                                        <th class="text-center" style="width: 5%">Saldo</th>
+                                        <th class="text-center" style="width: 5%">Int. x Mora</th>
+                                        <th class="text-center" style="width: 5%">TOTAL</th>
+                                        <th class="text-center" style="width: 2%">Estado</th>
                                         <th class="text-center" style="width: 15%">Acciones</th>
                                     </tr>
                                 </thead>
                                 <?php $contador = 1; ?>
                                 <tbody>
-                                    @foreach ($motos as $moto)
+                                    @foreach ($creditos as $credito)
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
                                             <td class="text-center"style="vertical-align: middle">
-                                                {{ $moto->compra->proveedor->nombre_proveedor}}</td>
-                                                <td class="text-center"style="vertical-align: middle"> {{ $moto->compra->proveedor->celular }}
-                                                <td class="text-center"style="vertical-align: middle"> {{ \App\Helpers\Helpers::cambiaFormatoFecha(($moto->compra->fecha_compra))}}</td>
-                                                </td>
+                                                {{ $credito->venta->fecha_venta }}
                                             </td>
-                                            <td class="text-center"style="vertical-align: middle"> {{ $moto->compra->numero_factura }}
+                                            <td class="text-center"style="vertical-align: middle">
+                                                {{ $credito->venta->id_venta }}
+                                            <td style="vertical-align: middle">
+                                                {{ $credito->venta->cliente->apellido_cliente }},
+                                                {{ $credito->venta->cliente->nombre_cliente }} </td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                {{ $credito->cantidad_cuotas }}</td>
+                                            <td class="text-success text-right" style="vertical-align: middle">
+                                                ${{ number_format($credito->valor_financiado, 2, ',', '.') }}</td>
+                                            <td class="text-danger text-right" style="vertical-align: middle">
+                                                ${{ number_format($credito->saldo_credito, 2, ',', '.') }}</td>
+                                            <td class="text-right" style="vertical-align: middle">
+                                                ${{ number_format($credito->total_interes, 2, ',', '.') }}</td>
+                                            <td class="text-right text-primary" style="vertical-align: middle">
+                                                ${{ number_format($tota = $credito->valor_financiado + $credito->total_interes - $credito->saldo_credito, 2, ',', '.') }}
+                                            <td class="text-center" style="vertical-align: middle">
+                                                <span
+                                                    class="badge {{ $credito->estado_credito == 'Pagado' ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $credito->estado_credito }}
+                                                </span>
                                             </td>
-                                            <td class="text-center"style="vertical-align: middle;color:red;">${{number_format($moto->compra->total_compra, 2, ',', '.')  }}</td>
-
 
                                             <td class="text-center" style="vertical-align: middle">
-                                               <button class="btn btn-sm btn-info"
-                                                        onclick="abrir_modal(
-                                                            'ventana_modal',
-                                                            'Detalle de Compra: NR.FACTURA {{$moto->compra->numero_factura}}',
-                                                            ['numero_factura', 'numero_remito'],
-                                                            {{ json_encode($moto->compra->toArray()) }}
-                                                        )">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <a href="{{ url('/admin/compras/' . $moto->compra->id . '/edit') }}"
+                                                <a href="{{ url('/admin/creditos/' . $credito->id) }}"
+                                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                <a href="{{ url('/admin/creditos/' . $credito->id . '/edit') }}"
                                                     class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                <form action="{{ url('/admin/compras', $moto->compra->id) }}" method="post"
-                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $moto->compra->id }})"
-                                                    id="miFormulario{{ $moto->compra->id }}">
+                                                <a href="{{ url('/admin/creditos/' . $credito->id . '/cobrar-cuotas') }}"
+                                                    class="btn btn-sm btn-secondary"><i
+                                                        class="fas fa-cash-register"></i></a>
+                                                <form action="{{ url('/admin/creditos', $credito->id) }}" method="post"
+                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $credito->id }})"
+                                                    id="miFormulario{{ $credito->id }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger">
@@ -331,7 +334,7 @@
             event.preventDefault();
 
             Swal.fire({
-                title: '¿Desea eliminar esta Compra?',
+                title: '¿Desea eliminar este Credito?',
                 text: 'Los cambios seran permanentes',
                 icon: 'warning',
                 showDenyButton: true,
@@ -351,14 +354,14 @@
     </script>
 
     <script>
-        $('#tablaCompras').DataTable({
-             ordering: false,
+        $('#miTabla').DataTable({
+            ordering: false,
             "language": {
                 "emptyTable": "No hay información.",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Compras",
-                "infoEmpty": "Mostrando 0 a 0 de 0 Compras",
-                "infoFiltered": "(Filtrado de _MAX_ total Compras)",
-                "lengthMenu": "Mostrar _MENU_ Compras",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Creditos",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Creditos",
+                "infoFiltered": "(Filtrado de _MAX_ total Creditos)",
+                "lengthMenu": "Mostrar _MENU_ Creditos",
                 "loadingRecords": "Cargando...",
                 "processing": "Procesando...",
                 "search": "Buscador:",
