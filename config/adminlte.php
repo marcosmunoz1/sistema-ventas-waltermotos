@@ -345,12 +345,12 @@ return [
         [
             'text' => 'Compras',
             'icon' => 'fas fa-cart-shopping',
-            'url' => 'compras',
+            'url' => 'admin/compras',
 
         ],
         [
             'text' => 'Proveedores',
-            'url' => 'proveedores',
+            'url' => 'admin/proveedores',
            'icon' => 'fas fa fa-truck',
 
         ],
@@ -360,7 +360,7 @@ return [
            'icon' => 'fas fa-motorcycle',
 
         ],
-        
+
       /*   [
             'text' => 'Maestros',
             'icon' => 'fas fa-fw fa-gear',

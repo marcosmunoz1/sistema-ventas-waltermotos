@@ -35,9 +35,9 @@ class VentaController extends Controller
      */
     public function create()
     {
-        //
         $motos = Moto::where('condicion', 'en_stock')->with(['nacionalidad', 'marca'])->get();
         $clientes = Cliente::with('conyugue')->get();
+
 
         return view('admin.ventas.create', compact('clientes', 'motos'));
     }

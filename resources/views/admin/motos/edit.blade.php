@@ -171,7 +171,7 @@
                                                 <br>
                                                 <center>
                                                     <output id="list">
-                                                        <img src="{{ asset('storage/' . $moto->imagen_moto) }}"
+                                                        <img src="{{ asset($moto->imagen_moto) }}"
                                                             width="100%" alt="">
                                                     </output>
                                                 </center>
@@ -198,7 +198,7 @@
                                             <label>Precio de Venta</label>
                                             <div class="input-group">
                                                 <span class="input-group-text text-danger">$</span>
-                                                <input name="precio_venta" type="text" 
+                                                <input name="precio_venta" type="text"
                                                     class="form-control text-danger"
                                                     value="{{ number_format($moto->precio_venta, 2, ',', '.') }}">
                                             </div>

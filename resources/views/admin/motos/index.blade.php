@@ -77,6 +77,7 @@
                                                     <td class="text-center" style="vertical-align: middle">
                                                         <img src="{{ asset('storage/' . $moto->imagen_moto) }}"
                                                             width="80%" alt="">
+
                                                     </td>
                                                     <td class="text-center" style="vertical-align: middle">
                                                         <a href="{{ url('/admin/motos', $moto->id) }}"
