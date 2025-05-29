@@ -13,7 +13,11 @@ class Cliente extends Model
         'dni_conyugue',
         'fecha_nacimiento_conyugue',
         'celular_conyugue',
-        'id_conyugue_cliente' // Asegúrate de tener esta columna en el fillable
+        'id_conyugue_cliente',
+        'calle',
+        'profesion',
+        'provincia',  
+        'ciudad',
     ];
 
     public function conyugue()
