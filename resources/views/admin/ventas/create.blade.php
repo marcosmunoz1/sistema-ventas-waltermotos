@@ -192,7 +192,7 @@
                     </a>
                 </div>
             </form>
-        </div>
+        </div> 
 
 
         <!-- Modal para Buscar Cliente -->

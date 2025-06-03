@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Conyugue;
 use App\Models\Credito;
 use App\Models\DetalleCredito;
 use App\Models\Marca;
@@ -11,6 +12,8 @@ use App\Models\Venta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Dompdf\Dompdf;
+use Luecano\NumeroALetras\NumeroALetras;
 
 class VentaController extends Controller
 {
@@ -116,8 +119,46 @@ class VentaController extends Controller
             ->with('icono', 'success');
     }
 
+    public function reporte($id)
+    {
+        $venta = Venta::with('cliente', 'moto')->where('id_venta', $id)->first();
+      
+        $credito = null;
+        if ($venta->forma_pago === 'Credito') {
+            $credito = Credito::where('id_venta', $venta->id_venta)->first();
+            $formatter = new NumeroALetras();
+            $montoLetrasCredito = $formatter->toMoney($credito->entrega, 2, 'pesos', 'centavos');
+        }else{
+            $montoLetrasCredito =0;
+        }
+        
+
+        $conyugue = null;
+        if ($venta->cliente->estado_civil_cliente === 'En Concubinato') {
+            $conyugue = Conyugue::find($venta->cliente->id_conyugue_cliente);
+        }
 
 
+        $formatter = new NumeroALetras();
+        $montoLetrasContado = $formatter->toMoney($venta->precio_venta, 2, 'pesos', 'centavos');
+
+        // Renderizar la vista Blade en HTML
+        $html = view('admin.ventas.reporte', compact('venta', 'conyugue', 'credito', 'montoLetrasContado','montoLetrasCredito'))->render();
+
+        // Crear la instancia de DomPDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+
+        // Crear el nombre del archivo
+        $fecha = \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y');
+        $idVenta = $venta->id_venta;
+        $idMoto = $venta->moto->id;
+        $nombreArchivo = "Contrarto_Compra_Venta_{$fecha}_{$venta->cliente->apellido_cliente}_{$venta->cliente->nombre_cliente}_nro._{$idVenta}.pdf";
+
+        // Retornar el PDF como descarga con el nombre generado
+        return $dompdf->stream($nombreArchivo);
+    }
 
     /**
      * Display the specified resource.
@@ -135,8 +176,6 @@ class VentaController extends Controller
             return view('admin.ventas.show', compact('venta', 'cliente', 'moto'));
         }
     }
-
-
 
     /**
      * Show the form for editing the specified resource.
@@ -157,8 +196,6 @@ class VentaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-
-
     public function destroy($id)
     {
         $venta = Venta::findOrFail($id);
@@ -175,7 +212,7 @@ class VentaController extends Controller
                 // Elimina los detalles correctamente
                 DetalleCredito::where('id_credito', $credito->id)->delete();
 
-                               $credito->delete();
+                $credito->delete();
             }
 
             $venta->delete();

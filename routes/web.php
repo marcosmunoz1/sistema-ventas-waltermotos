@@ -11,7 +11,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\AdminController::class, 'index'])->name('home');
 
 //Rutas para roles
 Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index');
@@ -31,6 +31,16 @@ Route::get('/admin/usuarios/{id}', [App\Http\Controllers\UsuariosController::cla
 Route::get('/admin/usuarios/{id}/edit', [App\Http\Controllers\UsuariosController::class, 'edit'])->name('admin.usuarios.edit');
 Route::put('/admin/usuarios/{id}', [App\Http\Controllers\UsuariosController::class, 'update'])->name('admin.usuarios.update');
 Route::delete('/admin/usuarios/{id}', [App\Http\Controllers\UsuariosController::class, 'destroy'])->name('admin.usuarios.destroy');
+
+//ruta para permisos
+Route::get('/admin/permisos', [App\Http\Controllers\PermisoController::class, 'index'])->name('admin.permisos.index');
+Route::get('/admin/permisos/crear-permiso', [App\Http\Controllers\PermisoController::class, 'create'])->name('admin.permisos.create');
+Route::post('admin/permisos/crear-permiso', [App\Http\Controllers\PermisoController::class, 'store'])->name('admin.permisos.store');
+Route::get('/admin/permisos/{id}', [App\Http\Controllers\PermisoController::class, 'show'])->name('admin.permisos.show');
+Route::get('/admin/permisos/{id}/edit', [App\Http\Controllers\PermisoController::class, 'edit'])->name('admin.permisos.edit');
+Route::put('/admin/permisos/{id}', [App\Http\Controllers\PermisoController::class, 'update'])->name('admin.permisos.update');
+Route::delete('/admin/permisos/{id}', [App\Http\Controllers\PermisoController::class, 'destroy'])->name('admin.permisos.destroy');
+
 
 //Rutas para Motos
 Route::get('/admin/motos', [App\Http\Controllers\MotoController::class, 'index'])->name('admin.motos.index');
@@ -71,6 +81,8 @@ Route::get('/admin/ventas/{id}', [App\Http\Controllers\VentaController::class, '
 Route::get('/admin/ventas/{id}/edit', [App\Http\Controllers\VentaController::class, 'edit'])->name('admin.ventas.edit');
 Route::put('/admin/ventas/{id}', [App\Http\Controllers\VentaController::class, 'update'])->name('admin.ventas.update');
 Route::delete('/admin/ventas/{id}', [App\Http\Controllers\VentaController::class, 'destroy'])->name('admin.ventas.destroy');
+Route::get('/admin/ventas/reporte/{id}', [App\Http\Controllers\VentaController::class, 'reporte'])->name('admin.venta.reporte');
+
 
 //Rutas para Creditos
 Route::get('/admin/creditos', [App\Http\Controllers\CreditoController::class, 'index'])->name('admin.creditos.index');

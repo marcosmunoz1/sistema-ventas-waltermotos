@@ -72,22 +72,22 @@ class RoleController extends Controller
                 return 'Permisos';
             } elseif (stripos($permiso->name, 'cli') !== false) {
                 return 'Clientes';
-            } elseif (stripos($permiso->name, 'cat') !== false) {
-                return 'Categoria';
-            } elseif (stripos($permiso->name, 'prod') !== false) {
-                return 'Productos';
             } elseif (stripos($permiso->name, 'prov') !== false) {
                 return 'Proveedores';
             } elseif (stripos($permiso->name, 'comp') !== false) {
                 return 'Compras';
+            } elseif (stripos($permiso->name, 'cred') !== false) {
+                return 'Creditos';
             } elseif (stripos($permiso->name, 'vent') !== false) {
                 return 'Ventas';
-            } elseif (stripos($permiso->name, 'arq') !== false) {
-                return 'Arqueo';
+            } elseif (stripos($permiso->name, 'comp') !== false) {
+                return 'Compras';
             } elseif (stripos($permiso->name, 'mar') !== false) {
                 return 'Marcas';
-            } elseif (stripos($permiso->name, 'est') !== false) {
-                return 'Estados';
+            } elseif (stripos($permiso->name, 'mot') !== false) {
+                return 'Motos';
+            } elseif (stripos($permiso->name, 'config') !== false) {
+                return 'Sistema';
             }
         })->map(function ($grupo) {
             return $grupo->sortBy('name');      
