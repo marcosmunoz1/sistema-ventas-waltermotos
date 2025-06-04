@@ -14,8 +14,7 @@
                 <div class="card-header">
                     <div class="card-title">Datos de Compra </div>
                 </div>
-
-                <form action="{{ url('/admin/compras',$compra->id) }}" id="form_compra" method="post">
+                <form action="{{ url('/admin/compras',$compra->id) }}" id="form_compra" method="post" enctype="multipart/form-data">
                  @csrf
                  @method('PUT')
                     <div class="card-body">
@@ -105,7 +104,7 @@
                                                                     <input type="hidden" name="id_deposito[]" class="form-control" value="{{$moto->id_deposito}}" min="1" required readonly>
                                                                     <input type="hidden" name="precio_compra[]" class="form-control" value="{{$moto->precio_compra}}" min="1" required readonly>
                                                                     <input type="hidden" name="id_marca[]" class="form-control"
-                                                                        value="{{ $moto->marca->nombre_marca }}" min="1" required>
+                                                                        value="{{ $moto->marca->id }}" min="1" required> 
                                                                     {{$moto->marca->nombre_marca}}
                                                                 </td>
                                                                 <td class="text-center" style="vertical-align: middle;">
@@ -310,7 +309,7 @@
                                                                     <option value="">Seleccione una Nacionalidad</option>
                                                                 @foreach ($nacionalidades as $nacionalidad )
                                                                 <option value="{{$nacionalidad->id}}" data-nombre_nacionalidad="{{ $nacionalidad->pais }}"
-                                                                     {{ $nacionalidad->id == $moto->id_marca ? 'selected' : '' }}>{{$nacionalidad->pais}}</option>
+                                                                     {{ $nacionalidad->id == $moto->id_nacionalida ? 'selected' : '' }}>{{$nacionalidad->pais}}</option>
                                                                 @endforeach
                                                                 </select>
                                                             </div>
@@ -378,7 +377,7 @@
                                                                     <option value="">Seleccione un Deposito</option>
                                                                     @foreach ($depositos as $deposito )
                                                                     <option value="{{$deposito->id}}"
-                                                                        {{ $deposito->id == $moto->id_marca ? 'selected' : '' }} required>
+                                                                        {{ $deposito->id == $moto->id_deposito ? 'selected' : '' }} required>
                                                                         {{$deposito->nombre_deposito}}
                                                                     </option>
                                                                     @endforeach
@@ -405,7 +404,6 @@
                                                                         <div id="image-container">
                                                                             @if($moto->imagen_moto)
                                                                                 <img id="current-image" src="{{ asset($moto->imagen_moto) }}" width="50%" alt="Imagen actual">
-                                                                                <input type="hidden" name="imagen_moto_existente" value="{{ $moto->imagen_moto }}">
                                                                             @else
                                                                                 <span id="no-image-text">No hay imagen</span>
                                                                             @endif
@@ -649,37 +647,25 @@
                  let precio_compra = parseFloat(document.getElementById('precio_compra').value);
                 const nuevoTotal = calcularTotalCompra() + parseFloat(precio_compra);
                 actualizarVariable(nuevoTotal);
-               const imagenInput = document.getElementById('imagen_moto_nueva'); // Cambiado el ID
-               // Validar que el input existe
-               // Validar que el input existe
-                if (!imagenInput) {
-                    console.error('Input de imagen no encontrado');
-                    return;
-                }
+               // Manejo CORREGIDO de la imagen
+                    const imagenInput = document.getElementById('imagen_moto');
+                    let imagenHTML = '';
+                    let fileInputHTML = '';
 
-                let imagenHTML = '';
-                let fileInputHTML = '';
-                let imagenValue = '';
+                    if (imagenInput.files && imagenInput.files[0]) {
+                        const imagenFile = imagenInput.files[0];
+                        const imagenURL = URL.createObjectURL(imagenFile);
 
-                // Manejar tanto imágenes existentes como nuevas
-                if (imagenInput.files && imagenInput.files[0]) {
-                    // Nueva imagen subida
-                    const imagenFile = imagenInput.files[0];
-                    const imagenURL = URL.createObjectURL(imagenFile);
+                        imagenHTML = `<img src="${imagenURL}" width="50" class="img-thumbnail">`;
 
-                    imagenHTML = `<img src="${imagenURL}" width="50" class="img-thumbnail">`;
-                    fileInputHTML = `
-                        <input type="file" name="imagen_moto_nueva[]" class="d-none"
-                            data-file-name="${imagenFile.name}">
+                        // Crear un nuevo input file para el envío
+                        fileInputHTML = `
+                        <input type="file" name="imagen_moto[]" class="d-none"
+                            data-file-name="${imagenFile.name}" multiple>
                     `;
-                    imagenValue = '';
-                } else {
-                    // Imagen existente o sin imagen
-                    imagenHTML = '<span class="text-muted">Sin imagen</span>';
-                    fileInputHTML = `
-                        <input type="hidden" name="imagen_moto[]" value="">
-                    `;
-                }
+                    } else {
+                        imagenHTML = '<span class="text-muted">Sin imagen</span>';
+                    }
 
 
 

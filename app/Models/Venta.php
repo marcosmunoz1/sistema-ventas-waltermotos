@@ -8,9 +8,9 @@ class Venta extends Model
 {
     //
     protected $primaryKey = 'id_venta';
-    
+
     protected $fillable = [
-        'total_pago', 
+        'total_pago',
         'total_interes',
     ];
 
@@ -22,8 +22,8 @@ class Venta extends Model
         return $this->belongsTo(Moto::class, 'id_moto');
     }
 
-    public function creditos(){
-        return $this->hasMany(Credito::class, 'id_venta');
+    public function credito(){
+        return $this->belongsTo(Credito::class, 'id_venta');
     }
 
 }

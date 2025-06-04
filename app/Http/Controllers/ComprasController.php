@@ -11,6 +11,7 @@ use App\Models\Nacionalidad;
 use App\Models\Proveedor;
 use App\Models\Venta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,6 +23,7 @@ class ComprasController extends Controller
     public function index()
     {    $motos = Moto::with('marca','compra','nacionalidad','deposito')->orderBy("id", "desc")->get();
         return view('admin.compras.index', compact('motos'));
+        
     }
 
     /**
@@ -183,10 +185,13 @@ class ComprasController extends Controller
      */
     public function update(Request $request, $id)
     {
-         /*  $datos = request()->all();
-         return response()->json($datos); */
 
-          $request->validate([
+         /*    return response()->json([
+                'received_data' => $request->all(),
+                'files' => $request->file() ?: 'No files'
+            ]); */
+
+       $request->validate([
                 'id_proveedor' => 'required|exists:proveedores,id',
                 'fecha_compra' => 'required',
                 'numero_factura' => 'required|unique:compras,numero_factura', // Cambiado de 'number' a 'numeric'
@@ -225,42 +230,18 @@ class ComprasController extends Controller
                 'precio_compra' => 'required|array',
                 'precio_compra.*' => 'numeric|min:0',
                 'imagen_moto' => 'nullable|array',
-                'imagen_moto.*' => 'nullable',
-                'imagen_moto_nueva' => 'nullable|array', // Para nuevas imágenes
-                'imagen_moto_nueva.*' => 'image|mimes:jpeg,png,jpg|max:2048',
-            ]);
+                'imagen_moto.*' => 'required|string|max:255'
+       ]);
 
+         $compra = Compra::findOrFail($id);
+         $compra->actualizarCompraConMotos($request->all());
 
-            // Procesar imágenes
-            $imagenesPaths = [];
-            if ($request->has('imagen_moto')) {
-                // Para imágenes existentes (rutas)
-                $imagenesPaths = $request->input('imagen_moto');
-            }
-
-            // Procesar nuevas imágenes subidas
-            if ($request->hasFile('imagen_moto_nueva')) {
-                foreach ($request->file('imagen_moto_nueva') as $index => $file) {
-                    if ($file && $file->isValid()) {
-                        $nombreArchivo = 'moto_'.time().'_'.$index.'.'.$file->extension();
-                        $path = $file->storeAs('motos', $nombreArchivo, 'public');
-                        $imagenesPaths[$index] = 'storage/' . $path;
-                    }
-                }
-            }
-
-            // Preparar datos para el modelo
-            $datosCompletos = array_merge($request->except(['imagen_moto', 'imagen_moto_nueva']), [
-                'imagen_moto' => $imagenesPaths
-            ]);
-
-            Compra::ActualizarCompra($datosCompletos);
-
-            return redirect()->route('admin.compras.index')
-            ->with('mensaje','Se Actualizo la compra exitosamente')
+       return redirect()->route('admin.compras.index')
+            ->with('mensaje','Se edito la compra exitosamente')
             ->with('icono','success');
 
-    }
+
+}
 
 
 

@@ -35,7 +35,7 @@
                                         <th class="text-center" style="width: 5%">Total Pagado</th>
                                         <th class="text-center" style="width: 5%">Forma</th>
                                         <th class="text-center" style="width: 5%">Estado</th>
-                                        <th class="text-center" style="width: 10%">Acciones</th>
+                                        <th class="text-center" style="width: 15%">Acciones</th>
                                     </tr>
                                 </thead>
                                 <?php $contador = 1; ?>
@@ -43,9 +43,9 @@
                                     @foreach ($ventas as $venta)
                                         <tr>
                                             <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
-                                            <td class="text-center"style="vertical-align: middle"> 
+                                            <td class="text-center"style="vertical-align: middle">
                                                 {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}
-                                               
+
                                             </td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $venta->id_venta }}
                                             <td style="vertical-align: middle">
@@ -53,8 +53,8 @@
                                                 {{ $venta->cliente->nombre_cliente }} </td>
                                             <td class="text-success text-right" style="vertical-align: middle">
                                                 ${{ number_format($venta->precio_venta, 2, ',', '.') }}</td>
-                                                <td class="text-right" style="vertical-align: middle">
-                                                    ${{ number_format($venta->total_interes, 2, ',', '.') }}</td>
+                                            <td class="text-right" style="vertical-align: middle">
+                                                ${{ number_format($venta->total_interes, 2, ',', '.') }}</td>
                                             <td class="text-danger text-right" style="vertical-align: middle">
                                                 ${{ number_format($venta->total_pago, 2, ',', '.') }}</td>
                                             <td class="text-center" style="vertical-align: middle">
@@ -74,10 +74,14 @@
                                             <td class="text-center" style="vertical-align: middle">
                                                 <a href="{{ url('/admin/ventas/' . $venta->id_venta) }}"
                                                     class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                <a href="{{ url('/admin/ventas/' . $venta->id_venta . '/edit') }}"
-                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                {{--  <a href="{{ url('/admin/ventas/' . $venta->id_venta . '/edit') }}"
+                                                        class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a> --}}
+                                                <a href="{{ url('/admin/ventas/reporte/' . $venta->id_venta) }}"
+                                                    class="btn btn-sm btn-secondary"><i
+                                                        class="fas fa-print"></i></a>
                                                 <form action="{{ url('/admin/ventas', $venta->id_venta) }}" method="post"
-                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $venta->id_venta }})"
+                                                    class="d-inline-block"
+                                                    onsubmit="preguntar(event, {{ $venta->id_venta }})"
                                                     id="miFormulario{{ $venta->id_venta }}">
                                                     @csrf
                                                     @method('DELETE')

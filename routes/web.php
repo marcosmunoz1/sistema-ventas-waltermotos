@@ -68,7 +68,7 @@ Route::get('/admin/ventas/{id}', [App\Http\Controllers\VentaController::class, '
 Route::get('/admin/ventas/{id}/edit', [App\Http\Controllers\VentaController::class, 'edit'])->name('admin.ventas.edit');
 Route::put('/admin/ventas/{id}', [App\Http\Controllers\VentaController::class, 'update'])->name('admin.ventas.update');
 Route::delete('/admin/ventas/{id}', [App\Http\Controllers\VentaController::class, 'destroy'])->name('admin.ventas.destroy');
-
+Route::get('/admin/ventas/reporte/{id}', [App\Http\Controllers\VentaController::class, 'reporte'])->name('admin.venta.reporte');
 //Rutas para Creditos
 Route::get('/admin/creditos', [App\Http\Controllers\CreditoController::class, 'index'])->name('admin.creditos.index');
 Route::get('/admin/creditos/{id}/cobrar-cuotas', [App\Http\Controllers\CreditoController::class, 'create'])->name('admin.creditos.cobrar-cuotas.create');
