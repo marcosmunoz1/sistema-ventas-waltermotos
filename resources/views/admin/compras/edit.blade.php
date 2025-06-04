@@ -104,7 +104,7 @@
                                                                     <input type="hidden" name="id_deposito[]" class="form-control" value="{{$moto->id_deposito}}" min="1" required readonly>
                                                                     <input type="hidden" name="precio_compra[]" class="form-control" value="{{$moto->precio_compra}}" min="1" required readonly>
                                                                     <input type="hidden" name="id_marca[]" class="form-control"
-                                                                        value="{{ $moto->marca->id }}" min="1" required> 
+                                                                        value="{{ $moto->marca->id }}" min="1" required>
                                                                     {{$moto->marca->nombre_marca}}
                                                                 </td>
                                                                 <td class="text-center" style="vertical-align: middle;">
@@ -309,7 +309,7 @@
                                                                     <option value="">Seleccione una Nacionalidad</option>
                                                                 @foreach ($nacionalidades as $nacionalidad )
                                                                 <option value="{{$nacionalidad->id}}" data-nombre_nacionalidad="{{ $nacionalidad->pais }}"
-                                                                     {{ $nacionalidad->id == $moto->id_nacionalida ? 'selected' : '' }}>{{$nacionalidad->pais}}</option>
+                                                                     {{ $nacionalidad->id == $moto->id_nacionalidad ? 'selected' : '' }}>{{$nacionalidad->pais}}</option>
                                                                 @endforeach
                                                                 </select>
                                                             </div>

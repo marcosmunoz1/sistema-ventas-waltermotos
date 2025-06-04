@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compra;
-use App\Models\inventario;
 use App\Models\Deposito;
 use App\Models\Marca;
 use App\Models\Moto;
@@ -21,9 +20,10 @@ class ComprasController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {    $motos = Moto::with('marca','compra','nacionalidad','deposito')->orderBy("id", "desc")->get();
+    {
+        $motos = Moto::with('marca','compra','nacionalidad','deposito')->orderBy("id", "desc")->get();
         return view('admin.compras.index', compact('motos'));
-        
+
     }
 
     /**
