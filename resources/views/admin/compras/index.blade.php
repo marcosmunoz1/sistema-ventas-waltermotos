@@ -302,12 +302,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                @if($moto->condicion != "vendida")
+
                     <a type="button" class="btn btn-warning" id="editarCompraLink" style="display: none;"
                         data-toggle="tooltip" title="Editar esta compra">
                             <i class="fas fa-edit"></i> Editar
                         </a>
-                @endif
+
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                   <i class="fas fa-times"></i>   Cerrar
                 </button>

@@ -132,12 +132,12 @@
                                                                     {{$moto->nr_chasis}}
                                                                 </td>
                                                                 <td class="text-center" style="vertical-align: middle;">
-                                                                    @if(isset($moto->imagen_moto))
-                                                                        <input type="hidden" name="imagen_moto[]" value="{{ $moto->imagen_moto }}">
+                                                                     @if($moto->imagen_moto)
                                                                         <img src="{{ asset($moto->imagen_moto) }}" width="50" class="img-thumbnail">
                                                                     @else
-                                                                        <input type="file" id="imagen_moto_nueva" name="imagen_moto_nueva[]" class="form-control-file">
+                                                                        <span>Sin imagen</span>
                                                                     @endif
+
                                                                 </td>
                                                                  <td class="text-center" style="vertical-align: middle;">
                                                                      <button type="button" class="btn btn-danger btn-sm" onclick="limpiarTabla()">
@@ -389,27 +389,30 @@
 
 
                                                     <!-- Segunda Columna: Imagen -->
-                                                    <div class="col-md-3">
-                                                            <div class="text-center">
-                                                                <div class="form-group">
-                                                                    <label for="imagen">Imagen</label>
-                                                                    <input type="file" id="imagen_moto_nueva" name="imagen_moto_nueva[]"
-                                                                        accept=".jpg, .jpeg, .png" class="form-control">
-                                                                    @error('imagen_moto')
-                                                                        <small style="color: red;">{{ $message }}</small>
-                                                                    @enderror
-                                                                    <br>
-                                                                    <center>
-                                                                        <!-- Mostrar imagen existente o previsualización -->
-                                                                        <div id="image-container">
-                                                                            @if($moto->imagen_moto)
-                                                                                <img id="current-image" src="{{ asset($moto->imagen_moto) }}" width="50%" alt="Imagen actual">
-                                                                            @else
-                                                                                <span id="no-image-text">No hay imagen</span>
-                                                                            @endif
+                                                   <div class="col-md-3">
+                                                        <div class="text-center">
+                                                            <div class="form-group">
+                                                                <label for="imagen_moto">Imagen</label>
+                                                                <input type="file" id="imagen_moto" name="imagen_moto"
+                                                                    accept=".jpg, .jpeg, .png" class="form-control">
+                                                                @error('imagen_moto')
+                                                                    <small class="text-danger">{{ $message }}</small>
+                                                                @enderror
+                                                                <br>
+                                                                <div id="image-container" class="mt-2">
+                                                                    @if($moto->imagen_moto)
+                                                                        <img src="{{ asset($moto->imagen_moto) }}" width="150" class="img-thumbnail mb-2">
+                                                                        <button type="button" class="btn btn-sm btn-danger" onclick="document.getElementById('eliminar_imagen').value = '1'">
+                                                                            <i class="fas fa-trash"></i> Eliminar
+                                                                        </button>
+                                                                    @else
+                                                                        <div class="no-image-placeholder">
+                                                                            <i class="fas fa-image fa-3x text-muted"></i>
+                                                                            <p class="text-muted mt-2">No hay imagen</p>
                                                                         </div>
-                                                                    </center>
+                                                                    @endif
                                                                 </div>
+                                                                <input type="hidden" id="eliminar_imagen" name="eliminar_imagen" value="0">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -525,6 +528,19 @@
               },
           });
          </script>
+         <script>
+            function validarImagen() {
+                const imagenInput = document.getElementById('imagen_moto');
+                if (imagenInput.files.length > 0) {
+                    const file = imagenInput.files[0];
+                    if (!file.type.match('image.*')) {
+                        alert('Solo se permiten imágenes');
+                        return false;
+                    }
+                }
+                return true;
+            }
+         </script>
         <script>
                 $(document).on('click', '.seleccionar-btn-proveedor', function () {
                     var id = $(this).data('id');
@@ -555,7 +571,7 @@
         </script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const imagenInput = document.getElementById('imagen_moto_nueva');
+                const imagenInput = document.getElementById('imagen_moto');
 
                 imagenInput.addEventListener('change', function(evt) {
                     const files = evt.target.files;
@@ -724,7 +740,7 @@
 
                  // Transferir el archivo si existe
                 if (imagenInput.files && imagenInput.files[0]) {
-                    const newFileInput = fila.querySelector('input[name="imagen_moto_nueva[]"]');
+                    const newFileInput = fila.querySelector('input[name="imagen_moto[]"]');
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(imagenInput.files[0]);
                     newFileInput.files = dataTransfer.files;

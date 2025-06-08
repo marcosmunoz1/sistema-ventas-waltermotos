@@ -88,13 +88,9 @@ private function guardardetalledemoto(array $data)
     }
 }
 
-
-
-public function actualizarCompraConMotos(array $data) 
+public   function actualizarCompraConMotos(array $data)
 {
     DB::transaction(function () use ($data) {
-
-        $this->moto()->delete();
 
         $this->update([
             'id_proveedor' => $data['id_proveedor'],
@@ -105,11 +101,9 @@ public function actualizarCompraConMotos(array $data)
             'estado_compra' => 1,
         ]);
 
-
-
         // Crear nuevas motos con los datos actualizados
         foreach ($data['id_marca'] as $index => $marca) {
-            Moto::create([
+           $motoData = [
                 'id_compra' => $this->id,
                 'id_nacionalidad' => $data['id_nacionalidad'][$index],
                 'id_deposito' => $data['id_deposito'][$index],
@@ -127,14 +121,27 @@ public function actualizarCompraConMotos(array $data)
                 'nr_chasis' => $data['nr_chasis'][$index] ?? null,
                 'precio_compra' => $data['precio_compra'][$index],
                 'precio_venta' => $data['precio_venta'][$index],
-                'imagen_moto' => $data['imagen_moto'][$index] ?? null,
                 'fecha_compra_moto' => $data['fecha_compra'],
                 'estado_moto' => 'En_stock',
                 'condicion' => 'en_stock'
-            ]);
+            ];
+
+             // Agregar imagen solo si existe
+            if (isset($data['imagen_moto'][$index])) {
+                $motoData['imagen_moto'] = $data['imagen_moto'][$index];
+            }
+
+             if (isset($this->moto[$index])) {
+                $this->moto[$index]->update($motoData);
+            } else {
+                $motoData['id_compra'] = $this->id;
+                Moto::create($motoData);
+            }
         }
     });
 }
+
+
 
 
 }

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Compra;
 use App\Models\Deposito;
 use App\Models\Marca;
@@ -11,7 +10,6 @@ use App\Models\Proveedor;
 use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ComprasController extends Controller
@@ -43,9 +41,12 @@ class ComprasController extends Controller
      */
     public function store(Request $request)
     {
+         /* return response()->json([
+                'received_data' => $request->all(),
+                'files' => $request->file() ?: 'No files'
+            ]); */
          /*  $datos = request()->all();
          return response()->json($datos); */
-
       /*     dd($request->file('imagen_moto'));  */
 
            $request->validate([
@@ -185,16 +186,14 @@ class ComprasController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-         /*    return response()->json([
+          /*   return response()->json([
                 'received_data' => $request->all(),
                 'files' => $request->file() ?: 'No files'
-            ]); */
-
+            ]) */
        $request->validate([
                 'id_proveedor' => 'required|exists:proveedores,id',
                 'fecha_compra' => 'required',
-                'numero_factura' => 'required|unique:compras,numero_factura', // Cambiado de 'number' a 'numeric'
+                'numero_factura' => 'required|unique:compras,numero_factura,'.$id,
                 'numero_remito' => 'required', // Permite que sea opcional
                 'total_compra' => 'required',
                 'id_marca' => 'required|array',
@@ -230,21 +229,49 @@ class ComprasController extends Controller
                 'precio_compra' => 'required|array',
                 'precio_compra.*' => 'numeric|min:0',
                 'imagen_moto' => 'nullable|array',
-                'imagen_moto.*' => 'required|string|max:255'
+                'imagen_moto.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
        ]);
+       $compra = Compra::with('moto')->findOrFail($id);
 
-         $compra = Compra::findOrFail($id);
-         $compra->actualizarCompraConMotos($request->all());
+            // Procesar imágenes
+            $imagenesPaths = [];
 
-       return redirect()->route('admin.compras.index')
-            ->with('mensaje','Se edito la compra exitosamente')
-            ->with('icono','success');
+            if ($request->hasFile('imagen_moto')) {
+                foreach ($request->file('imagen_moto') as $index => $file) {
+                    if ($file->isValid()) {
+                        // Eliminar imagen anterior si existe
+                        if (isset($compra->moto[$index])) {
+                            $this->eliminarImagenExistente($compra->moto[$index]->imagen_moto);
+                        }
 
+                        // Guardar nueva imagen
+                        $nombreArchivo = 'moto_'.time().'_'.$index.'.'.$file->extension();
+                        $path = $file->storeAs('motos', $nombreArchivo, 'public');
+                        $imagenesPaths[$index] = 'storage/'.$path;
+                    }
+                }
+            }
 
+            // Preparar datos para actualización
+            $datosActualizacion = $request->except('imagen_moto');
+            if (!empty($imagenesPaths)) {
+                $datosActualizacion['imagen_moto'] = $imagenesPaths;
+            }
+
+            // Actualizar compra y motos
+            $compra->actualizarCompraConMotos($datosActualizacion);
+
+            return redirect()->route('admin.compras.index')
+                ->with('mensaje', 'Se editó la compra exitosamente')
+                ->with('icono', 'success');
+    }
+
+protected function eliminarImagenExistente($rutaImagen)
+{
+    if ($rutaImagen && Storage::exists(str_replace('storage/', '', $rutaImagen))) {
+        Storage::delete(str_replace('storage/', '', $rutaImagen));
+    }
 }
-
-
-
 
     /**
      * Remove the specified resource from storage.
@@ -291,4 +318,5 @@ class ComprasController extends Controller
             ]);
     }
 }
+
 }
