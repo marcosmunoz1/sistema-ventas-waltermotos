@@ -55,7 +55,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="text" value="{{$compra->total_compra}}" id="total_compra" name="total_compra" hidden>
                         </div>
                         <div class="row" >
                             <div class="col-md-12">
@@ -71,89 +70,89 @@
                                                     </a>
                                                 </div>
                                                 <div class="card-body">
-                                                    <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                                                      <table id="tabla-motos" class="table table-bordered table-nowrap">
-                                                        <thead class="thead-light">
-                                                          <tr>
-                                                            <th class="text-center sticky-column">#</th>
-                                                            <th class="text-center">Marca</th>
-                                                            <th class="text-center">Modelo</th>
-                                                            <th class="text-center d-none d-sm-table-cell">Color</th>
-                                                            <th class="text-center d-none d-md-table-cell">Año</th>
-                                                            <th class="text-center d-none d-lg-table-cell">Nacionalidad</th>
-                                                            <th class="text-center d-none d-xl-table-cell">Nr_motor</th>
-                                                            <th class="text-center d-none d-xl-table-cell">Nr_chasis</th>
-                                                            <th class="text-center d-none d-md-table-cell">Imagen</th>
-                                                            <th class="text-center sticky-column">Acciones</th>
-                                                          </tr>
-                                                        </thead>
-                                                        <tbody id="tabla-motos-body">
-                                                          @foreach ($motos as $moto)
+                                                    <div class="table-responsive-sm" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                                                      <table id="tabla-motos" class="table table-bordered table-nowrap  table-striped table-hover table-sm">
+                                                            <thead class="thead-light">
                                                             <tr>
-                                                                <td>
-                                                                    1
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;">
-                                                                    <input type="hidden" name="dominio[]" class="form-control" value="{{$moto->dominio}}" min="1" required readonly>
-                                                                    <input type="hidden" name="cilindrada_moto[]" class="form-control" value="{{$moto->cilindrada_moto}}" min="1" required readonly>
-                                                                    <input type="hidden" name="km_moto[]" class="form-control" value="{{$moto->km_moto}}" min="1" required readonly>
-                                                                    <input type="hidden" name="es_usada[]" class="form-control" value="{{$moto->estado_moto}}" min="1" required readonly>
-                                                                    <input type="hidden" name="dnrpa[]" class="form-control" value="{{$moto->dnrpa}}" min="1" required readonly>
-                                                                    <input type="hidden" name="nr_certificado[]" class="form-control" value="{{$moto->nr_certificado}}" min="1" required readonly>
-                                                                    <input type="hidden" name="precio_venta[]" class="form-control" value="{{$moto->precio_venta}}" min="1" required readonly>
-                                                                    <input type="hidden" name="id_deposito[]" class="form-control" value="{{$moto->id_deposito}}" min="1" required readonly>
-                                                                    <input type="hidden" name="precio_compra[]" class="form-control" value="{{$moto->precio_compra}}" min="1" required readonly>
-                                                                    <input type="hidden" name="id_marca[]" class="form-control"
-                                                                        value="{{ $moto->marca->id }}" min="1" required>
-                                                                    {{$moto->marca->nombre_marca}}
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;">
-                                                                    <input type="hidden" name="modelo_moto[]" class="form-control" value="{{$moto->modelo_moto}}" min="1" required readonly >
-                                                                    {{$moto->modelo_moto}}
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;">
-                                                                    <input type="hidden" name="color_moto[]" class="form-control" value="{{$moto->color_moto}}" min="1" required readonly >
-                                                                    {{$moto->color_moto}}
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;">
-                                                                    <input type="hidden" name="anio_moto[]" class="form-control" value="{{$moto->anio_moto}}" min="1" required readonly >
-                                                                     {{$moto->anio_moto}}
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;">
-                                                                    <input type="hidden" name="id_nacionalidad[]" class="form-control" value="{{$moto->nacionalidad->id}}" min="1" required readonly >
-                                                                    {{$moto->nacionalidad->pais}}
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;">
-                                                                    <input type="hidden" name="nr_motor[]" class="form-control" value="{{$moto->nr_motor}}" min="1" required readonly >
-                                                                    {{$moto->nr_motor}}
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;">
-                                                                    <input type="hidden" name="nr_chasis[]" class="form-control" value="{{$moto->nr_chasis}}" min="1" required readonly >
-                                                                    {{$moto->nr_chasis}}
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;">
-                                                                     @if($moto->imagen_moto)
-                                                                        <img src="{{ asset($moto->imagen_moto) }}" width="50" class="img-thumbnail">
-                                                                    @else
-                                                                        <span>Sin imagen</span>
-                                                                    @endif
-
-                                                                </td>
-                                                                 <td class="text-center" style="vertical-align: middle;">
-                                                                     <button type="button" class="btn btn-danger btn-sm" onclick="limpiarTabla()">
-                                                                         <i class="fas fa-trash"></i>
-                                                                     </button>
-                                                                 </td>
-
-
+                                                                <th class="text-center sticky-column">#</th>
+                                                                <th class="text-center">Marca</th>
+                                                                <th class="text-center">Modelo</th>
+                                                                <th class="text-center d-none d-sm-table-cell">Color</th>
+                                                                <th class="text-center d-none d-md-table-cell">Año</th>
+                                                                <th class="text-center d-none d-lg-table-cell">Nacionalidad</th>
+                                                                <th class="text-center d-none d-xl-table-cell">Nr_motor</th>
+                                                                <th class="text-center d-none d-xl-table-cell">Nr_chasis</th>
+                                                                <th class="text-center d-none d-md-table-cell">Imagen</th>
+                                                                <th class="text-center sticky-column">Acciones</th>
                                                             </tr>
+                                                            </thead>
+                                                            <tbody id="tabla-motos-body">
+                                                                @foreach ($motos as $moto)
+                                                                    <tr>
+                                                                        <td  class="text-center" style="vertical-align: middle;">
+                                                                            1
+                                                                        </td>
+                                                                        <td class="text-center" style="vertical-align: middle;">
+                                                                            <input type="hidden" name="dominio[]" class="form-control" value="{{$moto->dominio}}" min="1" required readonly>
+                                                                            <input type="hidden" name="cilindrada_moto[]" class="form-control" value="{{$moto->cilindrada_moto}}" min="1" required readonly>
+                                                                            <input type="hidden" name="km_moto[]" class="form-control" value="{{$moto->km_moto}}" min="1" required readonly>
+                                                                            <input type="hidden" name="es_usada[]" class="form-control" value="{{$moto->estado_moto}}" min="1" required readonly>
+                                                                            <input type="hidden" name="dnrpa[]" class="form-control" value="{{$moto->dnrpa}}" min="1" required readonly>
+                                                                            <input type="hidden" name="nr_certificado[]" class="form-control" value="{{$moto->nr_certificado}}" min="1" required readonly>
+                                                                            <input type="hidden" name="precio_venta[]" class="form-control" value="{{$moto->precio_venta}}" min="1" required readonly>
+                                                                            <input type="hidden" name="id_deposito[]" class="form-control" value="{{$moto->id_deposito}}" min="1" required readonly>
+                                                                            <input type="hidden" name="precio_compra[]" class="form-control" value="{{$moto->precio_compra}}" min="1" required readonly>
+                                                                            <input type="hidden" name="id_marca[]" class="form-control"
+                                                                                value="{{ $moto->marca->id }}" min="1" required>
+                                                                            {{$moto->marca->nombre_marca}}
+                                                                        </td>
+                                                                        <td class="text-center" style="vertical-align: middle;">
+                                                                            <input type="hidden" name="modelo_moto[]" class="form-control" value="{{$moto->modelo_moto}}" min="1" required readonly >
+                                                                            {{$moto->modelo_moto}}
+                                                                        </td>
+                                                                        <td class="text-center" style="vertical-align: middle;">
+                                                                            <input type="hidden" name="color_moto[]" class="form-control" value="{{$moto->color_moto}}" min="1" required readonly >
+                                                                            {{$moto->color_moto}}
+                                                                        </td>
+                                                                        <td class="text-center" style="vertical-align: middle;">
+                                                                            <input type="hidden" name="anio_moto[]" class="form-control" value="{{$moto->anio_moto}}" min="1" required readonly >
+                                                                            {{$moto->anio_moto}}
+                                                                        </td>
+                                                                        <td class="text-center" style="vertical-align: middle;">
+                                                                            <input type="hidden" name="id_nacionalidad[]" class="form-control" value="{{$moto->nacionalidad->id}}" min="1" required readonly >
+                                                                            {{$moto->nacionalidad->pais}}
+                                                                        </td>
+                                                                        <td class="text-center" style="vertical-align: middle;">
+                                                                            <input type="hidden" name="nr_motor[]" class="form-control" value="{{$moto->nr_motor}}" min="1" required readonly >
+                                                                            {{$moto->nr_motor}}
+                                                                        </td>
+                                                                        <td class="text-center" style="vertical-align: middle;">
+                                                                            <input type="hidden" name="nr_chasis[]" class="form-control" value="{{$moto->nr_chasis}}" min="1" required readonly >
+                                                                            {{$moto->nr_chasis}}
+                                                                        </td>
+                                                                        <td class="text-center" style="vertical-align: middle;">
+                                                                            @if($moto->imagen_moto)
+                                                                                <img src="{{ asset($moto->imagen_moto) }}" width="50" class="img-thumbnail">
+                                                                            @else
+                                                                                <span>Sin imagen</span>
+                                                                            @endif
 
-                                                          @endforeach
+                                                                        </td>
+                                                                        <td class="text-center" style="vertical-align: middle;">
+                                                                            <button type="button" class="btn btn-danger btn-sm" onclick="limpiarTabla()">
+                                                                                <i class="fas fa-trash"></i>
+                                                                            </button>
+                                                                        </td>
+
+
+                                                                    </tr>
+
+                                                                @endforeach
 
 
 
-                                                        </tbody>
-                                                      </table>
+                                                            </tbody>
+                                                       </table>
                                                     </div>
                                                   </div>
                                                 </div>
@@ -164,11 +163,12 @@
                                     </div>
                             </div>
                     </div>
-
                     </div>
                     <div class="card-body" style="justify-items: end">
                         <h4>
-                            <b>Suma de compra</b> <input type="number" value="{{$compra->total_compra}}" id="mostrarVariable" class="form-control" readonly>
+                            <label><b>Suma de compra</b></label>
+                             <input type="number" id="total-compra" name="total_compra" value="{{ $compra->total_compra }}"
+                                class="form-control" readonly step="0.01">
                         <div class="card-body">
                             <button type="submit" class="btn btn-warning" >
                                 <i class="fas fa-edit"></i> Actualizar
@@ -356,7 +356,7 @@
                                                                         <label>Precio de Compra</label><b style="color: red;">*</b>
                                                                         <div class="input-group">
                                                                                 <span class="input-group-text text-success">$</span>
-                                                                            <input type="text" value="{{$moto->precio_compra}}" class="form-control text-success" name="precio_compra" id="precio_compra" required>
+                                                                            <input type="number" value="{{$moto->precio_compra}}" class="form-control text-success" name="precio_compra" id="precio_compra" required>
                                                                         </div>
                                                                     </div>
                                                             </div>
@@ -365,7 +365,7 @@
                                                                     <label>Precio de Venta</label><b style="color: red;">*</b>
                                                                     <div class="input-group">
                                                                         <span class="input-group-text text-danger">$</span>
-                                                                        <input name="precio_venta" value="{{$moto->precio_venta}}" id="precio_venta" type="text"
+                                                                        <input type="number" name="precio_venta" value="{{$moto->precio_venta}}" id="precio_venta"
                                                                             class="form-control text-danger"
                                                                             value="" required>
                                                                     </div>
@@ -402,9 +402,9 @@
                                                                 <div id="image-container" class="mt-2">
                                                                     @if($moto->imagen_moto)
                                                                         <img src="{{ asset($moto->imagen_moto) }}" width="150" class="img-thumbnail mb-2">
-                                                                        <button type="button" class="btn btn-sm btn-danger" onclick="document.getElementById('eliminar_imagen').value = '1'">
+                                                                        {{-- <button type="button" class="btn btn-sm btn-danger" onclick="document.getElementById('eliminar_imagen').value = '1'">
                                                                             <i class="fas fa-trash"></i> Eliminar
-                                                                        </button>
+                                                                        </button> --}}
                                                                     @else
                                                                         <div class="no-image-placeholder">
                                                                             <i class="fas fa-image fa-3x text-muted"></i>
@@ -412,7 +412,6 @@
                                                                         </div>
                                                                     @endif
                                                                 </div>
-                                                                <input type="hidden" id="eliminar_imagen" name="eliminar_imagen" value="0">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -436,6 +435,11 @@
 
     @section('css')
     <style>
+    .precio-actualizado {
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+    background-color: #f8fff8;
+    }
         /* Estilo para botón deshabilitado */
 #btn-agregar-moto:disabled {
     opacity: 0.6;
@@ -661,8 +665,7 @@
                  let nr_motor =   document.getElementById('nr_motor').value;
                  let nr_chasis =   document.getElementById('nr_chasis').value;
                  let precio_compra = parseFloat(document.getElementById('precio_compra').value);
-                const nuevoTotal = calcularTotalCompra() + parseFloat(precio_compra);
-                actualizarVariable(nuevoTotal);
+                 actualizarPrecioCompra(precio_compra);
                // Manejo CORREGIDO de la imagen
                     const imagenInput = document.getElementById('imagen_moto');
                     let imagenHTML = '';
@@ -683,12 +686,10 @@
                         imagenHTML = '<span class="text-muted">Sin imagen</span>';
                     }
 
-
-
                   // 1. Crear fila
                  const fila = document.createElement('tr');
                  fila.innerHTML = `
-                         <td class="text-center" style="vertical-align: middle;">
+                        <td class="text-center" style="vertical-align: middle;">
                              <input type="hidden" name="dominio[]" class="form-control" value="${dominio}" min="1" required readonly>
                              <input type="hidden" name="cilindrada_moto[]" class="form-control" value="${cilindrada_moto}" min="1" required readonly>
                              <input type="hidden" name="km_moto[]" class="form-control" value="${km_moto}" min="1" required readonly>
@@ -746,12 +747,8 @@
                     newFileInput.files = dataTransfer.files;
                 }
 
-
                    // 4. Agregar fila
                   tablaBody.appendChild(fila);
-
-
-
 
                  // 3. Resetear solo los campos del modal (no el formulario completo)
               /*    $('#modalMoto').find('input').not('[type="hidden"]').val(''); */
@@ -765,7 +762,9 @@
 
                  $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal
 
+
                  actualizarEstadoBotonAgregar();
+
 
                  return true;
              }
@@ -832,32 +831,13 @@ function limpiarError(grupo) {
 
       </script>
       <script>
-     function actualizarVariable(nuevoValor) {
-    // Formatear si es número
-    const valorFormateado = typeof nuevoValor === 'number'
-        ? nuevoValor.toFixed(2)
-        : nuevoValor;
-
-    // Actualizar UI
-    const elementos = [
-        {id: "mostrarVariable", prop: "textContent"},
-        {id: "total_compra", prop: "value"}
-    ];
-
-    elementos.forEach(item => {
-        const el = document.getElementById(item.id);
-        if (el) el[item.prop] = valorFormateado;
-    });
-    }
-      </script>
-      <script>
          function limpiarTabla() {
-                        const tablaBody = document.getElementById('tabla-motos-body');
+                const tablaBody = document.getElementById('tabla-motos-body');
                 if (tablaBody) {
                     tablaBody.innerHTML = '';
-
                     // Actualizar el total a 0 cuando se limpia la tabla
-                    actualizarVariable(0);
+
+                    actualizarPrecioCompra(0);
 
                     // Actualizar estado inmediatamente
                     actualizarEstadoBotonAgregar();
@@ -898,18 +878,26 @@ function limpiarError(grupo) {
 
         </script>
         <script>
-            function calcularTotalCompra() {
-            const filas = document.querySelectorAll('#tabla-motos-body tr');
-            let total = 0;
+            function actualizarPrecioCompra(nuevoTotal) {
+                const inputTotal = document.getElementById('total-compra');
 
-            filas.forEach(fila => {
-                const inputPrecio = fila.querySelector('input[name="precio_compra[]"]');
-                if (inputPrecio) {
-                    total += parseFloat(inputPrecio.value) || 0;
+                // Validación básica
+                if (!inputTotal) {
+                    console.error('No se encontró el input total');
+                    return false;
                 }
-            });
 
-            return total;
-        }
+                // Formatear a 2 decimales
+                const valorFormateado = parseFloat(nuevoTotal).toFixed(2);
+
+                // Efecto visual de actualización
+                inputTotal.classList.add('precio-actualizado');
+                setTimeout(() => inputTotal.classList.remove('precio-actualizado'), 1000);
+
+                // Actualizar valor
+                inputTotal.value = valorFormateado;
+
+                return true;
+                        }
         </script>
     @endsection
