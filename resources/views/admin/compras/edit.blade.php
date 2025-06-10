@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Cargar Compra')
+@section('title', 'Editar Compra')
 
 @section('content_header')
     <H1 class="brand-text font-weight-light"><b>Compras</b>/<b>Editar Compra</b></H1>
@@ -225,6 +225,8 @@
             </div>
         </div>
     </div>
+
+      <!-- Modal para ver los detalles de la moto -->
     <div class="modal" id="VerMotoModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="verRolLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -238,6 +240,133 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-outline">
+                            <div class="col-md-12 mx-auto mt-2">
+                                <div class="card card-info">
+                                    <div class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                            <!-- Datos de Moto -->
+                                            <div class="row">
+                                                <!-- Primera Columna: Datos -->
+                                                <div class="col-md-9">
+                                                    <!-- Fila 1 -->
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <label>Marca</label>
+                                                             <input class="form-control" type="text" value="{{$motos->marca->nombre_marca}}" id="nombre_marcaTabla2" readonly>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                                <label>Modelo</label>
+                                                                <input type="text" value="{{$motos->modelo_moto}}" id="modelo_motoVer" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Dominio</label>
+                                                            <input type="text" value="{{$motos->dominio}}" id="dominioVer" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Cilindrada</label>
+                                                            <input type="number" value="{{$motos->cilindrada_moto}}" id="cilindrada_motoVer" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                     <!-- Fila 2 -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-2">
+                                                            <label>Color</label>
+                                                            <input type="text" value="{{$motos->color_moto}}"  id="color_motoVer" class="form-control"  readonly>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Nacionalidad</label>
+                                                             <input class="form-control" type="text" value="{{$motos->nacionalidad->pais}}" id="paisVer" readonly>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Año</label>
+                                                            <input type="number" value="{{$motos->anio_moto}}" id="anio_motoVer" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Km</label>
+                                                            <input type="number" value="{{$motos->km_moto}}" id="km_motoVer" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-check mt-4">
+                                                                <input class="form-check-input" value="{{$motos->es_usada}}" id="es_usadaVer" type="checkbox"
+                                                                 {{ $motos->es_usada == 1 ? 'checked' : '' }} disabled>
+                                                                  <label class="form-check-label">¿Es usada?</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Fila 3 -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-6">
+                                                            <label>Nro. Motor</label>
+                                                            <input type="text" value="{{$motos->nr_motor}}" id="nr_motorVer" class="form-control"  readonly>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label>Nro. Chasis</label>
+                                                            <input type="text" value="{{$motos->nr_chasis}}"  id="nr_chasisVer" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Fila 4 -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-6">
+                                                            <label>D.N.R.P.A</label>
+                                                            <input type="text" value="{{$motos->dnrpa}}" id="dnrpaVer" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label>Certificado</label>
+                                                            <input type="text" value="{{$motos->nr_certificado}}" class="form-control" id="nr_certificadoVer" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-4">
+                                                                <div class="mb-3">
+                                                                    <label>Precio de Compra</label>
+                                                                    <div class="input-group">
+                                                                            <span class="input-group-text text-success">$</span>
+                                                                        <input type="number" value="{{$motos->precio_compra}}" class="form-control text-success"  id="precio_compraVer" readonly>
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="mb-3">
+                                                                <label>Precio de Venta</label>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-text text-danger">$</span>
+                                                                    <input type="number" value="{{$motos->precio_venta}}" id="precio_ventaVer"
+                                                                        class="form-control text-danger" readonly>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Deposito</label>
+                                                            <input class="form-control" type="text" value="{{$motos->deposito->nombre_deposito}}" id="depositoVer" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                  <!-- Segunda Columna: Imagen -->
+                                                   <div class="col-md-3">
+                                                         <label>Imagen</label>
+                                                        <div class="text-center">
+                                                            @if($motos->imagen_moto)
+                                                                <img src="{{ asset($motos->imagen_moto) }}" id="img" width="150" class="img-thumbnail">
+                                                            @else
+                                                                <span>Sin imagen</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
@@ -249,7 +378,7 @@
                <div class="modal-header bg-warning text-white d-flex justify-content-center" >
                     <h4 class="modal-title text-center">
                         <i class="fa-solid fa-motorcycle"></i>
-                        <span id="modalActionText">Editar</span> detalle de la moto  <i class="fa-solid fa-motorcycle"></i>
+                        <span id="modalActionText">Editar</span> detalles de la moto  <i class="fa-solid fa-motorcycle"></i>
                     </h4>
                     <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal" aria-label="close">
                         <span aria-hidden="true">&times;</span>
@@ -519,6 +648,25 @@
 
     @section('js')
         {{-- Aquí puedes agregar scripts adicionales --}}
+        <script>
+            document.getElementById('form_compra').addEventListener('submit', function(e) {
+                e.preventDefault(); // Evita el envío inmediato
+
+                Swal.fire({
+                    title: '¿Confirmar edición?',
+                    text: "¡Si confirma los cambios, estos seran permanetes para siempre!",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, guardar',
+                    cancelButtonText: 'Cancelar',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        e.target.submit(); // Ahora sí enviamos el formulario
+                    }
+                });
+            });
+        </script>
        <script>
             $('#tablaProveedores').DataTable({
                ordering: false,
@@ -684,7 +832,7 @@
                 // Actualizar el precio total
                 actualizarPrecioCompra(precio_compra);
 
-                //INPUTS DE LA TABLA
+                //INPUTS ID DE LA TABLA
 
                   const inputDominio = document.getElementById('dominioTabla');
                   const inputCilindrada = document.getElementById('cilindra_motoTabla');
@@ -706,7 +854,14 @@
                   const inputNr_chasis = document.getElementById('nr_chasisTabla');
                   const inputImagen = document.getElementById('imagen_motoTabla');
 
-                  // ASIGNAR NUEVOS VALORES A LOS INPUTS
+                  // INPUTS ID DEL FORMULARIO VER DETALLE DE LA MOTO
+                  const inputNombre_marca2 = document.getElementById('nombre_marcaTabla2');
+                  const inputModeloMotoVer = document.getElementById('modelo_motoVer');
+                  const inputDominioVer = document.getElementById('dominioVer');
+                  const inputCilidradaVer = document.getElementById('cilindrada_motoVer');
+
+
+                  // ASIGNAR NUEVOS VALORES A LOS INPUTS ID
 
                   inputDominio.value = dominio;
                   inputCilindrada.value = cilindrada_moto;
@@ -726,6 +881,10 @@
                   inputNombrenacionalidad_moto.value = nacionalidadNombre;
                   inputNr_motor.value = nr_motor;
                   inputNr_chasis.value = nr_chasis;
+                  inputNombre_marca2.value = marcaNombre;
+
+                // inputs para detalle
+
 
                if (imagenInput.files && imagenInput.files[0]) {
                     const imagenFile = imagenInput.files[0];
