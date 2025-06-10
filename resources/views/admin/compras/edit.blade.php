@@ -92,7 +92,7 @@
                                                                         <input type="hidden" name="dominio" id="dominioTabla" class="form-control" value="{{$motos->dominio}}" min="1" required readonly>
                                                                         <input type="hidden" name="cilindrada_moto" id="cilindra_motoTabla" class="form-control" value="{{$motos->cilindrada_moto}}" min="1" required readonly>
                                                                         <input type="hidden" name="km_moto" id="km_motoTabla" class="form-control"  value="{{$motos->km_moto}}" min="1" required readonly>
-                                                                        <input type="hidden" name="es_usada" id="es_usadaTabla" class="form-control" value="{{$motos->estado_moto}}" min="1" required readonly>
+                                                                        <input type="hidden" name="es_usada" id="es_usadaTabla" class="form-control" value="{{$motos->es_usada}}" min="1" required readonly>
                                                                         <input type="hidden" name="dnrpa" id="dnrpaTabla" class="form-control" value="{{$motos->dnrpa}}" min="1" required readonly>
                                                                         <input type="hidden" name="nr_certificado" id="nr_certificadoTabla" class="form-control" value="{{$motos->nr_certificado}}" min="1" required readonly>
                                                                         <input type="hidden" name="precio_venta" id="precio_ventaTabla" class="form-control" value="{{$motos->precio_venta}}" min="1" required readonly>
@@ -290,7 +290,7 @@
                                                         </div>
                                                         <div class="col-md-2">
                                                             <div class="form-check mt-4">
-                                                                <input class="form-check-input" value="{{$motos->es_usada}}" id="es_usadaVer" type="checkbox"
+                                                                <input class="form-check-input" id="es_usadaVer" type="checkbox"
                                                                  {{ $motos->es_usada == 1 ? 'checked' : '' }} disabled>
                                                                   <label class="form-check-label">¿Es usada?</label>
                                                             </div>
@@ -349,7 +349,7 @@
                                                          <label>Imagen</label>
                                                         <div class="text-center">
                                                             @if($motos->imagen_moto)
-                                                                <img src="{{ asset($motos->imagen_moto) }}" id="img" width="150" class="img-thumbnail">
+                                                                <img src="{{ asset($motos->imagen_moto) }}" id="imgVer" width="150" class="img-thumbnail">
                                                             @else
                                                                 <span>Sin imagen</span>
                                                             @endif
@@ -360,7 +360,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cerrar</button>
                             </div>
                         </div>
                     </div>
@@ -449,7 +449,7 @@
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-check mt-4">
-                                                                    <input class="form-check-input" value="{{$motos->es_usada}}" name="es_usada" id="es_usada" type="checkbox">
+                                                                    <input class="form-check-input"  {{ $motos->es_usada == 1 ? 'checked' : '' }} name="es_usada" id="es_usada" type="checkbox">
                                                                     <label class="form-check-label">¿Es usada?</label>
                                                                 </div>
                                                             </div>
@@ -552,13 +552,6 @@
             </div>
         </div>
     </div>
-             <!-- Modal editar el detalle de la moto -->
-
-
-
-
-
-
     @endsection
 
     @section('css')
@@ -581,13 +574,6 @@
     background-color: #f8fff8;
     }
         /* Estilo para botón deshabilitado */
-#btn-agregar-moto:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #6c757d !important;
-    border-color: #6c757d !important;
-}
-
 /* Clase adicional para más énfasis */
 .btn-disabled {
     position: relative;
@@ -715,6 +701,20 @@
                 }
                 return true;
             }
+         </script>
+         <script>
+             document.getElementById('imagen_moto').addEventListener('change', function (e) {
+                const input = e.target;
+                const preview = document.getElementById('imgVer');
+
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
          </script>
         <script>
                 $(document).on('click', '.seleccionar-btn-proveedor', function () {
@@ -859,7 +859,18 @@
                   const inputModeloMotoVer = document.getElementById('modelo_motoVer');
                   const inputDominioVer = document.getElementById('dominioVer');
                   const inputCilidradaVer = document.getElementById('cilindrada_motoVer');
-
+                  const inputColorVer = document.getElementById('color_motoVer');
+                  const inputanioVer = document.getElementById('anio_motoVer');
+                  const inputnacionVer = document.getElementById('paisVer');
+                  const inputkmVer = document.getElementById('km_motoVer');
+                  const inputes_usadaVer = document.getElementById('es_usadaVer');
+                  const inputnrmotorVer = document.getElementById('nr_motorVer');
+                  const inputnrchasisVer = document.getElementById('nr_chasisVer');
+                  const inputdnrpaVer = document.getElementById('dnrpaVer');
+                  const inputcertificadoVer = document.getElementById('nr_certificadoVer');
+                  const inputprecompraVer = document.getElementById('precio_compraVer');
+                  const inputprecventaVer = document.getElementById('precio_ventaVer');
+                  const inputdepositoVer= document.getElementById('depositoVer');
 
                   // ASIGNAR NUEVOS VALORES A LOS INPUTS ID
 
@@ -870,7 +881,7 @@
                   inputDnrpa.value = dnrpa;
                   inputNr_certificado.value = nr_certificado;
                   inputPrecio_venta.value = precio_venta;
-                  inputId_deposito.value = id_deposito;
+                  inputdepositoVer.value = id_deposito;
                   inputPrecio_compra.value = precio_compra;
                   inputId_marca.value = id_marca;
                   inputNombre_marca.value = marcaNombre;
@@ -881,10 +892,24 @@
                   inputNombrenacionalidad_moto.value = nacionalidadNombre;
                   inputNr_motor.value = nr_motor;
                   inputNr_chasis.value = nr_chasis;
+
+                // ASIGNAR NUEVOS VALORES A LOS INPUTS ID DE LOS DETALLES
+
                   inputNombre_marca2.value = marcaNombre;
-
-                // inputs para detalle
-
+                  inputDominioVer.value = dominio;
+                  inputCilidradaVer.value = cilindrada_moto;
+                  inputkmVer.value = km_moto;
+                  inputes_usadaVer.checked = (es_usada === '1');
+                  inputdnrpaVer.value = dnrpa;
+                  inputcertificadoVer.value = nr_certificado;
+                  inputprecventaVer.value = precio_venta;
+                  inputprecompraVer.value = precio_compra;
+                  inputModeloMotoVer.value = modelo_moto;
+                  inputColorVer.value = color_moto;
+                  inputanioVer.value = anio_moto;
+                  inputnacionVer.value = nacionalidadNombre;
+                  inputnrmotorVer.value = nr_motor;
+                  inputnrchasisVer.value = nr_chasis;
 
                if (imagenInput.files && imagenInput.files[0]) {
                     const imagenFile = imagenInput.files[0];
@@ -896,7 +921,7 @@
                 }
 
                 //cerrar modal
-                document.getElementById('es_usada').checked = false;
+
                 $('#crearMotoModal').modal('hide');
 
                 return true;

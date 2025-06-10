@@ -189,8 +189,8 @@ class ComprasController extends Controller
             /*  return response()->json([
                 'received_data' => $request->all(),
                 'files' => $request->file() ?: 'No files'
-            ]); */ 
-    $validated = $request->validate([
+            ]); */
+        $request->validate([
         'id_proveedor' => 'required|exists:proveedores,id',
         'fecha_compra' => 'required|date',
         'numero_factura' => 'required|unique:compras,numero_factura,'.$id,
