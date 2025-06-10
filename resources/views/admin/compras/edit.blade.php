@@ -323,8 +323,8 @@
                                                                 <div class="mb-3">
                                                                     <label>Precio de Compra</label>
                                                                     <div class="input-group">
-                                                                            <span class="input-group-text text-success">$</span>
-                                                                        <input type="number" value="{{$motos->precio_compra}}" class="form-control text-success"  id="precio_compraVer" readonly>
+                                                                            <span class="input-group-text">$</span>
+                                                                        <input type="number" value="{{$motos->precio_compra}}" class="form-control"  id="precio_compraVer" readonly>
                                                                     </div>
                                                                 </div>
                                                         </div>
@@ -332,9 +332,9 @@
                                                             <div class="mb-3">
                                                                 <label>Precio de Venta</label>
                                                                 <div class="input-group">
-                                                                    <span class="input-group-text text-danger">$</span>
+                                                                    <span class="input-group-text">$</span>
                                                                     <input type="number" value="{{$motos->precio_venta}}" id="precio_ventaVer"
-                                                                        class="form-control text-danger" readonly>
+                                                                        class="form-control " readonly>
                                                                 </div>
                                                             </div>
                                                         </div>
