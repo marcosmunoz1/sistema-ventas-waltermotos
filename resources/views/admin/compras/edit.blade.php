@@ -502,7 +502,7 @@
                                                                 <select class="form-control" id="id_deposito" name="id_deposito" required>
                                                                     <option value="">Seleccione un Deposito</option>
                                                                     @foreach ($depositos as $deposito )
-                                                                    <option value="{{$deposito->id}}"
+                                                                    <option value="{{$deposito->id}}" data-nombre_deposito="{{ $deposito->nombre_deposito }}"
                                                                         {{ $deposito->id == $motos->id_deposito ? 'selected' : '' }} required>
                                                                         {{$deposito->nombre_deposito}}
                                                                     </option>
@@ -743,6 +743,13 @@
                     // Guarda el nombre en una variable global o pásalo a donde necesites
                     window.nacionalidadNombreSeleccionada = nacionalidadNombre; // Opcional (solución rápida)
                 });
+                $('#id_deposito').change(function() {
+                var selectedOption = $(this).find('option:selected');
+                var depositoId = selectedOption.val(); // ID de la marca (para el value)
+                var depositoNombre = selectedOption.data('nombre_deposito'); // Nombre de la marca (para mostrar)
+                // Guarda el nombre en una variable global o pásalo a donde necesites
+                window.depositoNombreSeleccionada = depositoNombre; // Opcional (solución rápida)
+                 });
         </script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -822,6 +829,7 @@
                 const nr_certificado = document.getElementById('nr_certificado').value;
                 const precio_venta = parseFloat(document.getElementById('precio_venta').value);
                 const id_deposito = document.getElementById('id_deposito').value;
+                const depositoNombre = $('#id_deposito').find('option:selected').data('nombre_deposito');
                 const color_moto = document.getElementById('color_moto').value;
                 const anio_moto =   document.getElementById('anio_moto').value;
                 const id_nacionalidad =   document.getElementById('id_nacionalidad').value;
@@ -881,7 +889,7 @@
                   inputDnrpa.value = dnrpa;
                   inputNr_certificado.value = nr_certificado;
                   inputPrecio_venta.value = precio_venta;
-                  inputdepositoVer.value = id_deposito;
+                  inputId_deposito .value = id_deposito;
                   inputPrecio_compra.value = precio_compra;
                   inputId_marca.value = id_marca;
                   inputNombre_marca.value = marcaNombre;
@@ -908,6 +916,7 @@
                   inputColorVer.value = color_moto;
                   inputanioVer.value = anio_moto;
                   inputnacionVer.value = nacionalidadNombre;
+                  inputdepositoVer.value = depositoNombre; //  nuevo
                   inputnrmotorVer.value = nr_motor;
                   inputnrchasisVer.value = nr_chasis;
 
