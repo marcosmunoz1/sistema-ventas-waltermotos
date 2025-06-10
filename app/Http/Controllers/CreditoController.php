@@ -131,7 +131,7 @@ class CreditoController extends Controller
         $fecha = \Carbon\Carbon::parse($detalle->fecha_pago)->format('d-m-Y');
         $idCredito = $credito->id;
         $numeroRecibo = $detalle->id ?? 'recibo';
-        $nombreArchivo = "{$fecha}_{$idCredito}_{$numeroRecibo}.pdf";
+        $nombreArchivo = "Recibo_{$numeroRecibo}_{$fecha}_{$idCredito}_cuota_{$detalle->numero_cuota}.pdf";
 
         // Retornar el PDF como descarga con el nombre generado
         return $dompdf->stream($nombreArchivo);

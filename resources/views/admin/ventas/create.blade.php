@@ -192,7 +192,7 @@
                     </a>
                 </div>
             </form>
-        </div>
+        </div> 
 
 
         <!-- Modal para Buscar Cliente -->
@@ -623,7 +623,8 @@
                 const nombreCompleto = apellido + ', ' + nombre;
                 document.querySelector('input[name="id_cliente"]').value = id;
 
-                // Mostrar los datos del cliente
+                // Mostrar los datos del cliente 
+                
                 document.getElementById('clienteNombreCompleto').textContent = nombreCompleto;
                 document.getElementById('clienteTelefono').textContent = telefono;
                 document.getElementById('clienteEmail').textContent = email;

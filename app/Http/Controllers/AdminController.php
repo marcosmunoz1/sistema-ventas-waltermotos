@@ -15,8 +15,7 @@ use Spatie\Permission\Models\Role;
 class AdminController extends Controller
 {
     public function index()
-    {
-
+    {        
         $cantidadRoles = Role::count();
         $cantidadUsuarios = User::count();
         $cantidadMarcas = Marca::count();
@@ -26,10 +25,10 @@ class AdminController extends Controller
         $cantidadClientes = Cliente::count();
         $cantidadVentas = Venta::count();
         $cantidadCreditos = Credito::count();
-
+      
         return view('admin.index', compact(
-            'cantidadRoles',
-            'cantidadUsuarios',
+            'cantidadRoles', 
+            'cantidadUsuarios', 
             'cantidadProveedores',
             'cantidadCompras',
             'cantidadClientes',

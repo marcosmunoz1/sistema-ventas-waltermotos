@@ -117,7 +117,7 @@ class VentaController extends Controller
     public function reporte($id)
     {
         $venta = Venta::with('cliente', 'moto')->where('id_venta', $id)->first();
-
+      
         $credito = null;
         if ($venta->forma_pago === 'Credito') {
             $credito = Credito::where('id_venta', $venta->id_venta)->first();
@@ -135,6 +135,14 @@ class VentaController extends Controller
 
         $formatter = new NumeroALetras();
         $montoLetrasContado = $formatter->toMoney($venta->precio_venta, 2, 'pesos', 'centavos');
+
+        // Renderizar la vista Blade en HTML
+        $html = view('admin.ventas.reporte', compact('venta', 'conyugue', 'credito', 'montoLetrasContado','montoLetrasCredito'))->render();
+
+        // Crear la instancia de DomPDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
 
         // Renderizar la vista Blade en HTML
         $html = view('admin.ventas.reporte', compact('venta', 'conyugue', 'credito', 'montoLetrasContado','montoLetrasCredito'))->render();

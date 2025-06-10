@@ -12,6 +12,7 @@ class Credito extends Model
         'monto_total',
         'saldo_credito',
         'total_interes',
+        'entrega',
     ];
 
     public function detalles()
