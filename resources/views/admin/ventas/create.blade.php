@@ -521,8 +521,8 @@
                                             <td class="text-center" style="vertical-align: middle;">
                                                 <button class="btn btn-info"
                                                     onclick="seleccionarMotoDesdeModal(
-                                                '{{ $moto->id }}', 
-                                                '{{ $moto->marca->nombre_marca }}', 
+                                                '{{ $moto->id }}',
+                                                '{{ $moto->marca->nombre_marca }}',
                                                 '{{ $moto->modelo_moto }}',
                                                 '{{ $moto->dominio }}',
                                                 '{{ $moto->color_moto }}',
@@ -624,6 +624,7 @@
                 document.querySelector('input[name="id_cliente"]').value = id;
 
                 // Mostrar los datos del cliente 
+                
                 document.getElementById('clienteNombreCompleto').textContent = nombreCompleto;
                 document.getElementById('clienteTelefono').textContent = telefono;
                 document.getElementById('clienteEmail').textContent = email;

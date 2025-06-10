@@ -73,8 +73,10 @@
                                                         )">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
-                                                <a href="{{ url('/admin/compras/' . $moto->compra->id . '/edit') }}"
+                                                @if($moto->condicion != 'vendida')
+                                                   <a href="{{ url('/admin/compras/' . $moto->compra->id . '/edit') }}"
                                                     class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                @endif
                                                 <form action="{{ url('/admin/compras', $moto->compra->id) }}" method="post"
                                                     class="d-inline-block" onsubmit="preguntar(event, {{ $moto->compra->id }})"
                                                     id="miFormulario{{ $moto->compra->id }}">
@@ -96,6 +98,8 @@
             </div>
         </div>
     </div>
+
+   <!-- Modal para mostrar los detalles de la compra -->
  <div class="modal fade" id="ventana_modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -298,10 +302,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-               <a type="button" class="btn btn-warning" id="editarCompraLink" style="display: none;"
-                data-toggle="tooltip" title="Editar esta compra">
-                    <i class="fas fa-edit"></i> Editar
-                </a>
+
+                    <a type="button" class="btn btn-warning" id="editarCompraLink" style="display: none;"
+                        data-toggle="tooltip" title="Editar esta compra">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                   <i class="fas fa-times"></i>   Cerrar
                 </button>
@@ -352,7 +358,7 @@
 
     <script>
         $('#tablaCompras').DataTable({
-            "pageLength": 5,
+             ordering: false,
             "language": {
                 "emptyTable": "No hay información.",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Compras",

@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Compra;
-use App\Models\inventario;
 use App\Models\Deposito;
 use App\Models\Marca;
 use App\Models\Moto;
@@ -11,7 +9,7 @@ use App\Models\Nacionalidad;
 use App\Models\Proveedor;
 use App\Models\Venta;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ComprasController extends Controller
@@ -20,8 +18,10 @@ class ComprasController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {    $motos = Moto::with('marca','compra','nacionalidad','deposito')->orderBy("id", "desc")->get();
+    {
+        $motos = Moto::with('marca','compra','nacionalidad','deposito')->orderBy("id", "desc")->get();
         return view('admin.compras.index', compact('motos'));
+
     }
 
     /**
@@ -41,11 +41,13 @@ class ComprasController extends Controller
      */
     public function store(Request $request)
     {
-        /*   $datos = request()->all();
+         /* return response()->json([
+                'received_data' => $request->all(),
+                'files' => $request->file() ?: 'No files'
+            ]); */
+         /*  $datos = request()->all();
          return response()->json($datos); */
-
       /*     dd($request->file('imagen_moto'));  */
-
 
            $request->validate([
                 'id_proveedor' => 'required|exists:proveedores,id',
@@ -151,7 +153,7 @@ class ComprasController extends Controller
         });
 
         return response()->json([
-            'fecha_formateada' => $compra->fecha_compra,
+            'fecha_formateada' => \App\Helpers\Helpers::cambiaFormatoFecha(($compra->fecha_compra)),
             'total_formateado' => number_format($compra->total_compra, 2),
               'proveedor' => [ // Datos adicionales del proveedor
                     'nombre_proveedor' => $compra->proveedor->nombre_proveedor ?? 'N/A',
@@ -174,7 +176,7 @@ class ComprasController extends Controller
         $marcas = Marca::all();
         $nacionalidades = Nacionalidad::all();
         $depositos = Deposito::all();
-        $motos = Moto::with('marca','nacionalidad','deposito')->where('id_compra',$id)->get();
+        $motos = Moto::with('marca','nacionalidad','deposito')->where('id_compra',$id)->firstOrFail();
         $compra = Compra::with('proveedor')->findOrFail($id);
         return view('admin.compras.edit', compact('proveedores','motos','marcas','nacionalidades','depositos','compra'));
     }
@@ -182,10 +184,94 @@ class ComprasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-    {
+   public function update(Request $request, $id)
+{
+            /*  return response()->json([
+                'received_data' => $request->all(),
+                'files' => $request->file() ?: 'No files'
+            ]); */ 
+    $validated = $request->validate([
+        'id_proveedor' => 'required|exists:proveedores,id',
+        'fecha_compra' => 'required|date',
+        'numero_factura' => 'required|unique:compras,numero_factura,'.$id,
+        'numero_remito' => 'required',
+        'total_compra' => 'required|numeric',
+        'id_marca' => 'required|exists:marcas,id',
+        'modelo_moto' => 'required|string|max:255',
+        'dominio' => 'required|string|max:255',
+        'cilindrada_moto' => 'required|string|max:255',
+        'km_moto' => 'required|string|max:255',
+        'es_usada' => 'required',
+        'dnrpa' => 'required|string|max:255',
+        'nr_certificado' => 'nullable|string|max:255',
+        'precio_venta' => 'required|numeric|min:0',
+        'id_deposito' => 'required|exists:depositos,id',
+        'color_moto' => 'required|string|max:255',
+        'anio_moto' => 'required|string|max:255',
+        'id_nacionalidad' => 'required|exists:nacionalidades,id',
+        'nr_motor' => 'required|string|max:255',
+        'nr_chasis' => 'required|string|max:255',
+        'precio_compra' => 'required|numeric|min:0',
+        'imagen_moto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+    ]);
 
+    $compra = Compra::find($id)->first();
+
+    $compra->id_proveedor = $request->id_proveedor;
+    $compra->fecha_compra = $request->fecha_compra;
+    $compra->numero_factura = $request->numero_factura;
+    $compra->numero_remito = $request->numero_remito;
+    $compra->total_compra = $request->total_compra;
+    $compra->estado_compra = 1;
+    $compra->save();
+
+    $moto = Moto::where('id_compra', $id)->first();
+    $moto->id_nacionalidad = $request->id_nacionalidad;
+    $moto->id_marca = $request->id_marca;
+    $moto->modelo_moto = $request->modelo_moto;
+    $moto->dominio = $request->dominio;
+    $moto->cilindrada_moto = $request->cilindrada_moto;
+    $moto->km_moto = $request->km_moto;
+    $moto->es_usada = $request->es_usada;
+    $moto->dnrpa = $request->dnrpa;
+    $moto->nr_certificado = $request->nr_certificado;
+    $moto->precio_venta = $request->precio_venta;
+    $moto->id_deposito = $request->id_deposito;
+    $moto->color_moto = $request->color_moto;
+    $moto->anio_moto = $request->anio_moto;
+    $moto->nr_motor = $request->nr_motor;
+    $moto->nr_chasis = $request->nr_chasis;
+    $moto->precio_compra = $request->precio_compra;
+    $moto->estado_moto = "En_stock";
+    $moto->condicion = "en_stock";
+    $moto->fecha_venta_moto = null;
+    $moto->fecha_compra_moto = $request->fecha_compra;
+    if ($request->hasFile('imagen_moto')) {
+    // Borrar la imagen anterior si existe
+    if ($moto->imagen_moto) {
+        $rutaImagenAnterior = str_replace('storage/', '', $moto->imagen_moto);
+        Storage::disk('public')->delete($rutaImagenAnterior);
     }
+    // Obtener el archivo
+    $file = $request->file('imagen_moto');
+
+    if ($file->isValid()) {
+        // Generar nombre único como en crear
+        $nombreArchivo = 'moto_' . time() . '_0.' . $file->extension(); // 0 porque solo es una imagen
+
+        // Guardar en storage/public/motos con nombre personalizado
+        $path = $file->storeAs('motos', $nombreArchivo, 'public');
+
+        // Guardar ruta accesible
+        $moto->imagen_moto = 'storage/' . $path;
+    }
+  }
+    $moto->save();
+
+    return redirect()->route('admin.compras.index')
+        ->with('mensaje','Se Modifico la compra exitosamente')
+        ->with('icono','success');
+}
 
     /**
      * Remove the specified resource from storage.
@@ -204,7 +290,7 @@ class ComprasController extends Controller
                 return redirect()->route('admin.compras.index')
                     ->with('swal', [
                         'title' => 'Error',
-                        'text' => 'No se puede eliminar la compra porque la moto tiene ventas asociadas',
+                        'text' => 'No se puede eliminar la compra porque la moto tiene una venta asociada',
                         'icon' => 'error'
                     ]);
             }
@@ -230,6 +316,7 @@ class ComprasController extends Controller
                 'text' => 'Ocurrió un error al eliminar: ' . $e->getMessage(),
                 'icon' => 'error'
             ]);
-    } 
+    }
 }
+
 }

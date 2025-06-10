@@ -78,16 +78,69 @@ private function guardardetalledemoto(array $data)
             'precio_compra' => $data['precio_compra'][$index],
             'precio_venta' => $data['precio_venta'][$index],
             'estado_moto' => 'En_stock',
-            'imagen_moto' => $data['imagen_moto'][$index] ?? null
+            'imagen_moto' => $data['imagen_moto'][$index] ?? null,
+            'condicion' => 'en_stock'
         ];
 
 
 
         Moto::create($motoData);
     }
-
-
 }
+
+public   function actualizarCompraConMotos(array $data)
+{
+    DB::transaction(function () use ($data) {
+
+        $this->update([
+            'id_proveedor' => $data['id_proveedor'],
+            'fecha_compra' => $data['fecha_compra'],
+            'numero_remito' => $data['numero_remito'],
+            'numero_factura' => $data['numero_factura'],
+            'total_compra' => $data['total_compra'],
+            'estado_compra' => 1,
+        ]);
+
+        // Crear nuevas motos con los datos actualizados
+        foreach ($data['id_marca'] as $index => $marca) {
+           $motoData = [
+                'id_compra' => $this->id,
+                'id_nacionalidad' => $data['id_nacionalidad'][$index],
+                'id_deposito' => $data['id_deposito'][$index],
+                'id_marca' => $data['id_marca'][$index],
+                'modelo_moto' => $data['modelo_moto'][$index],
+                'dominio' => $data['dominio'][$index],
+                'cilindrada_moto' => $data['cilindrada_moto'][$index],
+                'color_moto' => $data['color_moto'][$index],
+                'anio_moto' => $data['anio_moto'][$index],
+                'km_moto' => $data['km_moto'][$index],
+                'es_usada' => $data['es_usada'][$index],
+                'nr_certificado' => $data['nr_certificado'][$index] ?? null,
+                'dnrpa' => $data['dnrpa'][$index] ?? null,
+                'nr_motor' => $data['nr_motor'][$index] ?? null,
+                'nr_chasis' => $data['nr_chasis'][$index] ?? null,
+                'precio_compra' => $data['precio_compra'][$index],
+                'precio_venta' => $data['precio_venta'][$index],
+                'fecha_compra_moto' => $data['fecha_compra'],
+                'estado_moto' => 'En_stock',
+                'condicion' => 'en_stock'
+            ];
+
+             // Agregar imagen solo si existe
+            if (isset($data['imagen_moto'][$index])) {
+                $motoData['imagen_moto'] = $data['imagen_moto'][$index];
+            }
+
+             if (isset($this->moto[$index])) {
+                $this->moto[$index]->update($motoData);
+            } else {
+                $motoData['id_compra'] = $this->id;
+                Moto::create($motoData);
+            }
+        }
+    });
+}
+
 
 
 

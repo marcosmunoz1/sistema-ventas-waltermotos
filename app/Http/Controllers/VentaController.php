@@ -1,8 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Cliente;
+use App\Models\Compra;
 use App\Models\Conyugue;
 use App\Models\Credito;
 use App\Models\DetalleCredito;
@@ -17,9 +16,7 @@ use Luecano\NumeroALetras\NumeroALetras;
 
 class VentaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+  
     public function index()
     {
         $ventas = Venta::with('moto', 'cliente')
@@ -29,10 +26,6 @@ class VentaController extends Controller
         return view('admin.ventas.index', compact('ventas'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $motos = Moto::where('condicion', 'en_stock')->with(['nacionalidad', 'marca'])->get();
@@ -45,7 +38,6 @@ class VentaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
 
     public function store(Request $request)
     {
@@ -76,7 +68,7 @@ class VentaController extends Controller
         } else {
             $venta->total_pago   = $validated['precio_venta'];
             $venta->precio_venta = $validated['precio_venta'];
-            $venta->estado_venta = 'Paga';
+            $venta->estado_venta = 'Pagado';
         }
 
         $venta->save();
@@ -113,6 +105,9 @@ class VentaController extends Controller
                 $detalle->save();
             }
         }
+        $compra = Compra::where('id', $moto->id_compra);
+        $compra->estado_compra = 2 ;
+        $compra->save();
 
         return redirect()->route('admin.ventas.index')
             ->with('mensaje', 'Venta registrada con éxito')
@@ -131,7 +126,6 @@ class VentaController extends Controller
         }else{
             $montoLetrasCredito =0;
         }
-        
 
         $conyugue = null;
         if ($venta->cliente->estado_civil_cliente === 'En Concubinato') {
@@ -141,6 +135,14 @@ class VentaController extends Controller
 
         $formatter = new NumeroALetras();
         $montoLetrasContado = $formatter->toMoney($venta->precio_venta, 2, 'pesos', 'centavos');
+
+        // Renderizar la vista Blade en HTML
+        $html = view('admin.ventas.reporte', compact('venta', 'conyugue', 'credito', 'montoLetrasContado','montoLetrasCredito'))->render();
+
+        // Crear la instancia de DomPDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
 
         // Renderizar la vista Blade en HTML
         $html = view('admin.ventas.reporte', compact('venta', 'conyugue', 'credito', 'montoLetrasContado','montoLetrasCredito'))->render();
