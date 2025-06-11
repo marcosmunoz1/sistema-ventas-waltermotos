@@ -36,13 +36,16 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Factura</label>
-                                    <input type="number" class="form-control" value="{{$compra->numero_factura}}" id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
+                                    <input type="number" class="form-control" value="{{$compra->numero_factura, old('numero_factura')}}" id="numero_factura" name="numero_factura" required>
+                                      @error('numero_factura')
+                                                <small style="color:red;">{{ $message }}</small>
+                                       @enderror
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Remito</label>
-                                    <input type="number" class="form-control" value="{{$compra->numero_remito}}" id="numero_remito" name="numero_remito" placeholder="Número de remito" required>
+                                    <input type="number" class="form-control" value="{{$compra->numero_remito}}" id="numero_remito" name="numero_remito"  required>
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -634,7 +637,7 @@
 
     @section('js')
         {{-- Aquí puedes agregar scripts adicionales --}}
-        <script>
+       {{--  <script>
             document.getElementById('form_compra').addEventListener('submit', function(e) {
                 e.preventDefault(); // Evita el envío inmediato
 
@@ -652,7 +655,7 @@
                     }
                 });
             });
-        </script>
+        </script> --}}
        <script>
             $('#tablaProveedores').DataTable({
                ordering: false,

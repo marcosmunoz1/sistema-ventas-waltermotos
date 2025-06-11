@@ -40,14 +40,17 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Factura</label>
-                                    <input type="number" class="form-control" id="numero_factura" name="numero_factura"
+                                    <input type="number" value="{{ old('numero_factura') }}" class="form-control" id="numero_factura" name="numero_factura"
                                         placeholder="Número de factura" required>
+                                         @error('numero_factura')
+                                                <small style="color:red;">{{ $message }}</small>
+                                         @enderror
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Remito</label>
-                                    <input type="number" class="form-control" id="numero_remito" name="numero_remito"
+                                    <input type="number" value="{{ old('numero_remito') }}" class="form-control" id="numero_remito" name="numero_remito"
                                         placeholder="Número de remito" required>
                                 </div>
                             </div>
@@ -55,7 +58,7 @@
                                 <div class="form-group">
                                     <label>Fecha compra</label>
 
-                                    <input type="date" name="fecha_compra" id="fecha_compra"
+                                    <input type="date" value="{{ old('fecha_compra') }}" name="fecha_compra" id="fecha_compra"
                                         class="form-control datetimepicker-input" data-target="#reservationdate" required>
 
                                 </div>
@@ -187,7 +190,7 @@
             </div>
         </div>
     </div>
-            <!-- Modal para agregar o editar el detalle de la moto -->
+            <!-- Modal para agregar el detalle de la moto -->
             <div class="modal" id="crearMotoModal" tabindex="-1" role="dialog" aria-modal="true"
                 aria-labelledby="crearRolLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
@@ -231,9 +234,10 @@
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <label>Modelo</label> <b style="color: red;">*</b>
-                                                                    <input type="text" name="modelo_moto"
+                                                                    <input type="text" value="{{ is_array(old('modelo_moto')) ? implode(', ', old('modelo_moto')) : old('modelo_moto') }}" name="modelo_moto"
                                                                         id="modelo_moto" class="form-control"
                                                                         placeholder="Modelo" required>
+
                                                                 </div>
                                                                 <div class="col-md-2">
                                                                     <label>Dominio</label><b style="color: red;">*</b>
@@ -678,9 +682,9 @@
 
                     // 3. Resetear solo los campos del modal (no el formulario completo)
                     /*    $('#modalMoto').find('input').not('[type="hidden"]').val(''); */
-                    $('#crearMotoModal').find('input').not('[type="hidden"]').val('');
-                    $('#crearMotoModal').find('select').val('');
-                    document.getElementById('es_usada').checked = false;
+                   // $('#crearMotoModal').find('input').not('[type="hidden"]').val('');
+                   // $('#crearMotoModal').find('select').val('');
+                   // document.getElementById('es_usada').checked = false;
 
                     // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
                     const form = document.getElementById('formulario-compra');
