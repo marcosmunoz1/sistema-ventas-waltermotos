@@ -576,4 +576,5 @@
     }
 
 </script>
+
 @endsection
