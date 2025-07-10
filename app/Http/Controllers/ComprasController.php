@@ -52,8 +52,8 @@ class ComprasController extends Controller
            $request->validate([
                 'id_proveedor' => 'required|exists:proveedores,id',
                 'fecha_compra' => 'required',
-                'numero_factura' => 'required|unique:compras,numero_factura', // Cambiado de 'number' a 'numeric'
-                'numero_remito' => 'required', // Permite que sea opcional
+                'numero_factura' => 'required|unique:compras,numero_factura',
+                'numero_remito' => 'required',
                 'total_compra' => 'required',
                 'id_marca' => 'required|array',
                 'id_marca.*' => 'required|string|max:255',
@@ -88,7 +88,7 @@ class ComprasController extends Controller
                 'precio_compra' => 'required|array',
                 'precio_compra.*' => 'numeric|min:0',
                 'imagen_moto' => 'nullable|array',
-                'imagen_moto.*' => 'image|mimes:jpeg,png,jpg',
+                'imagen_moto.*' => 'image|mimes:jpeg,png,jpg'
             ]);
 
              // Procesar imágenes
@@ -148,6 +148,7 @@ class ComprasController extends Controller
                 'precio_compra' => $moto->precio_compra,
                 'precio_venta' => $moto->precio_venta,
                 'deposito' => $moto->deposito->nombre_deposito ?? 'N/A',
+                'condicion' => $moto->condicion,
                 'imagen_moto' => $moto->imagen_moto
                 ];
         });
@@ -189,8 +190,9 @@ class ComprasController extends Controller
             /*  return response()->json([
                 'received_data' => $request->all(),
                 'files' => $request->file() ?: 'No files'
-            ]); */ 
-    $validated = $request->validate([
+            ]); */
+          /*   dd($request->all());  */
+        $request->validate([
         'id_proveedor' => 'required|exists:proveedores,id',
         'fecha_compra' => 'required|date',
         'numero_factura' => 'required|unique:compras,numero_factura,'.$id,
@@ -215,7 +217,7 @@ class ComprasController extends Controller
         'imagen_moto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
     ]);
 
-    $compra = Compra::find($id)->first();
+    $compra = Compra::findOrFail($id);
 
     $compra->id_proveedor = $request->id_proveedor;
     $compra->fecha_compra = $request->fecha_compra;
@@ -226,6 +228,9 @@ class ComprasController extends Controller
     $compra->save();
 
     $moto = Moto::where('id_compra', $id)->first();
+    if (!$moto) {
+    return back()->with('error', 'No se encontró la moto relacionada con esta compra.');
+      }
     $moto->id_nacionalidad = $request->id_nacionalidad;
     $moto->id_marca = $request->id_marca;
     $moto->modelo_moto = $request->modelo_moto;

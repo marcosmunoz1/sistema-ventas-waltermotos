@@ -8,7 +8,6 @@
     </h2>
     <hr>
 @endsection
-
 @section('content')
     <div class="row">
         <div class="col-md-12">
@@ -43,6 +42,7 @@
                                         <th class="text-center" style="width: 10%">Celular</th>
                                         <th class="text-center" style="width: 10%">Fecha</th>
                                         <th class="text-center" style="width: 10%">N.Factura</th>
+                                        <th class="text-center" style="width: 10%">M.Moto</th>
                                         <th class="text-center" style="width: 10%">Total</th>
                                         <th class="text-center" style="width: 15%">Acciones</th>
                                     </tr>
@@ -59,6 +59,8 @@
                                                 </td>
                                             </td>
                                             <td class="text-center"style="vertical-align: middle"> {{ $moto->compra->numero_factura }}
+                                            </td>
+                                             <td class="text-center"style="vertical-align: middle"> {{ $moto->marca->nombre_marca }}
                                             </td>
                                             <td class="text-center"style="vertical-align: middle;color:red;">${{number_format($moto->compra->total_compra, 2, ',', '.')  }}</td>
 
@@ -155,8 +157,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Pestaña Moto -->
                        <!-- Pestaña Moto -->
                     <div class="tab-pane fade" id="moto" role="tabpanel">
                         <div class="card card-outline">
@@ -248,7 +248,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <!-- Segunda Columna: Imagen -->
                                            <div class="col-md-3">
                                                 <div class="text-center">
@@ -267,7 +266,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Pestaña Proveedor -->
                     <div class="tab-pane fade" id="proveedor" role="tabpanel">
                         <div class="row">
@@ -302,12 +300,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-
-                    <a type="button" class="btn btn-warning" id="editarCompraLink" style="display: none;"
-                        data-toggle="tooltip" title="Editar esta compra">
-                            <i class="fas fa-edit"></i> Editar
-                        </a>
-
+                    <a type="button" class="btn btn-warning d-none" id="editarCompraLink" style="display: none;"
+                            data-toggle="tooltip" title="Editar esta compra">
+                                <i class="fas fa-edit"></i> Editar
+                    </a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                   <i class="fas fa-times"></i>   Cerrar
                 </button>
@@ -380,9 +376,10 @@
     </script>
 <script>
   function abrir_modal(modal, title, campos, dato) {
+     const editLink = $('#editarCompraLink');
+     editLink.addClass('d-none').off('click');
      compraActualId = dato.id || null;
 
-    const editLink = $('#editarCompraLink');
     if (compraActualId) {
         editLink.show();
         // Remover cualquier evento previo
@@ -439,8 +436,6 @@
     } else {
         editLink.hide();
     }
-
-
     // Inicializar tooltip
     $('[data-toggle="tooltip"]').tooltip();
     // Mostrar el modal y establecer título
@@ -475,19 +470,18 @@
             type: 'GET',
             dataType: 'json',
             success: function(response) {
+
                 // Validar respuesta
                 if(!response || !response.motos) {
                     throw new Error('Respuesta inválida');
                 }
-
                 // Actualizar campos
                 $('#fecha_compra').val(response.fecha_formateada || 'N/A');
                 $('#total_compra').val(response.total_formateado ? '$' + response.total_formateado : '$0.00');
-
-
                 // Pestaña Moto (solo mostramos la primera moto si hay varias)
                 if(response.motos && response.motos.length) {
                     const moto = response.motos[0]; // Tomamos la primera moto
+                    console.log("Estado de la moto:", moto.condicion);
 
                     $('#moto_marca').val(moto.marca_nombre || 'N/A');
                     $('#moto_modelo').val(moto.modelo || 'N/A');
@@ -541,7 +535,6 @@
                                 .catch(error => console.error('Error en verificación:', error));
                         }
                     });
-
                         // Asignar la fuente
                         imgElement.attr('src', imageUrl);
                     } else {
@@ -553,6 +546,10 @@
                             </div>
                         `);
                     }
+                      // Mostrar u ocultar el botón de editar según estado de la moto
+                       if (moto.condicion && moto.condicion.toLowerCase() !== 'vendida') {
+                           editLink.removeClass('d-none');
+                       }
                 }
 
                 // Pestaña Proveedor (¡Aquí estaba el error!)
@@ -579,5 +576,4 @@
     }
 
 </script>
-
 @endsection

@@ -88,7 +88,7 @@ private function guardardetalledemoto(array $data)
     }
 }
 
-public   function actualizarCompraConMotos(array $data)
+/* public   function actualizarCompraConMotos(array $data)
 {
     DB::transaction(function () use ($data) {
 
@@ -142,6 +142,6 @@ public   function actualizarCompraConMotos(array $data)
 }
 
 
-
+ */
 
 }
