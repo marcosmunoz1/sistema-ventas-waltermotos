@@ -41,10 +41,10 @@ class ComprasController extends Controller
      */
     public function store(Request $request)
     {
-         /* return response()->json([
+        /*  return response()->json([
                 'received_data' => $request->all(),
                 'files' => $request->file() ?: 'No files'
-            ]); */
+            ]);  */
          /*  $datos = request()->all();
          return response()->json($datos); */
       /*     dd($request->file('imagen_moto'));  */
@@ -88,7 +88,7 @@ class ComprasController extends Controller
                 'precio_compra' => 'required|array',
                 'precio_compra.*' => 'numeric|min:0',
                 'imagen_moto' => 'nullable|array',
-                'imagen_moto.*' => 'image|mimes:jpeg,png,jpg'
+                'imagen_moto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
             ]);
 
              // Procesar imágenes
@@ -178,7 +178,15 @@ class ComprasController extends Controller
         $nacionalidades = Nacionalidad::all();
         $depositos = Deposito::all();
         $motos = Moto::with('marca','nacionalidad','deposito')->where('id_compra',$id)->firstOrFail();
-        $compra = Compra::with('proveedor')->findOrFail($id);
+        $compra = Compra::with('proveedor','moto')->findOrFail($id);
+
+        $motoVendida = $compra->moto->contains(function ($moto) {
+            return $moto->condicion == 'vendida';
+        });
+
+        if ($motoVendida) {
+            abort(403, 'No se puede editar una compra con motos ya vendidas.');
+        }
         return view('admin.compras.edit', compact('proveedores','motos','marcas','nacionalidades','depositos','compra'));
     }
 
@@ -187,7 +195,7 @@ class ComprasController extends Controller
      */
    public function update(Request $request, $id)
 {
-            /*  return response()->json([
+             /*  return response()->json([
                 'received_data' => $request->all(),
                 'files' => $request->file() ?: 'No files'
             ]); */
@@ -203,7 +211,7 @@ class ComprasController extends Controller
         'dominio' => 'required|string|max:255',
         'cilindrada_moto' => 'required|string|max:255',
         'km_moto' => 'required|string|max:255',
-        'es_usada' => 'required',
+        'es_usada' => 'required|string|max:255',
         'dnrpa' => 'required|string|max:255',
         'nr_certificado' => 'nullable|string|max:255',
         'precio_venta' => 'required|numeric|min:0',
@@ -228,9 +236,7 @@ class ComprasController extends Controller
     $compra->save();
 
     $moto = Moto::where('id_compra', $id)->first();
-    if (!$moto) {
-    return back()->with('error', 'No se encontró la moto relacionada con esta compra.');
-      }
+
     $moto->id_nacionalidad = $request->id_nacionalidad;
     $moto->id_marca = $request->id_marca;
     $moto->modelo_moto = $request->modelo_moto;
@@ -259,7 +265,6 @@ class ComprasController extends Controller
     }
     // Obtener el archivo
     $file = $request->file('imagen_moto');
-
     if ($file->isValid()) {
         // Generar nombre único como en crear
         $nombreArchivo = 'moto_' . time() . '_0.' . $file->extension(); // 0 porque solo es una imagen

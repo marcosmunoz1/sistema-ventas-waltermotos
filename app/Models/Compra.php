@@ -78,7 +78,7 @@ private function guardardetalledemoto(array $data)
             'precio_compra' => $data['precio_compra'][$index],
             'precio_venta' => $data['precio_venta'][$index],
             'estado_moto' => 'En_stock',
-            'imagen_moto' => $data['imagen_moto'][$index] ?? null,
+            'imagen_moto' => $data['imagen_moto'][$index] ?? null,  
             'condicion' => 'en_stock'
         ];
 

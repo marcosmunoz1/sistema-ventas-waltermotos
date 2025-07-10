@@ -110,9 +110,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
                     <div class="card-body" style="justify-items: end">
                         <h4>
                             <b>Suma de compra:</b><b id="mostrarVariable"></b>
@@ -204,7 +201,6 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-12">
@@ -356,7 +352,7 @@
                                                                 <div class="form-group">
                                                                     <label for="imagen">Imagen</label>
                                                                     <input type="file" id="imagen_moto"
-                                                                        name="imagen_moto[]" accept=".jpg, .jpeg, .png"
+                                                                        name="imagen_moto" accept=".jpg, .jpeg, .png"
                                                                         class="form-control" multiple>
                                                                     @error('imagen_moto')
                                                                         <small style="color: red;">{{ $message }}</small>
@@ -603,7 +599,7 @@
 
                         // Crear un nuevo input file para el envío
                         fileInputHTML = `
-                        <input type="file" name="imagen_moto[]" class="d-none"
+                        <input type="file" name="imagen_moto" class="d-none"
                             data-file-name="${imagenFile.name}" multiple>
                     `;
                     } else {
@@ -667,7 +663,7 @@
 
                     // Transferir el archivo al nuevo input
                     if (imagenInput.files && imagenInput.files[0]) {
-                        const newFileInput = fila.querySelector('input[name="imagen_moto[]"]');
+                        const newFileInput = fila.querySelector('input[name="imagen_moto"]');
                         const dataTransfer = new DataTransfer();
                         dataTransfer.items.add(imagenInput.files[0]);
                         newFileInput.files = dataTransfer.files;

@@ -519,7 +519,7 @@
                                                         <div class="text-center">
                                                             <div class="form-group">
                                                                 <label for="imagen_moto">Imagen</label>
-                                                                <input type="file" id="imagen_moto" name="imagen_moto"
+                                                                <input type="file" id="imagen_moto" name="imagen_moto[]" 
                                                                     accept=".jpg, .jpeg, .png" class="form-control">
                                                                 @error('imagen_moto')
                                                                     <small class="text-danger">{{ $message }}</small>
