@@ -24,7 +24,7 @@
         </nav>
     </div>
     <li class="nav-item">
-        <a class="btn btn-flat btn-block text-left text-white" href="#"
+        <a class="btn btn-flat btn-block text-left text-whi" href="#"
            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="fa fa-fw fa-power-off text-red"></i>
             Cerrar Sesión
