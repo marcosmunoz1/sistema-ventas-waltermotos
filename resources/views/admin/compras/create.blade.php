@@ -843,4 +843,5 @@
                     return total;
                 }
             </script>
+
         @endsection

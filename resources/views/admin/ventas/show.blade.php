@@ -42,7 +42,7 @@
                                 <h6><strong>DNI:</strong> {{ $cliente->conyugue->dni_conyugue }}</h6>
                                 <h6><strong>Fecha Nacimiento:</strong>
                                     {{ \Carbon\Carbon::parse($cliente->conyugue->fecha_nacimiento_conyugue)->format('d-m-Y') }}
-                                </h6>                  
+                                </h6>
                                 <h6><strong>Teléfono:</strong>
                                     {{ $cliente->conyugue->celular_conyugue }}</h6>
                             </div>

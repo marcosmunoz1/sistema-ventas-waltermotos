@@ -8,9 +8,9 @@ class Venta extends Model
 {
     //
     protected $primaryKey = 'id_venta';
-    
+
     protected $fillable = [
-        'total_pago', 
+        'total_pago',
         'total_interes',
     ];
 

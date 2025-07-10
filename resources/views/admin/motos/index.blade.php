@@ -28,15 +28,15 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center" style="width: 5%">#</th>
-                                                <th class="text-center" style="width: 10%">Marca</th>
-                                                <th class="text-center" style="width: 10%">Modelo</th>
+                                                <th class="text-center" style="width: 7%">Marca</th>
+                                                <th class="text-center" style="width: 7%">Modelo</th>
                                                 <th class="text-center" style="width: 5%">Año</th>
                                                 <th class="text-center" style="width: 10%">Nacionalidad</th>
                                                 <th class="text-center" style="width: 10%">P. Compra</th>
                                                 <th class="text-center" style="width: 10%">P. Venta</th>
                                                 <th class="text-center" style="width: 10%">Condicion</th>
                                                 <th class="text-center" style="width: 10%">Imagen</th>
-                                                <th class="text-center" style="width: 10%">Acciones</th>
+                                                <th class="text-center" style="width: 15%">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -62,10 +62,10 @@
                                                         <td class="text-center" style="vertical-align: middle">
                                                             @php
                                                                 $colores = [
-                                                                    'vendida'   => 'danger',     
-                                                                    'en_stock'  => 'success',   
-                                                                    'garantia'  => 'warning',    
-                                                                    'devuelta'  => 'secondary',  
+                                                                    'vendida'   => 'danger',
+                                                                    'en_stock'  => 'success',
+                                                                    'garantia'  => 'warning',
+                                                                    'devuelta'  => 'secondary',
                                                                 ];
                                                                 $color = $colores[$moto->condicion] ?? 'light';
                                                             @endphp
@@ -73,10 +73,10 @@
                                                                 {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
                                                             </span>
                                                         </td>
-                                                        
+
                                                     <td class="text-center" style="vertical-align: middle">
-                                                        <img src="{{ asset('storage/' . $moto->imagen_moto) }}"
-                                                            width="80%" alt="">
+                                                        <img src="{{ asset( $moto->imagen_moto) }}"
+                                                            width="40%" alt="">
 
                                                     </td>
                                                     <td class="text-center" style="vertical-align: middle">
