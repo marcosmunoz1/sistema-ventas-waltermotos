@@ -17,9 +17,8 @@
 
                 <div class="col-md-12 mx-auto mt-4">
                     <div class="card card-info">
-                        <div
-                            class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
-                            <form action="{{ url('/admin/clientes/store') }}" method="post">
+                        <div class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                            <form action="{{ url('/admin/clientes/create') }}" method="POST">
                                 @csrf
 
                                 <div class="row">
@@ -63,7 +62,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    
+
                                 </div>
 
                                 <!-- Segunda fila: Correo -->
@@ -89,7 +88,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="email">Correo</label>
@@ -102,18 +101,59 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label>Estado civil</label> 
+                                        <label>Estado civil</label>
                                         <select id="estado_civil_cliente" class="form-control" required name="estado_civil_cliente">
                                             @foreach ($valores as $valor)
-                                                <option value="{{ $valor }}">{{ ucfirst($valor) }}</option>
+                                            <option value="{{ $valor->value }}">{{ ucfirst($valor->value) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="calle">Calle</label>
+                                            <input type="text" name="calle" class="form-control" required
+                                                value="{{ old('calle') }}" placeholder="Ingrese la calle y numero del cliente">
+                                            @error('calle')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="ciudad">Ciudad</label>
+                                            <input type="text" name="ciudad" class="form-control" required
+                                                value="{{ old('ciudad') }}" placeholder="Ingrese la ciudad del cliente">
+                                            @error('ciudad')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="provincia">Provincia</label>
+                                            <input type="text" name="provincia" class="form-control" required
+                                                value="{{ old('provincia') }}" placeholder="Ingrese la provincia del cliente">
+                                            @error('provincia')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="profesion">Profesión</label>
+                                            <input type="text" name="profesion" class="form-control" required
+                                                value="{{ old('profesion') }}" placeholder="Ingrese la profesion del cliente">
+                                            @error('profesion')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+
                                 </div>
 
-                                <!-- Botón oculto que abre el modal --> 
+                                <!-- Botón oculto que abre el modal -->
                                 <div class="row">
-                                    <button type="button" class="btn btn-primary mt-2" id="btnConyugue" style="display: none;" data-toggle="modal" data-target="#modalConyugue">
+                                    <button type="button" class="btn btn-primary mt-2 mb-2 ml-2" id="btnConyugue" style="display: none;" data-toggle="modal" data-target="#modalConyugue">
                                         Agregar cónyuge
                                     </button>
                                 </div>
@@ -139,51 +179,54 @@
     <div class="modal fade" id="modalConyugue" tabindex="-1" role="dialog" aria-labelledby="modalConyugueLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-      
-            <div class="modal-header">
+
+            <div class="modal-header bg-success">
               <h5 class="modal-title" id="modalConyugueLabel">Datos del cónyuge</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-      
+
             <div class="modal-body">
-                <!-- Campos del cónyuge -->
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="nombre_conyugue">Nombre</label>
-                        <input type="text" class="form-control" id="nombre_conyugue" name="nombre_conyugue">
+
+                <div class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                    <!-- Campos del cónyuge -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="nombre_conyugue">Nombre</label>
+                            <input type="text" class="form-control" id="nombre_conyugue" name="nombre_conyugue">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="apellido_conyugue">Apellido</label>
+                            <input type="text" class="form-control" id="apellido_conyugue" name="apellido_conyugue">
+                        </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="apellido_conyugue">Apellido</label>
-                        <input type="text" class="form-control" id="apellido_conyugue" name="apellido_conyugue">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="dni_conyugue">DNI</label>
+                            <input type="text" class="form-control" id="dni_conyugue" name="dni_conyugue">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="fecha_nacimiento_conyugue">Fecha de nacimiento</label>
+                            <input type="date" class="form-control" id="fecha_nacimiento_conyugue" name="fecha_nacimiento_conyugue">
+                        </div>
                     </div>
-                </div>
-            
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="dni_conyugue">DNI</label>
-                        <input type="text" class="form-control" id="dni_conyugue" name="dni_conyugue">
+
+                    <div class="form-group">
+                        <label for="celular_conyugue">Celular</label>
+                        <input type="text" class="form-control" id="celular_conyugue" name="celular_conyugue">
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="fecha_nacimiento_conyugue">Fecha de nacimiento</label>
-                        <input type="date" class="form-control" id="fecha_nacimiento_conyugue" name="fecha_nacimiento_conyugue">
-                    </div>
-                </div>
-            
-                <div class="form-group">
-                    <label for="celular_conyugue">Celular</label>
-                    <input type="text" class="form-control" id="celular_conyugue" name="celular_conyugue">
                 </div>
             </div>
-            
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
         </div>
-    </div>            
-      
+    </div>
+
 @endsection
 
 @section('css')
@@ -197,9 +240,9 @@
             const btnConyugue = document.getElementById('btnConyugue');
 
             selectEstado.addEventListener('change', function () {
-                if (this.value === 'Casado') {
+                if (this.value === 'Casado' || this.value === 'En Concubinato') {
                     btnConyugue.style.display = 'inline-block';
-                } else {
+                }else {
                     btnConyugue.style.display = 'none';
                 }
             });
