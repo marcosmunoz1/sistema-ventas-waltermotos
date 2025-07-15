@@ -12,10 +12,14 @@ class Conyugue extends Model
         'dni_conyugue',
         'fecha_nacimiento_conyugue',
         'celular_conyugue',
-        'id_conyugue_cliente' 
+        'id_conyugue_cliente'
     ];
 
-    
-    
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'id', 'id_conyugue_cliente');
+    }
+
+
 }
 
