@@ -1,990 +1,623 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar Compra')
-
 @section('content_header')
-    <H1 class="brand-text font-weight-light"><b>Compras</b>/<b>Editar Compra</b></H1>
+    <h1><b>Compras/Modificar datos de la compra</b></h1>
     <hr>
-@endsection
+@stop
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <div class="card-title">Datos de Compra </div>
+                    <h3 class="card-title">Ingrese los datos</h3>
                 </div>
-                <form action="{{ url('/admin/compras',$compra->id) }}" id="form_compra" method="post" enctype="multipart/form-data">
-                 @csrf
-                 @method('PUT')
-                    <div class="card-body">
+                <div class="card-body">
+                    <form action="{{url('/admin/compras',$compra->id)}}" id="form_compra" method="post">
+                        @csrf
+                        @method('PUT')
                         <div class="row">
-                            <div class="col-md-5">
-                                <label for="proveedor">Proveedor</label>
+                            <div class="col-md-8">
                                 <div class="row">
-                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-                                        data-target="#exampleModal2"><i class="fas fa-search"></i> Buscar</button>
-                                        <div style="margin-right: 10px"></div>
-                                        <a href="{{ url('/admin/proveedores/crear-proveedor') }}" type="button"
-                                        class="btn btn-success"><i class="fas fa-plus"></i></a>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" value="{{$compra->proveedor->nombre_proveedor}}" id="nombre_proveedor" disabled>
-                                        <input type="hidden" value="{{$compra->proveedor->id}}" class="form-control" id="id_proveedor" name="id_proveedor" hidden>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#crearMotoModal"><i class="fa-solid fa-cart-shopping"></i> Agregar moto</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Factura</label>
-                                    <input type="number" class="form-control" value="{{$compra->numero_factura}}" id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Remito</label>
-                                    <input type="number" class="form-control" value="{{$compra->numero_remito}}" id="numero_remito" name="numero_remito" placeholder="Número de remito" required>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Fecha compra</label>
-                                        <input type="date" name="fecha_compra" value="{{$compra->fecha_compra}}" id="fecha_compra" class="form-control datetimepicker-input" data-target="#reservationdate" required>
+                                <div class="row">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped" id="tabla-motos">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Marca</th>
+                                                    <th>Modelo</th>
+                                                    <th>Dominio</th>
+                                                    <th>Color</th>
+                                                    <th>Año</th>
+                                                    <th>Precio Compra</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($compra->motos as $moto)
+                                                    <tr data-id="{{$moto->id}}"
+                                                        data-imagen="{{ asset($moto->imagen_moto) }}"
+                                                        data-cilindrada="{{ $moto->cilindrada_moto }}"
+                                                        data-nr-motor="{{ $moto->nr_motor }}"
+                                                        data-nr-chasis="{{ $moto->nr_chasis }}"
+                                                        data-certificado="{{ $moto->nr_certificado }}"
+                                                        data-dnrpa="{{ $moto->dnrpa }}"
+                                                        data-km_moto="{{$moto->km_moto}}"
+                                                        data-id_nacionalidad="{{ $moto->id_nacionalidad }}"
+                                                        data-nacionalidad="{{ $moto->nacionalidad->pais ?? 'N/D' }}"
+                                                        data-precio_venta="{{$moto->precio_venta}}"
+                                                        data-condicion="{{$moto->condicion}}"
+                                                    >
+                                                        <td style="text-align: center">{{$contador++}}</td>
+                                                        <td class="marca-moto" style="text-align: center">{{$moto->marca_moto}}</td>
+                                                        <td class="modelo-moto" style="text-align: center">{{$moto->modelo_moto}}</td>
+                                                        <td class="dominio-moto" style="text-align: center">{{$moto->dominio}}</td>
+                                                        <td class="color-moto" style="text-align: center">{{$moto->color_moto}}</td>
+                                                        <td class="anio-moto" style="text-align: center">{{$moto->anio_moto}}</td>
+                                                        <td class="precio_compra-moto" style="text-align: center">${{number_format($moto->precio_compra, 2, '.', ',')}}</td>
+                                                        <td style="vertical-align: middle; text-align:center;">
+                                                            <div class="btn-group" style="display: flex; justify-content: center; gap: 5px;" role="group" aria-label="Acciones moto">
+                                                                <!-- Ver -->
+                                                                <button style="text-align: center" type="button" class="btn btn-primary btn-sm rounded" data-toggle="modal" data-target="#VerMotoModal" onclick="verMoto({{ $moto->id }})">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+
+                                                                <!-- Editar -->
+                                                                <a href="{{ route('compras.motos.edit', ['compraId' => $compra->id, 'motoId' => $moto->id]) }}" class="btn btn-warning btn-sm rounded">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+
+                                                                <!-- Eliminar -->
+                                                                <button type="button" class="btn btn-danger btn-sm rounded" onclick="eliminarMoto(this)">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        <div class="text-right mt-2">
+                                            <strong>Total de compra:</strong> <span id="total_compra">${{number_format($totalCompra, 2, '.', ',')}}</span>
+                                        </div>
                                     </div>
+
+
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" >
-                            <div class="col-md-12">
-                                <div class="card card-outline card-primary">
-                                    <div class="card-header">
-                                        <div class="card-title">Detalles de moto </div>
-                                    </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12 mx-auto mt-4">
-                                                    <a class="btn btn-warning" id="btn-agregar-moto" data-toggle="modal" data-target="#crearMotoModal">
-                                                        <i class="fas fa-edit"></i> Editar moto
-                                                    </a>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="table-responsive-sm" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                                                      <table id="tabla-motos" class="table table-bordered table-nowrap  table-striped table-hover table-sm ">
-                                                            <thead class="thead-light">
-                                                            <tr>
-                                                                <th class="text-center sticky-column">#</th>
-                                                                <th class="text-center">Marca</th>
-                                                                <th class="text-center">Modelo</th>
-                                                                <th class="text-center d-none d-sm-table-cell">Color</th>
-                                                                <th class="text-center d-none d-md-table-cell">Año</th>
-                                                                <th class="text-center d-none d-lg-table-cell">Nacionalidad</th>
-                                                                <th class="text-center d-none d-xl-table-cell">Nr_motor</th>
-                                                                <th class="text-center d-none d-xl-table-cell">Nr_chasis</th>
-                                                                <th class="text-center d-none d-md-table-cell">Imagen</th>
-                                                                <th class="text-center sticky-column">Acciones</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody id="tabla-motos-body">
-                                                                <tr>
-                                                                    <td  class="text-center" style="vertical-align: middle;">
-                                                                        1
-                                                                    </td>
-                                                                    <td class="text-center" style="vertical-align: middle;">
-                                                                        <input type="hidden" name="dominio" id="dominioTabla" class="form-control" value="{{$motos->dominio}}" min="1" required readonly>
-                                                                        <input type="hidden" name="cilindrada_moto" id="cilindra_motoTabla" class="form-control" value="{{$motos->cilindrada_moto}}" min="1" required readonly>
-                                                                        <input type="hidden" name="km_moto" id="km_motoTabla" class="form-control"  value="{{$motos->km_moto}}" min="1" required readonly>
-                                                                        <input type="hidden" name="es_usada" id="es_usadaTabla" class="form-control" value="{{$motos->estado_moto}}" min="1" required readonly>
-                                                                        <input type="hidden" name="dnrpa" id="dnrpaTabla" class="form-control" value="{{$motos->dnrpa}}" min="1" required readonly>
-                                                                        <input type="hidden" name="nr_certificado" id="nr_certificadoTabla" class="form-control" value="{{$motos->nr_certificado}}" min="1" required readonly>
-                                                                        <input type="hidden" name="precio_venta" id="precio_ventaTabla" class="form-control" value="{{$motos->precio_venta}}" min="1" required readonly>
-                                                                        <input type="hidden" name="id_deposito" id="id_depositoTabla" class="form-control" value="{{$motos->id_deposito}}" min="1" required readonly>
-                                                                        <input type="hidden" name="precio_compra" id="precio_compraTabla" class="form-control" value="{{$motos->precio_compra}}" min="1" required readonly>
-                                                                        <input type="hidden" name="id_marca" id="id_marcaTabla" class="input-invisible"
-                                                                        value="{{ $motos->id_marca}}" min="1" required>
-                                                                        <input type="text" id="nombre_marcaTabla" class="input-invisible" value="{{$motos->marca->nombre_marca}}" min="1" required readonly>
-                                                                    </td>
-                                                                    <td class="text-center" style="vertical-align: middle;">
-                                                                        <input type="number" name="modelo_moto" id="modelo_motoTabla" class="input-invisible" value="{{$motos->modelo_moto}}" min="1" readonly >
-                                                                    </td>
-                                                                    <td class="text-center" style="vertical-align: middle;">
-                                                                        <input type="text" name="color_moto" id="color_motoTabla" class="input-invisible" value="{{$motos->color_moto}}" min="1" required readonly >
-
-                                                                    </td>
-                                                                    <td class="text-center" style="vertical-align: middle;">
-                                                                        <input type="text" name="anio_moto" id="anio_motoTabla" class="input-invisible" value="{{$motos->anio_moto}}" min="1" required readonly >
-
-                                                                    </td>
-                                                                    <td class="text-center" style="vertical-align: middle;">
-                                                                        <input type="hidden" name="id_nacionalidad" id="id_nacionalidadTabla" class="input-invisible" value="{{$motos->id_nacionalidad}}" min="1" required readonly >
-                                                                        <input type="text" id="nombre_paisTabla" class="input-invisible" value="{{$motos->nacionalidad->pais}}" min="1" required readonly>
-                                                                    </td>
-                                                                    <td class="text-center" style="vertical-align: middle;">
-                                                                        <input type="text" name="nr_motor" id="nr_motorTabla" class="input-invisible" value="{{$motos->nr_motor}}" min="1" required readonly >
-
-                                                                    </td>
-                                                                    <td class="text-center" style="vertical-align: middle;">
-                                                                        <input type="text" name="nr_chasis" id="nr_chasisTabla" class="input-invisible" value="{{$motos->nr_chasis}}" min="1" required readonly >
-
-                                                                    </td>
-                                                                    <td class="text-center" style="vertical-align: middle;">
-                                                                        @if($motos->imagen_moto)
-                                                                            <img src="{{ asset($motos->imagen_moto) }}" id="img" width="50" class="img-thumbnail">
-                                                                        @else
-                                                                            <span>Sin imagen</span>
-                                                                        @endif
-                                                                        <input type="file" name="imagen_moto" id="imagen_motoTabla" class="d-none" hidden>
-                                                                    </td>
-                                                                    <td class="text-center" style="vertical-align: middle;">
-                                                                        <a class="btn btn-primary btn-sm" id="btn-ver-moto" data-toggle="modal" data-target="#VerMotoModal">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                       </table>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_proveedor"><i class="fas fa-search"></i>Buscar proveedor</button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal_proveedor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Listado de proveedores</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
                                                     </div>
-                                                  </div>
+                                                    <div class="modal-body">
+                                                        <table id="mitabla2" class="table table-striped table-bordered table-hover table-sm table-responsive">
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th scope="col" style="text-align: center;">Nro</th>
+                                                                    <th scope="col" style="text-align: center;">Acción</th>
+                                                                    <th scope="col">Nombre</th>
+                                                                    <th scope="col">CUIT</th>
+                                                                    <th scope="col">Telefono</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <?php $contador = 1; ?>
+                                                            <tbody>
+                                                                @foreach($proveedores as $proveedore)
+                                                                    <tr>
+                                                                        <td style="text-align: center;vertical-align:middle;">{{$contador++}}</td>
+                                                                        <td style="text-align: center;vertical-align:middle;">
+                                                                            <button type="button" class="btn btn-info seleccionar-btn-proveedor" data-id="{{$proveedore->id}}" data-nombre_proveedor="{{$proveedore->nombre_proveedor}}">Seleccionar</button>
+                                                                        </td>
+                                                                        <td style="vertical-align:middle;">{{$proveedore->nombre_proveedor}}</td>
+                                                                        <td style="vertical-align:middle;">{{$proveedore->cuit}}</td>
+                                                                        <td style="vertical-align:middle;">{{$proveedore->telefono}}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                            </div>
-                    </div>
-                    </div>
-                    <div class="card-body" style="justify-items: end">
-                        <h4>
-                            <label><b>Suma de compra</b></label>
-                             <input type="number" id="total-compra" name="total_compra" value="{{ $compra->total_compra }}"
-                                class="form-control" readonly step="0.01">
-                        <div class="card-body">
-                            <button type="submit" class="btn btn-warning" >
-                                <i class="fas fa-edit"></i> Actualizar
-                            </button>
-                            <a href="{{ url('admin/compras') }}" class="btn btn-secondary">
-                                <i class="fas fa-times"></i> Cancelar
-                            </a>
-                        </div>
-                    </div>
-                </form>
-                </div>
-            </div>
-        </div>
-        {{-- Buscar Proveedor --}}
-    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fs-5">Buscar Proveedor</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="table">
-                        <table id="tablaProveedores" class="table table-striped table-bordered table-hover table-sm">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th scope="col" style="text-align: center ">Acción</th>
-                                    <th scope="col" style="text-align: center ">Nombre</th>
-                                    <th scope="col" style="text-align: center ">Celular</th>
-                                    <th scope="col" style="text-align: center ">Cuit</th>
-                                    <th scope="col" style="text-align: center ">Correo</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($proveedores as $proveedor)
-                                    <tr>
-                                        <td style="text-align: center;vertical-align: middle ">
-                                            <button type="button" class="btn btn-info seleccionar-btn-proveedor"
-                                                data-id="{{ $proveedor->id }}"
-                                                data-nombre_proveedor="{{ $proveedor->nombre_proveedor }}"><i
-                                                    class="fa-solid fa-circle-plus"></i></button>
-                                        </td>
-                                        <td style="text-align: center">
-                                            {{ $proveedor->nombre_proveedor }}</td>
-                                        <td style="text-align: center">
-                                            {{ $proveedor->celular }}</td>
-                                        <td style="text-align: center">
-                                            {{ $proveedor->cuit }}
-                                        </td>
-                                        <td style="text-align: center">
-                                            {{ $proveedor->email }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-success" href="{{ url('admin/proveedores/crear-proveedor') }}"> <i
-                                class="fas fa-save"></i> Agregar proveedor</a>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-                                class="fas fa-cancel"></i>
-                            Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-      <!-- Modal para ver los detalles de la moto -->
-    <div class="modal" id="VerMotoModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="verRolLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white d-flex justify-content-center" >
-                <h4 class="modal-title text-center">
-                    <i class="fa-solid fa-motorcycle"></i>
-                    <span id="modalActionText">Ver</span> detalles de la moto  <i class="fa-solid fa-motorcycle"></i>
-                </h4>
-                <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal" aria-label="close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card card-outline">
-                            <div class="col-md-12 mx-auto mt-2">
-                                <div class="card card-info">
-                                    <div class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
-                                            <!-- Datos de Moto -->
-                                            <div class="row">
-                                                <!-- Primera Columna: Datos -->
-                                                <div class="col-md-9">
-                                                    <!-- Fila 1 -->
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <label>Marca</label>
-                                                             <input class="form-control" type="text" value="{{$motos->marca->nombre_marca}}" id="nombre_marcaTabla2" readonly>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                                <label>Modelo</label>
-                                                                <input type="text" value="{{$motos->modelo_moto}}" id="modelo_motoVer" class="form-control" readonly>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <label>Dominio</label>
-                                                            <input type="text" value="{{$motos->dominio}}" id="dominioVer" class="form-control" readonly>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <label>Cilindrada</label>
-                                                            <input type="number" value="{{$motos->cilindrada_moto}}" id="cilindrada_motoVer" class="form-control" readonly>
-                                                        </div>
-                                                    </div>
-                                                     <!-- Fila 2 -->
-                                                    <div class="row mt-2">
-                                                        <div class="col-md-2">
-                                                            <label>Color</label>
-                                                            <input type="text" value="{{$motos->color_moto}}"  id="color_motoVer" class="form-control"  readonly>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <label>Nacionalidad</label>
-                                                             <input class="form-control" type="text" value="{{$motos->nacionalidad->pais}}" id="paisVer" readonly>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <label>Año</label>
-                                                            <input type="number" value="{{$motos->anio_moto}}" id="anio_motoVer" class="form-control" readonly>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <label>Km</label>
-                                                            <input type="number" value="{{$motos->km_moto}}" id="km_motoVer" class="form-control" readonly>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <div class="form-check mt-4">
-                                                                <input class="form-check-input" value="{{$motos->es_usada}}" id="es_usadaVer" type="checkbox"
-                                                                 {{ $motos->es_usada == 1 ? 'checked' : '' }} disabled>
-                                                                  <label class="form-check-label">¿Es usada?</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Fila 3 -->
-                                                    <div class="row mt-2">
-                                                        <div class="col-md-6">
-                                                            <label>Nro. Motor</label>
-                                                            <input type="text" value="{{$motos->nr_motor}}" id="nr_motorVer" class="form-control"  readonly>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label>Nro. Chasis</label>
-                                                            <input type="text" value="{{$motos->nr_chasis}}"  id="nr_chasisVer" class="form-control" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Fila 4 -->
-                                                    <div class="row mt-2">
-                                                        <div class="col-md-6">
-                                                            <label>D.N.R.P.A</label>
-                                                            <input type="text" value="{{$motos->dnrpa}}" id="dnrpaVer" class="form-control" readonly>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label>Certificado</label>
-                                                            <input type="text" value="{{$motos->nr_certificado}}" class="form-control" id="nr_certificadoVer" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-2">
-                                                        <div class="col-md-4">
-                                                                <div class="mb-3">
-                                                                    <label>Precio de Compra</label>
-                                                                    <div class="input-group">
-                                                                            <span class="input-group-text text-success">$</span>
-                                                                        <input type="number" value="{{$motos->precio_compra}}" class="form-control text-success"  id="precio_compraVer" readonly>
-                                                                    </div>
-                                                                </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="mb-3">
-                                                                <label>Precio de Venta</label>
-                                                                <div class="input-group">
-                                                                    <span class="input-group-text text-danger">$</span>
-                                                                    <input type="number" value="{{$motos->precio_venta}}" id="precio_ventaVer"
-                                                                        class="form-control text-danger" readonly>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <label>Deposito</label>
-                                                            <input class="form-control" type="text" value="{{$motos->deposito->nombre_deposito}}" id="depositoVer" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                  <!-- Segunda Columna: Imagen -->
-                                                   <div class="col-md-3">
-                                                         <label>Imagen</label>
-                                                        <div class="text-center">
-                                                            @if($motos->imagen_moto)
-                                                                <img src="{{ asset($motos->imagen_moto) }}" id="img" width="150" class="img-thumbnail">
-                                                            @else
-                                                                <span>Sin imagen</span>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                            </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" value="{{$compra->proveedor->nombre_proveedor}}" id="nombre_proveedor" disabled>
+                                        <input type="text" class="form-control" value="{{$compra->proveedor->id}}" id="id_proveedor" name="id_proveedor" hidden>
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="fecha">Fecha de compra</label><b> *</b>
+                                            <input type="date" class="form-control" value="{{$compra->fecha_compra}}" name="fecha_compra" required>
+                                            @error('fecha_compra')
+                                                <small style="color: red;">{{$message}}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="numero_factura">Número de factura</label><b> *</b>
+                                            <input type="text" class="form-control" value="{{$compra->numero_factura}}" name="numero_factura" placeholder="Ingresa el número de factura">
+                                            @error('numero_factura')
+                                                <small style="color: red;">{{$message}}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="numero_remito">Número de remito</label><b> *</b>
+                                            <input type="text" class="form-control" value="{{$compra->numero_remito}}" name="numero_remito" placeholder="Ingresa el número de remito" required>
+                                            @error('numero_remito')
+                                                <small style="color: red;">{{$message}}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="estado_compra">Estado de compra</label><b> *</b>
+                                            <select class="form-control" name="estado_compra" required>
+                                                <option value="">-- Seleccionar estado --</option>
+                                                <option value="Pagado"
+                                                    {{ (old('estado_compra') ?? $compra->estado_compra) == 'Pagado' ? 'selected' : '' }}>
+                                                    Pagado
+                                                </option>
+                                                <option value="Pendiente"
+                                                    {{ (old('estado_compra') ?? $compra->estado_compra) == 'Pendiente' ? 'selected' : '' }}>
+                                                    Pendiente
+                                                </option>
+                                            </select>
+                                            @error('estado_compra')
+                                                <small style="color: red;">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="text" name="total_compra" class="form-control" value="{{ old('total_compra', $totalCompra) }}" readonly hidden>
+                                        @error('total_compra')
+                                            <small style="color: red;">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-6">
+                                      <button type="submit" class="btn btn-success btn-block">
+                                        <i class="fas fa-save"></i>Actualizar compra
+                                      </button>
+                                    </div>
+                                    <div class="col-6">
+                                      <a href="{{ route('admin.compras.index') }}" class="btn btn-secondary btn-block">
+                                        Volver
+                                      </a>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Modal para agregar el detalle de la moto -->
+                    <div class="modal" id="crearMotoModal" tabindex="-1" role="dialog" aria-modal="true"
+                    aria-labelledby="crearRolLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header text-white d-flex justify-content-center" style="background-color: #252652">
+                                <h4 class="modal-title text-center">
+                                    <i class="fa-solid fa-motorcycle"></i>
+                                    <span id="modalActionText">Agregar</span> detalle de la moto
+                                    <i class="fa-solid fa-motorcycle"></i>
+                                </h4>
+                                <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal" aria-label="close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card card-outline">
+                                            <div class="col-md-12 mx-auto mt-2">
+                                                <div class="card card-info">
+                                                    <div class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                                        <!-- Datos de Moto -->
+                                                        <div class="row">
+                                                            <input type="hidden" id="compra_id" value="{{ $compra->id }}">
+                                                            <input type="hidden" id="fecha_compra" value="{{ $compra->fecha_compra }}">
+                                                            <!-- Primera Columna: Datos -->
+                                                            <div class="col-md-9">
+                                                                <!-- Fila 1 -->
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <label>Marca</label> <b style="color: red;">*</b>
+                                                                        <select class="form-control" name="marca_moto" id="marca_moto">
+                                                                            <option value="">Seleccione una marca</option>
+                                                                            @foreach ($marcas as $marca)
+                                                                                <option value="{{ $marca->nombre_marca }}" data-nombre_marca="{{ $marca->nombre_marca }}">
+                                                                                    {{ $marca->nombre_marca }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label>Modelo</label> <b style="color: red;">*</b>
+                                                                        <input type="text" value="{{ is_array(old('modelo_moto')) ? implode(', ', old('modelo_moto')) : old('modelo_moto') }}" name="modelo_moto" id="modelo_moto" class="form-control" placeholder="Modelo" >
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Dominio</label><b style="color: red;"></b>
+                                                                        <input type="text" name="dominio" id="dominio" class="form-control" placeholder="Dominio">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Cilindrada</label><b style="color: red;">*</b>
+                                                                        <input type="number" min="0" name="cilindrada_moto" id="cilindrada_moto" class="form-control" placeholder="Cilindrada" >
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Fila 2 -->
+                                                                <div class="row mt-2">
+                                                                    <div class="col-md-2">
+                                                                        <label>Color</label><b style="color: red;">*</b>
+                                                                        <input type="text" name="color_moto" id="color_moto" class="form-control" placeholder="Color" >
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label>Nacionalidad</label><b style="color: red;">*</b>
+                                                                        <select class="form-control" name="id_nacionalidad" id="id_nacionalidad" >
+                                                                            <option value="">Seleccione una Nacionalidad</option>
+                                                                            @foreach ($nacionalidades as $nacionalidad)
+                                                                                <option value="{{ $nacionalidad->id }}" data-nombre_nacionalidad="{{ $nacionalidad->pais }}">
+                                                                                    {{ $nacionalidad->pais }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Año</label><b style="color: red;">*</b>
+                                                                        <input type="number" min="0" name="anio_moto" id="anio_moto" class="form-control" placeholder="Año" >
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>Km</label><b style="color: red;">*</b>
+                                                                        <input type="number" min="0" name="km_moto" id="km_moto" class="form-control" placeholder="Kilometraje" >
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="form-check mt-4">
+                                                                            <input class="form-check-input" name="es_usada" id="es_usada" type="checkbox">
+                                                                            <label class="form-check-label">¿Es usada?</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Fila 3 -->
+                                                                <div class="row mt-2">
+                                                                    <div class="col-md-6">
+                                                                        <label>Nro. Motor</label><b style="color: red;">*</b>
+                                                                        <input type="text" name="nr_motor" id="nr_motor" class="form-control" placeholder="Nro. Motor" >
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label>Nro. Chasis</label><b style="color: red;">*</b>
+                                                                        <input type="text" name="nr_chasis" id="nr_chasis" class="form-control" placeholder="Nro. Chasis" >
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Fila 4 -->
+                                                                <div class="row mt-2">
+                                                                    <div class="col-md-6">
+                                                                        <label>D.N.R.P.A</label><b style="color: red;"></b>
+                                                                        <input type="text" name="dnrpa" id="dnrpa" class="form-control" placeholder="Nro. DNRPA">
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label>Certificado</label><b style="color: red;"></b>
+                                                                        <input type="text" class="form-control" name="nr_certificado" id="nr_certificado" placeholder="Nro. Certificado" >
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Fila 5 -->
+                                                                <div class="row mt-2">
+                                                                    <div class="col-md-4">
+                                                                        <label>Precio compra</label><b style="color: red;">*</b>
+                                                                        <input type="text" class="form-control" name="precio_compra" id="precio_compra" placeholder="Precio compra" >
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label>Precio venta</label><b style="color: red;">*</b>
+                                                                        <input type="text" class="form-control" name="precio_venta" id="precio_venta" placeholder="Precio venta" >
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label>Deposito</label><b style="color: red;">*</b>
+                                                                        <select class="form-control" id="id_deposito" name="id_deposito" >
+                                                                            <option value="">Seleccione un Deposito</option>
+                                                                            @foreach ($depositos as $deposito)
+                                                                                <option value="{{ $deposito->id }}">{{ $deposito->nombre_deposito }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Segunda Columna: Imagen -->
+                                                            <div class="col-md-3">
+                                                                <div class="text-center">
+                                                                    <div class="form-group">
+                                                                        <label for="imagen">Imagen</label>
+                                                                        <input type="file" id="imagen_moto" name="imagen_moto[]" accept=".jpg, .jpeg, .png" class="form-control" multiple>
+                                                                        @error('imagen_moto')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
+                                                                        <br>
+                                                                        <center><output id="list"></output></center>
+                                                                    </div>
+                                                                    <!-- Contenedor para previsualización -->
+                                                                    <div id="preview-container" class="mt-2"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> <!-- .card-body -->
+                                                </div> <!-- .card-info -->
+                                            </div> <!-- .col-md-12 mx-auto -->
+                                        </div> <!-- .card-outline -->
+                                    </div> <!-- .col-md-12 -->
+                                </div> <!-- .row -->
+
+                                <div class="modal-footer">
+                                    <button type="button" onclick="agregarMotoATabla()" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Guardar moto
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        <i class="fas fa-cancel"></i> Cancelar
+                                    </button>
+                                </div>
+                            </div> <!-- .modal-body -->
+                        </div> <!-- .modal-content -->
+                    </div> <!-- .modal-dialog -->
+                    </div> <!-- .modal -->
+                    <!-- Modal Ver Moto -->
+                    <div class="modal fade" id="VerMotoModal" tabindex="-1" role="dialog" aria-labelledby="VerMotoModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-info">
+                            <h5 class="modal-title" id="VerMotoModalLabel">Detalles de la Moto</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body" id="contenido-ver-moto">
+                            <!-- Aquí se inyecta el contenido dinámico -->
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-    </div>
-           <!-- Modal editar el detalle de la moto -->
-    <div class="modal" id="crearMotoModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="crearRolLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-               <div class="modal-header bg-warning text-white d-flex justify-content-center" >
-                    <h4 class="modal-title text-center">
-                        <i class="fa-solid fa-motorcycle"></i>
-                        <span id="modalActionText">Editar</span> detalles de la moto  <i class="fa-solid fa-motorcycle"></i>
-                    </h4>
-                    <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal" aria-label="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card card-outline">
-                                <div class="col-md-12 mx-auto mt-2">
-                                    <div class="card card-info">
-                                        <div class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
-                                                <!-- Datos de Moto -->
-                                                <div class="row">
-                                                    <!-- Primera Columna: Datos -->
-                                                    <div class="col-md-9">
-                                                        <!-- Fila 1 -->
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <label>Marca</label> <b style="color: red;">*</b>
-                                                                <select class="form-control" name="id_marca" id="id_marca" required>
-                                                                    <option value="">Seleccione una marca</option>
-                                                                @foreach ($marcas as $marca )
-                                                                    <option value="{{$marca->id}}" data-nombre_marca="{{ $marca->nombre_marca }}"
-                                                                        {{ $marca->id == $motos->id_marca ? 'selected' : '' }}>{{$marca->nombre_marca}}</option>
-                                                                @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Modelo</label> <b style="color: red;">*</b>
-                                                                <input type="text" value="{{$motos->modelo_moto}}" name="modelo_moto" id="modelo_moto" class="form-control"
-                                                                    placeholder="Modelo" required>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Dominio</label><b style="color: red;">*</b>
-                                                                <input type="text" value="{{$motos->dominio}}" name="dominio" id="dominio" class="form-control" required
-                                                                    placeholder="Dominio">
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Cilindrada</label><b style="color: red;">*</b>
-                                                                <input type="number" value="{{$motos->cilindrada_moto}}" name="cilindrada_moto" id="cilindrada_moto" class="form-control" id="cilindrada"
-                                                                    placeholder="Cilindrada" required>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Fila 2 -->
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-2">
-                                                                <label>Color</label><b style="color: red;">*</b>
-                                                                <input type="text" value="{{$motos->color_moto}}" name="color_moto" id="color_moto" class="form-control"  placeholder="Color" required>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Nacionalidad</label><b style="color: red;">*</b>
-                                                                <select class="form-control" name="id_nacionalidad" id="id_nacionalidad" required>
-                                                                    <option value="">Seleccione una Nacionalidad</option>
-                                                                @foreach ($nacionalidades as $nacionalidad )
-                                                                <option value="{{$nacionalidad->id}}" data-nombre_nacionalidad="{{ $nacionalidad->pais }}"
-                                                                     {{ $nacionalidad->id == $motos->id_nacionalidad ? 'selected' : '' }}>{{$nacionalidad->pais}}</option>
-                                                                @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Año</label><b style="color: red;">*</b>
-                                                                <input type="number" value="{{$motos->anio_moto}}" name="anio_moto" id="anio_moto" class="form-control" placeholder="Año" required>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Km</label><b style="color: red;">*</b>
-                                                                <input type="number" value="{{$motos->km_moto}}" name="km_moto" id="km_moto" class="form-control" placeholder="Kilometraje" required>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-check mt-4">
-                                                                    <input class="form-check-input" value="{{$motos->es_usada}}" name="es_usada" id="es_usada" type="checkbox">
-                                                                    <label class="form-check-label">¿Es usada?</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Fila 3 -->
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-6">
-                                                                <label>Nro. Motor</label><b style="color: red;">*</b>
-                                                                <input type="text" value="{{$motos->nr_motor}}" name="nr_motor" id="nr_motor" class="form-control"  placeholder="Nro. Motor" required>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <label>Nro. Chasis</label><b style="color: red;">*</b>
-                                                                <input type="text" value="{{$motos->nr_chasis}}" name="nr_chasis" id="nr_chasis" class="form-control" placeholder="Nro. Chasis" required>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Fila 4 -->
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-6">
-                                                                <label>D.N.R.P.A</label><b style="color: red;">*</b>
-                                                                <input type="text" value="{{$motos->dnrpa}}" name="dnrpa" id="dnrpa" class="form-control" placeholder="Nro. DNRPA" required>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <label>Certificado</label><b style="color: red;">*</b>
-                                                                <input type="text" value="{{$motos->nr_certificado}}" class="form-control" name="nr_certificado" id="nr_certificado" placeholder="Nro. Certificado" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-4">
-                                                                 <div class="mb-3">
-                                                                        <label>Precio de Compra</label><b style="color: red;">*</b>
-                                                                        <div class="input-group">
-                                                                                <span class="input-group-text text-success">$</span>
-                                                                            <input type="number" value="{{$motos->precio_compra}}" class="form-control text-success" name="precio_compra" id="precio_compra" required>
-                                                                        </div>
-                                                                    </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="mb-3">
-                                                                    <label>Precio de Venta</label><b style="color: red;">*</b>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-text text-danger">$</span>
-                                                                        <input type="number" name="precio_venta" value="{{$motos->precio_venta}}" id="precio_venta"
-                                                                            class="form-control text-danger"
-                                                                            value="" required>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Deposito</label><b style="color: red;">*</b>
-                                                                <select class="form-control" id="id_deposito" name="id_deposito" required>
-                                                                    <option value="">Seleccione un Deposito</option>
-                                                                    @foreach ($depositos as $deposito )
-                                                                    <option value="{{$deposito->id}}"
-                                                                        {{ $deposito->id == $motos->id_deposito ? 'selected' : '' }} required>
-                                                                        {{$deposito->nombre_deposito}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Segunda Columna: Imagen -->
-                                                   <div class="col-md-3">
-                                                        <div class="text-center">
-                                                            <div class="form-group">
-                                                                <label for="imagen_moto">Imagen</label>
-                                                                <input type="file" id="imagen_moto" name="imagen_moto"
-                                                                    accept=".jpg, .jpeg, .png" class="form-control">
-                                                                @error('imagen_moto')
-                                                                    <small class="text-danger">{{ $message }}</small>
-                                                                @enderror
-                                                                <br>
-                                                                <div id="image-container" class="mt-2">
-                                                                    @if($motos->imagen_moto)
-                                                                        <img src="{{ asset($motos->imagen_moto) }}" width="150" class="img-thumbnail mb-2">
-                                                                        {{-- <button type="button" class="btn btn-sm btn-danger" onclick="document.getElementById('eliminar_imagen').value = '1'">
-                                                                            <i class="fas fa-trash"></i> Eliminar
-                                                                        </button> --}}
-                                                                    @else
-                                                                        <div class="no-image-placeholder">
-                                                                            <i class="fas fa-image fa-3x text-muted"></i>
-                                                                            <p class="text-muted mt-2">No hay imagen</p>
-                                                                        </div>
-                                                                    @endif
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                        <div class="modal-footer">
-                            <button type="button" onclick="agregarMotoATabla()" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Editar moto</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-cancel"></i> Cancelar</button>
                         </div>
                     </div>
+                    <!-- Fin modal ver moto -->
+                </div>
             </div>
         </div>
     </div>
-             <!-- Modal editar el detalle de la moto -->
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
 
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+@stop
+@section('css')
+@stop
+@section('js')
+<script>
 
+    $('.seleccionar-btn-proveedor').click(function(){
+        var id_proveedor = $(this).data('id');
+        var nombre_proveedor = $(this).data('nombre_proveedor');
+        $('#id_proveedor').val(id_proveedor);
+        $('#nombre_proveedor').val(nombre_proveedor);
+        $('#exampleModal_proveedor').modal('hide');
+    });
 
+</script>
+<script>
+    window.agregarMotoATabla = function() {
+        let formData = new FormData();
 
+        // Agregamos los campos del formulario
+        formData.append('fecha_compra', $('#fecha_compra').val());
+        formData.append('compra_id', $('#compra_id').val());
+        formData.append('marca_moto', $('#marca_moto').val());
+        formData.append('modelo_moto', $('#modelo_moto').val());
+        formData.append('dominio', $('#dominio').val());
+        formData.append('cilindrada_moto', $('#cilindrada_moto').val());
+        formData.append('color_moto', $('#color_moto').val());
+        formData.append('id_nacionalidad', $('#id_nacionalidad').val());
+        formData.append('anio_moto', $('#anio_moto').val());
+        formData.append('km_moto', $('#km_moto').val());
+        formData.append('es_usada', $('#es_usada').is(':checked') ? 1 : 0);
+        formData.append('nr_motor', $('#nr_motor').val());
+        formData.append('nr_chasis', $('#nr_chasis').val());
+        formData.append('dnrpa', $('#dnrpa').val());
+        formData.append('nr_certificado', $('#nr_certificado').val());
+        formData.append('precio_compra', $('#precio_compra').val());
+        formData.append('precio_venta', $('#precio_venta').val());
+        formData.append('id_deposito', $('#id_deposito').val());
 
+        // Imagen (solo la primera, se puede adaptar a múltiples)
+        const imagenInput = document.getElementById('imagen_moto');
+        if (imagenInput.files.length > 0) {
+            formData.append('imagen_moto', imagenInput.files[0]);
+        }
 
-    @endsection
+        // CSRF token
+        formData.append('_token', '{{ csrf_token() }}');
 
-    @section('css')
-    <style>
-    .input-invisible {
-    border: none;           /* Elimina el borde */
-    background: transparent; /* Fondo transparente */
-    outline: none;          /* Elimina el contorno al enfocar */
-    width: 100%;           /* Ocupa todo el ancho de la celda */
-    padding: 0;            /* Elimina el relleno interno */
-    margin: 0;             /* Elimina los márgenes */
-    font-family: inherit;  /* Usa la misma fuente que la tabla */
-    font-size: inherit;    /* Mismo tamaño de fuente */
-    /* margin-left: 25px; */
-    justify-items: center;
-    }
-    .precio-actualizado {
-    transition: all 0.3s ease;
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
-    background-color: #f8fff8;
-    }
-        /* Estilo para botón deshabilitado */
-#btn-agregar-moto:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #6c757d !important;
-    border-color: #6c757d !important;
-}
-
-/* Clase adicional para más énfasis */
-.btn-disabled {
-    position: relative;
-}
-.btn-disabled::after {
-    content: "✖";
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fff;
-}
-@media (max-width: 767px) {
-  .responsive-table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Estilos para la tabla responsive */
-.table-nowrap {
-  white-space: nowrap;
-}
-
-.sticky-column {
-  position: sticky;
-  left: 0;
-  background-color: #f8f9fa;
-  z-index: 1;
-}
-
-/* Ajustar tamaño de columnas en móviles */
-@media (max-width: 360px) {
-  .table-responsive {
-    border: 0;
-  }
-
-  #tabla-motos {
-    width: auto;
-    min-width: 600px; /* Ancho mínimo para mantener estructura */
-  }
-
-  .table td, .table th {
-    padding: 0.5rem;
-    font-size: 0.85rem;
-  }
-
-  /* Ocultar columnas menos importantes en móviles */
-  .d-priority-1 {
-    display: none;
-  }
-}
-}
-</style>
-
-    @endsection
-
-    @section('js')
-        {{-- Aquí puedes agregar scripts adicionales --}}
-        <script>
-            document.getElementById('form_compra').addEventListener('submit', function(e) {
-                e.preventDefault(); // Evita el envío inmediato
-
-                Swal.fire({
-                    title: '¿Confirmar edición?',
-                    text: "¡Si confirma los cambios, estos seran permanetes para siempre!",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sí, guardar',
-                    cancelButtonText: 'Cancelar',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        e.target.submit(); // Ahora sí enviamos el formulario
-                    }
-                });
-            });
-        </script>
-       <script>
-            $('#tablaProveedores').DataTable({
-               ordering: false,
-              "language":{
-                  "emptyTable": "No hay información",
-                  "info": "Mostrando _START_ a _END_ de _TOTAL_ Proveedores",
-                  "infoEmpty": "Mostrando 0 a 0 de 0 Proveedores",
-                  "infoFiltered": "(Filtrado de _MAX_ total Proveedores)",
-                  "infoPostFix": "",
-                  "thousands": ",",
-                  "lengthMenu": "Mostrar _MENU_ Proveedores",
-                  "loadingRecords": "Cargando...",
-                  "processings": "Procesando",
-                  "search": "Buscador",
-                  "zeroRecords": "Sin resultados encontrados",
-                  "paginate": {
-                      "first": "Primero",
-                      "last": "Ultimo",
-                      "next": "Siguiente",
-                      "previous": "Anterior"
-                  }
-              },
-          });
-         </script>
-         <script>
-            document.getElementById('imagen_moto').addEventListener('change', function (e) {
-                const input = e.target;
-                const preview = document.getElementById('img');
-
-                if (input.files && input.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        preview.src = e.target.result;
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                }
-            });
-            function validarImagen() {
-                const imagenInput = document.getElementById('imagen_moto');
-                if (imagenInput.files.length > 0) {
-                    const file = imagenInput.files[0];
-                    if (!file.type.match('image.*')) {
-                        alert('Solo se permiten imágenes');
-                        return false;
-                    }
-                }
-                return true;
-            }
-         </script>
-        <script>
-                $(document).on('click', '.seleccionar-btn-proveedor', function () {
-                    var id = $(this).data('id');
-                    var nombre_proveedor = $(this).data('nombre_proveedor');
-                    $('#nombre_proveedor').val(nombre_proveedor);
-                    $('#id_proveedor').val(id);
-                    $('#exampleModal2').modal('hide'); // Cierra correctamente el modal
-                    $('#exampleModal2').on('hidden.bs.modal', function () {
-                        $('#nombre_proveedor').focus();
-                    });
-                });
-        </script>
-        <script>
-           $('#id_marca').change(function() {
-                    var selectedOption = $(this).find('option:selected');
-                    var marcaId = selectedOption.val(); // ID de la marca (para el value)
-                    var marcaNombre = selectedOption.data('nombre_marca'); // Nombre de la marca (para mostrar)
-                    // Guarda el nombre en una variable global o pásalo a donde necesites
-                    window.marcaNombreSeleccionada = marcaNombre; // Opcional (solución rápida)
-                });
-              $('#id_nacionalidad').change(function() {
-                    var selectedOption = $(this).find('option:selected');
-                    var nacionalidadId = selectedOption.val(); // ID de la marca (para el value)
-                    var nacionalidadNombre = selectedOption.data('pais'); // Nombre de la marca (para mostrar)
-                    // Guarda el nombre en una variable global o pásalo a donde necesites
-                    window.nacionalidadNombreSeleccionada = nacionalidadNombre; // Opcional (solución rápida)
-                });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const imagenInput = document.getElementById('imagen_moto');
-
-                imagenInput.addEventListener('change', function(evt) {
-                    const files = evt.target.files;
-                    const imageContainer = document.getElementById('image-container');
-
-                    // Limpiar contenedor
-                    imageContainer.innerHTML = '';
-
-                    if (files && files[0]) {
-                        if (!files[0].type.match('image.*')) {
-                            alert('Por favor selecciona una imagen válida');
-                            return;
-                        }
-
-                        const reader = new FileReader();
-
-                        reader.onload = function(e) {
-                            // Mostrar previsualización de la nueva imagen
-                            imageContainer.innerHTML = `<img class="img-thumbnail mb-2" src="${e.target.result}" width="150">`;
-
-                            // Ocultar/mantener referencia a la imagen existente
-                            const currentImage = document.getElementById('current-image');
-                            if (currentImage) {
-                                currentImage.style.display = 'none';
-                            }
-
-                            const noImageText = document.getElementById('no-image-text');
-                            if (noImageText) {
-                                noImageText.style.display = 'none';
-                            }
-                        };
-
-                        reader.readAsDataURL(files[0]);
-                    } else {
-                        // Si no se seleccionó archivo, mostrar la imagen existente o texto
-                        @if($motos->imagen_moto)
-                            imageContainer.innerHTML = `<img id="current-image" src="{{ asset($motos->imagen_moto) }}" width="50%" alt="Imagen actual">`;
-                        @else
-                            imageContainer.innerHTML = '<span id="no-image-text">No hay imagen</span>';
-                        @endif
-                    }
-                });
-            });
-        </script>
-        <script>
-            function agregarMotoATabla() {
-                 // Validar campos primero
-                if (!validarCampos()) {
-                    const primerError = document.querySelector('.is-invalid, .campo-invalido');
-                    if (primerError) {
-                        primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                    return false;
-                }
-
-                const tablaBody = document.getElementById('tabla-motos-body');
-                if (!tablaBody) {
-                    console.error('Error: No se encontró el elemento #tabla-motos-body');
-                    alert('Error interno. Recarga la página e intenta nuevamente.');
-                    return false;
-                }
-
-                // OBTENER VALORES DEL FORMULARIO
-                const id_marca = document.getElementById('id_marca').value;
-                const marcaNombre = $('#id_marca').find('option:selected').data('nombre_marca');
-                const modelo_moto = document.getElementById('modelo_moto').value;
-                const precio_compra = parseFloat(document.getElementById('precio_compra').value);
-                const dominio = document.getElementById('dominio').value;
-                const cilindrada_moto = document.getElementById('cilindrada_moto').value;
-                const km_moto = document.getElementById('km_moto').value;
-                const es_usada = document.getElementById('es_usada').checked ? '1' : '0';
-                const dnrpa = document.getElementById('dnrpa').value;
-                const nr_certificado = document.getElementById('nr_certificado').value;
-                const precio_venta = parseFloat(document.getElementById('precio_venta').value);
-                const id_deposito = document.getElementById('id_deposito').value;
-                const color_moto = document.getElementById('color_moto').value;
-                const anio_moto =   document.getElementById('anio_moto').value;
-                const id_nacionalidad =   document.getElementById('id_nacionalidad').value;
-                const nacionalidadNombre = $('#id_nacionalidad').find('option:selected').data('nombre_nacionalidad');
-                const nr_motor =   document.getElementById('nr_motor').value;
-                const nr_chasis =   document.getElementById('nr_chasis').value;
-                const imagenInput = document.getElementById('imagen_moto');
-                // Actualizar el precio total
-                actualizarPrecioCompra(precio_compra);
-
-                //INPUTS ID DE LA TABLA
-
-                  const inputDominio = document.getElementById('dominioTabla');
-                  const inputCilindrada = document.getElementById('cilindra_motoTabla');
-                  const inputKm_moto = document.getElementById('km_motoTabla');
-                  const inputEsusada_moto = document.getElementById('es_usadaTabla');
-                  const inputDnrpa = document.getElementById('dnrpaTabla');
-                  const inputNr_certificado = document.getElementById('nr_certificadoTabla');
-                  const inputPrecio_venta = document.getElementById('precio_ventaTabla');
-                  const inputId_deposito = document.getElementById('id_depositoTabla');
-                  const inputPrecio_compra = document.getElementById('precio_compraTabla');
-                  const inputId_marca = document.getElementById('id_marcaTabla');
-                  const inputNombre_marca = document.getElementById('nombre_marcaTabla');
-                  const inputModelo_moto = document.getElementById('modelo_motoTabla');
-                  const inputColor_moto= document.getElementById('color_motoTabla');
-                  const inputAnio_moto = document.getElementById('anio_motoTabla');
-                  const inputNacionalidad_moto = document.getElementById('id_nacionalidadTabla');
-                  const inputNombrenacionalidad_moto = document.getElementById('nombre_paisTabla');
-                  const inputNr_motor = document.getElementById('nr_motorTabla');
-                  const inputNr_chasis = document.getElementById('nr_chasisTabla');
-                  const inputImagen = document.getElementById('imagen_motoTabla');
-
-                  // INPUTS ID DEL FORMULARIO VER DETALLE DE LA MOTO
-                  const inputNombre_marca2 = document.getElementById('nombre_marcaTabla2');
-                  const inputModeloMotoVer = document.getElementById('modelo_motoVer');
-                  const inputDominioVer = document.getElementById('dominioVer');
-                  const inputCilidradaVer = document.getElementById('cilindrada_motoVer');
-
-
-                  // ASIGNAR NUEVOS VALORES A LOS INPUTS ID
-
-                  inputDominio.value = dominio;
-                  inputCilindrada.value = cilindrada_moto;
-                  inputKm_moto.value = km_moto;
-                  inputEsusada_moto.value = es_usada;
-                  inputDnrpa.value = dnrpa;
-                  inputNr_certificado.value = nr_certificado;
-                  inputPrecio_venta.value = precio_venta;
-                  inputId_deposito.value = id_deposito;
-                  inputPrecio_compra.value = precio_compra;
-                  inputId_marca.value = id_marca;
-                  inputNombre_marca.value = marcaNombre;
-                  inputModelo_moto.value = modelo_moto;
-                  inputColor_moto.value = color_moto;
-                  inputAnio_moto.value = anio_moto;
-                  inputNacionalidad_moto.value = id_nacionalidad;
-                  inputNombrenacionalidad_moto.value = nacionalidadNombre;
-                  inputNr_motor.value = nr_motor;
-                  inputNr_chasis.value = nr_chasis;
-                  inputNombre_marca2.value = marcaNombre;
-
-                // inputs para detalle
-
-
-               if (imagenInput.files && imagenInput.files[0]) {
-                    const imagenFile = imagenInput.files[0];
-
-                    const inputImagen  = document.getElementById('imagen_motoTabla');
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(imagenFile);
-                    inputImagen.files = dataTransfer.files;
-                }
-
-                //cerrar modal
-                document.getElementById('es_usada').checked = false;
-                $('#crearMotoModal').modal('hide');
-
-                return true;
-
-             }
-        </script>
-       <script>
-
-        // Función de validación (externa para poder usarla separadamente)
-    function validarCampos() {
-        let valido = true;
-        const camposObligatorios = [
-            'id_marca', 'modelo_moto', 'dominio', 'cilindrada_moto',
-            'nr_motor', 'nr_chasis', 'precio_compra', 'precio_venta',
-            'anio_moto', 'id_deposito', 'color_moto', 'km_moto', 'id_nacionalidad', 'dnrpa',
-            'nr_certificado', 'id_deposito'
-        ];
-
-        camposObligatorios.forEach(id => {
-            const campo = document.getElementById(id);
-            if (!campo) return;
-
-            const grupo = campo.closest('.form-group') || campo.closest('[class^="col-"]');
-
-            if (campo.type === 'checkbox') {
-                // Validación para checkbox
-                if (!campo.checked) {
-                    mostrarError(grupo, 'Este campo es requerido');
-                    valido = false;
+        // Enviar AJAX
+        $.ajax({
+            url: '{{ route("admin.compras.motos.create") }}',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            xhrFields: {
+            withCredentials: true
+            },
+            success: function(res) {
+                if (res.success) {
+                    alert(res.message);          // <-- Aquí está el mensaje de éxito
+                    $('#crearMotoModal').modal('hide');
+                    location.reload();  // <-- recarga toda la página
                 } else {
-                    limpiarError(grupo);
+                    alert('Error: ' + res.message);
                 }
-            } else {
-                // Validación para otros campos
-                if (!campo.value.trim()) {
-                    mostrarError(grupo, 'Este campo es requerido');
-                    valido = false;
-                } else {
-                    limpiarError(grupo);
-                }
+            },
+            error: function(err) {
+                console.error(err);
+                alert('Error al agregar moto.');
             }
         });
-
-        return valido;
     }
-
-// Funciones auxiliares para mostrar/limpiar errores
-function mostrarError(grupo, mensaje) {
-    if (!grupo) return;
-
-    grupo.classList.add('campo-invalido');
-    grupo.querySelector('.invalid-feedback')?.remove();
-
-    const mensajeError = document.createElement('div');
-    mensajeError.className = 'invalid-feedback d-block';
-    mensajeError.textContent = mensaje;
-    grupo.appendChild(mensajeError);
-}
-
-function limpiarError(grupo) {
-    if (!grupo) return;
-
-    grupo.classList.remove('campo-invalido');
-    grupo.querySelector('.invalid-feedback')?.remove();
-}
-
-      </script>
+    </script>
     <script>
-        function actualizarPrecioCompra(nuevoTotal) {
-            const inputTotal = document.getElementById('total-compra');
-
-            // Validación básica
-            if (!inputTotal) {
-                console.error('No se encontró el input total');
-                return false;
+        function verMoto(id) {
+            const fila = document.querySelector(`tr[data-id='${id}']`);
+            if (!fila) {
+                console.error("No se encontró la fila de la moto ID: " + id);
+                return;
             }
 
-            // Formatear a 2 decimales
-            const valorFormateado = parseFloat(nuevoTotal).toFixed(2);
+            const marca = fila.querySelector('.marca-moto')?.innerText || 'N/A';
+            const modelo = fila.querySelector('.modelo-moto')?.innerText || 'N/A';
+            const color = fila.querySelector('.color-moto')?.innerText || 'N/A';
+            const dominio = fila.querySelector('.dominio-moto')?.innerText || 'N/A';
+            const anio = fila.querySelector('.anio-moto')?.innerText || 'N/A';
+            const precio_compra = fila.querySelector('.precio_compra-moto')?.innerText || 'N/A';
+            const precio_venta = fila.dataset.precio_venta || 'N/A';
+            const imagenUrl = fila.dataset.imagen;
+            const cilindrada = fila.dataset.cilindrada || '';
+            const nrMotor = fila.dataset.nrMotor || '';
+            const nrChasis = fila.dataset.nrChasis || '';
+            const certificado = fila.dataset.certificado || 'N/A';
+            const dnrpa = fila.dataset.dnrpa || 'N/A';
+            const km_moto = fila.dataset.km_moto || '';
+            const nacionalidad = fila.dataset.nacionalidad || 'N/D';
+            const condicion = fila.dataset.condicion || 'N/D';
+            const contenido = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Marca:</strong> ${marca}</p>
+                        <p><strong>Modelo:</strong> ${modelo}</p>
+                        <p><strong>Color:</strong> ${color}</p>
+                        <p><strong>Dominio:</strong> ${dominio}</p>
+                        <p><strong>Año:</strong> ${anio}</p>
+                        <p><strong>Precio compra:</strong> ${precio_compra}</p>
+                        <p><strong>Nacionalidad:</strong> ${nacionalidad}</p>
 
-            // Efecto visual de actualización
-            inputTotal.classList.add('precio-actualizado');
-            setTimeout(() => inputTotal.classList.remove('precio-actualizado'), 1000);
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Precio venta:</strong> $${precio_venta}</p>
+                        <p><strong>Cilindrada:</strong> ${cilindrada}</p>
+                        <p><strong>Nr de motor:</strong> ${nrMotor}</p>
+                        <p><strong>Nr de chasis:</strong> ${nrChasis}</p>
+                        <p><strong>Certificado:</strong> ${certificado}</p>
+                        <p><strong>DNRPA:</strong> ${dnrpa}</p>
+                        <p><strong>Condición:</strong> ${condicion}</p>
+                    </div>
+                    <div class="col-md-4">
+                        ${imagenUrl ? `<img src="${imagenUrl}" class="img-fluid img-thumbnail mt-2" style="max-width: 200px;">` : '<p><em>Sin imagen</em></p>'}
+                    </div>
+                </div>
 
-            // Actualizar valor
-            inputTotal.value = valorFormateado;
+            `;
 
-            return true;
-                    }
+            document.getElementById('contenido-ver-moto').innerHTML = contenido;
+        }
     </script>
-    @endsection
+    <script>
+        function eliminarMoto(button) {
+            const fila = button.closest('tr');
+            const motoId = fila.getAttribute('data-id');
+
+            if (!motoId) {
+                Swal.fire('Error', 'No se pudo identificar la moto para eliminar.', 'error');
+                return;
+            }
+
+            Swal.fire({
+                title: '¿Desea eliminar este registro?',
+                icon: 'question',
+                showDenyButton: true,
+                confirmButtonText: 'Eliminar',
+                confirmButtonColor: '#a5161d',
+                denyButtonColor: '#270a0a',
+                denyButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                    $.ajax({
+                        url: `/admin/compras/motos/${motoId}`,
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': token
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire('Eliminado', response.message || 'Moto eliminada correctamente', 'success')
+                                    .then(() => {
+                                        location.reload();
+                                    });
+                            } else {
+                                // Aquí capturamos el mensaje cuando está vendida
+                                Swal.fire('No permitido', response.message || 'No se puede eliminar la moto.', 'warning');
+                            }
+                        },
+                        error: function(xhr) {
+                            let mensaje = 'Error en la petición de eliminación';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                mensaje = xhr.responseJSON.message; // mensaje del backend (ej: vendida)
+                            }
+                            Swal.fire('Error', mensaje, 'error');
+                            console.error(xhr);
+                        }
+                    });
+                } else if (result.isDenied) {
+                    Swal.fire('Cancelado', 'La eliminación fue cancelada', 'info');
+                }
+            });
+        }
+    </script>
+
+@stop

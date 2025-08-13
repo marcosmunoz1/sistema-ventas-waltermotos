@@ -147,7 +147,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <button type="button" class="btn btn-primary mt-2 mb-2 ml-2" id="btnConyugue" style="display: none;" data-toggle="modal" data-target="#modalConyugue">
-                                        Agregar cónyuge
+                                        <i class="fas fa-plus"></i> Agregar cónyuge
                                     </button>
                                 </div>
                             </div>
@@ -278,6 +278,23 @@
             @if (session('error_conyugue'))
                 $('#modalConyugue').modal('show');
             @endif
+        });
+    </script>
+    <script>
+        $('#estado_civil').on('change', function() {
+            const valor = $(this).val();
+
+            if (valor === 'casado' || valor === 'concubinato') {
+                $('#btnAgregarConyuge').prop('disabled', false);
+            } else {
+                $('#btnAgregarConyuge').prop('disabled', true);
+
+                // Limpiar inputs del conyugue
+                $('#modalConyuge input').val('');
+
+                // Opcional: cerrar modal si está abierto
+                $('#modalConyuge').modal('hide');
+            }
         });
     </script>
 @endsection

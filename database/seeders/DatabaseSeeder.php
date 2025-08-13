@@ -15,17 +15,20 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-       
+
       //  User::factory()->create([
       //      'name' => 'Test User',
        //     'email' => 'test@example.com',
        // ]);
-       
+
         $this->call([
             PermissionSeeder::class,
         ]);
+
+        $this->call(UsuarioSeeder::class);
+
     }
-
-
+    //Ejecutar el comando de abajo para ejecutar los seeders
+    //php artisan db:seed
 
 }

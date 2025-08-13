@@ -49,8 +49,8 @@ class MotoController extends Controller
     {
         $moto = Moto::with(['marca', 'nacionalidad', 'compra', 'deposito'])->findOrFail($id);
         $proveedor = Proveedor::where('id', $moto->compra->id_proveedor)->first();
-        $venta = Venta::with(['cliente'])-> where('id_moto', $id)->first();
-      
+        $venta = Venta::with('cliente')-> where('id_moto', $id)->first();
+
         return view('admin.motos.show', compact('moto', 'proveedor', 'venta'));
     }
 
@@ -103,7 +103,7 @@ class MotoController extends Controller
         $moto->dnrpa = $request->dnrpa;
         $moto->nr_certificado = $request->certificado;
         $moto->id_nacionalidad = $request->nacionalidad;
-        $moto->es_usada = $request->has('es_usada') ? 1 : 0;  
+        $moto->es_usada = $request->has('es_usada') ? 1 : 0;
         $moto->id_deposito = $request->deposito;
 
         $precio_venta = str_replace(['.', ','], ['', '.'], $request->precio_venta); // Quitar puntos y cambiar la coma por un punto

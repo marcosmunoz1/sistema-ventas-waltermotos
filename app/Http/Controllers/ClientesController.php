@@ -34,6 +34,23 @@ class ClientesController extends Controller
      */
     public function store(Request $request)
     {
+        // Primero validamos el cliente (los datos básicos)
+        $request->validate([
+            'nombre_cliente' => 'required',
+            'apellido_cliente' => 'required',
+            'cuit_cliente' => 'required|unique:clientes,cuit_cliente',
+            'dni_cliente' => 'required|unique:clientes,dni_cliente',
+            'fecha_nacimiento_cliente' => 'required',
+            'celular_cliente' => 'required',
+            'email_cliente' => 'required|email|unique:clientes,email_cliente',
+            'estado_civil_cliente' => 'required',
+            'calle' => 'required',
+            'ciudad' => 'required',
+            'provincia' => 'required',
+            'profesion' => 'required',
+        ]);
+
+        // Si el estado civil es Casado o En Concubinato, validamos datos de cónyuge
         if (in_array($request->estado_civil_cliente, ['Casado', 'En Concubinato'])) {
             $validator = Validator::make($request->all(), [
                 'nombre_conyugue' => 'required|string',
@@ -49,34 +66,20 @@ class ClientesController extends Controller
                     ->withInput()
                     ->with('error_conyugue', 'Debe completar todos los datos del cónyuge.');
             }
+        } else {
+            // Si no está en estado civil conyugal, borramos datos de conyugue para no guardar nada
+            $request->merge([
+                'nombre_conyugue' => null,
+                'apellido_conyugue' => null,
+                'dni_conyugue' => null,
+                'fecha_nacimiento_conyugue' => null,
+                'celular_conyugue' => null,
+            ]);
         }
 
-        //$datos = $request->all();
-        //return response()->json($datos);
-        $request->validate([
-            'nombre_cliente' => 'required',
-            'apellido_cliente' => 'required',
-            'cuit_cliente' => 'required|unique:clientes,cuit_cliente',
-            'dni_cliente' => 'required|unique:clientes,dni_cliente',
-            'fecha_nacimiento_cliente' => 'required',
-            'celular_cliente' => 'required',
-            'email_cliente' => 'required|email|unique:clientes,email_cliente',
-            'estado_civil_cliente' => 'required',
-            'id_conyugue_cliente' => 'nullable',
-            'calle' => 'required',
-            'ciudad' => 'required',
-            'provincia' => 'required',
-            'profesion' => 'required',
-            'nombre_conyugue' => 'nullable|string',
-            'apellido_conyugue' => 'nullable|string',
-            'dni_conyugue' => 'nullable|string|unique:conyugues,dni_conyugue',
-            'fecha_nacimiento_conyugue' => 'nullable|date',
-            'celular_conyugue' => 'nullable|string',
-
-        ]);
-        // 1. Si hay cónyuge, lo guardamos primero
+        // Guardamos cónyuge solo si corresponde
         $conyugueId = null;
-        if ($request->filled('nombre_conyugue')) {
+        if (in_array($request->estado_civil_cliente, ['Casado', 'En Concubinato']) && $request->filled('nombre_conyugue')) {
             $conyugue = new Conyugue();
             $conyugue->nombre_conyugue = $request->nombre_conyugue;
             $conyugue->apellido_conyugue = $request->apellido_conyugue;
@@ -88,7 +91,7 @@ class ClientesController extends Controller
             $conyugueId = $conyugue->id;
         }
 
-        // 2. Ahora sí, creamos al cliente
+        // Guardamos cliente
         $cliente = new Cliente();
         $cliente->nombre_cliente = $request->nombre_cliente;
         $cliente->apellido_cliente = $request->apellido_cliente;
@@ -105,15 +108,17 @@ class ClientesController extends Controller
 
         if ($conyugueId) {
             $cliente->id_conyugue_cliente = $conyugueId;
+        } else {
+            $cliente->id_conyugue_cliente = null;  // Aseguramos que no quede algo raro
         }
 
         $cliente->save();
 
         return redirect()->route('admin.clientes.index')
             ->with('mensaje', 'El cliente se agregó con éxito')
-            ->with('icono', 'success'
-        );
+            ->with('icono', 'success');
     }
+
 
     /**
      * Display the specified resource.
@@ -170,13 +175,21 @@ class ClientesController extends Controller
         $cliente->provincia = $request->provincia;
         $cliente->profesion = $request->profesion;
 
-        // Si tiene datos del cónyuge (opcional)
-        if ($request->filled('nombre_conyugue') && $request->filled('dni_conyugue')) {
+        // Si es Casado o En Concubinato → validar y guardar cónyuge
+        if (in_array($request->estado_civil_cliente, ['Casado', 'En Concubinato'])) {
+            $request->validate([
+                'nombre_conyugue' => 'required|string',
+                'apellido_conyugue' => 'required|string',
+                'dni_conyugue' => 'required|numeric|unique:conyugues,dni_conyugue,' . ($cliente->conyugue->id ?? 'null'),
+                'fecha_nacimiento_conyugue' => 'nullable|date',
+                'celular_conyugue' => 'nullable|string',
+            ]);
+
             if ($cliente->id_conyugue_cliente) {
-                // Ya existe: actualizar
+                // Actualizar cónyuge existente
                 $conyugue = Conyugue::find($cliente->id_conyugue_cliente);
             } else {
-                // Nuevo cónyuge
+                // Crear nuevo cónyuge
                 $conyugue = new Conyugue();
             }
 
@@ -187,15 +200,24 @@ class ClientesController extends Controller
             $conyugue->celular_conyugue = $request->celular_conyugue;
             $conyugue->save();
 
+            // Vincular con el cliente
             $cliente->id_conyugue_cliente = $conyugue->id;
+
+        } else {
+            // Si cambia a otro estado civil y tenía cónyuge, eliminarlo
+            if ($cliente->id_conyugue_cliente) {
+                Conyugue::where('id', $cliente->id_conyugue_cliente)->delete();
+                $cliente->id_conyugue_cliente = null;
+            }
         }
 
-            $cliente->save();
+        $cliente->save();
 
-            return redirect()->route('admin.clientes.index')
-                ->with('mensaje', 'Cliente actualizado correctamente')
-                ->with('icono', 'success');
+        return redirect()->route('admin.clientes.index')
+            ->with('mensaje', 'Cliente actualizado correctamente')
+            ->with('icono', 'success');
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('id_conyugue_cliente')
                 ->references('id')
                 ->on('conyugues')
-                ->onDelete('cascade');
+                ->onDelete('set null');
 
 
             $table->timestamps();
