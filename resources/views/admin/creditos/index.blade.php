@@ -73,8 +73,8 @@
                                             <td class="text-center" style="vertical-align: middle">
                                                 <a href="{{ url('/admin/creditos/' . $credito->id) }}"
                                                     class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                <a href="{{ url('/admin/creditos/' . $credito->id . '/edit') }}"
-                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                               {{--  <a href="{{ url('/admin/creditos/' . $credito->id . '/edit') }}"
+                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a> --}}
                                                 <a href="{{ url('/admin/creditos/' . $credito->id . '/cobrar-cuotas') }}"
                                                     class="btn btn-sm btn-secondary"><i
                                                         class="fas fa-cash-register"></i></a>

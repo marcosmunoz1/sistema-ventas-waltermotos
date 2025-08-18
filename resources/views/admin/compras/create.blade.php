@@ -40,26 +40,27 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Factura</label>
-                                    <input type="number" value="{{ old('numero_factura') }}" class="form-control" id="numero_factura" name="numero_factura"
-                                        placeholder="Número de factura" required>
-                                         @error('numero_factura')
-                                                <small style="color:red;">{{ $message }}</small>
-                                         @enderror
+                                    <input type="number" value="{{ old('numero_factura') }}" class="form-control"
+                                        id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
+                                    @error('numero_factura')
+                                        <small style="color:red;">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Remito</label>
-                                    <input type="number" value="{{ old('numero_remito') }}" class="form-control" id="numero_remito" name="numero_remito"
-                                        placeholder="Número de remito" required>
+                                    <input type="number" value="{{ old('numero_remito') }}" class="form-control"
+                                        id="numero_remito" name="numero_remito" placeholder="Número de remito" required>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Fecha compra</label>
 
-                                    <input type="date" value="{{ old('fecha_compra') }}" name="fecha_compra" id="fecha_compra"
-                                        class="form-control datetimepicker-input" data-target="#reservationdate" required>
+                                    <input type="date" value="{{ old('fecha_compra') }}" name="fecha_compra"
+                                        id="fecha_compra" class="form-control datetimepicker-input"
+                                        data-target="#reservationdate" required>
 
                                 </div>
                             </div>
@@ -190,431 +191,426 @@
             </div>
         </div>
     </div>
-            <!-- Modal para agregar el detalle de la moto -->
-            <div class="modal" id="crearMotoModal" tabindex="-1" role="dialog" aria-modal="true"
-                aria-labelledby="crearRolLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                         <div class="modal-header text-white d-flex justify-content-center" style="background-color: #252652"  >
-                            <h4 class="modal-title text-center">
-                                <i class="fa-solid fa-motorcycle"></i>
-                                <span id="modalActionText">Agregar</span> detalle de la moto  <i class="fa-solid fa-motorcycle"></i>
-                            </h4>
-                            <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal" aria-label="close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+    <!-- Modal para agregar el detalle de la moto -->
+    <div class="modal" id="crearMotoModal" tabindex="-1" role="dialog" aria-modal="true"
+        aria-labelledby="crearRolLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-white d-flex justify-content-center" style="background-color: #252652">
+                    <h4 class="modal-title text-center">
+                        <i class="fa-solid fa-motorcycle"></i>
+                        <span id="modalActionText">Agregar</span> detalle de la moto <i
+                            class="fa-solid fa-motorcycle"></i>
+                    </h4>
+                    <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal"
+                        aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="card card-outline">
-                                        <div class="col-md-12 mx-auto mt-2">
-                                            <div class="card card-info">
-                                                <div
-                                                    class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
-                                                    <!-- Datos de Moto -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-outline">
+                                <div class="col-md-12 mx-auto mt-2">
+                                    <div class="card card-info">
+                                        <div
+                                            class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                            <!-- Datos de Moto -->
+                                            <div class="row">
+                                                <!-- Primera Columna: Datos -->
+                                                <div class="col-md-9">
+                                                    <!-- Fila 1 -->
                                                     <div class="row">
-                                                        <!-- Primera Columna: Datos -->
-                                                        <div class="col-md-9">
-                                                            <!-- Fila 1 -->
-                                                            <div class="row">
-                                                                <div class="col-md-4">
-                                                                    <label>Marca</label> <b style="color: red;">*</b>
-                                                                    <select class="form-control" name="id_marca"
-                                                                        id="id_marca" required>
-                                                                        <option value="">Seleccione una marca
-                                                                        </option>
-                                                                        @foreach ($marcas as $marca)
-                                                                            <option value="{{ $marca->id }}"
-                                                                                data-nombre_marca="{{ $marca->nombre_marca }}">
-                                                                                {{ $marca->nombre_marca }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label>Modelo</label> <b style="color: red;">*</b>
-                                                                    <input type="text" value="{{ is_array(old('modelo_moto')) ? implode(', ', old('modelo_moto')) : old('modelo_moto') }}" name="modelo_moto"
-                                                                        id="modelo_moto" class="form-control"
-                                                                        placeholder="Modelo" required>
-
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <label>Dominio</label><b style="color: red;">*</b>
-                                                                    <input type="text" name="dominio" id="dominio"
-                                                                        class="form-control" required
-                                                                        placeholder="Dominio">
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <label>Cilindrada</label><b style="color: red;">*</b>
-                                                                    <input type="number" name="cilindrada_moto"
-                                                                        id="cilindrada_moto" class="form-control"
-                                                                        id="cilindrada" placeholder="Cilindrada" required>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Fila 2 -->
-                                                            <div class="row mt-2">
-                                                                <div class="col-md-2">
-                                                                    <label>Color</label><b style="color: red;">*</b>
-                                                                    <input type="text" name="color_moto"
-                                                                        id="color_moto" class="form-control"
-                                                                        placeholder="Color" required>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label>Nacionalidad</label><b style="color: red;">*</b>
-                                                                    <select class="form-control" name="id_nacionalidad"
-                                                                        id="id_nacionalidad" required>
-                                                                        <option value="">Seleccione una Nacionalidad
-                                                                        </option>
-                                                                        @foreach ($nacionalidades as $nacionalidad)
-                                                                            <option value="{{ $nacionalidad->id }}"
-                                                                                data-nombre_nacionalidad="{{ $nacionalidad->pais }}">
-                                                                                {{ $nacionalidad->pais }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <label>Año</label><b style="color: red;">*</b>
-                                                                    <input type="number" name="anio_moto" id="anio_moto"
-                                                                        class="form-control" placeholder="Año" required>
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <label>Km</label><b style="color: red;">*</b>
-                                                                    <input type="number" name="km_moto" id="km_moto"
-                                                                        class="form-control" placeholder="Kilometraje"
-                                                                        required>
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <div class="form-check mt-4">
-                                                                        <input class="form-check-input" name="es_usada"
-                                                                            id="es_usada" type="checkbox">
-                                                                        <label class="form-check-label">¿Es usada?</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Fila 3 -->
-                                                            <div class="row mt-2">
-                                                                <div class="col-md-6">
-                                                                    <label>Nro. Motor</label><b style="color: red;">*</b>
-                                                                    <input type="text" name="nr_motor" id="nr_motor"
-                                                                        class="form-control" placeholder="Nro. Motor"
-                                                                        required>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <label>Nro. Chasis</label><b style="color: red;">*</b>
-                                                                    <input type="text" name="nr_chasis" id="nr_chasis"
-                                                                        class="form-control" placeholder="Nro. Chasis"
-                                                                        required>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Fila 4 -->
-                                                            <div class="row mt-2">
-                                                                <div class="col-md-6">
-                                                                    <label>D.N.R.P.A</label><b style="color: red;">*</b>
-                                                                    <input type="text" name="dnrpa" id="dnrpa"
-                                                                        class="form-control" placeholder="Nro. DNRPA"
-                                                                        required>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <label>Certificado</label><b style="color: red;">*</b>
-                                                                    <input type="text" class="form-control"
-                                                                        name="nr_certificado" id="nr_certificado"
-                                                                        placeholder="Nro. Certificado" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mt-2">
-                                                                <div class="col-md-4">
-                                                                    <label>Precio compra</label><b
-                                                                        style="color: red;">*</b>
-                                                                    <input type="text" class="form-control"
-                                                                        name="precio_compra" id="precio_compra"
-                                                                        placeholder="Precio compra" required>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label>Precio venta</label><b style="color: red;">*</b>
-                                                                    <input type="text" class="form-control"
-                                                                        name="precio_venta" id="precio_venta"
-                                                                        placeholder="Precio venta" required>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label>Deposito</label><b style="color: red;">*</b>
-                                                                    <select class="form-control" id="id_deposito"
-                                                                        name="id_deposito" required>
-                                                                        <option value="">Seleccione un Deposito
-                                                                        </option>
-                                                                        @foreach ($depositos as $deposito)
-                                                                            <option value="{{ $deposito->id }}" required>
-                                                                                {{ $deposito->nombre_deposito }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+                                                        <div class="col-md-4">
+                                                            <label>Marca</label> <b style="color: red;">*</b>
+                                                            <select class="form-control" name="id_marca" id="id_marca"
+                                                                required>
+                                                                <option value="">Seleccione una marca
+                                                                </option>
+                                                                @foreach ($marcas as $marca)
+                                                                    <option value="{{ $marca->id }}"
+                                                                        data-nombre_marca="{{ $marca->nombre_marca }}">
+                                                                        {{ $marca->nombre_marca }}</option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
-                                                        <!-- Segunda Columna: Imagen -->
-                                                        <div class="col-md-3">
-                                                            <div class="text-center">
-                                                                <div class="form-group">
-                                                                    <label for="imagen">Imagen</label>
-                                                                    <input type="file" id="imagen_moto"
-                                                                        name="imagen_moto[]" accept=".jpg, .jpeg, .png"
-                                                                        class="form-control" multiple>
-                                                                    @error('imagen_moto')
-                                                                        <small style="color: red;">{{ $message }}</small>
-                                                                    @enderror
-                                                                    <br>
-                                                                    <center><output id="list"></output></center>
-                                                                </div>
-                                                                <!-- Contenedor para previsualización (añade esto en tu modal) -->
-                                                                <div id="preview-container" class="mt-2"></div>
+                                                        <div class="col-md-4">
+                                                            <label>Modelo</label> <b style="color: red;">*</b>
+                                                            <input type="text"
+                                                                value="{{ is_array(old('modelo_moto')) ? implode(', ', old('modelo_moto')) : old('modelo_moto') }}"
+                                                                name="modelo_moto" id="modelo_moto" class="form-control"
+                                                                placeholder="Modelo" required>
+
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Dominio</label><b style="color: red;">*</b>
+                                                            <input type="text" name="dominio" id="dominio"
+                                                                class="form-control" required placeholder="Dominio">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Cilindrada</label><b style="color: red;">*</b>
+                                                            <input type="number" name="cilindrada_moto"
+                                                                id="cilindrada_moto" class="form-control" id="cilindrada"
+                                                                placeholder="Cilindrada" required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Fila 2 -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-2">
+                                                            <label>Color</label><b style="color: red;">*</b>
+                                                            <input type="text" name="color_moto" id="color_moto"
+                                                                class="form-control" placeholder="Color" required>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Nacionalidad</label><b style="color: red;">*</b>
+                                                            <select class="form-control" name="id_nacionalidad"
+                                                                id="id_nacionalidad" required>
+                                                                <option value="">Seleccione una Nacionalidad
+                                                                </option>
+                                                                @foreach ($nacionalidades as $nacionalidad)
+                                                                    <option value="{{ $nacionalidad->id }}"
+                                                                        data-nombre_nacionalidad="{{ $nacionalidad->pais }}">
+                                                                        {{ $nacionalidad->pais }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Año</label><b style="color: red;">*</b>
+                                                            <input type="number" name="anio_moto" id="anio_moto"
+                                                                class="form-control" placeholder="Año" required>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Km</label><b style="color: red;">*</b>
+                                                            <input type="number" name="km_moto" id="km_moto"
+                                                                class="form-control" placeholder="Kilometraje" required>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-check mt-4">
+                                                                <input class="form-check-input" name="es_usada"
+                                                                    id="es_usada" type="checkbox">
+                                                                <label class="form-check-label">¿Es usada?</label>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <!-- Fila 3 -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-6">
+                                                            <label>Nro. Motor</label><b style="color: red;">*</b>
+                                                            <input type="text" name="nr_motor" id="nr_motor"
+                                                                class="form-control" placeholder="Nro. Motor" required>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label>Nro. Chasis</label><b style="color: red;">*</b>
+                                                            <input type="text" name="nr_chasis" id="nr_chasis"
+                                                                class="form-control" placeholder="Nro. Chasis" required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Fila 4 -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-6">
+                                                            <label>D.N.R.P.A</label><b style="color: red;">*</b>
+                                                            <input type="text" name="dnrpa" id="dnrpa"
+                                                                class="form-control" placeholder="Nro. DNRPA" required>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label>Certificado</label><b style="color: red;">*</b>
+                                                            <input type="text" class="form-control"
+                                                                name="nr_certificado" id="nr_certificado"
+                                                                placeholder="Nro. Certificado" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-4">
+                                                            <label>Precio compra</label><b style="color: red;">*</b>
+                                                            <input type="text" class="form-control"
+                                                                name="precio_compra" id="precio_compra"
+                                                                placeholder="Precio compra" required>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Precio venta</label><b style="color: red;">*</b>
+                                                            <input type="text" class="form-control"
+                                                                name="precio_venta" id="precio_venta"
+                                                                placeholder="Precio venta" required>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Deposito</label><b style="color: red;">*</b>
+                                                            <select class="form-control" id="id_deposito"
+                                                                name="id_deposito" required>
+                                                                <option value="">Seleccione un Deposito
+                                                                </option>
+                                                                @foreach ($depositos as $deposito)
+                                                                    <option value="{{ $deposito->id }}" required>
+                                                                        {{ $deposito->nombre_deposito }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
-
+                                                <!-- Segunda Columna: Imagen -->
+                                                <div class="col-md-3">
+                                                    <div class="text-center">
+                                                        <div class="form-group">
+                                                            <label for="imagen">Imagen</label>
+                                                            <input type="file" id="imagen_moto" name="imagen_moto[]"
+                                                                accept=".jpg, .jpeg, .png" class="form-control" multiple>
+                                                            @error('imagen_moto')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                            <br>
+                                                            <center><output id="list"></output></center>
+                                                        </div>
+                                                        <!-- Contenedor para previsualización (añade esto en tu modal) -->
+                                                        <div id="preview-container" class="mt-2"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" onclick="agregarMotoATabla()" class="btn btn-primary">
-                                            <i class="fas fa-save"></i> Guardar moto</button>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-                                                class="fas fa-cancel"></i> Cancelar</button>
+
                                     </div>
                                 </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" onclick="agregarMotoATabla()" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Guardar moto</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                                        class="fas fa-cancel"></i> Cancelar</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-        @endsection
+@endsection
 
-        @section('css')
-            <style>
-                /* Estilo para botón deshabilitado */
-                #btn-agregar-moto:disabled {
-                    opacity: 0.6;
-                    cursor: not-allowed;
-                    background-color: #6c757d !important;
-                    border-color: #6c757d !important;
+@section('css')
+    <style>
+        /* Estilo para botón deshabilitado */
+        #btn-agregar-moto:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+        }
+
+        /* Clase adicional para más énfasis */
+        .btn-disabled {
+            position: relative;
+        }
+
+        .btn-disabled::after {
+            content: "✖";
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+        }
+
+        @media (max-width: 767px) {
+            .responsive-table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Estilos para la tabla responsive */
+            .table-nowrap {
+                white-space: nowrap;
+            }
+
+            .sticky-column {
+                position: sticky;
+                left: 0;
+                background-color: #f8f9fa;
+                z-index: 1;
+            }
+
+            /* Ajustar tamaño de columnas en móviles */
+            @media (max-width: 360px) {
+                .table-responsive {
+                    border: 0;
                 }
 
-                /* Clase adicional para más énfasis */
-                .btn-disabled {
-                    position: relative;
+                #tabla-motos {
+                    width: auto;
+                    min-width: 600px;
+                    /* Ancho mínimo para mantener estructura */
                 }
 
-                .btn-disabled::after {
-                    content: "✖";
-                    position: absolute;
-                    right: 8px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    color: #fff;
+                .table td,
+                .table th {
+                    padding: 0.5rem;
+                    font-size: 0.85rem;
                 }
 
-                @media (max-width: 767px) {
-                    .responsive-table {
-                        display: block;
-                        width: 100%;
-                        overflow-x: auto;
-                        -webkit-overflow-scrolling: touch;
-                    }
-
-                    /* Estilos para la tabla responsive */
-                    .table-nowrap {
-                        white-space: nowrap;
-                    }
-
-                    .sticky-column {
-                        position: sticky;
-                        left: 0;
-                        background-color: #f8f9fa;
-                        z-index: 1;
-                    }
-
-                    /* Ajustar tamaño de columnas en móviles */
-                    @media (max-width: 360px) {
-                        .table-responsive {
-                            border: 0;
-                        }
-
-                        #tabla-motos {
-                            width: auto;
-                            min-width: 600px;
-                            /* Ancho mínimo para mantener estructura */
-                        }
-
-                        .table td,
-                        .table th {
-                            padding: 0.5rem;
-                            font-size: 0.85rem;
-                        }
-
-                        /* Ocultar columnas menos importantes en móviles */
-                        .d-priority-1 {
-                            display: none;
-                        }
-                    }
+                /* Ocultar columnas menos importantes en móviles */
+                .d-priority-1 {
+                    display: none;
                 }
-            </style>
+            }
+        }
+    </style>
 
-        @endsection
+@endsection
 
-        @section('js')
-            {{-- Aquí puedes agregar scripts adicionales --}}
-            <script>
-                $('#tablaProveedores').DataTable({
-                    ordering: false,
-                    "language": {
-                        "emptyTable": "No hay información",
-                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Proveedores",
-                        "infoEmpty": "Mostrando 0 a 0 de 0 Proveedores",
-                        "infoFiltered": "(Filtrado de _MAX_ total Proveedores)",
-                        "infoPostFix": "",
-                        "thousands": ",",
-                        "lengthMenu": "Mostrar _MENU_ Proveedores",
-                        "loadingRecords": "Cargando...",
-                        "processings": "Procesando",
-                        "search": "Buscador",
-                        "zeroRecords": "Sin resultados encontrados",
-                        "paginate": {
-                            "first": "Primero",
-                            "last": "Ultimo",
-                            "next": "Siguiente",
-                            "previous": "Anterior"
-                        }
-                    },
-                });
-            </script>
-            <script>
-                $(document).on('click', '.seleccionar-btn-proveedor', function() {
-                    var id = $(this).data('id');
-                    var nombre_proveedor = $(this).data('nombre_proveedor');
-                    $('#nombre_proveedor').val(nombre_proveedor);
-                    $('#id_proveedor').val(id);
-                    $('#exampleModal2').modal('hide'); // Cierra correctamente el modal
-                    $('#exampleModal2').on('hidden.bs.modal', function() {
-                        $('#nombre_proveedor').focus();
+@section('js')
+    {{-- Aquí puedes agregar scripts adicionales --}}
+    <script>
+        $('#tablaProveedores').DataTable({
+            ordering: false,
+            "language": {
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Proveedores",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Proveedores",
+                "infoFiltered": "(Filtrado de _MAX_ total Proveedores)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Proveedores",
+                "loadingRecords": "Cargando...",
+                "processings": "Procesando",
+                "search": "Buscador",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+        });
+    </script>
+    <script>
+        $(document).on('click', '.seleccionar-btn-proveedor', function() {
+            var id = $(this).data('id');
+            var nombre_proveedor = $(this).data('nombre_proveedor');
+            $('#nombre_proveedor').val(nombre_proveedor);
+            $('#id_proveedor').val(id);
+            $('#exampleModal2').modal('hide'); // Cierra correctamente el modal
+            $('#exampleModal2').on('hidden.bs.modal', function() {
+                $('#nombre_proveedor').focus();
+            });
+        });
+    </script>
+    <script>
+        function archivo(evt) {
+            var files = evt.target.files; //file List objet
+            //Obtenemos la imagen del campo "file"
+            for (var i = 0, f; f = files[i]; i++) {
+                //solo admitimos imagenes
+                if (!f.type.match('image.*')) {
+                    continue;
+                }
+                var reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        //insertamos la imagen
+                        document.getElementById("list").innerHTML = ['<img class="thumb thumbail" src="', e
+                            .target.result, '" width="70%" title="', escape(theFile.name), '"/>'
+                        ].join('');
+                    };
+                })(f);
+                reader.readAsDataURL(f);
+
+            }
+
+        }
+        document.getElementById('imagen_moto').addEventListener('change', archivo, false);
+    </script>
+    <script>
+        $('#id_marca').change(function() {
+            var selectedOption = $(this).find('option:selected');
+            var marcaId = selectedOption.val(); // ID de la marca (para el value)
+            var marcaNombre = selectedOption.data('nombre_marca'); // Nombre de la marca (para mostrar)
+            // Guarda el nombre en una variable global o pásalo a donde necesites
+            window.marcaNombreSeleccionada = marcaNombre; // Opcional (solución rápida)
+        });
+        $('#id_nacionalidad').change(function() {
+            var selectedOption = $(this).find('option:selected');
+            var nacionalidadId = selectedOption.val(); // ID de la marca (para el value)
+            var nacionalidadNombre = selectedOption.data('pais'); // Nombre de la marca (para mostrar)
+            // Guarda el nombre en una variable global o pásalo a donde necesites
+            window.nacionalidadNombreSeleccionada = nacionalidadNombre; // Opcional (solución rápida)
+        });
+    </script>
+    <script>
+        function agregarMotoATabla() {
+
+            // Verificar si ya hay una moto en la tabla
+           /*  const tablaBody = document.getElementById('tabla-motos-body');
+            if (tablaBody && tablaBody.querySelectorAll('tr').length > 0) {
+                alert('Solo puedes tener una moto a la vez. Limpia la tabla primero.');
+                return;
+            } */
+
+            // Primero validar campos
+            if (!validarCampos()) {
+                // Mostrar primer error si la validación falla
+                const primerError = document.querySelector('.is-invalid, .campo-invalido');
+                if (primerError) {
+                    primerError.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
                     });
-                });
-            </script>
-             <script>
-                function archivo(evt) {
-                    var files = evt.target.files; //file List objet
-                    //Obtenemos la imagen del campo "file"
-                    for (var i = 0, f; f = files[i]; i++) {
-                        //solo admitimos imagenes
-                        if (!f.type.match('image.*')) {
-                            continue;
-                        }
-                        var reader = new FileReader();
-                        reader.onload = (function(theFile) {
-                            return function(e) {
-                                //insertamos la imagen
-                                document.getElementById("list").innerHTML = ['<img class="thumb thumbail" src="', e
-                                    .target.result, '" width="70%" title="', escape(theFile.name), '"/>'
-                                ].join('');
-                            };
-                        })(f);
-                        reader.readAsDataURL(f);
-
-                    }
-
                 }
-                document.getElementById('imagen_moto').addEventListener('change', archivo, false);
-            </script>
-            <script>
-                $('#id_marca').change(function() {
-                    var selectedOption = $(this).find('option:selected');
-                    var marcaId = selectedOption.val(); // ID de la marca (para el value)
-                    var marcaNombre = selectedOption.data('nombre_marca'); // Nombre de la marca (para mostrar)
-                    // Guarda el nombre en una variable global o pásalo a donde necesites
-                    window.marcaNombreSeleccionada = marcaNombre; // Opcional (solución rápida)
-                });
-                $('#id_nacionalidad').change(function() {
-                    var selectedOption = $(this).find('option:selected');
-                    var nacionalidadId = selectedOption.val(); // ID de la marca (para el value)
-                    var nacionalidadNombre = selectedOption.data('pais'); // Nombre de la marca (para mostrar)
-                    // Guarda el nombre en una variable global o pásalo a donde necesites
-                    window.nacionalidadNombreSeleccionada = nacionalidadNombre; // Opcional (solución rápida)
-                });
-            </script>
-            <script>
-                function agregarMotoATabla() {
+                return; // Detener la ejecución si la validación falla
+            }
 
-                    // Verificar si ya hay una moto en la tabla
-                    const tablaBody = document.getElementById('tabla-motos-body');
-                    if (tablaBody && tablaBody.querySelectorAll('tr').length > 0) {
-                        alert('Solo puedes tener una moto a la vez. Limpia la tabla primero.');
-                        return;
-                    }
+            if (!tablaBody) {
+                console.error('Error: No se encontró el elemento #tabla-motos-body');
+                alert('Error interno. Recarga la página e intenta nuevamente.');
+                return;
+            }
 
-                    // Primero validar campos
-                    if (!validarCampos()) {
-                        // Mostrar primer error si la validación falla
-                        const primerError = document.querySelector('.is-invalid, .campo-invalido');
-                        if (primerError) {
-                            primerError.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'center'
-                            });
-                        }
-                        return; // Detener la ejecución si la validación falla
-                    }
+            let contador = 1;
+            let id_marca = document.getElementById('id_marca').value;
+            var marcaNombre = $('#id_marca').find('option:selected').data('nombre_marca');
+            let modelo_moto = document.getElementById('modelo_moto').value;
+            let dominio = document.getElementById('dominio').value;
+            let cilindrada_moto = document.getElementById('cilindrada_moto').value;
+            let km_moto = document.getElementById('km_moto').value;
+            let es_usada = document.getElementById('es_usada').checked ? '1' : '0';
+            let dnrpa = document.getElementById('dnrpa').value;
+            let nr_certificado = document.getElementById('nr_certificado').value;
+            let precio_venta = parseFloat(document.getElementById('precio_venta').value);
+            let id_deposito = document.getElementById('id_deposito').value;
+            let color_moto = document.getElementById('color_moto').value;
+            let anio_moto = document.getElementById('anio_moto').value;
+            let id_nacionalidad = document.getElementById('id_nacionalidad').value;
+            var nacionalidadNombre = $('#id_nacionalidad').find('option:selected').data('nombre_nacionalidad');
+            let nr_motor = document.getElementById('nr_motor').value;
+            let nr_chasis = document.getElementById('nr_chasis').value;
+            let precio_compra = parseFloat(document.getElementById('precio_compra').value);
+            const nuevoTotal = calcularTotalCompra() + parseFloat(precio_compra);
+            actualizarVariable(nuevoTotal);
+            // Manejo CORREGIDO de la imagen
+            const imagenInput = document.getElementById('imagen_moto');
+            let imagenHTML = '';
+            let fileInputHTML = '';
 
-                    if (!tablaBody) {
-                        console.error('Error: No se encontró el elemento #tabla-motos-body');
-                        alert('Error interno. Recarga la página e intenta nuevamente.');
-                        return;
-                    }
+            if (imagenInput.files && imagenInput.files[0]) {
+                const imagenFile = imagenInput.files[0];
+                const imagenURL = URL.createObjectURL(imagenFile);
 
-                    let contador = 1;
-                    let id_marca = document.getElementById('id_marca').value;
-                    var marcaNombre = $('#id_marca').find('option:selected').data('nombre_marca');
-                    let modelo_moto = document.getElementById('modelo_moto').value;
-                    let dominio = document.getElementById('dominio').value;
-                    let cilindrada_moto = document.getElementById('cilindrada_moto').value;
-                    let km_moto = document.getElementById('km_moto').value;
-                    let es_usada = document.getElementById('es_usada').checked ? '1' : '0';
-                    let dnrpa = document.getElementById('dnrpa').value;
-                    let nr_certificado = document.getElementById('nr_certificado').value;
-                    let precio_venta = parseFloat(document.getElementById('precio_venta').value);
-                    let id_deposito = document.getElementById('id_deposito').value;
-                    let color_moto = document.getElementById('color_moto').value;
-                    let anio_moto = document.getElementById('anio_moto').value;
-                    let id_nacionalidad = document.getElementById('id_nacionalidad').value;
-                    var nacionalidadNombre = $('#id_nacionalidad').find('option:selected').data('nombre_nacionalidad');
-                    let nr_motor = document.getElementById('nr_motor').value;
-                    let nr_chasis = document.getElementById('nr_chasis').value;
-                    let precio_compra = parseFloat(document.getElementById('precio_compra').value);
-                    const nuevoTotal = calcularTotalCompra() + parseFloat(precio_compra);
-                    actualizarVariable(nuevoTotal);
-                    // Manejo CORREGIDO de la imagen
-                    const imagenInput = document.getElementById('imagen_moto');
-                    let imagenHTML = '';
-                    let fileInputHTML = '';
+                imagenHTML = `<img src="${imagenURL}" width="50" class="img-thumbnail">`;
 
-                    if (imagenInput.files && imagenInput.files[0]) {
-                        const imagenFile = imagenInput.files[0];
-                        const imagenURL = URL.createObjectURL(imagenFile);
-
-                        imagenHTML = `<img src="${imagenURL}" width="50" class="img-thumbnail">`;
-
-                        // Crear un nuevo input file para el envío
-                        fileInputHTML = `
+                // Crear un nuevo input file para el envío
+                fileInputHTML = `
                         <input type="file" name="imagen_moto[]" class="d-none"
                             data-file-name="${imagenFile.name}" multiple>
                     `;
-                    } else {
-                        imagenHTML = '<span class="text-muted">Sin imagen</span>';
-                    }
+            } else {
+                imagenHTML = '<span class="text-muted">Sin imagen</span>';
+            }
 
 
 
-                    // 1. Crear fila
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
+            // 1. Crear fila
+            const fila = document.createElement('tr');
+            fila.innerHTML = `
                          <td class="text-center" style="vertical-align: middle;">
                              <input type="hidden" name="dominio[]" class="form-control" value="${dominio}" min="1" required readonly>
                              <input type="hidden" name="cilindrada_moto[]" class="form-control" value="${cilindrada_moto}" min="1" required readonly>
@@ -665,183 +661,183 @@
                          </td>
                  `;
 
-                    // Transferir el archivo al nuevo input
-                    if (imagenInput.files && imagenInput.files[0]) {
-                        const newFileInput = fila.querySelector('input[name="imagen_moto[]"]');
-                        const dataTransfer = new DataTransfer();
-                        dataTransfer.items.add(imagenInput.files[0]);
-                        newFileInput.files = dataTransfer.files;
+            // Transferir el archivo al nuevo input
+            if (imagenInput.files && imagenInput.files[0]) {
+                const newFileInput = fila.querySelector('input[name="imagen_moto[]"]');
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(imagenInput.files[0]);
+                newFileInput.files = dataTransfer.files;
+            }
+
+
+            // 4. Agregar fila
+            tablaBody.appendChild(fila);
+
+
+
+
+            // 3. Resetear solo los campos del modal (no el formulario completo)
+            /*    $('#modalMoto').find('input').not('[type="hidden"]').val(''); */
+            // $('#crearMotoModal').find('input').not('[type="hidden"]').val('');
+            // $('#crearMotoModal').find('select').val('');
+            // document.getElementById('es_usada').checked = false;
+
+            // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
+            const form = document.getElementById('formulario-compra');
+
+
+            $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal
+
+            actualizarEstadoBotonAgregar();
+
+            return true;
+        }
+    </script>
+
+
+    <script>
+        // Función de validación (externa para poder usarla separadamente)
+        function validarCampos() {
+            let valido = true;
+            const camposObligatorios = [
+                'id_marca', 'modelo_moto', 'dominio', 'cilindrada_moto',
+                'nr_motor', 'nr_chasis', 'precio_compra', 'precio_venta',
+                'anio_moto', 'id_deposito', 'color_moto', 'km_moto', 'id_nacionalidad', 'dnrpa',
+                'nr_certificado', 'id_deposito'
+            ];
+
+            camposObligatorios.forEach(id => {
+                const campo = document.getElementById(id);
+                if (!campo) return;
+
+                const grupo = campo.closest('.form-group') || campo.closest('[class^="col-"]');
+
+                if (campo.type === 'checkbox') {
+                    // Validación para checkbox
+                    if (!campo.checked) {
+                        mostrarError(grupo, 'Este campo es requerido');
+                        valido = false;
+                    } else {
+                        limpiarError(grupo);
                     }
-
-
-                    // 4. Agregar fila
-                    tablaBody.appendChild(fila);
-
-
-
-
-                    // 3. Resetear solo los campos del modal (no el formulario completo)
-                    /*    $('#modalMoto').find('input').not('[type="hidden"]').val(''); */
-                   // $('#crearMotoModal').find('input').not('[type="hidden"]').val('');
-                   // $('#crearMotoModal').find('select').val('');
-                   // document.getElementById('es_usada').checked = false;
-
-                    // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
-                    const form = document.getElementById('formulario-compra');
-
-
-                    $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal
-
-                    actualizarEstadoBotonAgregar();
-
-                    return true;
-                }
-            </script>
-
-
-            <script>
-                // Función de validación (externa para poder usarla separadamente)
-                function validarCampos() {
-                    let valido = true;
-                    const camposObligatorios = [
-                        'id_marca', 'modelo_moto', 'dominio', 'cilindrada_moto',
-                        'nr_motor', 'nr_chasis', 'precio_compra', 'precio_venta',
-                        'anio_moto', 'id_deposito', 'color_moto', 'km_moto', 'id_nacionalidad', 'dnrpa',
-                        'nr_certificado', 'id_deposito'
-                    ];
-
-                    camposObligatorios.forEach(id => {
-                        const campo = document.getElementById(id);
-                        if (!campo) return;
-
-                        const grupo = campo.closest('.form-group') || campo.closest('[class^="col-"]');
-
-                        if (campo.type === 'checkbox') {
-                            // Validación para checkbox
-                            if (!campo.checked) {
-                                mostrarError(grupo, 'Este campo es requerido');
-                                valido = false;
-                            } else {
-                                limpiarError(grupo);
-                            }
-                        } else {
-                            // Validación para otros campos
-                            if (!campo.value.trim()) {
-                                mostrarError(grupo, 'Este campo es requerido');
-                                valido = false;
-                            } else {
-                                limpiarError(grupo);
-                            }
-                        }
-                    });
-
-                    return valido;
-                }
-
-                // Funciones auxiliares para mostrar/limpiar errores
-                function mostrarError(grupo, mensaje) {
-                    if (!grupo) return;
-
-                    grupo.classList.add('campo-invalido');
-                    grupo.querySelector('.invalid-feedback')?.remove();
-
-                    const mensajeError = document.createElement('div');
-                    mensajeError.className = 'invalid-feedback d-block';
-                    mensajeError.textContent = mensaje;
-                    grupo.appendChild(mensajeError);
-                }
-
-                function limpiarError(grupo) {
-                    if (!grupo) return;
-
-                    grupo.classList.remove('campo-invalido');
-                    grupo.querySelector('.invalid-feedback')?.remove();
-                }
-            </script>
-            <script>
-                function actualizarVariable(nuevoValor) {
-                    // Formatear si es número
-                    const valorFormateado = typeof nuevoValor === 'number' ?
-                        nuevoValor.toFixed(2) :
-                        nuevoValor;
-
-                    // Actualizar UI
-                    const elementos = [{
-                            id: "mostrarVariable",
-                            prop: "textContent"
-                        },
-                        {
-                            id: "total_compra",
-                            prop: "value"
-                        }
-                    ];
-
-                    elementos.forEach(item => {
-                        const el = document.getElementById(item.id);
-                        if (el) el[item.prop] = valorFormateado;
-                    });
-                }
-            </script>
-            <script>
-                function limpiarTabla() {
-                    const tablaBody = document.getElementById('tabla-motos-body');
-                    if (tablaBody) {
-                        tablaBody.innerHTML = '';
-
-                        // Actualizar el total a 0 cuando se limpia la tabla
-                        actualizarVariable(0);
-
-                        // Actualizar estado inmediatamente
-                        actualizarEstadoBotonAgregar();
-
-                        // Reiniciar completamente el tooltip
-                        const btnAgregar = document.getElementById('btn-agregar-moto');
-                        if (btnAgregar) {
-                            $(btnAgregar).tooltip('dispose');
-                            btnAgregar.removeAttribute('data-original-title');
-                        }
-
-                        console.log('Tabla limpiada y estado actualizado'); // Para depuración
+                } else {
+                    // Validación para otros campos
+                    if (!campo.value.trim()) {
+                        mostrarError(grupo, 'Este campo es requerido');
+                        valido = false;
+                    } else {
+                        limpiarError(grupo);
                     }
                 }
-            </script>
-            <script>
-                function actualizarEstadoBotonAgregar() {
-                    const tablaBody = document.getElementById('tabla-motos-body');
-                    const btnAgregar = document.getElementById('btn-agregar-moto');
+            });
 
-                    if (!tablaBody || !btnAgregar) return;
+            return valido;
+        }
 
-                    const tieneMotos = tablaBody.querySelector('tr') !== null;
-                    btnAgregar.disabled = tieneMotos;
+        // Funciones auxiliares para mostrar/limpiar errores
+        function mostrarError(grupo, mensaje) {
+            if (!grupo) return;
 
-                    btnAgregar.onclick = function(e) {
-                        if (btnAgregar.disabled) {
-                            e.preventDefault();
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Acción no permitida',
-                                text: 'Debe limpiar la tabla primero antes de agregar otra moto',
-                                confirmButtonText: 'Entendido'
-                            });
-                        }
-                    };
+            grupo.classList.add('campo-invalido');
+            grupo.querySelector('.invalid-feedback')?.remove();
+
+            const mensajeError = document.createElement('div');
+            mensajeError.className = 'invalid-feedback d-block';
+            mensajeError.textContent = mensaje;
+            grupo.appendChild(mensajeError);
+        }
+
+        function limpiarError(grupo) {
+            if (!grupo) return;
+
+            grupo.classList.remove('campo-invalido');
+            grupo.querySelector('.invalid-feedback')?.remove();
+        }
+    </script>
+    <script>
+        function actualizarVariable(nuevoValor) {
+            // Formatear si es número
+            const valorFormateado = typeof nuevoValor === 'number' ?
+                nuevoValor.toFixed(2) :
+                nuevoValor;
+
+            // Actualizar UI
+            const elementos = [{
+                    id: "mostrarVariable",
+                    prop: "textContent"
+                },
+                {
+                    id: "total_compra",
+                    prop: "value"
                 }
-            </script>
-            <script>
-                function calcularTotalCompra() {
-                    const filas = document.querySelectorAll('#tabla-motos-body tr');
-                    let total = 0;
+            ];
 
-                    filas.forEach(fila => {
-                        const inputPrecio = fila.querySelector('input[name="precio_compra[]"]');
-                        if (inputPrecio) {
-                            total += parseFloat(inputPrecio.value) || 0;
-                        }
+            elementos.forEach(item => {
+                const el = document.getElementById(item.id);
+                if (el) el[item.prop] = valorFormateado;
+            });
+        }
+    </script>
+    <script>
+        function limpiarTabla() {
+            const tablaBody = document.getElementById('tabla-motos-body');
+            if (tablaBody) {
+                tablaBody.innerHTML = '';
+
+                // Actualizar el total a 0 cuando se limpia la tabla
+                actualizarVariable(0);
+
+                // Actualizar estado inmediatamente
+                actualizarEstadoBotonAgregar();
+
+                // Reiniciar completamente el tooltip
+                const btnAgregar = document.getElementById('btn-agregar-moto');
+                if (btnAgregar) {
+                    $(btnAgregar).tooltip('dispose');
+                    btnAgregar.removeAttribute('data-original-title');
+                }
+
+                console.log('Tabla limpiada y estado actualizado'); // Para depuración
+            }
+        }
+    </script>
+    <script>
+        function actualizarEstadoBotonAgregar() {
+            const tablaBody = document.getElementById('tabla-motos-body');
+            const btnAgregar = document.getElementById('btn-agregar-moto');
+
+            if (!tablaBody || !btnAgregar) return;
+
+            const tieneMotos = tablaBody.querySelector('tr') !== null;
+            btnAgregar.disabled = tieneMotos;
+
+            btnAgregar.onclick = function(e) {
+                if (btnAgregar.disabled) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Acción no permitida',
+                        text: 'Debe limpiar la tabla primero antes de agregar otra moto',
+                        confirmButtonText: 'Entendido'
                     });
-
-                    return total;
                 }
-            </script>
+            };
+        }
+    </script>
+    <script>
+        function calcularTotalCompra() {
+            const filas = document.querySelectorAll('#tabla-motos-body tr');
+            let total = 0;
 
-        @endsection
+            filas.forEach(fila => {
+                const inputPrecio = fila.querySelector('input[name="precio_compra[]"]');
+                if (inputPrecio) {
+                    total += parseFloat(inputPrecio.value) || 0;
+                }
+            });
+
+            return total;
+        }
+    </script>
+
+@endsection

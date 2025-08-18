@@ -24,13 +24,13 @@
                 <div class="col-md-10 mx-auto mt-4">
                     <div class="card">
                         <div class="card-body">
-                            <table id="mitabla" class="table table-striped table-hover">
+                            <table id="mitabla" class="table table-striped table-hover table-sm">
                                 <thead class="table-primary">
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
                                         <th style="width: 25%">Nombre del Usuario</th>
                                         <th style="width: 30%">Correo</th>
-                                     {{--    <th style="width: 10%">Rol</th> --}}
+                                        {{--    <th style="width: 10%">Rol</th> --}}
                                         <th class="text-center" style="width: 30%">Acciones</th>
                                     </tr>
                                 </thead>
@@ -41,7 +41,7 @@
                                             <td class="text-center ">{{ $contador++ }}</td>
                                             <td>{{ $usuario->name }}</td>
                                             <td>{{ $usuario->email }}</td>
-                                          {{--   <td>{{ $usuario->roles->pluck('name')->implode(', ') }}</td> --}}
+                                            {{--   <td>{{ $usuario->roles->pluck('name')->implode(', ') }}</td> --}}
                                             <td class="text-center">
                                                 <a href="{{ url('/admin/usuarios', $usuario->id) }}"
                                                     class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Ver</a>
@@ -198,23 +198,23 @@
                 function preguntar(event, id) {
                     event.preventDefault();
 
-            Swal.fire({
-                title: '¿Desea eliminar este Usuario?',
-                text: 'El mismo ya no tendra acceso al sistema.',
-                icon: 'warning',
-                showDenyButton: true,
-                confirmButtonText: 'Eliminar',
-                confirmButtonColor: '#a5161d',
-                denyButtonColor: '#270a0a',
-                denyButtonText: 'Cancelar',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var form = document.getElementById('miFormulario' + id);
-                    if (form) {
-                        form.submit();
-                    }
+                    Swal.fire({
+                        title: '¿Desea eliminar este Usuario?',
+                        text: 'El mismo ya no tendra acceso al sistema.',
+                        icon: 'warning',
+                        showDenyButton: true,
+                        confirmButtonText: 'Eliminar',
+                        confirmButtonColor: '#a5161d',
+                        denyButtonColor: '#270a0a',
+                        denyButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var form = document.getElementById('miFormulario' + id);
+                            if (form) {
+                                form.submit();
+                            }
+                        }
+                    });
                 }
-            });
-        }
-    </script>
-@stop
+            </script>
+        @stop

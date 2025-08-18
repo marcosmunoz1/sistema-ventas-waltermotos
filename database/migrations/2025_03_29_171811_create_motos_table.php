@@ -21,21 +21,21 @@ return new class extends Migration
             $table->foreign(columns:'id_deposito')->references('id')->on(table: 'depositos')->onDelete(action:'cascade');
             $table->string('marca_moto');
             $table->string('modelo_moto');
-            $table->string('dominio');
+            $table->string('dominio')->nullable();
             $table->integer('cilindrada_moto');
             $table->string('color_moto');
             $table->string('anio_moto');
             $table->integer('km_moto');
             $table->integer('es_usada');
-            $table->string('nr_certificado');
-            $table->string('dnrpa');
+            $table->string('nr_certificado')->nullable();
+            $table->string('dnrpa')->nullable();
             $table->string('nr_motor');
             $table->string('nr_chasis');
             $table->date('fecha_compra_moto');
             $table->date('fecha_venta_moto')->nullable();
             $table->decimal('precio_compra', 10, 2);
             $table->decimal('precio_venta', 10, 2);
-            $table->string('estado_moto');
+            $table->string('estado_moto')->nullable();
             $table->string('imagen_moto')->nullable();
             $table->enum('condicion', ['vendida', 'en_stock', 'garantia', 'devuelta'])->default('en_stock');
 

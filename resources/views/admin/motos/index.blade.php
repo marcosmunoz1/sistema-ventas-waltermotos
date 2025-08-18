@@ -13,14 +13,14 @@
             <div class="card card-outline card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Motos Registradas</h3>
-                    <div class="card-tools">
+                    {{-- <div class="card-tools">
                         <a href="{{ url('admin/motos/crear-moto') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
                             Nueva Moto</a>
-                    </div>
+                    </div> --}}
                 </div>
-                <div class="col-md-12 mx-auto mt-4">
+                <div class="col-md-12 mx-auto mt-2">
                     <div class="card">
-                        <div class="card-body">
+                        
                             <!-- Tabla -->
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -59,24 +59,24 @@
                                                         ${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
                                                     <td class="text-right text-danger" style="vertical-align: middle">
                                                         ${{ number_format($moto->precio_venta, 2, ',', '.') }}</td>
-                                                        <td class="text-center" style="vertical-align: middle">
-                                                            @php
-                                                                $colores = [
-                                                                    'vendida'   => 'danger',
-                                                                    'en_stock'  => 'success',
-                                                                    'garantia'  => 'warning',
-                                                                    'devuelta'  => 'secondary',
-                                                                ];
-                                                                $color = $colores[$moto->condicion] ?? 'light';
-                                                            @endphp
-                                                            <span class="badge bg-{{ $color }}">
-                                                                {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
-                                                            </span>
-                                                        </td>
+                                                    <td class="text-center" style="vertical-align: middle">
+                                                        @php
+                                                            $colores = [
+                                                                'vendida' => 'danger',
+                                                                'en_stock' => 'success',
+                                                                'garantia' => 'warning',
+                                                                'devuelta' => 'secondary',
+                                                            ];
+                                                            $color = $colores[$moto->condicion] ?? 'light';
+                                                        @endphp
+                                                        <span class="badge bg-{{ $color }}">
+                                                            {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
+                                                        </span>
+                                                    </td>
 
                                                     <td class="text-center" style="vertical-align: middle">
-                                                        <img src="{{ asset( $moto->imagen_moto) }}"
-                                                            width="40%" alt="">
+                                                        <img src="{{ asset($moto->imagen_moto) }}" width="40%"
+                                                            alt="">
 
                                                     </td>
                                                     <td class="text-center" style="vertical-align: middle">
@@ -101,7 +101,7 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
