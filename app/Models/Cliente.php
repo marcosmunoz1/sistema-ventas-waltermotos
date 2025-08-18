@@ -16,7 +16,7 @@ class Cliente extends Model
         'id_conyugue_cliente',
         'calle',
         'profesion',
-        'provincia',  
+        'provincia',
         'ciudad',
     ];
 
@@ -24,4 +24,5 @@ class Cliente extends Model
     {
         return $this->belongsTo(Conyugue::class, 'id_conyugue_cliente');
     }
+
 }

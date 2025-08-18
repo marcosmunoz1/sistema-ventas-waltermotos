@@ -48,8 +48,8 @@
                                             <td class="text-center" style="text-align: right; vertical-align: middle; ">
                                                 {{ $proveedor->celular }} </td>
                                                 <td class="text-center" style="vertical-align: middle">
-                                                    <span class="badge {{ $proveedor->estado == 1 ? 'bg-success' : 'bg-danger' }}">
-                                                        {{ $proveedor->estado == 1 ? 'Activo' : 'Inactivo' }}
+                                                    <span class="badge {{ $proveedor->estado_proveedor == 1 ? 'bg-success' : 'bg-danger' }}">
+                                                        {{ $proveedor->estado_proveedor == 1 ? 'Activo' : 'Inactivo' }}
                                                     </span>
                                                 </td>
 
@@ -118,10 +118,10 @@
            ordering: false,
             "language": {
                 "emptyTable": "No hay información.",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Productos",
-                "infoEmpty": "Mostrando 0 a 0 de 0 Productos",
-                "infoFiltered": "(Filtrado de _MAX_ total Productos)",
-                "lengthMenu": "Mostrar _MENU_ Productos",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Proveedores",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Proveedores",
+                "infoFiltered": "(Filtrado de _MAX_ total Proveedores)",
+                "lengthMenu": "Mostrar _MENU_ Proveedores",
                 "loadingRecords": "Cargando...",
                 "processing": "Procesando...",
                 "search": "Buscador:",

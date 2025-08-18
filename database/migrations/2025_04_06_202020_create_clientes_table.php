@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nombre_cliente', 50);
             $table->string('apellido_cliente', 20);
-            $table->string('cuit_cliente', 20);
-            $table->string('dni_cliente', 11);
+            $table->string('cuit_cliente', 20)->unique();
+            $table->string('dni_cliente', 11)->unique();
             $table->date('fecha_nacimiento_cliente');
             $table->string('celular_cliente', 20);
             $table->string('email_cliente', 200);
@@ -26,14 +26,14 @@ return new class extends Migration
             $table->foreign('id_conyugue_cliente')
                 ->references('id')
                 ->on('conyugues')
-                ->onDelete('cascade');
+                ->onDelete('set null');
 
 
             $table->timestamps();
         });
     }
 
-    
+
 
     /**
      * Reverse the migrations.
