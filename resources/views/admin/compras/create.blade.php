@@ -539,12 +539,12 @@
             <script>
                 function agregarMotoATabla() {
 
-                    // Verificar si ya hay una moto en la tabla
-                    const tablaBody = document.getElementById('tabla-motos-body');
-                    if (tablaBody && tablaBody.querySelectorAll('tr').length > 0) {
+                     // Verificar si ya hay una moto en la tabla
+                    const tablaBody = document.getElementById('tabla-motos-body'); 
+                    /* if (tablaBody && tablaBody.querySelectorAll('tr').length > 0) {
                         alert('Solo puedes tener una moto a la vez. Limpia la tabla primero.');
                         return;
-                    }
+                    } */
 
                     // Primero validar campos
                     if (!validarCampos()) {
@@ -676,11 +676,10 @@
 
 
 
-                    // 3. Resetear solo los campos del modal (no el formulario completo)
-                    /*    $('#modalMoto').find('input').not('[type="hidden"]').val(''); */
-                   // $('#crearMotoModal').find('input').not('[type="hidden"]').val('');
+                   // $('#modalMoto').find('input').not('[type="hidden"]').val(''); */
+                    //$('#crearMotoModal').find('input').not('[type="hidden"]').val('');
                    // $('#crearMotoModal').find('select').val('');
-                   // document.getElementById('es_usada').checked = false;
+                    //document.getElementById('es_usada').checked = false;
 
                     // 2. Agregar DIRECTAMENTE al formulario (no solo a la tabla)
                     const form = document.getElementById('formulario-compra');
@@ -688,8 +687,7 @@
 
                     $('#crearMotoModal').modal('hide'); // Cierra correctamente el modal
 
-                    actualizarEstadoBotonAgregar();
-
+                    /* actualizarEstadoBotonAgregar(); */
                     return true;
                 }
             </script>
@@ -787,8 +785,8 @@
                         // Actualizar el total a 0 cuando se limpia la tabla
                         actualizarVariable(0);
 
-                        // Actualizar estado inmediatamente
-                        actualizarEstadoBotonAgregar();
+                       /*  // Actualizar estado inmediatamente
+                        actualizarEstadoBotonAgregar(); */
 
                         // Reiniciar completamente el tooltip
                         const btnAgregar = document.getElementById('btn-agregar-moto');
@@ -801,7 +799,7 @@
                     }
                 }
             </script>
-            <script>
+           {{--  <script>
                 function actualizarEstadoBotonAgregar() {
                     const tablaBody = document.getElementById('tabla-motos-body');
                     const btnAgregar = document.getElementById('btn-agregar-moto');
@@ -823,7 +821,7 @@
                         }
                     };
                 }
-            </script>
+            </script> --}}
             <script>
                 function calcularTotalCompra() {
                     const filas = document.querySelectorAll('#tabla-motos-body tr');

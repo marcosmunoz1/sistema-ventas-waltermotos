@@ -11,32 +11,42 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('motos', function (Blueprint $table) {
+       Schema::create('motos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_nacionalidad');
-            $table->foreign(columns:'id_nacionalidad')->references('id')->on(table: 'nacionalidades')->onDelete(action:'cascade');
+            $table->foreign('id_nacionalidad')->references('id')->on('nacionalidades')->onDelete('cascade');
+
             $table->unsignedBigInteger('id_compra');
-            $table->foreign(columns:'id_compra')->references('id')->on(table: 'compras')->onDelete(action:'cascade');
+            $table->foreign('id_compra')->references('id')->on('compras')->onDelete('cascade');
+
             $table->unsignedBigInteger('id_deposito');
-            $table->foreign(columns:'id_deposito')->references('id')->on(table: 'depositos')->onDelete(action:'cascade');
+            $table->foreign('id_deposito')->references('id')->on('depositos')->onDelete('cascade');
+
             $table->string('marca_moto');
             $table->string('modelo_moto');
-            $table->string('dominio');
+
+            // Únicos y pueden ser nulos
+            $table->string('dominio')->nullable()->unique();
+            $table->string('nr_certificado')->nullable()->unique();
+            $table->string('dnrpa')->nullable()->unique();
+
             $table->integer('cilindrada_moto');
             $table->string('color_moto');
             $table->string('anio_moto');
             $table->integer('km_moto');
             $table->integer('es_usada');
-            $table->string('nr_certificado');
-            $table->string('dnrpa');
-            $table->string('nr_motor');
-            $table->string('nr_chasis');
+
+            // Únicos y no nulos
+            $table->string('nr_motor')->unique();
+            $table->string('nr_chasis')->unique();
+
             $table->date('fecha_compra_moto');
-            $table->date('fecha_venta_moto')->nullable();
+            $table->date('fecha_venta_moto');
             $table->decimal('precio_compra', 10, 2);
             $table->decimal('precio_venta', 10, 2);
             $table->string('estado_moto');
             $table->string('imagen_moto')->nullable();
+
             $table->enum('condicion', ['vendida', 'en_stock', 'garantia', 'devuelta'])->default('en_stock');
 
             $table->timestamps();

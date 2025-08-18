@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('motos', function (Blueprint $table) {
-            $table->enum('condicion', ['vendida', 'en_stock', 'garantia', 'devuelta'])->default('en_stock')->after('imagen_moto');
-        });
+      if (!Schema::hasColumn('motos', 'condicion')) {
+    Schema::table('motos', function (Blueprint $table) {
+        $table->enum('condicion', ['vendida', 'en_stock', 'garantia', 'devuelta'])->default('en_stock')->after('imagen_moto');
+    });
+}
     }
 
     /**

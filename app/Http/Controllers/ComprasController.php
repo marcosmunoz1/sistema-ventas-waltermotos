@@ -195,11 +195,12 @@ class ComprasController extends Controller
      */
    public function update(Request $request, $id)
 {
-             /*  return response()->json([
+           /*    return response()->json([
                 'received_data' => $request->all(),
                 'files' => $request->file() ?: 'No files'
             ]); */
           /*   dd($request->all());  */
+        $moto = Moto::where('id_compra', $id)->first();
         $request->validate([
         'id_proveedor' => 'required|exists:proveedores,id',
         'fecha_compra' => 'required|date',
@@ -208,7 +209,7 @@ class ComprasController extends Controller
         'total_compra' => 'required|numeric',
         'id_marca' => 'required|exists:marcas,id',
         'modelo_moto' => 'required|string|max:255',
-        'dominio' => 'required|string|max:255',
+        'dominio' => 'required|unique:motos,dominio,'.$moto->id, 
         'cilindrada_moto' => 'required|string|max:255',
         'km_moto' => 'required|string|max:255',
         'es_usada' => 'required|string|max:255',

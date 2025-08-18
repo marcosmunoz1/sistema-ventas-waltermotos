@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('fecha_compra');
             $table->integer('numero_remito');
             $table->integer('numero_factura')->unique();
-            $table->decimal('total_compra',10,2); 
+            $table->decimal('total_compra',10,2);
             $table->integer('estado_compra');
             $table->timestamps();
         });

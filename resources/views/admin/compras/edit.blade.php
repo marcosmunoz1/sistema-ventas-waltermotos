@@ -267,6 +267,7 @@
                                                         <div class="col-md-2">
                                                             <label>Dominio</label>
                                                             <input type="text" value="{{$motos->dominio}}" id="dominioVer" class="form-control" readonly>
+
                                                         </div>
                                                         <div class="col-md-2">
                                                             <label>Cilindrada</label>
@@ -417,8 +418,11 @@
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Dominio</label><b style="color: red;">*</b>
-                                                                <input type="text" value="{{$motos->dominio}}" name="dominio" id="dominio" class="form-control" required
+                                                                <input type="text" value="{{$motos->dominio,old('dominio')}}" name="dominio" id="dominio" class="form-control" required
                                                                     placeholder="Dominio">
+                                                                     @error('dominio')
+                                                                        <small style="color:red;">{{ $message }}</small>
+                                                                     @enderror
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Cilindrada</label><b style="color: red;">*</b>
@@ -519,7 +523,7 @@
                                                         <div class="text-center">
                                                             <div class="form-group">
                                                                 <label for="imagen_moto">Imagen</label>
-                                                                <input type="file" id="imagen_moto" name="imagen_moto[]" 
+                                                                <input type="file" id="imagen_moto" name="imagen_moto[]"
                                                                     accept=".jpg, .jpeg, .png" class="form-control">
                                                                 @error('imagen_moto')
                                                                     <small class="text-danger">{{ $message }}</small>
