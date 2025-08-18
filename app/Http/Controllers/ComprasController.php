@@ -51,65 +51,104 @@ class ComprasController extends Controller
     {
         //$datos = request()->all();
         //return response()->json($datos);
+        // Validación de la compra
         $request->validate([
-            'fecha_compra'=>'required',
-            'numero_factura'=>'required',
-            'numero_remito'=>'required',
-            'estado_compra'=>'required',
-            'id_proveedor' => 'required',
-            'total_compra'=>'required',
+            'fecha_compra' => 'required|date',
+            'numero_factura' => 'required|string',
+            'numero_remito' => 'required|string',
+            'estado_compra' => 'required|string',
+            'id_proveedor' => 'required|integer',
+            'total_compra' => 'required|numeric',
         ]);
-        $compra = new Compra();
-        $compra->fecha_compra = $request->fecha_compra;
-        $compra->numero_factura = $request->numero_factura;
-        $compra->numero_remito = $request->numero_remito;
-        $compra->estado_compra = $request->estado_compra;
-        $compra->id_proveedor = $request->id_proveedor;
-        $compra->total_compra = $request->total_compra;
-        $compra->save();
 
         $session_id = session()->getId();
-
         $tmpMotos = TmpMoto::where('session_id', $session_id)->get();
-        //dd($tmpMotos);
+
+        if ($tmpMotos->isEmpty()) {
+            return back()->with('mensaje', 'No hay motos cargadas para esta compra.');
+        }
+
+        // Validar duplicados entre las tmpMotos
+        $valoresTemp = [];
         foreach ($tmpMotos as $tmpMoto) {
-            Moto::create([
-                'marca_moto' => $tmpMoto->marca_moto,
-                'modelo_moto' => $tmpMoto->modelo_moto,
-                'dominio' => $tmpMoto->dominio,
-                'id_nacionalidad' => $tmpMoto->id_nacionalidad,
-                'cilindrada_moto' => $tmpMoto->cilindrada_moto,
-                'color_moto' => $tmpMoto->color_moto,
-                'anio_moto' => $tmpMoto->anio_moto,
-                'km_moto' => $tmpMoto->km_moto,
-                'es_usada' => $tmpMoto->es_usada,
-                'nr_motor' => $tmpMoto->nr_motor,
-                'nr_chasis' => $tmpMoto->nr_chasis,
-                'dnrpa' => $tmpMoto->dnrpa,
-                'nr_certificado' => $tmpMoto->nr_certificado,
-                'precio_compra' => $tmpMoto->precio_compra,
-                'precio_venta' => $tmpMoto->precio_venta,
-                'imagen_moto' => $tmpMoto->imagen_moto,
-                'id_deposito' => $tmpMoto->id_deposito,
-                'fecha_compra_moto' => $compra->fecha_compra,
-                'id_compra' => $compra->id,
-            ]);
+            $key = $tmpMoto->nr_motor.'|'.$tmpMoto->dominio.'|'.$tmpMoto->nr_chasis;
+            if (in_array($key, $valoresTemp)) {
+                return back()->with('mensaje', 'Hay duplicados dentro de las motos cargadas en esta compra.');
+            }
+            $valoresTemp[] = $key;
         }
 
-        TmpMoto::where('session_id', $session_id)->delete();
+        // Validar duplicados contra la tabla motos
+        foreach ($tmpMotos as $tmpMoto) {
+            $existe = Moto::where('dominio', $tmpMoto->dominio)
+                ->orWhere('nr_motor', $tmpMoto->nr_motor)
+                ->orWhere('nr_chasis', $tmpMoto->nr_chasis)
+                ->exists();
 
-        DB::commit();
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Se registró la compra correctamente',
-            ]);
+                if ($existe) {
+                    return back()->with('mensaje', 'Moto duplicada')
+                                ->with('descripcion','Ya existe una moto con el mismo dominio, N° motor o N° chasis: '
+                                . $tmpMoto->marca_moto . ' ' . $tmpMoto->modelo_moto)
+                                 ->with('icono', 'error');
+                }
+
         }
 
-        return redirect()->route('admin.compras.index')
-            ->with('mensaje', 'Se registró la compra correctamente')
-            ->with('icono', 'success');
+        // Transacción para asegurar que todo se guarde correctamente
+        DB::beginTransaction();
+
+        try {
+            // Crear compra
+            $compra = new Compra();
+            $compra->fecha_compra = $request->fecha_compra;
+            $compra->numero_factura = $request->numero_factura;
+            $compra->numero_remito = $request->numero_remito;
+            $compra->estado_compra = $request->estado_compra;
+            $compra->id_proveedor = $request->id_proveedor;
+            $compra->total_compra = $request->total_compra;
+            $compra->save();
+
+            // Crear motos
+            foreach ($tmpMotos as $tmpMoto) {
+                Moto::create([
+                    'marca_moto' => $tmpMoto->marca_moto,
+                    'modelo_moto' => $tmpMoto->modelo_moto,
+                    'dominio' => $tmpMoto->dominio,
+                    'id_nacionalidad' => $tmpMoto->id_nacionalidad,
+                    'cilindrada_moto' => $tmpMoto->cilindrada_moto,
+                    'color_moto' => $tmpMoto->color_moto,
+                    'anio_moto' => $tmpMoto->anio_moto,
+                    'km_moto' => $tmpMoto->km_moto,
+                    'es_usada' => $tmpMoto->es_usada,
+                    'nr_motor' => $tmpMoto->nr_motor,
+                    'nr_chasis' => $tmpMoto->nr_chasis,
+                    'dnrpa' => $tmpMoto->dnrpa,
+                    'nr_certificado' => $tmpMoto->nr_certificado,
+                    'precio_compra' => $tmpMoto->precio_compra,
+                    'precio_venta' => $tmpMoto->precio_venta,
+                    'imagen_moto' => $tmpMoto->imagen_moto,
+                    'id_deposito' => $tmpMoto->id_deposito,
+                    'fecha_compra_moto' => $compra->fecha_compra,
+                    'id_compra' => $compra->id,
+                ]);
+            }
+
+            // Borrar tmpMotos
+            TmpMoto::where('session_id', $session_id)->delete();
+
+            DB::commit();
+
+            // Redirigir con mensaje de éxito (SweetAlert lo maneja tu Blade)
+            return redirect()->route('admin.compras.index')
+                ->with('descripcion', 'Se registró la compra correctamente')
+                ->with('icono','success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('mensaje', 'Error al registrar la compra: '.$e->getMessage());
+        }
     }
+
 
 
     /**
@@ -187,7 +226,7 @@ class ComprasController extends Controller
             $validated = $request->validate([
                 'marca_moto' => 'required',
                 'modelo_moto' => 'required',
-                'dominio' => 'required|nullable',
+                'dominio' => 'nullable',
                 'id_nacionalidad' => 'required',
                 'cilindrada_moto' => 'required|numeric|min:0',
                 'color_moto' => 'required',
@@ -196,10 +235,10 @@ class ComprasController extends Controller
                 'es_usada' => 'required',
                 'nr_motor' => 'required',
                 'nr_chasis' => 'required',
-                'dnrpa' => 'required|nullable',
-                'nr_certificado' => 'required|nullable',
+                'dnrpa' => 'nullable',
+                'nr_certificado' => 'nullable',
                 'precio_compra' => 'required',
-                'precio_venta' => 'required',
+                'precio_venta' => 'nullable',
                 'imagen_moto' => 'nullable|image|mimes:jpg,jpeg,png,gif',
                 'id_deposito' => 'required',
             ]);
@@ -370,6 +409,24 @@ class ComprasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Buscar la compra
+        $compra = Compra::findOrFail($id);
+
+        // Verificar si alguna moto asociada ya fue vendida
+        $motosVendidas = $compra->motos()->where('estado_moto', 'vendida')->count();
+
+        if ($motosVendidas > 0) {
+            return back()->with('mensaje', 'No se puede eliminar la compra porque una o más motos ya fueron vendidas.')
+                        ->with('icono', 'error');
+        }
+
+        // Eliminar motos asociadas
+        $compra->motos()->delete();
+
+        // Eliminar la compra
+        $compra->delete();
+
+        return back()->with('mensaje', 'Compra y motos asociadas eliminadas correctamente.')
+                    ->with('icono', 'success');
     }
 }

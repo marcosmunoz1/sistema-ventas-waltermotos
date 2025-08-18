@@ -1,33 +1,92 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <h1><b>Compras/Registro de una nueva compra</b></h1>
+    <h2 class="brand-text font-weight-light">Compras/<b>Cargar Compra</b></h2>
     <hr>
 @stop
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline card-primary">
+            <div class="card card-outline card-secondary">
                 <div class="card-header">
-                    <h3 class="card-title">Ingrese los datos</h3>
+                    <h3 class="card-title">Datos de compra</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{route('admin.compras.store')}}" id="form_compra" method="POST">
                         @csrf
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#crearMotoModal"><i class="fa-solid fa-cart-shopping"></i> Agregar moto</button>
-                                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#crearMotoModal"><i class="fa-solid fa-cart-shopping"></i> Agregar moto</button>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="proveedor">Proveedor</label>
+                                    <div class="row">
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                            data-target="#exampleModal_proveedor"><i class="fas fa-search"></i> Buscar</button>
+                                        <div style="margin-right: 10px"></div>
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalAgregarProveedor">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" id="nombre_proveedor" disabled>
+                                            <input type="text" class="form-control" id="id_proveedor" name="id_proveedor" hidden>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Factura</label>
+                                        <input type="number" value="{{ old('numero_factura') }}" class="form-control"
+                                            id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
+                                        @error('numero_factura')
+                                            <small style="color:red;">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Remito</label>
+                                        <input type="number" value="{{ old('numero_remito') }}" class="form-control"
+                                            id="numero_remito" name="numero_remito" placeholder="Número de remito" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Fecha compra</label>
+                                        <input type="date" value="{{ old('fecha_compra') }}" name="fecha_compra"
+                                            id="fecha_compra" class="form-control datetimepicker-input"
+                                            data-target="#reservationdate" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="estado_compra">Estado</label><b> *</b>
+                                        <select class="form-control" name="estado_compra" required>
+                                            <option value="">-- Seleccionar estado --</option>
+                                            <option value="Pagado" {{ old('estado_compra') == 'Pagado' ? 'selected' : '' }}>Pagado</option>
+                                            <option value="Pendiente" {{ old('estado_compra') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                        </select>
+                                        @error('estado_compra')
+                                            <small style="color: red;">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr>
                                 <div class="row">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered table-striped" id="tabla-motos">
-                                            <thead class="thead-dark">
+                                        <table class="table table-bordered table-striped table-sm" id="tabla-motos">
+                                            <thead class="thead-light">
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Marca</th>
@@ -36,7 +95,7 @@
                                                     <th>Color</th>
                                                     <th>Año</th>
                                                     <th>Precio Compra</th>
-                                                    <th>Precio Venta</th>
+                                                    <th>Cilindrada</th>
                                                     <th>Acciones</th>
                                                 </tr>
                                             </thead>
@@ -44,135 +103,34 @@
                                                 <!-- Las filas se insertan dinámicamente con JS -->
                                             </tbody>
                                         </table>
+                                        <!-- Texto visible para el usuario -->
                                         <div class="text-right mt-2">
-                                            <strong>Total de compra:</strong> <span id="total_compra">$ 0</span>
+                                            <strong>Total de compra:</strong>
+                                            <span id="total_compra_display">$ 0</span>
                                         </div>
                                     </div>
 
-
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_proveedor"><i class="fas fa-search"></i>Buscar proveedor</button>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="exampleModal_proveedor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Listado de proveedores</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <table id="mitabla2" class="table table-striped table-bordered table-hover table-sm table-responsive">
-                                                            <thead class="thead-light">
-                                                                <tr>
-                                                                    <th scope="col" style="text-align: center;">Nro</th>
-                                                                    <th scope="col" style="text-align: center;">Acción</th>
-                                                                    <th scope="col">Nombre</th>
-                                                                    <th scope="col">CUIT</th>
-                                                                    <th scope="col">Telefono</th>
-
-                                                                </tr>
-                                                            </thead>
-                                                            <?php $contador = 1; ?>
-                                                            <tbody>
-                                                                @foreach($proveedores as $proveedore)
-                                                                    <tr>
-                                                                        <td style="text-align: center;vertical-align:middle;">{{$contador++}}</td>
-                                                                        <td style="text-align: center;vertical-align:middle;">
-                                                                            <button type="button" class="btn btn-info seleccionar-btn-proveedor" data-id="{{$proveedore->id}}" data-nombre_proveedor="{{$proveedore->nombre_proveedor}}">Seleccionar</button>
-                                                                        </td>
-                                                                        <td style="vertical-align:middle;">{{$proveedore->nombre_proveedor}}</td>
-                                                                        <td style="vertical-align:middle;">{{$proveedore->cuit}}</td>
-                                                                        <td style="vertical-align:middle;">{{$proveedore->telefono}}</td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                    </div>
-                                                </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input class="form-control" style="text-align: center;background-color: #e9e710" type="hidden" name="total_compra" id="precio_total_input" value="0" required>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" id="nombre_proveedor" disabled>
-                                        <input type="text" class="form-control" id="id_proveedor" name="id_proveedor" hidden>
-                                    </div>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="fecha">Fecha de compra</label><b> *</b>
-                                            <input type="date" class="form-control" value="{{old('fecha')}}" name="fecha_compra" required>
-                                            @error('fecha_compra')
-                                                <small style="color: red;">{{$message}}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="numero_factura">Número de factura</label><b> *</b>
-                                            <input type="text" class="form-control" value="{{old('numero_factura')}}" name="numero_factura" placeholder="Ingresa el número de factura">
-                                            @error('numero_factura')
-                                                <small style="color: red;">{{$message}}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="numero_remito">Número de remito</label><b> *</b>
-                                            <input type="text" class="form-control" value="{{old('numero_remito')}}" name="numero_remito" placeholder="Ingresa el número de remito" required>
-                                            @error('numero_remito')
-                                                <small style="color: red;">{{$message}}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="estado_compra">Estado de compra</label><b> *</b>
-                                            <select class="form-control" name="estado_compra" required>
-                                                <option value="">-- Seleccionar estado --</option>
-                                                <option value="Pagado" {{ old('estado_compra') == 'Pagado' ? 'selected' : '' }}>Pagado</option>
-                                                <option value="Pendiente" {{ old('estado_compra') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                            </select>
-                                            @error('estado_compra')
-                                                <small style="color: red;">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="row">
 
-                                </div>
+                                <div class="card-body" style="justify-items: end">
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <input class="form-control" style="text-align: center;background-color: #e9e710" type="hidden" name="total_compra" id="precio_total_input" value="0" required>
-                                        </div>
+                                    <div class="card-body" >
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Registrar
+                                        </button>
+                                        <a href="{{ url('admin/compras') }}" class="btn btn-secondary">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </a>
                                     </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fas fa-save"></i> Registrar compra</button>
-                                        </div>
-                                    </div>
-                                    @if(session('mensaje'))
-                                        <div class="alert alert-success">
-                                            {{ session('mensaje') }}
-                                        </div>
-                                    @endif
-
                                 </div>
                             </div>
                         </div>
@@ -216,18 +174,30 @@
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
+                                                                        @error('marca_moto')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label>Modelo</label> <b style="color: red;">*</b>
                                                                         <input type="text" value="{{ is_array(old('modelo_moto')) ? implode(', ', old('modelo_moto')) : old('modelo_moto') }}" name="modelo_moto" id="modelo_moto" class="form-control" placeholder="Modelo" >
+                                                                        @error('modelo_moto')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label>Dominio</label><b style="color: red;"></b>
                                                                         <input type="text" name="dominio" id="dominio" class="form-control" placeholder="Dominio">
+                                                                        @error('estado_compra')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label>Cilindrada</label><b style="color: red;">*</b>
                                                                         <input type="number" min="0" name="cilindrada_moto" id="cilindrada_moto" class="form-control" placeholder="Cilindrada" >
+                                                                        @error('cilindrada_moto')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                 </div>
 
@@ -236,6 +206,9 @@
                                                                     <div class="col-md-2">
                                                                         <label>Color</label><b style="color: red;">*</b>
                                                                         <input type="text" name="color_moto" id="color_moto" class="form-control" placeholder="Color" >
+                                                                        @error('color_moto')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label>Nacionalidad</label><b style="color: red;">*</b>
@@ -247,14 +220,23 @@
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
+                                                                        @error('id_nacionalidad')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label>Año</label><b style="color: red;">*</b>
                                                                         <input type="number" min="0" name="anio_moto" id="anio_moto" class="form-control" placeholder="Año" >
+                                                                        @error('anio_moto')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <label>Km</label><b style="color: red;">*</b>
                                                                         <input type="number" min="0" name="km_moto" id="km_moto" class="form-control" placeholder="Kilometraje" >
+                                                                        @error('km_moto')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-2">
                                                                         <div class="form-check mt-4">
@@ -269,10 +251,16 @@
                                                                     <div class="col-md-6">
                                                                         <label>Nro. Motor</label><b style="color: red;">*</b>
                                                                         <input type="text" name="nr_motor" id="nr_motor" class="form-control" placeholder="Nro. Motor" >
+                                                                        @error('nr_motor')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label>Nro. Chasis</label><b style="color: red;">*</b>
                                                                         <input type="text" name="nr_chasis" id="nr_chasis" class="form-control" placeholder="Nro. Chasis" >
+                                                                        @error('nr_chasis')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                 </div>
 
@@ -281,10 +269,16 @@
                                                                     <div class="col-md-6">
                                                                         <label>D.N.R.P.A</label><b style="color: red;"></b>
                                                                         <input type="text" name="dnrpa" id="dnrpa" class="form-control" placeholder="Nro. DNRPA">
+                                                                        @error('dnrpa')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label>Certificado</label><b style="color: red;"></b>
                                                                         <input type="text" class="form-control" name="nr_certificado" id="nr_certificado" placeholder="Nro. Certificado" >
+                                                                        @error('nr_certificado')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                 </div>
 
@@ -293,10 +287,16 @@
                                                                     <div class="col-md-4">
                                                                         <label>Precio compra</label><b style="color: red;">*</b>
                                                                         <input type="text" class="form-control" name="precio_compra" id="precio_compra" placeholder="Precio compra" >
+                                                                        @error('precio_compra')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        <label>Precio venta</label><b style="color: red;">*</b>
+                                                                        <label>Precio venta</label>
                                                                         <input type="text" class="form-control" name="precio_venta" id="precio_venta" placeholder="Precio venta" >
+                                                                        @error('precio_venta')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label>Deposito</label><b style="color: red;">*</b>
@@ -306,6 +306,9 @@
                                                                                 <option value="{{ $deposito->id }}">{{ $deposito->nombre_deposito }}</option>
                                                                             @endforeach
                                                                         </select>
+                                                                        @error('id_deposito')
+                                                                            <small style="color: red;">{{ $message }}</small>
+                                                                        @enderror
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -332,6 +335,7 @@
                                             </div> <!-- .col-md-12 mx-auto -->
                                         </div> <!-- .card-outline -->
                                     </div> <!-- .col-md-12 -->
+
                                 </div> <!-- .row -->
 
                                 <div class="modal-footer">
@@ -346,16 +350,127 @@
                         </div> <!-- .modal-content -->
                     </div> <!-- .modal-dialog -->
                     </div> <!-- .modal -->
+                      <!-- Modal -->
+                      <div class="modal fade" id="exampleModal_proveedor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Listado de proveedores</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table id="mitabla2" class="table table-striped table-bordered table-hover table-sm table-responsive">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col" style="text-align: center;">Nro</th>
+                                                <th scope="col" style="text-align: center;">Acción</th>
+                                                <th scope="col">Nombre</th>
+                                                <th scope="col">CUIT</th>
+                                                <th scope="col">Telefono</th>
+
+                                            </tr>
+                                        </thead>
+                                        <?php $contador = 1; ?>
+                                        <tbody>
+                                            @foreach($proveedores as $proveedore)
+                                                <tr>
+                                                    <td style="text-align: center;vertical-align:middle;">{{$contador++}}</td>
+                                                    <td style="text-align: center;vertical-align:middle;">
+                                                        <button type="button" class="btn btn-info seleccionar-btn-proveedor" data-id="{{$proveedore->id}}" data-nombre_proveedor="{{$proveedore->nombre_proveedor}}">Seleccionar</button>
+                                                    </td>
+                                                    <td style="vertical-align:middle;">{{$proveedore->nombre_proveedor}}</td>
+                                                    <td style="vertical-align:middle;">{{$proveedore->cuit}}</td>
+                                                    <td style="vertical-align:middle;">{{$proveedore->telefono}}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalAgregarProveedor" tabindex="-1" role="dialog" aria-labelledby="modalProveedorLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header bg-success">
+                    <h5 class="modal-title" id="modalProveedorLabel">Agregar Proveedor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Formulario -->
+                <form id="formAgregarProveedor" action="{{ url('admin/proveedores/cargar-proveedor') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
+                        <div class="form-group">
+                            <label for="nombre_proveedor">Nombre</label>
+                            <input type="text" placeholder="Ingrese el nombre" name="nombre_proveedor" id="nombre_proveedor" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cuit">CUIT</label>
+                            <input type="text" placeholder="Ingrese el CUIT" name="cuit" id="cuit" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" placeholder="Ingrese el telefono" name="telefono" id="telefono" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="celular">Celular</label>
+                            <input type="text" placeholder="Ingrese el celular" name="celular" id="celular" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" placeholder="Ingrese el correo electronico" name="email" id="email" class="form-control">
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @stop
 
 @section('css')
 @stop
 
 @section('js')
+    @if ($errors->any())
+        <script>
+            // Muestra el modal si hay errores
+            document.addEventListener("DOMContentLoaded", function() {
+                $('#crearMotoModal').modal('show');
+            });
+        </script>
+    @endif
+
+
+    <script>
+        // limpiar el formulario recargamos la pagina
+        document.addEventListener("DOMContentLoaded", function() {
+            $('#crearMotoModal').on('hidden.bs.modal', function() {
+                window.location.href = "{{ url()->current() }}"; // Recarga la página y limpia errores
+            });
+        });
+    </script>
+
     <script>
 
         $('.seleccionar-btn-proveedor').click(function(){
@@ -370,7 +485,6 @@
     <script>
         window.agregarMotoATabla = function() {
             let formData = new FormData();
-
             // Agregamos los campos del formulario
             formData.append('marca_moto', $('#marca_moto').val());
             formData.append('modelo_moto', $('#modelo_moto').val());
@@ -406,7 +520,7 @@
                 processData: false,
                 contentType: false,
                 xhrFields: {
-                withCredentials: true
+                    withCredentials: true
                 },
                 success: function(res) {
                     if (res.success) {
@@ -419,6 +533,9 @@
                         }).then(() => {
                             $('#crearMotoModal').modal('hide');
                             cargarMotosATabla();
+                            // Limpiar errores y formulario
+                            $('.text-error').remove();
+                            $('#formAgregarMoto')[0].reset();
                         });
                     } else {
                         Swal.fire({
@@ -430,17 +547,38 @@
                         });
                     }
                 },
-                error: function(err) {
-                    console.error(err);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Error al agregar moto temporal.',
-                        confirmButtonText: 'Aceptar',
-                        confirmButtonColor: '#dc3545'
-                    });
+                error: function(xhr) {
+                    if (xhr.status === 422) {
+                        // Limpiar errores anteriores
+                        $('.text-error').remove();
+
+                        let errors = xhr.responseJSON.errors;
+                        for (let campo in errors) {
+                            let mensaje = errors[campo][0];
+                            $(`[name="${campo}"]`).after(`<small class="text-error" style="color:red">${mensaje}</small>`);
+                        }
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error de validación',
+                            text: 'Por favor corrige los errores marcados.',
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor: '#dc3545'
+                        });
+
+                    } else {
+                        console.error(xhr);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error al agregar moto.',
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
                 }
             });
+
         }
     </script>
     <script>
@@ -478,11 +616,11 @@
                                 <td>${index + 1}</td>
                                 <td>${moto.marca_moto}</td>
                                 <td>${moto.modelo_moto}</td>
-                                <td>${moto.dominio}</td>
+                                <td>${moto.dominio ?? ''}</td>
                                 <td>${moto.color_moto}</td>
                                 <td>${moto.anio_moto}</td>
                                 <td>$${moto.precio_compra}</td>
-                                <td>$${moto.precio_venta}</td>
+                                <td>${moto.cilindrada_moto}cc</td>
                                 <td style="text-align: center">
                                     <button class="btn btn-danger btn-sm delete-btn" data-id="${moto.id}">
                                         <i class="fas fa-trash"></i>
@@ -494,7 +632,9 @@
                     });
 
                     $('#precio_total_input').val(precio_total);
-                    $('#total_compra').text(`$ ${precio_total.toLocaleString()}`);
+                    $('#total_compra').text(`$ ${precio_total.toLocaleString('es-AR')}`);
+                    $('#total_compra_display').text(`$ ${precio_total.toLocaleString('es-AR')}`); // texto visible para usuario
+
 
                     asignarEventosDelete();
                 },

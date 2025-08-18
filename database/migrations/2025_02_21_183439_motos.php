@@ -34,7 +34,7 @@ return new class extends Migration
             $table->date('fecha_compra_moto');
             $table->date('fecha_venta_moto')->nullable();
             $table->decimal('precio_compra', 10, 2);
-            $table->decimal('precio_venta', 10, 2);
+            $table->decimal('precio_venta', 10, 2)->nullable();
             $table->string('estado_moto')->nullable();
             $table->string('imagen_moto')->nullable();
             $table->enum('condicion', ['vendida', 'en_stock', 'garantia', 'devuelta'])->default('en_stock');

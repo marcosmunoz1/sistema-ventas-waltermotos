@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Moto;
 use App\Models\TmpMoto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class TmpCompraController extends Controller
 {
@@ -38,25 +40,33 @@ class TmpCompraController extends Controller
     {
         try {
         // Validar los datos que vienen del modal
-            $validated = $request->validate([
-                'marca_moto' => 'required',
-                'modelo_moto' => 'required',
-                'dominio' => 'required|nullable',
-                'id_nacionalidad' => 'required',
-                'cilindrada_moto' => 'required|numeric|min:0',
-                'color_moto' => 'required',
-                'anio_moto' => 'required|numeric|min:0',
-                'km_moto' => 'required|numeric|min:0',
-                'es_usada' => 'required',
-                'nr_motor' => 'required',
-                'nr_chasis' => 'required',
-                'dnrpa' => 'required|nullable',
-                'nr_certificado' => 'required|nullable',
-                'precio_compra' => 'required',
-                'precio_venta' => 'required',
-                'imagen_moto' => 'nullable|image|mimes:jpg,jpeg,png,gif',
-                'id_deposito' => 'required',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'marca_moto' => 'required',
+            'modelo_moto' => 'required',
+            'dominio' => 'nullable|unique:tmp_motos,dominio',
+            'id_nacionalidad' => 'required',
+            'cilindrada_moto' => 'required|numeric|min:0',
+            'color_moto' => 'required',
+            'anio_moto' => 'required|numeric|min:0',
+            'km_moto' => 'required|numeric|min:0',
+            'es_usada' => 'required',
+            'nr_motor' => 'required|unique:tmp_motos,nr_motor',
+            'nr_chasis' => 'required|unique:tmp_motos,nr_chasis',
+            'dnrpa' => 'nullable|unique:tmp_motos,dnrpa',
+            'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado',
+            'precio_compra' => 'required',
+            'precio_venta' => 'nullable',
+            'imagen_moto' => 'nullable|image|mimes:jpg,jpeg,png,gif',
+            'id_deposito' => 'required',
+        ]);
+
+        // Si la validación falla, devolver errores en JSON
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
             $validated['session_id'] = session()->getId();
 
 
