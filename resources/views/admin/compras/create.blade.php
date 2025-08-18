@@ -1,18 +1,16 @@
 @extends('adminlte::page')
 
-@section('title', 'Cargar Compra')
-
 @section('content_header')
     <h2 class="brand-text font-weight-light">Compras/<b>Cargar Compra</b></h2>
     <hr>
-@endsection
+@stop
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-secondary">
                 <div class="card-header">
-                    <div class="card-title">Datos de Compra </div>
+                    <h3 class="card-title">Datos de compra</h3>
                 </div>
 
                 <form action="{{ url('/admin/compras/cargar-compra') }}" id="form_compra" method="POST"

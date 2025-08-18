@@ -29,7 +29,7 @@
                                             <div class="col-md-4">
                                                 <label>Marca</label>
                                                 <input type="text" class="form-control"
-                                                    value="{{ $moto->marca->nombre_marca }}" disabled>
+                                                    value="{{ $moto->marca_moto }}" disabled>
                                             </div>
                                             <div class="col-md-4">
                                                 <label>Modelo</label>
@@ -106,7 +106,7 @@
                                                 <label for="imagen">Imagen</label>
                                                 <center>
                                                     <output id="list">
-                                                        <img src="{{ asset('storage/' . $moto->imagen_moto) }}"
+                                                        <img src="{{ asset( $moto->imagen_moto) }}"
                                                             width="100%" alt="">
                                                     </output>
                                                 </center>
@@ -143,7 +143,7 @@
                                                 <div class="mb-3">
                                                     <label>Fecha de Ingreso</label>
                                                     <input type="date" class="form-control"
-                                                        value="{{ $moto->compra->fecha_compra }}" disabled>
+                                                        value="{{ $moto->fecha_compra_moto }}" disabled>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Precio de Compra</label>
@@ -178,71 +178,86 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i> Datos
-                                        de Venta</h5>
-                                    <div
-                                        class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="mb-3">
-                                                    <label for="nroFactura" class="form-label">Cliente</label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control"
-                                                            value="{{ $venta->cliente->apellido_cliente }}, {{ $venta->cliente->nombre_cliente }}"
-                                                            disabled>
-                                                        <button class="btn btn-outline-info" type="button"
-                                                            id="btnVerCliente"
-                                                            data-nombre-cliente="{{ $venta->cliente->apellido_cliente }}, {{ $venta->cliente->nombre_cliente }}"
-                                                            data-cuit-cliente="{{ $venta->cliente->cuit_cliente }}"
-                                                            data-dni-cliente="{{ $venta->cliente->dni_cliente }}"
-                                                            data-nacido-cliente="{{ \Carbon\Carbon::parse($venta->cliente->fecha_nacimiento)->format('d-m-Y') }}"
-                                                            data-email-cliente="{{ $venta->cliente->email_cliente }}"
-                                                            data-celular-cliente="{{ $venta->cliente->celular_cliente }}"
-                                                            data-estadoCivil-cliente="{{ $venta->cliente->estado_civil_cliente }}">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
+                            @if ($venta)
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i> Datos
+                                            de Venta</h5>
+                                        <div
+                                            class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label for="nroFactura" class="form-label">Cliente</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                value="{{ $venta->cliente->apellido_cliente }}, {{ $venta->cliente->nombre_cliente }}"
+                                                                disabled>
+                                                            <button class="btn btn-outline-info" type="button"
+                                                                id="btnVerCliente"
+                                                                data-nombre-cliente="{{ $venta->cliente->apellido_cliente }}, {{ $venta->cliente->nombre_cliente }}"
+                                                                data-cuit-cliente="{{ $venta->cliente->cuit_cliente }}"
+                                                                data-dni-cliente="{{ $venta->cliente->dni_cliente }}"
+                                                                data-nacido-cliente="{{ \Carbon\Carbon::parse($venta->cliente->fecha_nacimiento_cliente)->format('d-m-Y') }}"
+                                                                data-email-cliente="{{ $venta->cliente->email_cliente }}"
+                                                                data-celular-cliente="{{ $venta->cliente->celular_cliente }}"
+                                                                data-estadoCivil-cliente="{{ $venta->cliente->estado_civil_cliente }}">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="fechaIngreso" class="form-label">Fecha de Egreso</label>
-                                                    <input type="date" class="form-control"
-                                                        value="{{ $venta->fecha_venta }}" disabled>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="fechaIngreso" class="form-label">Fecha de Egreso</label>
+                                                        <input type="date" class="form-control"
+                                                            value="{{ $venta->fecha_venta }}" disabled>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="precioVenta" class="form-label">Precio de Venta</label>
+                                                        <input type="text" class="form-control text-danger"
+                                                            value="{{ '$' . number_format($moto->precio_venta, 0, ',', '.') }}"
+                                                            disabled>
+                                                    </div>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label for="precioVenta" class="form-label">Precio de Venta</label>
-                                                    <input type="text" class="form-control text-danger"
-                                                        value="{{ '$' . number_format($moto->precio_venta, 0, ',', '.') }}"
-                                                        disabled>
-                                                </div>
-                                            </div>
 
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="precioCompra" class="form-label">Número de Remito</label>
-                                                    <input type="number" class="form-control" disabled>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="nroFactura" class="form-label">Nro. de Factura</label>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control"
-                                                            value="{{ $venta->id_venta }}" disabled>
-                                                        <button class="btn btn-outline-secondary" type="button"
-                                                            id="btnVerFactura">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="precioCompra" class="form-label">Número de Remito</label>
+                                                        <input type="number" class="form-control" disabled>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="nroFactura" class="form-label">Nro. de Factura</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                value="{{ $venta->id_venta }}" disabled>
+                                                            <button class="btn btn-outline-secondary" type="button"
+                                                                id="btnVerFactura">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @else
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i> Datos
+                                            de Venta</h5>
+                                        <div class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <p>Esta moto aún no fue vendida.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            @endif
                         </div>
 
 

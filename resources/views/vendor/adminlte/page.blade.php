@@ -69,7 +69,7 @@
                 timer: 4000 // Se cerrará automáticamente después de 4 segundos
             });
         </script>
-        
+
     @endif
 
 @stop
