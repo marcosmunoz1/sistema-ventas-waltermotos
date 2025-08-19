@@ -117,7 +117,9 @@ class TmpCompraController extends Controller
     public function listar()
     {
         $sessionId = session()->getId();
-        $motos = TmpMoto::where('session_id', $sessionId)->get();
+        $motos = TmpMoto::with(['nacionalidad', 'deposito'])
+            ->where('session_id', $sessionId)
+            ->get();
 
         return response()->json([
             'success' => true,
