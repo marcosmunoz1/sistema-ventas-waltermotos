@@ -16,15 +16,18 @@ return new class extends Migration
             $table->unsignedBigInteger('id_proveedor');
             $table->foreign('id_proveedor')->references('id')->on(table: 'proveedores')->onDelete('cascade');
             $table->date('fecha_compra');
-            $table->integer('numero_remito');
-            $table->integer('numero_factura')->unique();
+            $table->string('numero_remito');
+            $table->string('numero_factura')->unique()->nullable();
             $table->decimal('total_compra',10,2);
-            $table->integer('estado_compra');
+            $table->string('estado_compra');
             $table->timestamps();
         });
     }
 
     /**
+     * Reverse the migrations.
+     */
+        /**
      * Reverse the migrations.
      */
     public function down(): void

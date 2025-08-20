@@ -47,7 +47,7 @@
                                                         {{ $contador++ }}</td>
                                                     <!-- Marca de la moto, usando la relación -->
                                                     <td class="text-center" style="vertical-align: middle">
-                                                        {{ $moto->marca->nombre_marca }}</td>
+                                                        {{ $moto->marca_moto }}</td>
                                                     <td class="text-center" style="vertical-align: middle">
                                                         {{ $moto->modelo_moto }}</td>
 

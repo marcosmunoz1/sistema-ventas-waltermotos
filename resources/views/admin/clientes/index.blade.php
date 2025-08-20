@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Empresas')
+@section('title', 'Clientes')
 
 @section('content_header')
     <h2>Listado de Clientes
@@ -113,7 +113,7 @@
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Clientes",
                 "infoEmpty": "Mostrando 0 a 0 de 0 Clientes",
                 "infoFiltered": "(Filtrado de _MAX_ total Clientes)",
-                "lengthMenu": "Mostrar _MENU_ Roles",
+                "lengthMenu": "Mostrar _MENU_ Clientes",
                 "loadingRecords": "Cargando...",
                 "processing": "Procesando...",
                 "search": "Buscador:",

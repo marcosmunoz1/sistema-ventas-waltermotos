@@ -31,7 +31,7 @@ return [
     */
 
     'use_ico_only' => false,
-    'use_full_favicon' => false,
+    'use_full_favicon' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -351,17 +351,17 @@ return [
         [
             'text' => 'Proveedores',
             'url' => 'admin/proveedores',
-           'icon' => 'fas fa fa-truck',
+            'icon' => 'fas fa fa-truck',
 
         ],
         [
             'text' => 'Motos',
             'url' => 'admin/motos',
-           'icon' => 'fas fa-motorcycle',
+            'icon' => 'fas fa-motorcycle',
 
         ],
 
-      /*   [
+        /*   [
             'text' => 'Maestros',
             'icon' => 'fas fa-fw fa-gear',
             'submenu' => [
@@ -382,7 +382,7 @@ return [
                 ],
             ],
         ], */
-        ['header' => 'account_settings'],
+        ['header' => 'AJUSTES'],
         /*  [
             'text' => 'profile',
             'url' => 'admin/settings',
@@ -407,9 +407,9 @@ return [
                     'text' => 'Permisos',
                     'url' => 'admin/permisos',
                     'icon' => 'fas fa-fw fa-user-check',
-                 
+
                 ],
-               /*  [
+                /*  [
                     'text' => 'Permisos',
                     'url' => 'admin/permisos',
                     'icon' => 'fas fa-fw fa-user-check',
@@ -422,7 +422,16 @@ return [
                 ], */
             ],
         ],
-        /*  ['header' => 'labels'],
+
+
+       /*  ['header' => 'SALIR'], */
+        [
+            'type' => 'custom-logout-button',
+        ],
+
+
+
+        /*
         [
             'text' => 'important',
             'icon_color' => 'red',
@@ -520,7 +529,7 @@ return [
                 ],
             ],
         ],
-       'Sweetalert2' => [
+        'Sweetalert2' => [
             'active' => true,
             'files' => [
                 [

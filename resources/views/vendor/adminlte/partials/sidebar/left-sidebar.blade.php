@@ -23,5 +23,17 @@
             </ul>
         </nav>
     </div>
+    <li class="nav-item">
+        <a class="btn btn-flat btn-block text-left text-whi" href="#"
+           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fa fa-fw fa-power-off text-red"></i>
+            Cerrar Sesión
+        </a>
+    </li>
+    
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+    
 
 </aside>
