@@ -14,7 +14,52 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="proveedor">Proveedor</label>
+                                <input type="text" class="form-control" value="{{$compra->proveedor->nombre_proveedor}}" id="nombre_proveedor" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Factura</label>
+                                <input type="text" value="{{ $compra->numero_factura }}" class="form-control"
+                                    id="numero_factura" name="numero_factura" placeholder="Nr. de factura" disabled>
+                                @error('numero_factura')
+                                    <small style="color:red;">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Remito</label>
+                                <input type="text" value="{{ $compra->numero_remito }}" class="form-control"
+                                    id="numero_remito" name="numero_remito" placeholder="Nr. de remito" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Fecha compra</label>
+                                <input type="date" value="{{$compra->fecha_compra }}" name="fecha_compra"
+                                    id="fecha_compra" class="form-control datetimepicker-input"
+                                    data-target="#reservationdate" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="estado_compra">Estado</label>
+                                <select class="form-control" name="estado_compra" disabled>
+                                    <option value="">-- Seleccionar estado --</option>
+                                    <option value="Pagado" {{ $compra->estado_compra == 'Pagado' ? 'selected' : '' }}>Pagado</option>
+                                    <option value="Pendiente" {{ $compra->estado_compra == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                </select>
+                                @error('estado_compra')
+                                    <small style="color: red;">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                             <div class="row">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped" id="tabla-motos">
@@ -27,6 +72,7 @@
                                                 <th>Color</th>
                                                 <th>Año</th>
                                                 <th>Precio Compra</th>
+                                                <th>Cilindrada</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>
@@ -44,15 +90,16 @@
                                                     data-id_nacionalidad="{{ $moto->id_nacionalidad }}"
                                                     data-nacionalidad="{{ $moto->nacionalidad->pais ?? 'N/D' }}"
                                                     data-precio_venta="{{$moto->precio_venta}}"
-
+                                                    data-condicion="{{$moto->condicion}}"
                                                 >
                                                     <td style="text-align: center">{{$contador++}}</td>
-                                                    <td class="marca-moto" style="text-align: center">{{$moto->marca_moto}}</td>
+                                                    <td class="marca-moto" style="text-align: center">{{$moto->marca->nombre_marca}}</td>
                                                     <td class="modelo-moto" style="text-align: center">{{$moto->modelo_moto}}</td>
                                                     <td class="dominio-moto" style="text-align: center">{{$moto->dominio}}</td>
                                                     <td class="color-moto" style="text-align: center">{{$moto->color_moto}}</td>
                                                     <td class="anio-moto" style="text-align: center">{{$moto->anio_moto}}</td>
                                                     <td class="precio_compra-moto" style="text-align: center">${{number_format($moto->precio_compra, 2, '.', ',')}}</td>
+                                                    <td style="text-align: center">{{$moto->cilindrada_moto}}cc</td>
                                                     <td style="vertical-align: middle; text-align:center;">
                                                         <div class="btn-group" style="display: flex; justify-content: center; gap: 5px;" role="group" aria-label="Acciones moto">
                                                             <!-- Ver -->
@@ -69,60 +116,7 @@
                                         <strong>Total de compra:</strong> <span id="total_compra">${{number_format($compra->total_compra, 2, '.', ',')}}</span>
                                     </div>
                                 </div>
-
-
                             </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control" value="{{$compra->proveedor->nombre_proveedor}}" id="id_proveedor" name="id_proveedor" disabled>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="fecha">Fecha de compra</label>
-                                        <input type="date" class="form-control" value="{{$compra->fecha_compra}}" name="fecha_compra" disabled>
-                                        @error('fecha_compra')
-                                            <small style="color: red;">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="numero_factura">Número de factura</label>
-                                        <input type="text" class="form-control" value="{{$compra->numero_factura}}" name="numero_factura" disabled>
-                                        @error('numero_factura')
-                                            <small style="color: red;">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="numero_remito">Número de remito</label>
-                                        <input type="text" class="form-control" value="{{$compra->numero_remito}}" name="numero_remito" disabled>
-                                        @error('numero_remito')
-                                            <small style="color: red;">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="estado_compra">Estado de compra</label>
-                                        <input type="text" class="form-control" value="{{$compra->estado_compra}}" name="estado_compra" disabled>
-                                        @error('estado_compra')
-                                            <small style="color: red;">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                            </div>
-
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -132,7 +126,7 @@
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-3 ml-auto">
                                     <div class="form-group">
                                         <a href="{{url('/admin/compras')}}"class="btn btn-secondary btn-lg btn-block"> Volver</a>
                                     </div>
@@ -191,6 +185,7 @@
             const certificado = fila.dataset.certificado || 'N/A';
             const dnrpa = fila.dataset.dnrpa || 'N/A';
             const km_moto = fila.dataset.km_moto || '';
+            const condicion = fila.dataset.condicion || '';
             const nacionalidad = fila.dataset.nacionalidad || 'N/D';
             const contenido = `
                 <div class="row">
@@ -206,11 +201,12 @@
                     </div>
                     <div class="col-md-4">
                         <p><strong>Precio venta:</strong> $${precio_venta}</p>
-                        <p><strong>Cilindrada:</strong> ${cilindrada}</p>
+                        <p><strong>Cilindrada:</strong> ${cilindrada}cc</p>
                         <p><strong>Nr de motor:</strong> ${nrMotor}</p>
                         <p><strong>Nr de chasis:</strong> ${nrChasis}</p>
                         <p><strong>Certificado:</strong> ${certificado}</p>
                         <p><strong>DNRPA:</strong> ${dnrpa}</p>
+                        <p><strong>DNRPA:</strong> ${condicion}</p>
                     </div>
                     <div class="col-md-4">
                         ${imagenUrl ? `<img src="${imagenUrl}" class="img-fluid img-thumbnail mt-2" style="max-width: 200px;">` : '<p><em>Sin imagen</em></p>'}

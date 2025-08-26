@@ -41,7 +41,7 @@ class TmpCompraController extends Controller
         try {
         // Validar los datos que vienen del modal
         $validator = Validator::make($request->all(), [
-            'marca_moto' => 'required',
+            'id_marca' => 'required',
             'modelo_moto' => 'required',
             'dominio' => 'nullable|unique:tmp_motos,dominio',
             'id_nacionalidad' => 'required',
@@ -71,7 +71,7 @@ class TmpCompraController extends Controller
 
 
             $tmpMoto = new TmpMoto();
-            $tmpMoto->marca_moto = $request->marca_moto;
+            $tmpMoto->id_marca = $request->id_marca;
             $tmpMoto->modelo_moto = $request->modelo_moto;
             $tmpMoto->dominio = $request->dominio;
             $tmpMoto->id_nacionalidad = $request->id_nacionalidad;
@@ -117,7 +117,7 @@ class TmpCompraController extends Controller
     public function listar()
     {
         $sessionId = session()->getId();
-        $motos = TmpMoto::with(['nacionalidad', 'deposito'])
+        $motos = TmpMoto::with(['nacionalidad', 'deposito', 'marca'])
             ->where('session_id', $sessionId)
             ->get();
 

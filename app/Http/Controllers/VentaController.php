@@ -16,7 +16,7 @@ use Luecano\NumeroALetras\NumeroALetras;
 
 class VentaController extends Controller
 {
-  
+
     public function index()
     {
         $ventas = Venta::with('moto', 'cliente')
@@ -105,9 +105,9 @@ class VentaController extends Controller
                 $detalle->save();
             }
         }
-        $compra = Compra::where('id', $moto->id_compra);
-        $compra->estado_compra = 2 ;
-        $compra->save();
+        //$compra = Compra::where('id', $moto->id_compra);
+        //$compra->estado_compra = 2 ;
+        //$compra->save();
 
         return redirect()->route('admin.ventas.index')
             ->with('mensaje', 'Venta registrada con éxito')
@@ -117,7 +117,7 @@ class VentaController extends Controller
     public function reporte($id)
     {
         $venta = Venta::with('cliente', 'moto')->where('id_venta', $id)->first();
-      
+
         $credito = null;
         if ($venta->forma_pago === 'Credito') {
             $credito = Credito::where('id_venta', $venta->id_venta)->first();

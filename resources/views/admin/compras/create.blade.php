@@ -16,7 +16,6 @@
                     <form action="{{route('admin.compras.store')}}" id="form_compra" method="POST">
                         @csrf
                         <div class="card-body">
-
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="proveedor">Proveedor</label>
@@ -165,15 +164,15 @@
                                                                 <div class="row">
                                                                     <div class="col-md-4">
                                                                         <label>Marca</label> <b style="color: red;">*</b>
-                                                                        <select class="form-control" name="marca_moto" id="marca_moto">
+                                                                        <select class="form-control" name="id_marca" id="id_marca">
                                                                             <option value="">Seleccione una marca</option>
                                                                             @foreach ($marcas as $marca)
-                                                                                <option value="{{ $marca->nombre_marca }}" data-nombre_marca="{{ $marca->nombre_marca }}">
+                                                                                <option value="{{ $marca->id }}" {{ old('id_marca', $moto->id_marca ?? '') == $marca->id ? 'selected' : '' }}>
                                                                                     {{ $marca->nombre_marca }}
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
-                                                                        @error('marca_moto')
+                                                                        @error('id_marca')
                                                                             <small style="color: red;">{{ $message }}</small>
                                                                         @enderror
                                                                     </div>
@@ -546,7 +545,7 @@
         window.agregarMotoATabla = function() {
             let formData = new FormData();
             // Agregamos los campos del formulario
-            formData.append('marca_moto', $('#marca_moto').val());
+            formData.append('id_marca', $('#id_marca').val());
             formData.append('modelo_moto', $('#modelo_moto').val());
             formData.append('dominio', $('#dominio').val());
             formData.append('cilindrada_moto', $('#cilindrada_moto').val());
@@ -642,6 +641,12 @@
         }
     </script>
     <script>
+        const marcas = @json($marcas); // $marcas viene del controlador
+
+        function getNombreMarca(id) {
+            const marca = marcas.find(m => m.id === id);
+            return marca ? marca.nombre_marca : 'Desconocida';
+        }
         function cargarMotosATabla() {
             $.ajax({
                 url: '{{ route("tmp-compras.listar") }}',
@@ -670,11 +675,13 @@
 
                     response.motos.forEach(function(moto, index) {
                         precio_total += parseFloat(moto.precio_compra) || 0;
+                        // Obtenemos el nombre de la marca
+                        const nombreMarca = getNombreMarca(moto.id_marca);
 
                         let fila = `
                             <tr>
                                 <td>${index + 1}</td>
-                                <td>${moto.marca_moto}</td>
+                                <td>${nombreMarca}</td>
                                 <td>${moto.modelo_moto}</td>
                                 <td>${moto.dominio ?? ''}</td>
                                 <td>${moto.color_moto}</td>
@@ -746,7 +753,7 @@
             $('.verMotoBtn').click(function(){
                 let moto = $(this).data('moto'); // Viene del JSON.stringify()
 
-                $('#verMarca').text(moto.marca_moto ?? 'No registrado');
+                $('#verMarca').text(moto.marca ? moto.marca.nombre_marca : 'No registrado');
                 $('#verModelo').text(moto.modelo_moto ?? 'No registrado');
                 $('#verDominio').text(moto.dominio ?? 'No registrado');
                 $('#verCilindrada').text(moto.cilindrada_moto ? moto.cilindrada_moto + 'cc' : 'No registrado');

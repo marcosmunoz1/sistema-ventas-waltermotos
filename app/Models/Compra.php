@@ -18,4 +18,9 @@ class Compra extends Model
     {
         return $this->belongsTo(Proveedor::class, 'id_proveedor');
     }
+
+    public function marca()
+    {
+        return $this->belongsTo(Marca::class, 'id_marca'); // <--- clave foránea
+    }
 }
