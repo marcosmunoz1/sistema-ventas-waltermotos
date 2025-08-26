@@ -105,7 +105,7 @@ class TmpCompraController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Moto agregada correctamente a la tabla temporal.'
+                'message' => 'Moto agregada correctamente.'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -135,7 +135,7 @@ class TmpCompraController extends Controller
             return response()->json(['success' => true]);
         }
 
-        return redirect()->back()->with('success', 'Moto eliminada del carrito');
+        return redirect()->back()->with('success', 'Moto eliminada');
     }
 
 }

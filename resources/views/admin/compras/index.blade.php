@@ -12,20 +12,20 @@
                 <div class="card-header">
                     <h3 class="card-title">Compras registradas</h3>
                     <div class="card-tools">
-                        <a href="{{url('/admin/compras/create')}}" class="btn btn-primary"><i class="fa fa-plus"></i> Crear nuevo</a>
+                        <a href="{{url('/admin/compras/create')}}" class="btn btn-primary"><i class="fa fa-plus"></i> Nueva Compra</a>
                     </div>
                 </div>
                 <div class="card-body">
                     <table id="mitabla" class="table table-striped table-bordered table-hover table-sm">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col" style="text-align: center;">Nro</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Número de remito</th>
-                                <th scope="col">Número de factura</th>
-                                <th scope="col">Precio total</th>
-                                <th scope="col">Modelo de moto</th>
-                                <th scope="col" style="text-align: center;">Acciones</th>
+                                <th scope="col" style="text-align: center; width: 8%">#</th>
+                                <th scope="col" style="text-align: center; width: 10%">Fecha</th>
+                                 <th scope="col" style="text-align: center; width: 25%">Proveedor</th>
+                                <th scope="col" style="text-align: center; width: 10%">Remito</th>
+                                <th scope="col" style="text-align: center; width: 10%">Factura</th>
+                                <th scope="col" style="text-align: center; width: 10%">Precio total</th>
+                                <th scope="col" style="text-align: center; width: 10%">Acciones</th>
                             </tr>
                         </thead>
                         <?php $contador = 1; ?>
@@ -33,21 +33,15 @@
                             @foreach($compras as $compra)
                                 <tr>
                                     <td style="text-align: center;vertical-align:middle;">{{$contador++}}</td>
-                                    <td style="vertical-align:middle;">{{\Carbon\Carbon::parse($compra->fecha_compra)->format('d-m-Y')}}</td>
-                                    <td style="vertical-align:middle;">{{$compra->numero_remito}}</td>
-                                    <td style="vertical-align:middle;">{{$compra->numero_factura}}</td>
-                                    <td style="vertical-align:middle;">${{number_format($compra->total_compra, 2, '.', ',')}}</td>
-                                    <td style="vertical-align:middle">
-                                        <ul>
-                                            @foreach($compra->motos as $moto)
-                                                <li>{{$moto->modelo_moto}}</li>
-                                            @endforeach
-                                        </ul>
-                                    </td>
+                                    <td  class="text-center" style="vertical-align:middle;">{{\Carbon\Carbon::parse($compra->fecha_compra)->format('d-m-Y')}}</td>
+                                    <td style="vertical-align:middle;">{{$compra->proveedor->nombre_proveedor}}</td>
+                                    <td class="text-center" style="vertical-align:middle;">{{$compra->numero_remito}}</td>
+                                    <td class="text-center" style="vertical-align:middle;">{{$compra->numero_factura}}</td>
+                                    <td  class="text-right text-danger" style="vertical-align:middle;">${{ number_format($compra->total_compra, 2, ',', '.') }}</td>
                                     <td style="text-align: center;vertical-align:middle;">
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a href="{{url('/admin/compras', $compra->id)}}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
-                                            <a href="{{url('/admin/compras/'.$compra->id.'/edit')}}" class="btn btn-success btn-sm"><i class="fas fa-pencil"></i></a>
+                                            <a href="{{url('/admin/compras/'.$compra->id.'/edit')}}" class="btn btn-warning btn-sm"><i class="fas fa-pencil"></i></a>
                                             <form action="{{url('/admin/compras', $compra->id)}}" method="post"
                                                     onclick="preguntar{{$compra->id}}(event)" id="miFormulario{{$compra->id}}">
                                                 @csrf

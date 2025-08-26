@@ -42,20 +42,25 @@
                                             <td>{{ $usuario->name }}</td>
                                             <td>{{ $usuario->email }}</td>
                                             {{--   <td>{{ $usuario->roles->pluck('name')->implode(', ') }}</td> --}}
-                                            <td class="text-center">
-                                                <a href="{{ url('/admin/usuarios', $usuario->id) }}"
-                                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Ver</a>
-                                                <a href="{{ url('/admin/usuarios/' . $usuario->id . '/edit') }}"
-                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
-                                                <form action="{{ url('/admin/usuarios', $usuario->id) }}" method="post"
-                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $usuario->id }})"
-                                                    id="miFormulario{{ $usuario->id }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">
-                                                        <i class="fas fa-trash"></i> Eliminar
-                                                    </button>
-                                                </form>
+                                            <td style="text-align: center;vertical-align:middle;">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <a href="{{ url('/admin/usuarios', $usuario->id) }}"
+                                                        class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                    <a href="{{ url('/admin/usuarios/' . $usuario->id . '/edit') }}"
+                                                        class="btn btn-sm btn-warning"><i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <form action="{{ url('/admin/usuarios', $usuario->id) }}" method="post"
+                                                        class="d-inline-block"
+                                                        onsubmit="preguntar(event, {{ $usuario->id }})"
+                                                        id="miFormulario{{ $usuario->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger" style="border-radius: 0px 4px 4px 0px">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+
                                             </td>
                                         </tr>
                                     @endforeach

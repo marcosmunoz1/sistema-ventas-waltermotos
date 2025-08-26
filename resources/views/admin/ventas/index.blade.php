@@ -35,7 +35,7 @@
                                         <th class="text-center" style="width: 5%">Total Pagado</th>
                                         <th class="text-center" style="width: 5%">Forma</th>
                                         <th class="text-center" style="width: 5%">Estado</th>
-                                        <th class="text-center" style="width: 15%">Acciones</th>
+                                        <th class="text-center" style="width: 10%">Acciones</th>
                                     </tr>
                                 </thead>
                                 <?php $contador = 1; ?>
@@ -72,22 +72,23 @@
                                                 </span>
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">
-                                                <a href="{{ url('/admin/ventas/' . $venta->id_venta) }}"
-                                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                {{--  <a href="{{ url('/admin/ventas/' . $venta->id_venta . '/edit') }}"
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <a href="{{ url('/admin/ventas/' . $venta->id_venta) }}"
+                                                        class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                    {{--  <a href="{{ url('/admin/ventas/' . $venta->id_venta . '/edit') }}"
                                                         class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a> --}}
-                                                <a href="{{ url('/admin/ventas/reporte/' . $venta->id_venta) }}"
-                                                    class="btn btn-sm btn-secondary"><i
-                                                        class="fas fa-print"></i></a>
-                                                <form action="{{ url('/admin/ventas', $venta->id_venta) }}" method="post"
-                                                    class="d-inline-block"
-                                                    onsubmit="preguntar(event, {{ $venta->id_venta }})"
-                                                    id="miFormulario{{ $venta->id_venta }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
+                                                    <a href="{{ url('/admin/ventas/reporte/' . $venta->id_venta) }}"
+                                                        class="btn btn-sm btn-secondary"><i class="fas fa-print"></i></a>
+                                                    <form action="{{ url('/admin/ventas', $venta->id_venta) }}"
+                                                        method="post" class="d-inline-block"
+                                                        onsubmit="preguntar(event, {{ $venta->id_venta }})"
+                                                        id="miFormulario{{ $venta->id_venta }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger" style="border-radius: 0px 4px 4px 0px">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                </div>
                                                 </form>
                                             </td>
                                         </tr>
