@@ -57,6 +57,8 @@ Route::get('/admin/proveedores', [App\Http\Controllers\ProveedoresController::cl
 Route::get('/admin/proveedores/crear-proveedor', [App\Http\Controllers\ProveedoresController::class, 'create'])->name('admin.proveedores.crear-proveedor')->middleware('auth');
 Route::post('/admin/proveedores/cargar-proveedor', [App\Http\Controllers\ProveedoresController::class, 'store'])->name('store')->middleware('auth');
 Route::delete('/admin/proveedores/{id}', [App\Http\Controllers\ProveedoresController::class, 'destroy'])->name('admin.proveedores.destroy')->middleware('auth');
+//Agregar proveedor desde compras
+Route::post('/proveedores/crear-para-compra', [App\Http\Controllers\ProveedoresController::class, 'crearProveedorCompra'])->name('proveedores.crearProveedorCompra')->middleware('auth');
 
 
 //rutas para compras

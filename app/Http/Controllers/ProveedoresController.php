@@ -55,6 +55,32 @@ class ProveedoresController extends Controller
 
     }
 
+    public function crearProveedorCompra(Request $request)
+    {
+        $request->validate([
+            'nombre_proveedor' => 'required|string|max:100',
+            'cuit' => 'required|string|max:20|unique:proveedores,cuit',
+            'telefono' => 'required|string|max:50',
+            'celular' => 'required|string|max:50',
+            'email' => 'required|email|max:100|unique:proveedores,email'
+        ]);
+
+        $proveedor = Proveedor::create([
+            'nombre_proveedor' => $request->nombre_proveedor,
+            'cuit' => $request->cuit,
+            'telefono' => $request->telefono,
+            'celular' => $request->celular,
+            'email' => $request->email,
+            'estado_proveedor' => 1 // o el valor que quieras por defecto
+        ]);
+
+
+        return response()->json([
+            'id' => $proveedor->id,
+            'nombre' => $proveedor->nombre_proveedor
+        ]);
+    }
+
     /**
      * Display the specified resource.
      */

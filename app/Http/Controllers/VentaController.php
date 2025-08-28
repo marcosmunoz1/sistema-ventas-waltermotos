@@ -105,9 +105,7 @@ class VentaController extends Controller
                 $detalle->save();
             }
         }
-        $compra = Compra::where('id', $moto->id_compra);
-        $compra->estado_compra = 2 ;
-        $compra->save();
+        
 
         return redirect()->route('admin.ventas.index')
             ->with('mensaje', 'Venta registrada con éxito')

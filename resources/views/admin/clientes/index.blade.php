@@ -16,7 +16,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Clientes Registrados</h3>
                     <div class="card-tools">
-                        <a class="btn btn-primary" href="{{ url('admin/clientes/create') }}">
+                        <a class="btn btn-primary" href="{{url('admin/clientes/create')}}">
                             <i class="fas fa-plus"></i> Nuevo Cliente
                         </a>
                     </div>
@@ -27,13 +27,13 @@
                             <table id="mitabla" class="table table-striped table-hover">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th style="text-align: center; width: 10%">#</th>
-                                        <th style="text-align: center; width: 10%">Nombre</th>
-                                        <th style="text-align: center; width: 10%">Apellido</th>
-                                        <th style="text-align: center; width: 10%">CUIT</th>
-                                        <th style="text-align: center; width: 10%">DNI</th>
-                                        <th style="text-align: center; width: 10%">Celular</th>
-                                        <th class="text-center" style="text-align: center; width: 10%">Acciones</th>
+                                        <th class="text-center" style="width: 10%">#</th>
+                                        <th>Nombre</th>
+                                        <th>Apellido</th>
+                                        <th>CUIT</th>
+                                        <th>DNI</th>
+                                        <th>Celular</th>
+                                        <th class="text-center" style="width: 40%">Acciones</th>
                                     </tr>
                                 </thead>
                                 <?php $contador = 1; ?>
@@ -48,23 +48,19 @@
                                             <td>{{ $cliente->celular_cliente }}</td>
 
                                             <td class="text-center">
-                                                <div class="btn-group" role="group" aria-label="Basic example">
-                                                    <a href="{{ url('/admin/clientes', $cliente->id) }}"
-                                                        class="btn btn-sm btn-info"><i class="fas fa-eye"></i> </a>
-                                                    <a href="{{ url('/admin/clientes/' . $cliente->id . '/edit') }}"
-                                                        class="btn btn-sm btn-warning"><i class="fas fa-edit"></i>
-                                                        </a>
-                                                    <form action="{{ url('/admin/clientes', $cliente->id) }}" method="post"
-                                                        class="d-inline-block"
-                                                        onsubmit="preguntar(event, {{ $cliente->id }})"
-                                                        id="miFormulario{{ $cliente->id }}">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" style="border-radius: 0px 4px 4px 0px">
-                                                            <i class="fas fa-trash"></i> 
-                                                        </button>
-                                                    </form>
-                                                </div>
+                                                <a href="{{ url('/admin/clientes', $cliente->id) }}"
+                                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Ver</a>
+                                                <a href="{{ url('/admin/clientes/' . $cliente->id . '/edit') }}"
+                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
+                                                <form action="{{ url('/admin/clientes', $cliente->id) }}" method="post"
+                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $cliente->id }})"
+                                                    id="miFormulario{{ $cliente->id }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="fas fa-trash"></i> Eliminar
+                                                    </button>
+                                                </form>
 
                                             </td>
                                         </tr>
@@ -109,7 +105,7 @@
             });
         }
     </script>
-    <script>
+     <script>
         $('#mitabla').DataTable({
             "pageLength": 5,
             "language": {
@@ -130,6 +126,8 @@
                 }
             }
         });
+
+
     </script>
 
 @stop
