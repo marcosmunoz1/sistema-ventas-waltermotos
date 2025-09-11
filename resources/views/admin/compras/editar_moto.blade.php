@@ -33,10 +33,11 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Marca </label><b style="color: red;">*</b>
-                                                    <select name="marca" id="" class="form-control" required>
+                                                    <select class="form-control" name="marca" id="id_marca">
+                                                        <option value="">Seleccione una marca</option>
                                                         @foreach ($marcas as $marca)
-                                                            <option value="{{ $marca->nombre_marca }}"
-                                                                {{ $marca->id == $moto->nombre_marca ? 'selected' : '' }}>
+                                                            <option value="{{ $marca->id }}"
+                                                                {{ old('id_marca', $moto->id_marca ?? '') == $marca->id ? 'selected' : '' }}>
                                                                 {{ $marca->nombre_marca }}
                                                             </option>
                                                         @endforeach

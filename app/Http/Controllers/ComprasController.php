@@ -13,7 +13,6 @@ use App\Models\TmpMoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class ComprasController extends Controller
 {
@@ -112,7 +111,7 @@ class ComprasController extends Controller
             // Crear motos
             foreach ($tmpMotos as $tmpMoto) {
                 Moto::create([
-                    'marca_moto' => $tmpMoto->marca_moto,
+                    'id_marca' => $tmpMoto->id_marca,
                     'modelo_moto' => $tmpMoto->modelo_moto,
                     'dominio' => $tmpMoto->dominio,
                     'id_nacionalidad' => $tmpMoto->id_nacionalidad,
@@ -157,7 +156,7 @@ class ComprasController extends Controller
      */
     public function show($id)
     {
-        $compra = Compra::with('motos','proveedor')->findOrFail($id);
+        $compra = Compra::with('motos','proveedor', 'marca')->findOrFail($id);
         return view('admin.compras.show', compact('compra'));
     }
 
@@ -225,7 +224,7 @@ class ComprasController extends Controller
         try {
         // Validar los datos que vienen del modal
             $validated = $request->validate([
-                'marca_moto' => 'required',
+                'id_marca' => 'required',
                 'modelo_moto' => 'required',
                 'dominio' => 'nullable',
                 'id_nacionalidad' => 'required',
@@ -248,7 +247,7 @@ class ComprasController extends Controller
             $fecha_compra = $request->input('fecha_compra');
             $moto = new Moto();
             $moto->id_compra = $compraId; // el nombre del campo que relaciona con compra
-            $moto->marca_moto = $request->marca_moto;
+            $moto->id_marca = $request->id_marca;
             $moto->modelo_moto = $request->modelo_moto;
             $moto->dominio = $request->dominio;
             $moto->id_nacionalidad = $request->id_nacionalidad;
@@ -301,8 +300,9 @@ class ComprasController extends Controller
         $compra = Compra::findOrFail($compraId);
         $moto = $compra->motos()->where('id', $motoId)->firstOrFail();
 
-        if ($compra->motos->contains(fn($m) => $m->condicion === 'vendida')) {
-            return redirect()->back()->with('error', 'No se puede editar una moto que ya fue vendida.');
+        if ($moto && $moto->condicion === 'vendida') {
+            return redirect()->back()->with('mensaje', 'No se puede editar una moto que ya fue vendida.')
+                                    ->with('icono', 'error');
         }
         return view('admin.compras.editar_moto', compact(
                                                 'compra',
@@ -337,7 +337,7 @@ class ComprasController extends Controller
         $moto = $compra->motos()->where('id', $motoId)->firstOrFail();
         //dd($moto);
         // Asignar valores
-        $moto->marca_moto = $request->marca;
+        $moto->id_marca = $request->marca;
         $moto->modelo_moto = $request->modelo;
         $moto->dominio = $request->dominio;
         $moto->cilindrada_moto = $request->cilindrada;
@@ -368,7 +368,10 @@ class ComprasController extends Controller
         // Guardar cambios
         $moto->save();
 
-        return redirect()->route('admin.compras.edit', $compraId)->with('success', 'Moto actualizada correctamente.');
+        return redirect()->route('admin.compras.edit', $compraId)
+        ->with('mensaje', 'Moto actualizada correctamente.')
+        ->with('icono','success');
+        //->with('success', 'Moto actualizada correctamente.');
     }
 
 
@@ -410,11 +413,12 @@ class ComprasController extends Controller
      */
     public function destroy($id)
     {
+
         // Buscar la compra
         $compra = Compra::findOrFail($id);
 
         // Verificar si alguna moto asociada ya fue vendida
-        $motosVendidas = $compra->motos()->where('estado_moto', 'vendida')->count();
+        $motosVendidas = $compra->motos()->where('condicion', 'vendida')->count();
 
         if ($motosVendidas > 0) {
             return back()->with('mensaje', 'No se puede eliminar la compra porque una o más motos ya fueron vendidas.')

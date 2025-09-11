@@ -382,6 +382,14 @@ return [
                 ],
             ],
         ], */
+         ['header' => 'MAESTROS'],
+         [
+            'text' => 'Categorias',
+            'icon' => 'fas fa fa-users',
+            'url' => 'admin/clientes',
+        ],
+
+
         ['header' => 'AJUSTES'],
         /*  [
             'text' => 'profile',

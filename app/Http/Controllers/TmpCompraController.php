@@ -39,39 +39,39 @@ class TmpCompraController extends Controller
     public function store(Request $request)
     {
         try {
-        // Validar los datos que vienen del modal
-        $validator = Validator::make($request->all(), [
-            'marca_moto' => 'required',
-            'modelo_moto' => 'required',
-            'dominio' => 'nullable|unique:tmp_motos,dominio',
-            'id_nacionalidad' => 'required',
-            'cilindrada_moto' => 'required|numeric|min:0',
-            'color_moto' => 'required',
-            'anio_moto' => 'required|numeric|min:0',
-            'km_moto' => 'required|numeric|min:0',
-            'es_usada' => 'required',
-            'nr_motor' => 'required|unique:tmp_motos,nr_motor',
-            'nr_chasis' => 'required|unique:tmp_motos,nr_chasis',
-            'dnrpa' => 'nullable|unique:tmp_motos,dnrpa',
-            'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado',
-            'precio_compra' => 'required',
-            'precio_venta' => 'nullable',
-            'imagen_moto' => 'nullable|image|mimes:jpg,jpeg,png,gif',
-            'id_deposito' => 'required',
-        ]);
+            // Validar los datos que vienen del modal
+            $validator = Validator::make($request->all(), [
+                'id_marca' => 'required',
+                'modelo_moto' => 'required',
+                'dominio' => 'nullable|unique:tmp_motos,dominio',
+                'id_nacionalidad' => 'required',
+                'cilindrada_moto' => 'required|numeric|min:0',
+                'color_moto' => 'required',
+                'anio_moto' => 'required|numeric|min:0',
+                'km_moto' => 'required|numeric|min:0',
+                'es_usada' => 'required',
+                'nr_motor' => 'required|unique:tmp_motos,nr_motor',
+                'nr_chasis' => 'required|unique:tmp_motos,nr_chasis',
+                'dnrpa' => 'nullable|unique:tmp_motos,dnrpa',
+                'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado',
+                'precio_compra' => 'required',
+                'precio_venta' => 'nullable',
+                'imagen_moto' => 'nullable|image|mimes:jpg,jpeg,png,gif',
+                'id_deposito' => 'required',
+            ]);
 
-        // Si la validación falla, devolver errores en JSON
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
+            // Si la validación falla, devolver errores en JSON
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
             $validated['session_id'] = session()->getId();
 
 
             $tmpMoto = new TmpMoto();
-            $tmpMoto->marca_moto = $request->marca_moto;
+            $tmpMoto->id_marca = $request->id_marca;
             $tmpMoto->modelo_moto = $request->modelo_moto;
             $tmpMoto->dominio = $request->dominio;
             $tmpMoto->id_nacionalidad = $request->id_nacionalidad;
@@ -105,7 +105,7 @@ class TmpCompraController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Moto agregada correctamente.'
+                'message' => 'Moto agregada correctamente a la tabla temporal.'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -117,7 +117,7 @@ class TmpCompraController extends Controller
     public function listar()
     {
         $sessionId = session()->getId();
-        $motos = TmpMoto::with(['nacionalidad', 'deposito'])
+        $motos = TmpMoto::with(['nacionalidad', 'deposito', 'marca'])
             ->where('session_id', $sessionId)
             ->get();
 
@@ -137,7 +137,6 @@ class TmpCompraController extends Controller
             return response()->json(['success' => true]);
         }
 
-        return redirect()->back()->with('success', 'Moto eliminada');
+        return redirect()->back()->with('success', 'Moto eliminada del carrito');
     }
-
 }

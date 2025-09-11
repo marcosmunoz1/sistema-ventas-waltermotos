@@ -16,7 +16,6 @@
                     <form action="{{ route('admin.compras.store') }}" id="form_compra" method="POST">
                         @csrf
                         <div class="card-body">
-
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="proveedor">Proveedor</label>
@@ -41,14 +40,8 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Factura</label>
-<<<<<<< HEAD
-                                        <input type="number" value="{{ old('numero_factura') }}" class="form-control"
-                                            id="numero_factura" name="numero_factura" placeholder="Número de factura"
-                                            required>
-=======
                                         <input type="text" value="{{ old('numero_factura') }}" class="form-control"
                                             id="numero_factura" name="numero_factura" placeholder="Nr. de factura" required>
->>>>>>> origin/Marcos
                                         @error('numero_factura')
                                             <small style="color:red;">{{ $message }}</small>
                                         @enderror
@@ -89,50 +82,13 @@
                             </div>
                         </div>
                         <hr>
-<<<<<<< HEAD
                         <div class="row">
-                            <div class="col-md-4">
-=======
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#crearMotoModal"><i class="fa-solid fa-cart-shopping"></i> Agregar moto</button>
-                                </div>
-                            </div>
-                                <div class="row">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-striped table-sm" id="tabla-motos">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Marca</th>
-                                                    <th>Modelo</th>
-                                                    <th>Dominio</th>
-                                                    <th>Color</th>
-                                                    <th>Año</th>
-                                                    <th>Precio Compra</th>
-                                                    <th>Cilindrada</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- Las filas se insertan dinámicamente con JS -->
-                                            </tbody>
-                                        </table>
-                                        <!-- Texto visible para el usuario -->
-                                        <div class="text-right mt-2">
-                                            <strong>Total de compra:</strong>
-                                            <span id="total_compra_display">$ 0</span>
-                                        </div>
-                                    </div>
->>>>>>> origin/Marcos
-
+                            <div class="col-md-4 mb-3">
                                 <button type="button" class="btn btn-success" data-toggle="modal"
                                     data-target="#crearMotoModal"><i class="fa-solid fa-cart-shopping"></i> Agregar
                                     moto</button>
-
                             </div>
                         </div>
-                        <hr>
                         <div class="row">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-sm" id="tabla-motos">
@@ -170,377 +126,322 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="card-body" style="justify-items: end">
-                                <div class="card-body">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-save"></i> Registrar
-                                    </button>
-                                    <a href="{{ url('admin/compras') }}" class="btn btn-secondary">
-                                        <i class="fas fa-times"></i> Cancelar
-                                    </a>
-                                </div>
-                            </div>
+                </div>
+                <div class="row">
+
+                    <div class="card-body" style="justify-items: end">
+
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Registrar
+                            </button>
+                            <a href="{{ url('admin/compras') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Modal para agregar el detalle de la moto -->
-        <div class="modal" id="crearMotoModal" tabindex="-1" role="dialog" aria-modal="true"
-            aria-labelledby="crearRolLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header text-white d-flex justify-content-center" style="background-color: #252652">
-                        <h4 class="modal-title text-center">
-                            <i class="fa-solid fa-motorcycle"></i>
-                            <span id="modalActionText">Agregar</span> detalle de la moto
-                            <i class="fa-solid fa-motorcycle"></i>
-                        </h4>
-                        <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal"
-                            aria-label="close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
 
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card card-outline">
-                                    <div class="col-md-12 mx-auto mt-2">
-                                        <div class="card card-info">
-                                            <div
-                                                class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
-                                                <!-- Datos de Moto -->
-                                                <div class="row">
-                                                    <!-- Primera Columna: Datos -->
-                                                    <div class="col-md-9">
-                                                        <!-- Fila 1 -->
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <label>Marca</label> <b style="color: red;">*</b>
-                                                                <select class="form-control" name="marca_moto"
-                                                                    id="marca_moto">
-                                                                    <option value="">Seleccione una
-                                                                        marca
+    <!-- Modal para agregar el detalle de la moto -->
+    <div class="modal" id="crearMotoModal" tabindex="-1" role="dialog" aria-modal="true"
+        aria-labelledby="crearRolLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-white d-flex justify-content-center" style="background-color: #252652">
+                    <h4 class="modal-title text-center">
+                        <i class="fa-solid fa-motorcycle"></i>
+                        <span id="modalActionText">Agregar</span> detalle de la moto
+                        <i class="fa-solid fa-motorcycle"></i>
+                    </h4>
+                    <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal"
+                        aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-outline">
+                                <div class="col-md-12 mx-auto mt-2">
+                                    <div class="card card-info">
+                                        <div
+                                            class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                            <!-- Datos de Moto -->
+                                            <div class="row">
+                                                <!-- Primera Columna: Datos -->
+                                                <div class="col-md-9">
+                                                    <!-- Fila 1 -->
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <label>Marca</label> <b style="color: red;">*</b>
+                                                            <select class="form-control" name="id_marca" id="id_marca">
+                                                                <option value="">Seleccione una marca
+                                                                </option>
+                                                                @foreach ($marcas as $marca)
+                                                                    <option value="{{ $marca->id }}"
+                                                                        {{ old('id_marca', $moto->id_marca ?? '') == $marca->id ? 'selected' : '' }}>
+                                                                        {{ $marca->nombre_marca }}
                                                                     </option>
-                                                                    @foreach ($marcas as $marca)
-                                                                        <option value="{{ $marca->nombre_marca }}"
-                                                                            data-nombre_marca="{{ $marca->nombre_marca }}">
-                                                                            {{ $marca->nombre_marca }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('marca_moto')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Modelo</label> <b style="color: red;">*</b>
-                                                                <input type="text"
-                                                                    value="{{ is_array(old('modelo_moto')) ? implode(', ', old('modelo_moto')) : old('modelo_moto') }}"
-                                                                    name="modelo_moto" id="modelo_moto"
-                                                                    class="form-control" placeholder="Modelo">
-                                                                @error('modelo_moto')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Dominio</label><b style="color: red;"></b>
-                                                                <input type="text" name="dominio" id="dominio"
-                                                                    class="form-control" placeholder="Dominio">
-                                                                @error('estado_compra')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Cilindrada</label><b style="color: red;">*</b>
-                                                                <input type="number" min="0"
-                                                                    name="cilindrada_moto" id="cilindrada_moto"
-                                                                    class="form-control" placeholder="Cilindrada">
-                                                                @error('cilindrada_moto')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('id_marca')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
                                                         </div>
+                                                        <div class="col-md-4">
+                                                            <label>Modelo</label> <b style="color: red;">*</b>
+                                                            <input type="text"
+                                                                value="{{ is_array(old('modelo_moto')) ? implode(', ', old('modelo_moto')) : old('modelo_moto') }}"
+                                                                name="modelo_moto" id="modelo_moto" class="form-control"
+                                                                placeholder="Modelo">
+                                                            @error('modelo_moto')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Dominio</label><b style="color: red;"></b>
+                                                            <input type="text" name="dominio" id="dominio"
+                                                                class="form-control" placeholder="Dominio">
+                                                            @error('estado_compra')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label>Cilindrada</label><b style="color: red;">*</b>
+                                                            <input type="number" min="0" name="cilindrada_moto"
+                                                                id="cilindrada_moto" class="form-control"
+                                                                placeholder="Cilindrada">
+                                                            @error('cilindrada_moto')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
 
-                                                        <!-- Fila 2 -->
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-2">
-                                                                <label>Color</label><b style="color: red;">*</b>
-                                                                <input type="text" name="color_moto" id="color_moto"
-                                                                    class="form-control" placeholder="Color">
-                                                                @error('color_moto')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Nacionalidad</label><b style="color: red;">*</b>
-                                                                <select class="form-control" name="id_nacionalidad"
-                                                                    id="id_nacionalidad">
-                                                                    <option value="">Seleccione una
-                                                                        Nacionalidad
+                                                    <!-- Fila 2 -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-2">
+                                                            <label>Color</label><b style="color: red;">*</b>
+                                                            <input type="text" name="color_moto" id="color_moto"
+                                                                class="form-control" placeholder="Color">
+                                                            @error('color_moto')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Nacionalidad</label><b style="color: red;">*</b>
+                                                            <select class="form-control" name="id_nacionalidad"
+                                                                id="id_nacionalidad">
+                                                                <option value="">Seleccione una Nacionalidad
+                                                                </option>
+                                                                @foreach ($nacionalidades as $nacionalidad)
+                                                                    <option value="{{ $nacionalidad->id }}"
+                                                                        data-nombre_nacionalidad="{{ $nacionalidad->pais }}">
+                                                                        {{ $nacionalidad->pais }}
                                                                     </option>
-                                                                    @foreach ($nacionalidades as $nacionalidad)
-                                                                        <option value="{{ $nacionalidad->id }}"
-                                                                            data-nombre_nacionalidad="{{ $nacionalidad->pais }}">
-                                                                            {{ $nacionalidad->pais }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('id_nacionalidad')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Año</label><b style="color: red;">*</b>
-                                                                <input type="number" min="0" name="anio_moto"
-                                                                    id="anio_moto" class="form-control"
-                                                                    placeholder="Año">
-                                                                @error('anio_moto')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <label>Km</label><b style="color: red;">*</b>
-                                                                <input type="number" min="0" name="km_moto"
-                                                                    id="km_moto" class="form-control"
-                                                                    placeholder="Kilometraje">
-                                                                @error('km_moto')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-check mt-4">
-                                                                    <input class="form-check-input" name="es_usada"
-                                                                        id="es_usada" type="checkbox">
-                                                                    <label class="form-check-label">¿Es
-                                                                        usada?</label>
-                                                                </div>
-                                                            </div>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('id_nacionalidad')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
                                                         </div>
-
-                                                        <!-- Fila 3 -->
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-6">
-                                                                <label>Nro. Motor</label><b style="color: red;">*</b>
-                                                                <input type="text" name="nr_motor" id="nr_motor"
-                                                                    class="form-control" placeholder="Nro. Motor">
-                                                                @error('nr_motor')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <label>Nro. Chasis</label><b style="color: red;">*</b>
-                                                                <input type="text" name="nr_chasis" id="nr_chasis"
-                                                                    class="form-control" placeholder="Nro. Chasis">
-                                                                @error('nr_chasis')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
+                                                        <div class="col-md-2">
+                                                            <label>Año</label><b style="color: red;">*</b>
+                                                            <input type="number" min="0" name="anio_moto"
+                                                                id="anio_moto" class="form-control" placeholder="Año">
+                                                            @error('anio_moto')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
                                                         </div>
-
-<<<<<<< HEAD
-                                                        <!-- Fila 4 -->
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-6">
-                                                                <label>D.N.R.P.A</label><b style="color: red;"></b>
-                                                                <input type="text" name="dnrpa" id="dnrpa"
-                                                                    class="form-control" placeholder="Nro. DNRPA">
-                                                                @error('dnrpa')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <label>Certificado</label><b style="color: red;"></b>
-                                                                <input type="text" class="form-control"
-                                                                    name="nr_certificado" id="nr_certificado"
-                                                                    placeholder="Nro. Certificado">
-                                                                @error('nr_certificado')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
+                                                        <div class="col-md-2">
+                                                            <label>Km</label><b style="color: red;">*</b>
+                                                            <input type="number" min="0" name="km_moto"
+                                                                id="km_moto" class="form-control"
+                                                                placeholder="Kilometraje">
+                                                            @error('km_moto')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
                                                         </div>
-=======
-                                <div class="modal-footer">
-                                    <button type="button" onclick="agregarMotoATabla()" class="btn btn-primary">
-                                        <i class="fas fa-save"></i> Guardar moto
-                                    </button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                        <i class="fas fa-cancel"></i> Cancelar
-                                    </button>
-                                </div>
-                            </div> <!-- .modal-body -->
-                        </div> <!-- .modal-content -->
-                    </div> <!-- .modal-dialog -->
-                    </div> <!-- .modal -->
-                      <!-- Modal seleccionar proveedor-->
-                      <div class="modal fade" id="exampleModal_proveedor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Listado de proveedores</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <table id="mitabla2" class="table table-striped table-bordered table-hover table-sm table-responsive">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th scope="col" style="text-align: center;">Nro</th>
-                                                <th scope="col" style="text-align: center;">Acción</th>
-                                                <th scope="col">Nombre</th>
-                                                <th scope="col">CUIT</th>
-                                                <th scope="col">Telefono</th>
->>>>>>> origin/Marcos
-
-                                                        <!-- Fila 5 -->
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-4">
-                                                                <label>Precio compra</label><b style="color: red;">*</b>
-                                                                <input type="text" class="form-control"
-                                                                    name="precio_compra" id="precio_compra"
-                                                                    placeholder="Precio compra">
-                                                                @error('precio_compra')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Precio venta</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="precio_venta" id="precio_venta"
-                                                                    placeholder="Precio venta">
-                                                                @error('precio_venta')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label>Deposito</label><b style="color: red;">*</b>
-                                                                <select class="form-control" id="id_deposito"
-                                                                    name="id_deposito">
-                                                                    <option value="">Seleccione un
-                                                                        Deposito
-                                                                    </option>
-                                                                    @foreach ($depositos as $deposito)
-                                                                        <option value="{{ $deposito->id }}">
-                                                                            {{ $deposito->nombre_deposito }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('id_deposito')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
+                                                        <div class="col-md-2">
+                                                            <div class="form-check mt-4">
+                                                                <input class="form-check-input" name="es_usada"
+                                                                    id="es_usada" type="checkbox">
+                                                                <label class="form-check-label">¿Es usada?</label>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <!-- Segunda Columna: Imagen -->
-                                                    <div class="col-md-3">
-                                                        <div class="text-center">
-                                                            <div class="form-group">
-                                                                <label for="imagen">Imagen</label>
-                                                                <input type="file" id="imagen_moto"
-                                                                    name="imagen_moto[]" accept=".jpg, .jpeg, .png"
-                                                                    class="form-control" multiple>
-                                                                @error('imagen_moto')
-                                                                    <small style="color: red;">{{ $message }}</small>
-                                                                @enderror
-                                                                <br>
-                                                                <center><output id="list"></output>
-                                                                </center>
-                                                            </div>
-                                                            <!-- Contenedor para previsualización -->
-                                                            <div id="preview-container" class="mt-2">
-                                                            </div>
+                                                    <!-- Fila 3 -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-6">
+                                                            <label>Nro. Motor</label><b style="color: red;">*</b>
+                                                            <input type="text" name="nr_motor" id="nr_motor"
+                                                                class="form-control" placeholder="Nro. Motor">
+                                                            @error('nr_motor')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label>Nro. Chasis</label><b style="color: red;">*</b>
+                                                            <input type="text" name="nr_chasis" id="nr_chasis"
+                                                                class="form-control" placeholder="Nro. Chasis">
+                                                            @error('nr_chasis')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Fila 4 -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-6">
+                                                            <label>D.N.R.P.A</label><b style="color: red;"></b>
+                                                            <input type="text" name="dnrpa" id="dnrpa"
+                                                                class="form-control" placeholder="Nro. DNRPA">
+                                                            @error('dnrpa')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label>Certificado</label><b style="color: red;"></b>
+                                                            <input type="text" class="form-control"
+                                                                name="nr_certificado" id="nr_certificado"
+                                                                placeholder="Nro. Certificado">
+                                                            @error('nr_certificado')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Fila 5 -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-4">
+                                                            <label>Precio compra</label><b style="color: red;">*</b>
+                                                            <input type="text" class="form-control"
+                                                                name="precio_compra" id="precio_compra"
+                                                                placeholder="Precio compra">
+                                                            @error('precio_compra')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Precio venta</label>
+                                                            <input type="text" class="form-control"
+                                                                name="precio_venta" id="precio_venta"
+                                                                placeholder="Precio venta">
+                                                            @error('precio_venta')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Deposito</label><b style="color: red;">*</b>
+                                                            <select class="form-control" id="id_deposito"
+                                                                name="id_deposito">
+                                                                <option value="">Seleccione un Deposito
+                                                                </option>
+                                                                @foreach ($depositos as $deposito)
+                                                                    <option value="{{ $deposito->id }}">
+                                                                        {{ $deposito->nombre_deposito }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('id_deposito')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> <!-- .card-body -->
-                                        </div> <!-- .card-info -->
-                                    </div> <!-- .col-md-12 mx-auto -->
-                                </div> <!-- .card-outline -->
-                            </div> <!-- .col-md-12 -->
 
-                        </div> <!-- .row -->
+                                                <!-- Segunda Columna: Imagen -->
+                                                <div class="col-md-3">
+                                                    <div class="text-center">
+                                                        <div class="form-group">
+                                                            <label for="imagen">Imagen</label>
+                                                            <input type="file" id="imagen_moto" name="imagen_moto[]"
+                                                                accept=".jpg, .jpeg, .png" class="form-control" multiple>
+                                                            @error('imagen_moto')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                            <br>
+                                                            <center><output id="list"></output></center>
+                                                        </div>
+                                                        <!-- Contenedor para previsualización -->
+                                                        <div id="preview-container" class="mt-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- .card-body -->
+                                    </div> <!-- .card-info -->
+                                </div> <!-- .col-md-12 mx-auto -->
+                            </div> <!-- .card-outline -->
+                        </div> <!-- .col-md-12 -->
 
-                        <div class="modal-footer">
-                            <button type="button" onclick="agregarMotoATabla()" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Guardar moto
-                            </button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                <i class="fas fa-cancel"></i> Cancelar
-                            </button>
-                        </div>
-                    </div> <!-- .modal-body -->
-                </div> <!-- .modal-content -->
-            </div> <!-- .modal-dialog -->
-        </div>
+                    </div> <!-- .row -->
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal_proveedor" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Listado de proveedores</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                    <div class="modal-footer">
+                        <button type="button" onclick="agregarMotoATabla()" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Guardar moto
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i class="fas fa-cancel"></i> Cancelar
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <table id="mitabla2"
-                            class="table table-striped table-bordered table-hover table-sm table-responsive">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col" style="text-align: center;">Nro</th>
-                                    <th scope="col" style="text-align: center;">Acción</th>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">CUIT</th>
-                                    <th scope="col">Telefono</th>
+                </div> <!-- .modal-body -->
+            </div> <!-- .modal-content -->
+        </div> <!-- .modal-dialog -->
+    </div> <!-- .modal -->
 
+    <!-- Modal seleccionar proveedor-->
+    <div class="modal fade" id="exampleModal_proveedor" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Listado de proveedores</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table id="mitabla2" class="table table-striped table-bordered table-hover table-sm">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col" style="text-align: center;">Acción</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">CUIT</th>
+                                <th scope="col">Telefono</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($proveedores as $proveedore)
+                                <tr>
+                                    <td style="text-align: center;vertical-align:middle;">
+                                        <button type="button" class="btn btn-info seleccionar-btn-proveedor"
+                                            data-id="{{ $proveedore->id }}"
+                                            data-nombre_proveedor="{{ $proveedore->nombre_proveedor }}"><i
+                                                class="fa-solid fa-circle-plus"></i></button>
+                                    </td>
+                                    <td style="vertical-align:middle;">{{ $proveedore->nombre_proveedor }}</td>
+                                    <td style="vertical-align:middle;">{{ $proveedore->cuit }}</td>
+                                    <td style="vertical-align:middle;">{{ $proveedore->telefono }}</td>
                                 </tr>
-                            </thead>
-                            <?php $contador = 1; ?>
-                            <tbody>
-                                @foreach ($proveedores as $proveedore)
-                                    <tr>
-                                        <td style="text-align: center;vertical-align:middle;">
-                                            {{ $contador++ }}
-                                        </td>
-                                        <td style="text-align: center;vertical-align:middle;">
-                                            <button type="button" class="btn btn-info seleccionar-btn-proveedor"
-                                                data-id="{{ $proveedore->id }}"
-                                                data-nombre_proveedor="{{ $proveedore->nombre_proveedor }}">Seleccionar</button>
-                                        </td>
-                                        <td style="vertical-align:middle;">
-                                            {{ $proveedore->nombre_proveedor }}
-                                        </td>
-                                        <td style="vertical-align:middle;">{{ $proveedore->cuit }}</td>
-                                        <td style="vertical-align:middle;">{{ $proveedore->telefono }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
-
     </div>
-<<<<<<< HEAD
 
+    <!--Modal agregar proveedor -->
     <div class="modal fade" id="modalAgregarProveedor" tabindex="-1" role="dialog"
         aria-labelledby="modalProveedorLabel" aria-hidden="true">
-=======
-    <!--Modal agregar proveedor -->
-    <div class="modal fade" id="modalAgregarProveedor" tabindex="-1" role="dialog" aria-labelledby="modalProveedorLabel" aria-hidden="true">
->>>>>>> origin/Marcos
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <!-- Header -->
@@ -592,6 +493,7 @@
             </div>
         </div>
     </div>
+
     <!--Modal ver moto -->
     <div class="modal fade" id="modalVerMoto" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
@@ -627,7 +529,8 @@
                         <div class="col-md-4">
                             <p><strong>Imagen:</strong></p>
                             <div class="text-center">
-                                <img id="verImagen" src="" alt="Imagen de la moto" class="img-fluid rounded shadow-sm" style="max-height: 250px;">
+                                <img id="verImagen" src="" alt="Imagen de la moto"
+                                    class="img-fluid rounded shadow-sm" style="max-height: 250px;">
                             </div>
                         </div>
                     </div>
@@ -636,14 +539,13 @@
         </div>
     </div>
 
-
-
 @stop
 
 @section('css')
 @stop
 
 @section('js')
+
     @if ($errors->any())
         <script>
             // Muestra el modal si hay errores
@@ -652,8 +554,9 @@
             });
         </script>
     @endif
+
     <script>
-        $('#crearMotoModal').on('hidden.bs.modal', function () {
+        $('#crearMotoModal').on('hidden.bs.modal', function() {
             // Limpiar todos los inputs de texto, number, etc
             $(this).find('input[type="text"], input[type="number"], input[type="date"]').val('');
 
@@ -670,22 +573,10 @@
             // Limpiar imagen si aplica
             $(this).find('#preview-imagen').attr('src', '').hide();
         });
-<<<<<<< HEAD
-    
-        $('.seleccionar-btn-proveedor').click(function() {
-=======
-
-
-
-
     </script>
 
-
-
     <script>
-
-        $('.seleccionar-btn-proveedor').click(function(){
->>>>>>> origin/Marcos
+        $('.seleccionar-btn-proveedor').click(function() {
             var id_proveedor = $(this).data('id');
             var nombre_proveedor = $(this).data('nombre_proveedor');
             $('#id_proveedor').val(id_proveedor);
@@ -696,10 +587,9 @@
 
     <script>
         window.agregarMotoATabla = function() {
-            event.preventDefault();
             let formData = new FormData();
             // Agregamos los campos del formulario
-            formData.append('marca_moto', $('#marca_moto').val());
+            formData.append('id_marca', $('#id_marca').val());
             formData.append('modelo_moto', $('#modelo_moto').val());
             formData.append('dominio', $('#dominio').val());
             formData.append('cilindrada_moto', $('#cilindrada_moto').val());
@@ -795,8 +685,15 @@
 
         }
     </script>
-    
+
     <script>
+        const marcas = @json($marcas); // $marcas viene del controlador
+
+        function getNombreMarca(id) {
+            const marca = marcas.find(m => m.id === id);
+            return marca ? marca.nombre_marca : 'Desconocida';
+        }
+
         function cargarMotosATabla() {
             $.ajax({
                 url: '{{ route('tmp-compras.listar') }}',
@@ -825,11 +722,13 @@
 
                     response.motos.forEach(function(moto, index) {
                         precio_total += parseFloat(moto.precio_compra) || 0;
+                        // Obtenemos el nombre de la marca
+                        const nombreMarca = getNombreMarca(moto.id_marca);
 
                         let fila = `
                             <tr>
                                 <td>${index + 1}</td>
-                                <td>${moto.marca_moto}</td>
+                                <td>${nombreMarca}</td>
                                 <td>${moto.modelo_moto}</td>
                                 <td>${moto.dominio ?? ''}</td>
                                 <td>${moto.color_moto}</td>
@@ -898,11 +797,12 @@
                 }
             });
         }
+
         function asignarEventosVer() {
-            $('.verMotoBtn').click(function(){
+            $('.verMotoBtn').click(function() {
                 let moto = $(this).data('moto'); // Viene del JSON.stringify()
 
-                $('#verMarca').text(moto.marca_moto ?? 'No registrado');
+                $('#verMarca').text(moto.marca ? moto.marca.nombre_marca : 'No registrado');
                 $('#verModelo').text(moto.modelo_moto ?? 'No registrado');
                 $('#verDominio').text(moto.dominio ?? 'No registrado');
                 $('#verCilindrada').text(moto.cilindrada_moto ? moto.cilindrada_moto + 'cc' : 'No registrado');
@@ -915,8 +815,10 @@
                 $('#verChasis').text(moto.nr_chasis ?? 'No registrado');
                 $('#verDnrpa').text(moto.dnrpa ?? 'No registrado');
                 $('#verCertificado').text(moto.nr_certificado ?? 'No registrado');
-                $('#verPrecioCompra').text(moto.precio_compra ? `$ ${parseFloat(moto.precio_compra).toLocaleString('es-AR')}` : 'No registrado');
-                $('#verPrecioVenta').text(moto.precio_venta ? `$ ${parseFloat(moto.precio_venta).toLocaleString('es-AR')}` : 'No registrado');
+                $('#verPrecioCompra').text(moto.precio_compra ?
+                    `$ ${parseFloat(moto.precio_compra).toLocaleString('es-AR')}` : 'No registrado');
+                $('#verPrecioVenta').text(moto.precio_venta ?
+                    `$ ${parseFloat(moto.precio_venta).toLocaleString('es-AR')}` : 'No registrado');
                 $('#verDeposito').text(moto.deposito ? moto.deposito.nombre_deposito : 'No registrado');
                 console.log("Imagen de la moto:", moto.imagen_moto);
 
@@ -939,7 +841,6 @@
             cargarMotosATabla();
         });
     </script>
-
 
     <script>
         function archivo(evt) {
@@ -968,15 +869,13 @@
     </script>
 
     <script>
-<<<<<<< HEAD
-=======
         $('#formAgregarProveedor').on('submit', function(e) {
             e.preventDefault();
 
             let formData = new FormData(this);
 
             $.ajax({
-                url: '{{ route("proveedores.crearProveedorCompra") }}', // tu ruta definida
+                url: '{{ route('proveedores.crearProveedorCompra') }}', // tu ruta definida
                 type: 'POST',
                 data: formData,
                 processData: false,
@@ -1006,21 +905,21 @@
                         let errors = xhr.responseJSON.errors;
                         for (let campo in errors) {
                             let mensaje = errors[campo][0];
-                            $(`[name="${campo}"]`).after(`<small class="text-error" style="color:red">${mensaje}</small>`);
+                            $(`[name="${campo}"]`).after(
+                                `<small class="text-error" style="color:red">${mensaje}</small>`);
                         }
                     } else {
                         console.error(xhr.responseText);
                     }
                 }
             });
-            $('#modalAgregarProveedor').on('hidden.bs.modal', function () {
-                $(this).find('input').val('');       // Limpia todos los inputs del modal
+            $('#modalAgregarProveedor').on('hidden.bs.modal', function() {
+                $(this).find('input').val(''); // Limpia todos los inputs del modal
                 $(this).find('.text-error').remove(); // Limpia los errores mostrados
             });
         });
-
-
     </script>
+
     <script>
         $('#mitabla').DataTable({
             "pageLength": 5,
@@ -1046,7 +945,6 @@
         });
 
 
->>>>>>> origin/Marcos
         $('#mitabla2').DataTable({
             "pageLength": 5,
             "language": {

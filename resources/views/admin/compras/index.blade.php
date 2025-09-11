@@ -12,11 +12,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Compras registradas</h3>
                     <div class="card-tools">
-<<<<<<< HEAD
-                        <a href="{{url('/admin/compras/create')}}" class="btn btn-primary"><i class="fa fa-plus"></i> Nueva Compra</a>
-=======
                         <a href="{{url('/admin/compras/create')}}" class="btn btn-primary"><i class="fa fa-plus"></i> Nueva compra</a>
->>>>>>> origin/Marcos
                     </div>
                 </div>
                 <div class="card-body">
