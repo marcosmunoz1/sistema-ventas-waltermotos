@@ -505,6 +505,7 @@
         </script>
     @endif
     <script>
+
         $('#crearMotoModal').on('hidden.bs.modal', function () {
             // Limpiar todos los inputs de texto, number, etc
             $(this).find('input[type="text"], input[type="number"], input[type="date"]').val('');
@@ -520,7 +521,11 @@
             $(this).find('.is-invalid').removeClass('is-invalid');
 
             // Limpiar imagen si aplica
-            $(this).find('#preview-imagen').attr('src', '').hide();
+            // Limpiar input file y previews
+            $(this).find('input[type="file"]').val('');
+            $(this).find('#preview-container').empty().hide();
+            // Limpiar también el output que muestra la lista de imágenes
+            $(this).find('#list').empty();
         });
 
 
@@ -562,10 +567,13 @@
             formData.append('precio_venta', $('#precio_venta').val());
             formData.append('id_deposito', $('#id_deposito').val());
 
-            // Imagen (solo la primera, se puede adaptar a múltiples)
+           // Imagen (múltiples)
             const imagenInput = document.getElementById('imagen_moto');
             if (imagenInput.files.length > 0) {
-                formData.append('imagen_moto', imagenInput.files[0]);
+                // Recorremos todos los archivos seleccionados
+                for (let i = 0; i < imagenInput.files.length; i++) {
+                    formData.append('imagen_moto[]', imagenInput.files[i]);
+                }
             }
 
             // CSRF token
