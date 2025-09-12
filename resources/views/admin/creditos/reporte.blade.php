@@ -37,7 +37,8 @@
             <table border="0" style="font-size: 8pt">
                 <tr>
                     <td><img src="{{ public_path('vendor/adminlte/dist/img/AdminLTELogo.png') }}" width="80px"
-                            alt=""></td>
+                            alt="">
+                        </td>
                     <td style="text-align: left" width="180px">
                         <span style="font-size: 10pt;">Walter<b>MOTOS</b></span><br>
                         CUIT: 99-99999999-9<br>
@@ -67,7 +68,7 @@
                         <strong>${{ number_format($detalle->valor_cuota + $detalle->interes_mora, 2, ',', '.') }}</strong>
                         <em>({{ ucfirst($montoLetras) }})</em>
                         en concepto de pago correspondiente a cancelación de cuota número
-                        <strong>{{ $detalle->numero_cuota }}</strong>
+                        <strong>{{ $detalle->numero_cuota }}</strong> <em>({{ ucfirst($cuotaLetras) }})</em>
                         de su crédito personal.
                     </p>
                     

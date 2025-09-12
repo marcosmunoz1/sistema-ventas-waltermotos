@@ -10,17 +10,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\AdminController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\AdminController::class, 'index'])->name('home')->middleware('auth');;
 
 
 //Rutas para roles
-Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index');
-Route::post('admin/roles/crear-rol', [App\Http\Controllers\RoleController::class, 'store'])->name('admin.roles.store');
-Route::get('/admin/roles/{id}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name('admin.roles.edit')->middleware('auth');
-Route::put('/admin/roles/{id}', [App\Http\Controllers\RoleController::class, 'update'])->name('admin.roles.update')->middleware('auth');
-Route::delete('/admin/roles/{id}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('admin.roles.destroy')->middleware('auth');
-Route::get('/admin/roles/asignar/{id}', [App\Http\Controllers\RoleController::class, 'asignar'])->name('admin.roles.asignar')->middleware('auth');
-Route::put('/admin/roles/asignar/{id}', [App\Http\Controllers\RoleController::class, 'update_asignar'])->name('admin.roles.update_asignar')->middleware('auth');
+Route::get('/admin/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles.index')->middleware('auth');
+Route::post('admin/roles/crear-rol', [App\Http\Controllers\RoleController::class, 'store'])->name('admin.roles.store')->middleware('auth', 'can:roles-crear');
+Route::get('/admin/roles/{id}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name('admin.roles.edit')->middleware('auth','can:roles-editar');
+Route::put('/admin/roles/{id}', [App\Http\Controllers\RoleController::class, 'update'])->name('admin.roles.update')->middleware('auth','can:roles-editar');
+Route::delete('/admin/roles/{id}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('admin.roles.destroy')->middleware('auth','can:roles-eliminar');
+Route::get('/admin/roles/asignar/{id}', [App\Http\Controllers\RoleController::class, 'asignar'])->name('admin.roles.asignar')->middleware('auth','can:roles-asignar');
+Route::put('/admin/roles/asignar/{id}', [App\Http\Controllers\RoleController::class, 'update_asignar'])->name('admin.roles.update_asignar')->middleware('auth','can:roles-asignar');
 
 
 //Rutas para usuarios
@@ -57,27 +57,18 @@ Route::get('/admin/proveedores', [App\Http\Controllers\ProveedoresController::cl
 Route::get('/admin/proveedores/crear-proveedor', [App\Http\Controllers\ProveedoresController::class, 'create'])->name('admin.proveedores.crear-proveedor')->middleware('auth');
 Route::post('/admin/proveedores/cargar-proveedor', [App\Http\Controllers\ProveedoresController::class, 'store'])->name('store')->middleware('auth');
 Route::delete('/admin/proveedores/{id}', [App\Http\Controllers\ProveedoresController::class, 'destroy'])->name('admin.proveedores.destroy')->middleware('auth');
+//Agregar proveedor desde compras
+Route::post('/proveedores/crear-para-compra', [App\Http\Controllers\ProveedoresController::class, 'crearProveedorCompra'])->name('proveedores.crearProveedorCompra')->middleware('auth');
 
 
 //rutas para compras
 Route::get('/admin/compras', [App\Http\Controllers\ComprasController::class, 'index'])->name('admin.compras.index')->middleware('auth');
 Route::get('/admin/compras/create', [App\Http\Controllers\ComprasController::class, 'create'])->name('admin.compras.create')->middleware('auth');
 Route::post('/admin/compras/create', [App\Http\Controllers\ComprasController::class, 'store'])->name('admin.compras.store')->middleware('auth');
-Route::get('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'show'])->name('admin.compras.show')->middleware('auth');
 Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\ComprasController::class, 'edit'])->name('admin.compras.edit')->middleware('auth');
 Route::put('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'update'])->name('admin.compras.update')->middleware('auth');
-<<<<<<< HEAD
 Route::post('admin/eliminar-moto', [App\Http\Controllers\ComprasController::class, 'eliminarMoto']);
- /* Route::get('/admin/compras/reporte', [App\Http\Controllers\ComprasController::class, 'reporte'])->name('admin.compras.reporte')->middleware('auth','can:Ver reporte de compras');
-Route::get('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'show'])->name('admin.compras.show')->middleware('auth','can:Ver datos de compra');
-Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\ComprasController::class, 'edit'])->name('admin.compras.edit')->middleware('auth','can:Editar compra');
-Route::put('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'update'])->name('admin.compras.update')->middleware('auth');
-Route::delete('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'destroy'])->name('admin.compras.destroy')->middleware('auth','can:Eliminar compra'); */
 Route::get('/admin/compras/show/{id}', [App\Http\Controllers\ComprasController::class, 'show'])->name('admin.compras.show')->middleware('auth');
-Route::delete('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'destroy'])->name('admin.compras.destroy');
-
-
-=======
 Route::delete('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'destroy'])->name('admin.compras.destroy')->middleware('auth');
 
 //Rutas para editar datos de las motos de una compra
@@ -85,7 +76,7 @@ Route::get('/admin/compras/{compraId}/motos/{motoId}/editar', [App\Http\Controll
 Route::put('/admin/compras/{compraId}/motos/{motoId}', [App\Http\Controllers\ComprasController::class, 'actualizarMotoCompra'])->name('compras.motos.update')->middleware('auth');
 Route::post('/admin/compras/edit', [App\Http\Controllers\ComprasController::class, 'agregarMotoCompra'])->name('admin.compras.motos.create')->middleware('auth')->middleware('auth');
 Route::delete('/admin/compras/motos/{id}', [App\Http\Controllers\ComprasController::class, 'eliminarMotoCompra'])->name('admin.compras.motos.destroy')->middleware('auth');
->>>>>>> origin/Marcos
+
 
 //Rutas para tmp-motos
 Route::middleware(['web', 'auth'])->post('/admin/tmp-compras', [TmpCompraController::class, 'store'])->name('tmp-compras.store')->middleware('auth');

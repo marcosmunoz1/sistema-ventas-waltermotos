@@ -125,8 +125,9 @@ class ClientesController extends Controller
      */
     public function show($id)
     {
+        $valores = EstadoCivil::cases(); // Devuelve un array de objetos EstadoCivil
         $cliente = Cliente::with('conyugue')->findOrFail($id);
-        return view('admin.clientes.show', compact('cliente'));
+        return view('admin.clientes.show', compact('cliente','valores'));
     }
 
     /**

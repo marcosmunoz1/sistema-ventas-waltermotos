@@ -382,6 +382,14 @@ return [
                 ],
             ],
         ], */
+         ['header' => 'MAESTROS'],
+         [
+            'text' => 'Categorias',
+            'icon' => 'fas fa fa-users',
+            'url' => 'admin/clientes',
+        ],
+
+
         ['header' => 'AJUSTES'],
         /*  [
             'text' => 'profile',
@@ -424,9 +432,12 @@ return [
         ],
 
 
-       /*  ['header' => 'SALIR'], */
+        /*  ['header' => 'SALIR'], */
         [
             'type' => 'custom-logout-button',
+            'text' => 'Salir',
+            'icon' => 'fas fa-sign-out-alt',
+            'classes' => 'text-light', // texto claro
         ],
 
 

@@ -16,24 +16,24 @@
                 <div class="card-header">
                     <h3 class="card-title">Clientes Registrados</h3>
                     <div class="card-tools">
-                        <a class="btn btn-primary" href="{{url('admin/clientes/create')}}">
+                        <a class="btn btn-primary" href="{{ url('admin/clientes/create') }}">
                             <i class="fas fa-plus"></i> Nuevo Cliente
                         </a>
                     </div>
                 </div>
-                <div class="col-md-10 mx-auto mt-4">
+                <div class="col-md-12 mx-auto mt-4">
                     <div class="card">
                         <div class="card-body">
-                            <table id="mitabla" class="table table-striped table-hover">
+                            <table id="mitabla" class="table table-striped table-hover table-sm">
                                 <thead class="table-primary">
                                     <tr>
                                         <th class="text-center" style="width: 10%">#</th>
-                                        <th>Nombre</th>
-                                        <th>Apellido</th>
-                                        <th>CUIT</th>
-                                        <th>DNI</th>
-                                        <th>Celular</th>
-                                        <th class="text-center" style="width: 40%">Acciones</th>
+                                        <th class="text-center" style="width: 15%">Nombre</th>
+                                        <th class="text-center" style="width: 10%">Apellido</th>
+                                        <th class="text-center" style="width: 10%">CUIT</th>
+                                        <th class="text-center" style="width: 10%">DNI</th>
+                                        <th class="text-center" style="width: 10%">Celular</th>
+                                        <th class="text-center" style="width: 10%">Acciones</th>
                                     </tr>
                                 </thead>
                                 <?php $contador = 1; ?>
@@ -41,26 +41,31 @@
                                     @foreach ($clientes as $cliente)
                                         <tr>
                                             <td class="text-center">{{ $contador++ }}</td>
-                                            <td>{{ $cliente->nombre_cliente }}</td>
-                                            <td>{{ $cliente->apellido_cliente }}</td>
-                                            <td>{{ $cliente->cuit_cliente }}</td>
-                                            <td>{{ $cliente->dni_cliente }}</td>
-                                            <td>{{ $cliente->celular_cliente }}</td>
+                                            <td style="vertical-align: middle">{{ $cliente->nombre_cliente }}</td>
+                                            <td style="vertical-align: middle">{{ $cliente->apellido_cliente }}</td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                {{ $cliente->cuit_cliente }}</td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                {{ $cliente->dni_cliente }}</td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                {{ $cliente->celular_cliente }}</td>
 
                                             <td class="text-center">
-                                                <a href="{{ url('/admin/clientes', $cliente->id) }}"
-                                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Ver</a>
-                                                <a href="{{ url('/admin/clientes/' . $cliente->id . '/edit') }}"
-                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
-                                                <form action="{{ url('/admin/clientes', $cliente->id) }}" method="post"
-                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $cliente->id }})"
-                                                    id="miFormulario{{ $cliente->id }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">
-                                                        <i class="fas fa-trash"></i> Eliminar
-                                                    </button>
-                                                </form>
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <a href="{{ url('/admin/clientes', $cliente->id) }}"
+                                                        class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                    <a href="{{ url('/admin/clientes/' . $cliente->id . '/edit') }}"
+                                                        class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <form action="{{ url('/admin/clientes', $cliente->id) }}" method="post"
+                                                        class="d-inline-block"
+                                                        onsubmit="preguntar(event, {{ $cliente->id }})"
+                                                        id="miFormulario{{ $cliente->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger" style="border-radius: 0px 4px 4px 0px">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
 
                                             </td>
                                         </tr>
@@ -105,7 +110,7 @@
             });
         }
     </script>
-     <script>
+    <script>
         $('#mitabla').DataTable({
             "pageLength": 5,
             "language": {
@@ -126,8 +131,6 @@
                 }
             }
         });
-
-
     </script>
 
 @stop
