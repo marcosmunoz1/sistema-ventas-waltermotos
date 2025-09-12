@@ -119,8 +119,11 @@ class CreditoController extends Controller
         $formatter = new NumeroALetras(); 
         $montoLetras = $formatter->toMoney($detalle->valor_cuota, 2, 'pesos', 'centavos');
 
+         $formatter2 = new NumeroALetras(); 
+        $cuotaLetras = $formatter2->toMoney($detalle->numero_cuota);
+
         // Renderizar la vista Blade en HTML
-        $html = view('admin.creditos.reporte', compact('detalle', 'credito', 'montoLetras'))->render();
+        $html = view('admin.creditos.reporte', compact('detalle', 'credito', 'montoLetras', 'cuotaLetras'))->render();
 
         // Crear la instancia de DomPDF
         $dompdf = new Dompdf();

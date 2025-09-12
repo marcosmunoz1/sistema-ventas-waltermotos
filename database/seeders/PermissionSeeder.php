@@ -22,6 +22,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'roles-crear'],
             ['name' => 'roles-editar'],
             ['name' => 'roles-eliminar'],
+             ['name' => 'roles-asignar'],
         
             ['name' => 'permisos-ver'],
             ['name' => 'permisos-crear'],
