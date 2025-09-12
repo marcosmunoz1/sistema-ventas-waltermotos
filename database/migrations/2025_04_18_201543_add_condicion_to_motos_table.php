@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nacionalidades', function (Blueprint $table) {
-            $table->id();
-            $table->string('pais');
-            $table->integer('estado');
-            $table->timestamps();
-        });
+      if (!Schema::hasColumn('motos', 'condicion')) {
+    Schema::table('motos', function (Blueprint $table) {
+        $table->enum('condicion', ['vendida', 'en_stock', 'garantia', 'devuelta'])->default('en_stock')->after('imagen_moto');
+    });
+}
     }
 
     /**
@@ -24,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nacionalidades');
+        Schema::table('motos', function (Blueprint $table) {
+            //
+        });
     }
 };

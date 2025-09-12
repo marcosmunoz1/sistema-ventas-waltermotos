@@ -152,5 +152,4 @@ class TmpCompraController extends Controller
 
         return redirect()->back()->with('success', 'Moto eliminada del carrito');
     }
-
 }

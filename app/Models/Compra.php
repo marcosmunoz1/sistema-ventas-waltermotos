@@ -24,3 +24,4 @@ class Compra extends Model
         return $this->belongsTo(Marca::class, 'id_marca'); // <--- clave foránea
     }
 }
+

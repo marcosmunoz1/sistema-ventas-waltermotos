@@ -30,8 +30,6 @@ class VentaController extends Controller
     {
         $motos = Moto::where('condicion', 'en_stock')->with(['nacionalidad', 'marca'])->get();
         $clientes = Cliente::with('conyugue')->get();
-
-
         return view('admin.ventas.create', compact('clientes', 'motos'));
     }
 
@@ -68,7 +66,7 @@ class VentaController extends Controller
         } else {
             $venta->total_pago   = $validated['precio_venta'];
             $venta->precio_venta = $validated['precio_venta'];
-            $venta->estado_venta = 'Pagado';
+            $venta->estado_venta = 'Paga';
         }
 
         $venta->save();
@@ -105,9 +103,7 @@ class VentaController extends Controller
                 $detalle->save();
             }
         }
-        //$compra = Compra::where('id', $moto->id_compra);
-        //$compra->estado_compra = 2 ;
-        //$compra->save();
+
 
         return redirect()->route('admin.ventas.index')
             ->with('mensaje', 'Venta registrada con éxito')

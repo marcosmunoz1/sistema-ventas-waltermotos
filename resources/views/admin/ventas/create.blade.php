@@ -24,26 +24,39 @@
                                                 data-target="#buscarClienteModal">
                                                 <i class="fas fa-search"></i> Buscar Cliente <i class="fas fa-user"></i>
                                             </button>
+                                             <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                                                data-target="#buscarClienteModal">
+                                                <i class="fas fa-plus"></i> Cliente
+                                            </button>
                                         </div>
                                         <div class="mx-2 mt-2">
                                             <input type="hidden" name="id_cliente">
                                             <h6><strong>Cliente:</strong><span id="clienteNombreCompleto"></span></h6>
                                             <h6><strong>Teléfono:</strong> <span id="clienteTelefono"></h6>
                                             <h6><strong>Email:</strong> <span id="clienteEmail"></h6>
-                                            <h6><strong>DNI:</strong> <span id="clienteDni"></span></h6>
-                                            <h6><strong>Estado Civil:</strong> <span id="clienteEstado"></span></h6>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <h6><strong>DNI:</strong> <span id="clienteDni"></span></h6>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h6><strong>Estado Civil:</strong> <span id="clienteEstado"></span></h6>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- buscar conyuge -->
                                 <div class="col-md-5">
                                     <div class="card">
+
                                         <div class="card-footer text-center">
-                                            <button type="button" class="btn btn-outline-warning" data-toggle="modal"
+                                            <h5> Conyugue <i class="fas fa-user-friends"></i>
+                                            </h5>
+                                            {{--   <button type="button" class="btn btn-outline-warning" data-toggle="modal"
                                                 data-target="#buscarConyugeModal">
                                                 <i class="fas fa-edit"></i> Editar Conyugue <i
                                                     class="fas fa-user-friends"></i>
-                                            </button>
+                                            </button> --}}
                                         </div>
 
                                         <div class="mx-2 mt-2">
@@ -52,7 +65,7 @@
                                             <h6><strong>Teléfono:</strong> <span id="conyugueTelefono"></h6>
                                             <h6><strong>Fecha Nacimiento:</strong> <span id="conyugueFecha"></h6>
                                             <h6><strong>DNI:</strong> <span id="conyugueDni"></span></h6>
-                                            <br>
+
                                         </div>
                                     </div>
                                 </div>
@@ -211,12 +224,12 @@
                             <table id="tablaClientes" class="table table-striped table-bordered table-hover table-sm">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th scope="col" class="text-center" >...</th>
-                                        <th scope="col" >Apellido</th>
-                                        <th scope="col" >Nombre</th>
-                                        <th scope="col" >DNI</th>
-                                        <th scope="col" >Teléfono</th>
-                                        <th scope="col" >e-Mail</th>
+                                        <th scope="col" class="text-center">...</th>
+                                        <th scope="col">Apellido</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">DNI</th>
+                                        <th scope="col">Teléfono</th>
+                                        <th scope="col">e-Mail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -624,7 +637,6 @@
                 document.querySelector('input[name="id_cliente"]').value = id;
 
                 // Mostrar los datos del cliente
-
                 document.getElementById('clienteNombreCompleto').textContent = nombreCompleto;
                 document.getElementById('clienteTelefono').textContent = telefono;
                 document.getElementById('clienteEmail').textContent = email;

@@ -10,7 +10,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\AdminController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\AdminController::class, 'index'])->name('home')->middleware('auth');;
 
 
 //Rutas para roles
@@ -75,6 +75,7 @@ Route::get('/admin/compras/{compraId}/motos/{motoId}/editar', [App\Http\Controll
 Route::put('/admin/compras/{compraId}/motos/{motoId}', [App\Http\Controllers\ComprasController::class, 'actualizarMotoCompra'])->name('compras.motos.update')->middleware('auth','can:compras-editar');
 Route::post('/admin/compras/edit', [App\Http\Controllers\ComprasController::class, 'agregarMotoCompra'])->name('admin.compras.motos.create')->middleware('auth')->middleware('auth','can:compras-editar');
 Route::delete('/admin/compras/motos/{id}', [App\Http\Controllers\ComprasController::class, 'eliminarMotoCompra'])->name('admin.compras.motos.destroy')->middleware('auth','can:compras-eliminar');
+
 
 //Rutas para tmp-motos
 Route::middleware(['web', 'auth'])->post('/admin/tmp-compras', [TmpCompraController::class, 'store'])->name('tmp-compras.store')->middleware('auth');
