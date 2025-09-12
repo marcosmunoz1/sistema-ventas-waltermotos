@@ -67,6 +67,7 @@ Route::get('/admin/compras/create', [App\Http\Controllers\ComprasController::cla
 Route::post('/admin/compras/create', [App\Http\Controllers\ComprasController::class, 'store'])->name('admin.compras.store')->middleware('auth');
 Route::get('/admin/compras/{id}/edit', [App\Http\Controllers\ComprasController::class, 'edit'])->name('admin.compras.edit')->middleware('auth');
 Route::put('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'update'])->name('admin.compras.update')->middleware('auth');
+
 Route::post('admin/eliminar-moto', [App\Http\Controllers\ComprasController::class, 'eliminarMoto']);
 Route::get('/admin/compras/show/{id}', [App\Http\Controllers\ComprasController::class, 'show'])->name('admin.compras.show')->middleware('auth');
 Route::delete('/admin/compras/{id}', [App\Http\Controllers\ComprasController::class, 'destroy'])->name('admin.compras.destroy')->middleware('auth');

@@ -49,7 +49,7 @@ class ProveedoresController extends Controller
         $proveedor->estado_proveedor = 1;
         $proveedor->save();
 
-        return redirect($request->redirect_to)
+        return redirect()->route('admin.proveedores.index')
             ->with('mensaje', 'El proveedor se agrego con exíto')
             ->with('icono', 'success');
 
