@@ -24,7 +24,7 @@ class RoleController extends Controller
             'name.unique' => 'El Rol ya está registrado.'
         ]);
 
-       
+
         $rol = new Role();
         $rol->name = $request->name;
         $rol->guard_name = "web";
@@ -114,6 +114,16 @@ class RoleController extends Controller
         // Encontrar el rol
         $rol = Role::findOrFail($id);
 
+        /** @var \App\Models\User $userLogueado */
+        $userLogueado = Auth::user();
+
+        // 🚫 Bloquear cambios si el rol es Super-Admin y quien edita no lo es
+        if (strtolower($rol->name) === 'super-admin' && !optional($userLogueado)->hasRole('Super-Admin')) {
+            return redirect()->back()
+                ->with('mensaje', 'No podés modificar los permisos del rol Super-Admin 🚫')
+                ->with('icono', 'error');
+        }
+
         // Sincronizar permisos
         $rol->permissions()->sync($request->input('permisos'));
 
@@ -126,7 +136,7 @@ class RoleController extends Controller
         }
 
         return redirect()->back()
-            ->with('mensaje', 'Se asignaron los permisos para el rol de manera correcta')
+            ->with('mensaje', 'Se asignaron los permisos para el rol de manera correcta ✅')
             ->with('icono', 'success');
     }
 
