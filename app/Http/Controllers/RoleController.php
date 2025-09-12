@@ -44,21 +44,33 @@ class RoleController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $rol = Role::findOrFail($id);
+
+        /** @var \App\Models\User $userLogueado */
+        $userLogueado = Auth::user();
+
+        // 🚫 Bloquear edición si es Super-Admin y quien edita no es Super-Admin
+        if (strtolower($rol->name) === 'super-admin' && !optional($userLogueado)->hasRole('Super-Admin')) {
+            return redirect()->back()
+                ->with('mensaje', 'No podés editar el rol Super-Admin 🚫')
+                ->with('icono', 'error');
+        }
+
+        // Validación
         $request->validate([
             'name' => 'required|string|max:255|unique:roles,name,' . $id,
         ], [
             'name.required' => 'El nombre de rol es obligatorio.',
             'name.unique' => 'El Rol ya está registrado.'
         ]);
-        $rol = Role::find($id);
+
+        // Actualizar rol
         $rol->name = $request->name;
         $rol->guard_name = "web";
-
         $rol->save();
 
         return redirect()->route('admin.roles.index')
-            ->with('mensaje', 'El Rol actualizado con exíto')
+            ->with('mensaje', 'El Rol actualizado con éxito ✅')
             ->with('icono', 'success');
     }
 
