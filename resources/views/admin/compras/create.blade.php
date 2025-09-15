@@ -359,7 +359,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <table id="mitabla2" class="table table-striped table-bordered table-hover table-sm table-responsive">
+                                    <table id="mitabla2" class="table table-striped table-bordered table-hover table-sm">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col" style="text-align: center;">Nro</th>
