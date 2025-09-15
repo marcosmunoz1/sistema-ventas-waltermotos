@@ -19,8 +19,7 @@ return new class extends Migration
             $table->foreign(columns:'id_compra')->references('id')->on(table: 'compras')->onDelete(action:'cascade');
             $table->unsignedBigInteger('id_deposito');
             $table->foreign(columns:'id_deposito')->references('id')->on(table: 'depositos')->onDelete(action:'cascade');
-            $table->unsignedBigInteger('id_marca');
-            $table->foreign(columns:'id_marca')->references('id')->on(table: 'marcas')->onDelete(action:'cascade');
+            $table->string('marca_moto');
             $table->string('modelo_moto');
             $table->string('dominio')->nullable();
             $table->integer('cilindrada_moto');
