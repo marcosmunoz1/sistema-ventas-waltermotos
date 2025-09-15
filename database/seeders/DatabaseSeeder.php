@@ -16,18 +16,21 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-      //  User::factory()->create([
-      //      'name' => 'Test User',
-       //     'email' => 'test@example.com',
-       // ]);
+        //  User::factory()->create([
+        //      'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
 
-        $this->call([PermissionSeeder::class]);
-        $this->call(ProveedoresSeeder::class);
-        $this->call(MarcasSeeder::class);
-        $this->call(DepositosSeeder::class);
+        $this->call([
+            NacionalidadesSeeder::class,
+            ConyuguesSeeder::class,
+            ClientesSeeder::class,
+            PermissionSeeder::class,
+            ProveedoresSeeder::class,
+            MarcasSeeder::class,
+            DepositosSeeder::class,
 
-
-
+        ]);
     }
     //Ejecutar el comando de abajo para ejecutar los seeders
     //php artisan db:seed
