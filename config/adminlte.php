@@ -315,18 +315,7 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'Buscar',
         ],
-        /* [
-            'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        ], */
-        /*  [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ], */
+     
         [
             'text' => 'Ventas',
             'url' => 'admin/ventas',
@@ -361,41 +350,8 @@ return [
 
         ],
 
-        /*   [
-            'text' => 'Maestros',
-            'icon' => 'fas fa-fw fa-gear',
-            'submenu' => [
-                [
-                    'text' => 'Categorias',
-                    'url' => 'admin/categorias',
-                    'icon' => 'fa-solid fa-list-check',
-                ],
-                [
-                    'text' => 'Marcas',
-                    'url' => 'admin/marcas',
-                    'icon' => 'fa-solid fa-bars',
-                ],
-                [
-                    'text' => 'Estados de Orden',
-                    'url' => 'admin/estados',
-                    'icon' => 'fa-solid fa-chart-gantt',
-                ],
-            ],
-        ], */
-         ['header' => 'MAESTROS'],
-         [
-            'text' => 'Categorias',
-            'icon' => 'fas fa fa-users',
-            'url' => 'admin/clientes',
-        ],
-
-
+       
         ['header' => 'AJUSTES'],
-        /*  [
-            'text' => 'profile',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ], */
 
         [
             'text' => 'Configuración',
@@ -417,17 +373,7 @@ return [
                     'icon' => 'fas fa-fw fa-user-check',
 
                 ],
-                /*  [
-                    'text' => 'Permisos',
-                    'url' => 'admin/permisos',
-                    'icon' => 'fas fa-fw fa-user-check',
-
-                ], */
-                /* [
-                    'text' => 'Empresa',
-                    'url' => 'admin/configuraciones',
-                    'icon' => 'fa-solid fa-shop',
-                ], */
+     
             ],
         ],
 
