@@ -103,7 +103,7 @@ class VentaController extends Controller
                 $detalle->save();
             }
         }
-        
+
 
         return redirect()->route('admin.ventas.index')
             ->with('mensaje', 'Venta registrada con éxito')

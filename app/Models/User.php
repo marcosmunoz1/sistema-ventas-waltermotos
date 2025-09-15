@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\AutoRefreshPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -19,8 +21,19 @@ public function sendPasswordResetNotification($token)
     $this->notify(new ResetPasswordNotification($token));
 }
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, AutoRefreshPermissions;
+    protected static function booted()
+    {
+        // Cuando se asigna o quita un rol
+        static::updated(function ($user) {
+            $user->forgetCachedPermissions();
+        });
 
+        // Cuando se asignan permisos directamente
+        static::saved(function ($user) {
+            $user->forgetCachedPermissions();
+        });
+    }
     /**
      * The attributes that are mass assignable.
      *

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -10,7 +11,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::where('name', '!=', 'SuperAdmin')->get();    
+        $roles = Role::where('name', '!=', 'SuperAdmin')->get();
         return view('admin.roles.index', compact('roles'));
     }
 
@@ -22,6 +23,8 @@ class RoleController extends Controller
             'name.required' => 'El nombre de rol es obligatorio.',
             'name.unique' => 'El Rol ya está registrado.'
         ]);
+
+
         $rol = new Role();
         $rol->name = $request->name;
         $rol->guard_name = "web";
@@ -41,21 +44,33 @@ class RoleController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $rol = Role::findOrFail($id);
+
+        /** @var \App\Models\User $userLogueado */
+        $userLogueado = Auth::user();
+
+        // 🚫 Bloquear edición si es Super-Admin y quien edita no es Super-Admin
+        if (strtolower($rol->name) === 'super-admin' && !optional($userLogueado)->hasRole('Super-Admin')) {
+            return redirect()->back()
+                ->with('mensaje', 'No podés editar el rol Super-Admin 🚫')
+                ->with('icono', 'error');
+        }
+
+        // Validación
         $request->validate([
             'name' => 'required|string|max:255|unique:roles,name,' . $id,
         ], [
             'name.required' => 'El nombre de rol es obligatorio.',
             'name.unique' => 'El Rol ya está registrado.'
         ]);
-        $rol = Role::find($id);
+
+        // Actualizar rol
         $rol->name = $request->name;
         $rol->guard_name = "web";
-
         $rol->save();
 
         return redirect()->route('admin.roles.index')
-            ->with('mensaje', 'El Rol actualizado con exíto')
+            ->with('mensaje', 'El Rol actualizado con éxito ✅')
             ->with('icono', 'success');
     }
 
@@ -90,7 +105,7 @@ class RoleController extends Controller
                 return 'Sistema';
             }
         })->map(function ($grupo) {
-            return $grupo->sortBy('name');      
+            return $grupo->sortBy('name');
         });
 
         // Dividir los permisos dentro de cada grupo en partes de 10
@@ -104,20 +119,39 @@ class RoleController extends Controller
 
     public function update_asignar(Request $request, $id)
     {
-        //$datos = $request->all();
-        //return response()->json($datos, 200, [], JSON_PRETTY_PRINT); 
-
         $request->validate([
             'permisos' => 'required|array',
         ]);
 
-        $rol = Role::find($id);
+        // Encontrar el rol
+        $rol = Role::findOrFail($id);
+
+        /** @var \App\Models\User $userLogueado */
+        $userLogueado = Auth::user();
+
+        // 🚫 Bloquear cambios si el rol es Super-Admin y quien edita no lo es
+        if (strtolower($rol->name) === 'super-admin' && !optional($userLogueado)->hasRole('Super-Admin')) {
+            return redirect()->back()
+                ->with('mensaje', 'No podés modificar los permisos del rol Super-Admin 🚫')
+                ->with('icono', 'error');
+        }
+
+        // Sincronizar permisos
         $rol->permissions()->sync($request->input('permisos'));
 
+        // Limpiar cache de permisos de Spatie
+        app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
+        // Refrescar a todos los usuarios que tengan ese rol
+        foreach ($rol->users as $user) {
+            $user->refresh(); // recarga relaciones y permisos en memoria
+        }
+
         return redirect()->back()
-            ->with('mensaje', 'Se asignaron los permisos para el rol de manera correcta')
+            ->with('mensaje', 'Se asignaron los permisos para el rol de manera correcta ✅')
             ->with('icono', 'success');
     }
+
 
 
     public function destroy($id)

@@ -26,7 +26,7 @@
                                             </button>
                                              <button type="button" class="btn btn-outline-success" data-toggle="modal"
                                                 data-target="#buscarClienteModal">
-                                                <i class="fas fa-plus"></i> Cliente 
+                                                <i class="fas fa-plus"></i> Cliente
                                             </button>
                                         </div>
                                         <div class="mx-2 mt-2">
@@ -65,7 +65,7 @@
                                             <h6><strong>Teléfono:</strong> <span id="conyugueTelefono"></h6>
                                             <h6><strong>Fecha Nacimiento:</strong> <span id="conyugueFecha"></h6>
                                             <h6><strong>DNI:</strong> <span id="conyugueDni"></span></h6>
-                                          
+
                                         </div>
                                     </div>
                                 </div>
@@ -535,7 +535,7 @@
                                                 <button class="btn btn-info"
                                                     onclick="seleccionarMotoDesdeModal(
                                                 '{{ $moto->id }}',
-                                                '{{ $moto->marca->nombre_marca }}',
+                                                '{{ $moto->nombre_marca }}',
                                                 '{{ $moto->modelo_moto }}',
                                                 '{{ $moto->dominio }}',
                                                 '{{ $moto->color_moto }}',
@@ -553,7 +553,7 @@
                                                 </button>
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">
-                                                {{ $moto->marca->nombre_marca }}</td>
+                                                {{ $moto->nombre_marca }}</td>
                                             <td class="text-center" style="vertical-align: middle">
                                                 {{ $moto->modelo_moto }}
                                             </td>

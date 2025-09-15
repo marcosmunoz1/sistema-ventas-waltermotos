@@ -13,6 +13,7 @@ use App\Models\TmpMoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ComprasController extends Controller
 {
@@ -78,21 +79,7 @@ class ComprasController extends Controller
             $valoresTemp[] = $key;
         }
 
-        // Validar duplicados contra la tabla motos
-        foreach ($tmpMotos as $tmpMoto) {
-            $existe = Moto::where('dominio', $tmpMoto->dominio)
-                ->orWhere('nr_motor', $tmpMoto->nr_motor)
-                ->orWhere('nr_chasis', $tmpMoto->nr_chasis)
-                ->exists();
 
-                if ($existe) {
-                    return back()->with('mensaje', 'Moto duplicada')
-                                ->with('descripcion','Ya existe una moto con el mismo dominio, N° motor o N° chasis: '
-                                . $tmpMoto->marca_moto . ' ' . $tmpMoto->modelo_moto)
-                                 ->with('icono', 'error');
-                }
-
-        }
 
         // Transacción para asegurar que todo se guarde correctamente
         DB::beginTransaction();
@@ -138,9 +125,8 @@ class ComprasController extends Controller
 
             DB::commit();
 
-            // Redirigir con mensaje de éxito (SweetAlert lo maneja tu Blade)
             return redirect()->route('admin.compras.index')
-                ->with('descripcion', 'Se registró la compra correctamente')
+                ->with('mensaje', 'Se registró la compra correctamente')
                 ->with('icono','success');
 
         } catch (\Exception $e) {

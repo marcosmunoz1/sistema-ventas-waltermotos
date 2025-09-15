@@ -43,16 +43,32 @@ class TmpCompraController extends Controller
             $validator = Validator::make($request->all(), [
                 'id_marca' => 'required',
                 'modelo_moto' => 'required',
-                'dominio' => 'nullable|unique:tmp_motos,dominio',
+                'dominio' => ['nullable', function ($attribute, $value, $fail) {
+                    if (Moto::where('dominio', $value)->exists() || TmpMoto::where('dominio', $value)->exists()) {
+                        $fail('El dominio ya existe en la base de datos.');
+                    }
+                }],
                 'id_nacionalidad' => 'required',
                 'cilindrada_moto' => 'required|numeric|min:0',
                 'color_moto' => 'required',
                 'anio_moto' => 'required|numeric|min:0',
                 'km_moto' => 'required|numeric|min:0',
                 'es_usada' => 'required',
-                'nr_motor' => 'required|unique:tmp_motos,nr_motor',
-                'nr_chasis' => 'required|unique:tmp_motos,nr_chasis',
-                'dnrpa' => 'nullable|unique:tmp_motos,dnrpa',
+                'nr_motor' => ['required', function ($attribute, $value, $fail) {
+                    if (Moto::where('nr_motor', $value)->exists() || TmpMoto::where('nr_motor', $value)->exists()) {
+                        $fail('El número de motor ya existe en la base de datos.');
+                    }
+                }],
+                'nr_chasis' => ['required', function ($attribute, $value, $fail) {
+                    if (Moto::where('nr_chasis', $value)->exists() || TmpMoto::where('nr_chasis', $value)->exists()) {
+                        $fail('El número de chasis ya existe en la base de datos.');
+                    }
+                }],
+                'dnrpa' => ['nullable', function ($attribute, $value, $fail) {
+                    if ($value && (Moto::where('dnrpa', $value)->exists() || TmpMoto::where('dnrpa', $value)->exists())) {
+                        $fail('El DNRPA ya existe en la base de datos.');
+                    }
+                }],
                 'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado',
                 'precio_compra' => 'required',
                 'precio_venta' => 'nullable',
@@ -67,9 +83,8 @@ class TmpCompraController extends Controller
                     'errors' => $validator->errors()
                 ], 422);
             }
-            $validated['session_id'] = session()->getId();
 
-
+            // Crear la moto temporal
             $tmpMoto = new TmpMoto();
             $tmpMoto->id_marca = $request->id_marca;
             $tmpMoto->modelo_moto = $request->modelo_moto;
@@ -89,24 +104,21 @@ class TmpCompraController extends Controller
             $tmpMoto->id_deposito = $request->id_deposito;
             $tmpMoto->session_id = session()->getId();
 
+            // Guardar la imagen si viene
             if ($request->hasFile('imagen_moto')) {
                 $file = $request->file('imagen_moto');
                 $nombreArchivo = time() . '_' . $file->getClientOriginalName();
-
-                // Guarda el archivo en storage/app/public/motos
                 $file->storeAs('motos', $nombreArchivo, 'public');
-
-                // Guarda la ruta relativa para usar en la vista
                 $tmpMoto->imagen_moto = 'storage/motos/' . $nombreArchivo;
             }
-
 
             $tmpMoto->save();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Moto agregada correctamente a la tabla temporal.'
+                'message' => 'Moto agregada correctamente a la tabla.'
             ]);
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -114,6 +126,7 @@ class TmpCompraController extends Controller
             ], 500);
         }
     }
+
     public function listar()
     {
         $sessionId = session()->getId();
