@@ -28,7 +28,8 @@
                                 <thead class="table-primary">
                                     <tr>
                                         <th class="text-center" style="width: 5%">#</th>
-                                        <th style="width: 25%">Nombre del Usuario</th>
+                                        <th style="width: 25%">Nombre</th>
+                                        <th style="width: 25%">Rol</th>
                                         <th style="width: 30%">Correo</th>
                                         {{--    <th style="width: 10%">Rol</th> --}}
                                         <th class="text-center" style="width: 30%">Acciones</th>
@@ -40,6 +41,7 @@
                                         <tr>
                                             <td class="text-center ">{{ $contador++ }}</td>
                                             <td>{{ $usuario->name }}</td>
+                                            <td>{{ $usuario->roles }}</td>
                                             <td>{{ $usuario->email }}</td>
                                             {{--   <td>{{ $usuario->roles->pluck('name')->implode(', ') }}</td> --}}
                                             <td style="text-align: center;vertical-align:middle;">
