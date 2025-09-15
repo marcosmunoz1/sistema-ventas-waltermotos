@@ -54,10 +54,6 @@
                                                 </td>
 
                                             <td class="text-center" style="vertical-align: middle">
-                                                <a href="{{ url('/admin/proveedores', $proveedor->id) }}"
-                                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                <a href="{{ url('/admin/proveedores/' . $proveedor->id . '/edit') }}"
-                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                                 <form action="{{ url('/admin/proveedores', $proveedor->id) }}"
                                                     method="post" class="d-inline-block"
                                                     onsubmit="preguntar(event, {{ $proveedor->id }})"
