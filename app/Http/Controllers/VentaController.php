@@ -66,7 +66,7 @@ class VentaController extends Controller
         } else {
             $venta->total_pago   = $validated['precio_venta'];
             $venta->precio_venta = $validated['precio_venta'];
-            $venta->estado_venta = 'Paga';
+            $venta->estado_venta = 'Pagado';
         }
 
         $venta->save();
