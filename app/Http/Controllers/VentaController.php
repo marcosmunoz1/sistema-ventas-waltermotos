@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\Cliente;
 use App\Models\Compra;
 use App\Models\Conyugue;
@@ -28,7 +30,10 @@ class VentaController extends Controller
 
     public function create()
     {
-        $motos = Moto::where('condicion', 'en_stock')->with(['nacionalidad', 'marca'])->get();
+        $motos = Moto::where('condicion', 'en_stock')
+            ->with(['nacionalidad', 'marca'])
+            ->get();
+
         $clientes = Cliente::with('conyugue')->get();
         return view('admin.ventas.create', compact('clientes', 'motos'));
     }
@@ -75,6 +80,7 @@ class VentaController extends Controller
         $moto = Moto::find($validated['id_moto']);
         $moto->condicion = 'vendida';
         $moto->fecha_venta_moto = now();
+        $moto->precio_venta = $validated['precio_venta'];
         $moto->save();
 
 
@@ -119,8 +125,8 @@ class VentaController extends Controller
             $credito = Credito::where('id_venta', $venta->id_venta)->first();
             $formatter = new NumeroALetras();
             $montoLetrasCredito = $formatter->toMoney($credito->entrega, 2, 'pesos', 'centavos');
-        }else{
-            $montoLetrasCredito =0;
+        } else {
+            $montoLetrasCredito = 0;
         }
 
         $conyugue = null;
@@ -133,7 +139,7 @@ class VentaController extends Controller
         $montoLetrasContado = $formatter->toMoney($venta->precio_venta, 2, 'pesos', 'centavos');
 
         // Renderizar la vista Blade en HTML
-        $html = view('admin.ventas.reporte', compact('venta', 'conyugue', 'credito', 'montoLetrasContado','montoLetrasCredito'))->render();
+        $html = view('admin.ventas.reporte', compact('venta', 'conyugue', 'credito', 'montoLetrasContado', 'montoLetrasCredito'))->render();
 
         // Crear la instancia de DomPDF
         $dompdf = new Dompdf();
@@ -141,7 +147,7 @@ class VentaController extends Controller
         $dompdf->render();
 
         // Renderizar la vista Blade en HTML
-        $html = view('admin.ventas.reporte', compact('venta', 'conyugue', 'credito', 'montoLetrasContado','montoLetrasCredito'))->render();
+        $html = view('admin.ventas.reporte', compact('venta', 'conyugue', 'credito', 'montoLetrasContado', 'montoLetrasCredito'))->render();
 
         // Crear la instancia de DomPDF
         $dompdf = new Dompdf();
