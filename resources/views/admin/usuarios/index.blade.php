@@ -41,7 +41,7 @@
                                         <tr>
                                             <td class="text-center ">{{ $contador++ }}</td>
                                             <td>{{ $usuario->name }}</td>
-                                            <td>{{ $usuario->roles }}</td>
+                                           <td>{{ $usuario->roles->pluck('name')->join(', ') }}</td>
                                             <td>{{ $usuario->email }}</td>
                                             {{--   <td>{{ $usuario->roles->pluck('name')->implode(', ') }}</td> --}}
                                             <td style="text-align: center;vertical-align:middle;">

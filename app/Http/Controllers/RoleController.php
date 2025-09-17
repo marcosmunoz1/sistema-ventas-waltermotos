@@ -147,7 +147,7 @@ class RoleController extends Controller
             $user->refresh(); // recarga relaciones y permisos en memoria
         }
 
-        return redirect()->back()
+        return redirect()->route('admin.roles.index')
             ->with('mensaje', 'Se asignaron los permisos para el rol de manera correcta ✅')
             ->with('icono', 'success');
     }
