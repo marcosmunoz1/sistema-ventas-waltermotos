@@ -50,8 +50,8 @@ class ComprasController extends Controller
      */
     public function store(Request $request)
     {
-        //$datos = request()->all();
-        //return response()->json($datos);
+       /*  $datos = request()->all();
+        return response()->json($datos);  */
         // Validación de la compra
         $request->validate([
             'fecha_compra' => 'required|date',
@@ -96,6 +96,7 @@ class ComprasController extends Controller
             $compra->save();
 
             // Crear motos
+                /* dd($tmpMotos); */
             foreach ($tmpMotos as $tmpMoto) {
                 Moto::create([
                     'id_marca' => $tmpMoto->id_marca,

@@ -316,7 +316,7 @@
                                                                 <div class="text-center">
                                                                     <div class="form-group">
                                                                         <label for="imagen">Imagen</label>
-                                                                        <input type="file" id="imagen_moto" name="imagen_moto[]" accept=".jpg, .jpeg, .png" class="form-control" multiple>
+                                                                        <input type="file" id="imagen_moto" name="imagen_moto" accept=".jpg, .jpeg, .png" class="form-control">
                                                                         @error('imagen_moto')
                                                                             <small style="color: red;">{{ $message }}</small>
                                                                         @enderror
@@ -567,13 +567,10 @@
             formData.append('precio_venta', $('#precio_venta').val());
             formData.append('id_deposito', $('#id_deposito').val());
 
-           // Imagen (múltiples)
+           // Imagen
             const imagenInput = document.getElementById('imagen_moto');
             if (imagenInput.files.length > 0) {
-                // Recorremos todos los archivos seleccionados
-                for (let i = 0; i < imagenInput.files.length; i++) {
-                    formData.append('imagen_moto[]', imagenInput.files[i]);
-                }
+                formData.append('imagen_moto', imagenInput.files[0]);
             }
 
             // CSRF token

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_nacionalidad');
             $table->unsignedBigInteger('id_deposito');
-            $table->string('marca_moto');
+            $table->string('id_marca'); 
             $table->string('modelo_moto');
             $table->string('dominio')->nullable();
             $table->integer('cilindrada_moto');
