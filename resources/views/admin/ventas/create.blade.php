@@ -146,45 +146,54 @@
                                     <div class="">
                                         <div class="input-group">
                                             <span class="input-group-text">Precio de Venta: $</span>
-                                            <input type="number" id="precioVenta" name="precio_venta"
-                                                class="form-control text-danger">
+                                            <input type="text" id="precioVentaFormatted"
+                                                class="form-control text-danger"
+                                                value="{{ number_format($moto->precio_venta ?? 0, 0, ',', '.') }}">
+                                            <input type="hidden" id="precioVenta" name="precio_venta"
+                                                value="{{ $moto->precio_venta ?? 0 }}">
                                         </div>
+
                                         @error('precio_venta')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
 
-                                    <!-- Campos oculto que se mostrarán cuando se seleccione "Credito" -->
+                                    <!-- Campos ocultos que se mostrarán cuando se seleccione "Credito" -->
                                     <div class="form-group" id="campo-credito" style="display: none;">
                                         <div class="input-group">
                                             <span class="input-group-text">Entrega: $</span>
-                                            <input type="number" class="form-control text-green" id="entrega"
-                                                name="entrega">
+                                            <input type="text" class="form-control text-success"
+                                                id="entregaFormatted">
+                                            <input type="hidden" id="entrega" name="entrega">
                                         </div>
                                         <hr>
                                         <div class="input-group">
                                             <span class="input-group-text">Monto a Financiar: $</span>
-                                            <input type="number" id="saldo" name="saldo"
-                                                class="form-control text-blue" disabled>
+                                            <input type="text" id="saldoFormatted" class="form-control text-primary"
+                                                readonly>
+                                            <input type="hidden" id="saldo" name="saldo">
                                         </div>
                                         <div class="input-group">
-                                            <span class="input-group-text">Cantidad de Cuotas: $</span>
-                                            <input type="number" id="cuotas" name="cuotas" class="form-control">
+                                            <span class="input-group-text">Cantidad de Cuotas</span>
+                                            <input type="number" id="cuotas" name="cuotas" class="form-control"
+                                                min="1" value="1">
                                         </div>
                                         <div class="input-group">
-                                            <span class="input-group-text">Interes:</span>
-                                            <input type="number" id="interes" name="interes" class="form-control">
+                                            <span class="input-group-text">Interés:</span>
+                                            <input type="number" id="interes" name="interes" class="form-control"
+                                                value="0">
                                             <span class="input-group-text"
-                                                style="width: 120px; display: inline-block;  text-align: left;">%</span>
+                                                style="width: 80px; display: inline-block; text-align: left;">%</span>
                                         </div>
                                         <hr>
                                         <div class="input-group">
                                             <span class="input-group-text">Valor de la Cuota:</span>
-                                            <input type="number" id="valorCuota" name="valor_cuota"
-                                                class="form-control" readonly>
+                                            <input type="text" id="valorCuotaFormatted" class="form-control" readonly>
+                                            <input type="hidden" id="valorCuota" name="valor_cuota">
                                         </div>
                                     </div>
+
 
 
                                 </div>
@@ -512,9 +521,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title fs-5" id="clientesModalLabel">Buscar Moto</h3>
-                        <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal" aria-label="close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                        <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal"
+                            aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="table">
@@ -604,10 +614,10 @@
     @endsection
 
     @section('js')
-        {{-- Aquí puedes agregar scripts adicionales --}}
-
-        {{-- Script de Clientes --}}
         <script>
+            // ============================
+            // Inicializar DataTables
+            // ============================
             $(document).ready(function() {
                 $('#tablaClientes').DataTable({
                     "pageLength": 5,
@@ -629,45 +639,7 @@
                         }
                     },
                 });
-            });
 
-
-            // Función para seleccionar el cliente desde el modal
-            function seleccionarClienteDesdeModal(id, apellido, nombre, dni, telefono, email, estado_civil_cliente,
-                apellido_conyugue, nombre_conyugue, dni_conyugue, celular_conyugue, fecha_nacimiento_conyugue) {
-
-                const nombreCompleto = apellido + ', ' + nombre;
-                document.querySelector('input[name="id_cliente"]').value = id;
-
-                // Mostrar los datos del cliente
-                document.getElementById('clienteNombreCompleto').textContent = nombreCompleto;
-                document.getElementById('clienteTelefono').textContent = telefono;
-                document.getElementById('clienteEmail').textContent = email;
-                document.getElementById('clienteDni').textContent = dni;
-                document.getElementById('clienteEstado').textContent = estado_civil_cliente;
-
-                // Mostrar los datos del cónyuge, solo si existen
-                if (apellido_conyugue && nombre_conyugue) {
-                    const nombreCompletoConyugue = apellido_conyugue + ', ' + nombre_conyugue;
-                    document.getElementById('conyugueNombreCompleto').textContent = nombreCompletoConyugue;
-                    document.getElementById('conyugueTelefono').textContent = celular_conyugue || 'No disponible';
-                    document.getElementById('conyugueFecha').textContent = fecha_nacimiento_conyugue || 'No disponible';
-                    document.getElementById('conyugueDni').textContent = dni_conyugue || 'No disponible';
-                } else {
-                    document.getElementById('conyugueNombreCompleto').textContent = 'No Tiene';
-                    document.getElementById('conyugueTelefono').textContent = '';
-                    document.getElementById('conyugueFecha').textContent = '';
-                    document.getElementById('conyugueDni').textContent = '';
-                }
-
-                // Cerrar el modal
-                $('#buscarClienteModal').modal('hide');
-            }
-        </script>
-
-        {{-- Script de Motos --}}
-        <script>
-            $(document).ready(function() {
                 $('#tablaMotos').DataTable({
                     "pageLength": 5,
                     "language": {
@@ -690,8 +662,46 @@
                 });
             });
 
-            function seleccionarMotoDesdeModal(id, nombre_marca, modelo_moto, dominio, color_moto, anio_moto,
-                km_moto, cilindrada_moto, pais, nr_motor, nr_chasis, nr_certificado, dnrpa, precio_venta) {
+            // ============================
+            // Seleccionar Cliente desde Modal
+            // ============================
+            function seleccionarClienteDesdeModal(id, apellido, nombre, dni, telefono, email,
+                estado_civil_cliente, apellido_conyugue, nombre_conyugue, dni_conyugue,
+                celular_conyugue, fecha_nacimiento_conyugue) {
+
+                const nombreCompleto = apellido + ', ' + nombre;
+                document.querySelector('input[name="id_cliente"]').value = id;
+
+                // Datos cliente
+                document.getElementById('clienteNombreCompleto').textContent = nombreCompleto;
+                document.getElementById('clienteTelefono').textContent = telefono;
+                document.getElementById('clienteEmail').textContent = email;
+                document.getElementById('clienteDni').textContent = dni;
+                document.getElementById('clienteEstado').textContent = estado_civil_cliente;
+
+                // Datos cónyuge
+                if (apellido_conyugue && nombre_conyugue) {
+                    const nombreCompletoConyugue = apellido_conyugue + ', ' + nombre_conyugue;
+                    document.getElementById('conyugueNombreCompleto').textContent = nombreCompletoConyugue;
+                    document.getElementById('conyugueTelefono').textContent = celular_conyugue || 'No disponible';
+                    document.getElementById('conyugueFecha').textContent = fecha_nacimiento_conyugue || 'No disponible';
+                    document.getElementById('conyugueDni').textContent = dni_conyugue || 'No disponible';
+                } else {
+                    document.getElementById('conyugueNombreCompleto').textContent = 'No Tiene';
+                    document.getElementById('conyugueTelefono').textContent = '';
+                    document.getElementById('conyugueFecha').textContent = '';
+                    document.getElementById('conyugueDni').textContent = '';
+                }
+
+                $('#buscarClienteModal').modal('hide');
+            }
+
+            // ============================
+            // Seleccionar Moto desde Modal
+            // ============================
+            function seleccionarMotoDesdeModal(id, nombre_marca, modelo_moto, dominio, color_moto,
+                anio_moto, km_moto, cilindrada_moto, pais, nr_motor, nr_chasis,
+                nr_certificado, dnrpa, precio_venta) {
 
                 document.querySelector('input[name="id_moto"]').value = id;
                 document.getElementById('motoMarca').textContent = nombre_marca || 'N/A';
@@ -706,80 +716,123 @@
                 document.getElementById('motoChasis').textContent = nr_chasis || 'N/A';
                 document.getElementById('motoCertificado').textContent = nr_certificado || 'N/A';
                 document.getElementById('motoDnrpa').textContent = dnrpa || 'N/A';
+
+                // Guardar en hidden
                 document.getElementById('precioVenta').value = precio_venta;
 
-                // Cerrar el modal
-                $('#buscarMotoModal').modal('hide');
-
-            }
-        </script>
-
-
-        <script>
-            $(document).ready(function() {
-                if ($('#formaPago').val() === 'Credito') {
-                    $('#campo-credito').show();
+                // Mostrar formateado
+                if (precio_venta) {
+                    document.getElementById('precioVentaFormatted').value =
+                        parseFloat(precio_venta).toLocaleString('es-AR', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                } else {
+                    document.getElementById('precioVentaFormatted').value = '';
                 }
+
+                $('#buscarMotoModal').modal('hide');
+            }
+
+            // ============================
+            // Formatear precios con hidden
+            // ============================
+            document.getElementById('precioVentaFormatted').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value) {
+                    e.target.value = new Intl.NumberFormat('es-AR').format(value);
+                    document.getElementById('precioVenta').value = value;
+
+                    
+                } else {
+                    e.target.value = '';
+                    document.getElementById('precioVenta').value = '';
+                }
+            });
+
+            const entregaFormatted = document.getElementById('entregaFormatted');
+            const entregaHidden = document.getElementById('entrega');
+
+            entregaFormatted.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value) {
+                    e.target.value = new Intl.NumberFormat('es-AR').format(value);
+                    entregaHidden.value = value;
+                } else {
+                    e.target.value = '';
+                    entregaHidden.value = '';
+                }
+            });
+
+            // ============================
+            // Mostrar campos de crédito
+            // ============================
+            $(document).ready(function() {
+                // Mostrar / ocultar campos de crédito
                 $('#formaPago').change(function() {
-                    var opcionSeleccionada = $(this).val();
-                    if (opcionSeleccionada === 'Credito') {
+                    if ($(this).val() === 'Credito') {
                         $('#campo-credito').show();
+                        calcularSaldo();
                     } else {
                         $('#campo-credito').hide();
                     }
                 });
-            });
 
-
-            $(document).ready(function() {
-                // Función para calcular la diferencia
+                // Función para calcular el saldo (monto a financiar)
                 function calcularSaldo() {
                     var precioVenta = parseFloat($('#precioVenta').val()) || 0;
                     var entrega = parseFloat($('#entrega').val()) || 0;
                     var saldoRestante = precioVenta - entrega;
-                    $('#saldo').val(saldoRestante.toFixed(2));
+
+                    $('#saldo').val(saldoRestante.toFixed(2)); // valor limpio
+                    $('#saldoFormatted').val(new Intl.NumberFormat('es-AR').format(saldoRestante)); // visible
                 }
 
-                $('#precioVenta, #entrega').on('input', function() {
-                    calcularSaldo();
-                });
-            });
-
-            $(document).ready(function() {
                 // Función para calcular el valor de la cuota
                 function calcularValorCuota() {
                     var saldo = parseFloat($('#saldo').val()) || 0;
                     var cuotas = parseInt($('#cuotas').val()) || 1;
                     var interes = parseFloat($('#interes').val()) || 0;
-                    if (saldo > 0 && cuotas > 0 && interes >= 0) {
+                    var valorCuota = 0;
+
+                    if (saldo > 0 && cuotas > 0) {
                         var tasaInteresMensual = interes / 100 / 12;
 
                         if (tasaInteresMensual > 0) {
-                            var valorCuota = (saldo * tasaInteresMensual) / (1 - Math.pow(1 + tasaInteresMensual, -
-                                cuotas));
+                            valorCuota = (saldo * tasaInteresMensual) /
+                                (1 - Math.pow(1 + tasaInteresMensual, -cuotas));
                         } else {
-                            var valorCuota = saldo / cuotas;
+                            valorCuota = saldo / cuotas;
                         }
-                        $('#valorCuota').val(valorCuota.toFixed(2));
-                    } else {
-                        $('#valorCuota').val('');
                     }
 
-
+                    $('#valorCuota').val(valorCuota.toFixed(2)); // limpio
+                    $('#valorCuotaFormatted').val(new Intl.NumberFormat('es-AR', {
+                        minimumFractionDigits: 2
+                    }).format(valorCuota)); // visible
                 }
 
-                // Llamar la función para calcular el saldo restante cuando cambie el monto de entrega
-                $('#entrega').on('input', function() {
-                    var precioVenta = parseFloat($('#precioVenta').val()) || 0;
-                    var entrega = parseFloat($('#entrega').val()) || 0;
-                    var saldoRestante = precioVenta - entrega;
-
-                    $('#saldo').val(saldoRestante.toFixed(2));
+                // Formatear "Entrega" mientras se escribe
+                $('#entregaFormatted').on('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value) {
+                        e.target.value = new Intl.NumberFormat('es-AR').format(value);
+                        $('#entrega').val(value);
+                    } else {
+                        e.target.value = '';
+                        $('#entrega').val('');
+                    }
+                    calcularSaldo();
                     calcularValorCuota();
                 });
 
-                // Llamar la función para calcular el valor de la cuota cuando cambien los valores relevantes
-                $('#saldo, #cuotas, #interes').on('input', function() {
+                // Disparadores
+                $('#precioVenta').on('input', function() {
+                    calcularSaldo();
+                    calcularValorCuota();
+                });
+
+                $('#cuotas, #interes').on('input', function() {
                     calcularValorCuota();
                 });
             });

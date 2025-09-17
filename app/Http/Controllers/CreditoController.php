@@ -88,7 +88,7 @@ class CreditoController extends Controller
             $venta->total_pago += $total_pagado;
             $venta->total_interes += $interesTotal;
             if ($venta->total_pago >= $venta->precio_venta) {
-                $venta->estado_venta = 'Paga';
+                $venta->estado_venta = 'Pagado';
             }
             $venta->save();
 
