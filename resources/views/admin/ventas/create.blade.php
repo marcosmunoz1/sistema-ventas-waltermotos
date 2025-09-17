@@ -24,7 +24,7 @@
                                                 data-target="#buscarClienteModal">
                                                 <i class="fas fa-search"></i> Buscar Cliente <i class="fas fa-user"></i>
                                             </button>
-                                             <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                                            <button type="button" class="btn btn-outline-success" data-toggle="modal"
                                                 data-target="#buscarClienteModal">
                                                 <i class="fas fa-plus"></i> Cliente
                                             </button>
@@ -153,6 +153,7 @@
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+
 
                                     <!-- Campos oculto que se mostrarán cuando se seleccione "Credito" -->
                                     <div class="form-group" id="campo-credito" style="display: none;">
@@ -511,7 +512,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title fs-5" id="clientesModalLabel">Buscar Moto</h3>
-                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal" aria-label="close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                     </div>
                     <div class="modal-body">
                         <div class="table">
@@ -535,7 +538,7 @@
                                                 <button class="btn btn-info"
                                                     onclick="seleccionarMotoDesdeModal(
                                                 '{{ $moto->id }}',
-                                                '{{ $moto->nombre_marca }}',
+                                                '{{ $moto->marca->nombre_marca }}',
                                                 '{{ $moto->modelo_moto }}',
                                                 '{{ $moto->dominio }}',
                                                 '{{ $moto->color_moto }}',
@@ -553,7 +556,7 @@
                                                 </button>
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">
-                                                {{ $moto->nombre_marca }}</td>
+                                                {{ $moto->marca->nombre_marca }}</td>
                                             <td class="text-center" style="vertical-align: middle">
                                                 {{ $moto->modelo_moto }}
                                             </td>

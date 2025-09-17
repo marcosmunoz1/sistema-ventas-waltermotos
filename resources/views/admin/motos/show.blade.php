@@ -29,7 +29,7 @@
                                             <div class="col-md-4">
                                                 <label>Marca</label>
                                                 <input type="text" class="form-control"
-                                                    value="{{ $moto->marca_moto }}" disabled>
+                                                    value="{{ $moto->marca->nombre_marca }}" disabled>
                                             </div>
                                             <div class="col-md-4">
                                                 <label>Modelo</label>
