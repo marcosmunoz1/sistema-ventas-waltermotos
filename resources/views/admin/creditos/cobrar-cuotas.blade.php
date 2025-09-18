@@ -219,20 +219,30 @@
                 const valor_cuota = parseFloat(this.dataset.valorCuota);
 
                 if (this.checked) {
-                    cuotasSeleccionadas.push({
+                    // Desmarcar todos los demás
+                    checkboxes.forEach(cb => {
+                        if (cb !== this) cb.checked = false;
+                    });
+
+                    // Array solo con la cuota seleccionada
+                    cuotasSeleccionadas = [{
                         id,
                         numero_cuota,
                         valor_cuota
-                    });
+                    }];
                 } else {
-                    cuotasSeleccionadas = cuotasSeleccionadas.filter(c => c.id !== id);
+                    // Si se desmarca, array vacío
+                    cuotasSeleccionadas = [];
                 }
 
-                const total = cuotasSeleccionadas.reduce((sum, cuota) => sum + cuota.valor_cuota, 0);
-                totalInput.value = total.toFixed(2);
-
-                const numeros = cuotasSeleccionadas.map(c => c.numero_cuota);
-                cuotasInput.value = numeros.join(', ');
+                // Actualizar total y número de cuota (solo el seleccionado)
+                if (cuotasSeleccionadas.length > 0) {
+                    totalInput.value = cuotasSeleccionadas[0].valor_cuota.toFixed(2);
+                    cuotasInput.value = cuotasSeleccionadas[0].numero_cuota;
+                } else {
+                    totalInput.value = '';
+                    cuotasInput.value = '';
+                }
 
                 actualizarTotalConInteres();
                 renderizarInputsOcultos();

@@ -26,7 +26,7 @@
                             <table class="table table-striped table-sm" id="miTabla">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th class="text-center" style="width: 5%">#</th>
+                                       
                                         <th class="text-center" style="width: 10%">Fecha</th>
                                         <th class="text-center" style="width: 5%">Numero</th>
                                         <th class="text-center" style="width: 15%">Cliente</th>
@@ -38,11 +38,9 @@
                                         <th class="text-center" style="width: 10%">Acciones</th>
                                     </tr>
                                 </thead>
-                                <?php $contador = 1; ?>
                                 <tbody>
                                     @foreach ($ventas as $venta)
                                         <tr>
-                                            <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
                                             <td class="text-center"style="vertical-align: middle">
                                                 {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}
 
@@ -67,7 +65,7 @@
 
                                             <td class="text-center" style="vertical-align: middle">
                                                 <span
-                                                    class="badge {{ $venta->estado_venta == 'Paga' ? 'bg-success' : 'bg-danger' }}">
+                                                    class="badge {{ $venta->estado_venta == 'Pagado' ? 'bg-success' : 'bg-danger' }}">
                                                     {{ $venta->estado_venta }}
                                                 </span>
                                             </td>

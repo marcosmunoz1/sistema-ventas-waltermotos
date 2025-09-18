@@ -8,14 +8,27 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
+
 class UsuariosController extends Controller
 {
     public function index()
     {
+        $usuarioLogueado = Auth::user();
+        $esSuperAdmin = $usuarioLogueado->roles->contains('name', 'Super-Admin');
 
-        $usuarios = User::all();
-        $roles = Role::all();
-        return view('admin.usuarios.index', compact('usuarios','roles'));
+        if ($esSuperAdmin) {
+            $usuarios = User::with('roles')->get();
+            $roles = Role::all();
+        } else {
+            $usuarios = User::with('roles')
+                ->whereDoesntHave('roles', function ($query) {
+                    $query->where('name', 'Super-Admin');
+                })
+                ->get();
+            $roles = Role::where('name', '!=', 'Super-Admin')->get();
+        }
+
+        return view('admin.usuarios.index', compact('usuarios', 'roles'));
     }
 
     public function create()
@@ -78,7 +91,7 @@ class UsuariosController extends Controller
         //
         $usuario = User::find($id);
         $roles = Role::all();
-        return view('admin.usuarios.edit', compact('usuario','roles'));
+        return view('admin.usuarios.edit', compact('usuario', 'roles'));
     }
 
 
