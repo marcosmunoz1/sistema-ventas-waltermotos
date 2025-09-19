@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Moto;
 use App\Models\TmpMoto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -38,6 +39,8 @@ class TmpCompraController extends Controller
      */
     public function store(Request $request)
     {
+       /*  $datos = request()->all();
+        return response()->json($datos); */
         try {
             // Validar los datos que vienen del modal
             $validator = Validator::make($request->all(), [
@@ -72,7 +75,7 @@ class TmpCompraController extends Controller
                 'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado',
                 'precio_compra' => 'required',
                 'precio_venta' => 'nullable',
-                'imagen_moto' => 'nullable|image|mimes:jpg,jpeg,png,gif',
+                'imagen_moto' => 'nullable', 
                 'id_deposito' => 'required',
             ]);
 
@@ -103,6 +106,10 @@ class TmpCompraController extends Controller
             $tmpMoto->precio_venta = $request->precio_venta;
             $tmpMoto->id_deposito = $request->id_deposito;
             $tmpMoto->session_id = session()->getId();
+
+            /* if (!Storage::disk('public')->exists('motos')) {
+                Storage::disk('public')->makeDirectory('motos');
+            } */
 
             // Guardar la imagen si viene
             if ($request->hasFile('imagen_moto')) {

@@ -75,7 +75,7 @@ class MotoController extends Controller
         $request->validate([
             'marca' => 'required',
             'modelo' => 'required|string|max:255',
-            'dominio' => 'required|unique:motos,dominio,' . $id,
+            'dominio' => 'nullable|unique:motos,dominio,' . $id,
             'cilindrada' => 'required|numeric',
             'color' => 'nullable|string|max:50',
             'anio' => 'nullable|numeric',

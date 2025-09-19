@@ -1,6 +1,6 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
-@section('title', 'Abregar Moto')
+@section('title', 'Abregar Moto') 
 
 @section('content_header')
     <h2 class="brand-text font-weight-light">Admin/Motos/<b>Agregar-Moto</b></h2>

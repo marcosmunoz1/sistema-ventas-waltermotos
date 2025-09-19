@@ -3,7 +3,7 @@
 
 Hola **{{ $user->name ?? 'usuario' }}**,
 
-Recibimos una solicitud para restablecer la contraseña de tu cuenta en **{{ $appName }}**.
+Recibimos una solicitud para restablecer la contraseña de tu cuenta en **WualterMOTOS**.
 Haz clic en el botón para continuar:
 
 @component('mail::button', ['url' => $url])
@@ -12,6 +12,6 @@ Restablecer contraseña
 
 > Si no solicitaste este cambio, simplemente ignora este correo.
 
-Gracias por confiar en **{{ $appName }}.
+Gracias por confiar en WalterMotos.
 
 @endcomponent

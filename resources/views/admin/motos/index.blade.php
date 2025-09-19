@@ -1,107 +1,109 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('title', 'Motos')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light ">Listado de Motos</h2>
-    <hr>
+
 @stop
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Motos Registradas</h3>
-                    {{-- <div class="card-tools">
+            <div class="col-md-12">
+                <div class="card card-outline card-primary mt-1">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <h2 class="brand-text font-weight-light mb-0">Listado de Motos</h2>
+                            {{-- <div class="card-tools">
                         <a href="{{ url('admin/motos/crear-moto') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
                             Nueva Moto</a>
                     </div> --}}
-                </div>
-                <div class="col-md-12 mx-auto mt-2">
-                    <div class="card">
-                        
-                            <!-- Tabla -->
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-bordered table-striped" id="mitabla">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center" style="width: 5%">#</th>
-                                                <th class="text-center" style="width: 7%">Marca</th>
-                                                <th class="text-center" style="width: 7%">Modelo</th>
-                                                <th class="text-center" style="width: 5%">Año</th>
-                                                <th class="text-center" style="width: 10%">Nacionalidad</th>
-                                                <th class="text-center" style="width: 10%">P. Compra</th>
-                                                <th class="text-center" style="width: 10%">P. Venta</th>
-                                                <th class="text-center" style="width: 10%">Condicion</th>
-                                                <th class="text-center" style="width: 10%">Imagen</th>
-                                                <th class="text-center" style="width: 15%">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php $contador = 1; ?>
-                                            @foreach ($motos as $moto)
+                        </div>
+                        <div class="col-md-12 mx-auto mt-2">
+                           
+                                <!-- Tabla -->
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered table-striped" id="mitabla">
+                                            <thead>
                                                 <tr>
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        {{ $contador++ }}</td>
-                                                    <!-- Marca de la moto, usando la relación -->
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        {{ $moto->marca->nombre_marca }}</td>
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        {{ $moto->modelo_moto }}</td>
-
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        {{ $moto->anio_moto }}</td>
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        {{ $moto->nacionalidad->pais }}</td>
-                                                    <td class="text-right text-success" style="vertical-align: middle">
-                                                        ${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
-                                                    <td class="text-right text-danger" style="vertical-align: middle">
-                                                        ${{ number_format($moto->precio_venta, 2, ',', '.') }}</td>
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        @php
-                                                            $colores = [
-                                                                'vendida' => 'danger',
-                                                                'en_stock' => 'success',
-                                                                'garantia' => 'warning',
-                                                                'devuelta' => 'secondary',
-                                                            ];
-                                                            $color = $colores[$moto->condicion] ?? 'light';
-                                                        @endphp
-                                                        <span class="badge bg-{{ $color }}">
-                                                            {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
-                                                        </span>
-                                                    </td>
-
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        <img src="{{ asset($moto->imagen_moto) }}" width="40%"
-                                                            alt="">
-
-                                                    </td>
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        <a href="{{ url('/admin/motos', $moto->id) }}"
-                                                            class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                        <a href="{{ url('/admin/motos/' . $moto->id . '/edit') }}"
-                                                            class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                        <form action="{{ url('/admin/motos', $moto->id) }}" method="post"
-                                                            class="d-inline-block"
-                                                            onsubmit="preguntar(event, {{ $moto->id }})"
-                                                            id="miFormulario{{ $moto->id }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                    </td>
+                                                    <th class="text-center" style="width: 5%">#</th>
+                                                    <th class="text-center" style="width: 7%">Marca</th>
+                                                    <th class="text-center" style="width: 7%">Modelo</th>
+                                                    <th class="text-center" style="width: 5%">Año</th>
+                                                    <th class="text-center" style="width: 10%">Nacionalidad</th>
+                                                    <th class="text-center" style="width: 10%">P. Compra</th>
+                                                    <th class="text-center" style="width: 10%">P. Venta</th>
+                                                    <th class="text-center" style="width: 10%">Condicion</th>
+                                                    <th class="text-center" style="width: 10%">Imagen</th>
+                                                    <th class="text-center" style="width: 15%">Acciones</th>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                <?php $contador = 1; ?>
+                                                @foreach ($motos as $moto)
+                                                    <tr>
+                                                        <td class="text-center" style="vertical-align: middle">
+                                                            {{ $contador++ }}</td>
+                                                        <!-- Marca de la moto, usando la relación -->
+                                                        <td class="text-center" style="vertical-align: middle">
+                                                            {{ $moto->marca->nombre_marca }}</td>
+                                                        <td class="text-center" style="vertical-align: middle">
+                                                            {{ $moto->modelo_moto }}</td>
+
+                                                        <td class="text-center" style="vertical-align: middle">
+                                                            {{ $moto->anio_moto }}</td>
+                                                        <td class="text-center" style="vertical-align: middle">
+                                                            {{ $moto->nacionalidad->pais }}</td>
+                                                        <td class="text-right text-success" style="vertical-align: middle">
+                                                            ${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
+                                                        <td class="text-right text-danger" style="vertical-align: middle">
+                                                            ${{ number_format($moto->precio_venta, 2, ',', '.') }}</td>
+                                                        <td class="text-center" style="vertical-align: middle">
+                                                            @php
+                                                                $colores = [
+                                                                    'vendida' => 'danger',
+                                                                    'en_stock' => 'success',
+                                                                    'garantia' => 'warning',
+                                                                    'devuelta' => 'secondary',
+                                                                ];
+                                                                $color = $colores[$moto->condicion] ?? 'light';
+                                                            @endphp
+                                                            <span class="badge bg-{{ $color }}">
+                                                                {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
+                                                            </span>
+                                                        </td>
+
+                                                        <td class="text-center" style="vertical-align: middle">
+                                                            <img src="{{ asset($moto->imagen_moto) }}" width="40%"
+                                                                alt="">
+
+                                                        </td>
+                                                        <td class="text-center" style="vertical-align: middle">
+                                                            <a href="{{ url('/admin/motos', $moto->id) }}"
+                                                                class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                            <a href="{{ url('/admin/motos/' . $moto->id . '/edit') }}"
+                                                                class="btn btn-sm btn-warning"><i
+                                                                    class="fas fa-edit"></i></a>
+                                                            <form action="{{ url('/admin/motos', $moto->id) }}"
+                                                                method="post" class="d-inline-block"
+                                                                onsubmit="preguntar(event, {{ $moto->id }})"
+                                                                id="miFormulario{{ $moto->id }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                        
+                           
+                        </div>
                     </div>
                 </div>
             </div>
@@ -140,7 +142,8 @@
     </script>
     <script>
         $('#mitabla').DataTable({
-            "pageLength": 5,
+            "pageLength": 8,
+             "order": [[0, "desc"]], 
             "language": {
                 "emptyTable": "No hay información",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Motos",

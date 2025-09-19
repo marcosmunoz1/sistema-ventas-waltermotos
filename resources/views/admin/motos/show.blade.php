@@ -1,18 +1,20 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('title', 'Ver Moto')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light">Admin/Motos/<b>Ver-Moto</b></h2>
-    <hr>
+
+
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline card-info">
+            <div class="card card-outline card-info mt-1">
                 <div class="card-header">
-                    <h3 class="card-title">Datos Registrados</h3>
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <h2 class="brand-text font-weight-light mb-0">Motos/<b>Ver Moto</b> </h2>
+                    </div>
                 </div>
 
                 <div class="col-md-12 mx-auto">
@@ -106,8 +108,8 @@
                                                 <label for="imagen">Imagen</label>
                                                 <center>
                                                     <output id="list">
-                                                        <img src="{{ asset( $moto->imagen_moto) }}"
-                                                            width="100%" alt="">
+                                                        <img src="{{ asset($moto->imagen_moto) }}" width="100%"
+                                                            alt="">
                                                     </output>
                                                 </center>
                                             </div>
@@ -181,7 +183,8 @@
                             @if ($venta)
                                 <div class="col-md-6">
                                     <div class="card">
-                                        <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i> Datos
+                                        <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i>
+                                            Datos
                                             de Venta</h5>
                                         <div
                                             class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
@@ -210,12 +213,14 @@
 
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="fechaIngreso" class="form-label">Fecha de Egreso</label>
+                                                        <label for="fechaIngreso" class="form-label">Fecha de
+                                                            Egreso</label>
                                                         <input type="date" class="form-control"
                                                             value="{{ $venta->fecha_venta }}" disabled>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="precioVenta" class="form-label">Precio de Venta</label>
+                                                        <label for="precioVenta" class="form-label">Precio de
+                                                            Venta</label>
                                                         <input type="text" class="form-control text-danger"
                                                             value="{{ '$' . number_format($moto->precio_venta, 0, ',', '.') }}"
                                                             disabled>
@@ -224,7 +229,8 @@
 
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="precioCompra" class="form-label">Número de Remito</label>
+                                                        <label for="precioCompra" class="form-label">Número de
+                                                            Remito</label>
                                                         <input type="number" class="form-control" disabled>
                                                     </div>
                                                     <div class="mb-3">
@@ -246,9 +252,11 @@
                             @else
                                 <div class="col-md-6">
                                     <div class="card">
-                                        <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i> Datos
+                                        <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i>
+                                            Datos
                                             de Venta</h5>
-                                        <div class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                        <div
+                                            class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
@@ -263,131 +271,132 @@
 
                     </div>
 
-                    <div class="card-footer text-right">
-                        <a href="{{ url('admin/motos') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Volver
-                        </a>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="{{ url('admin/motos') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="modalProveedor" tabindex="-1" aria-labelledby="modalProveedorLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title" id="modalProveedorLabel">Información del Proveedor</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Nombre:</strong> <span id="nombreProveedor"></span></p>
+                        <p><strong>Email:</strong> <span id="emailProveedor"></span></p>
+                        <p><strong>Teléfono:</strong> <span id="telefonoProveedor"></span></p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Compra -->
+        <div class="modal fade" id="modalCompra" tabindex="-1" aria-labelledby="modalCompraLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title" id="modalCompraLabel">Información de la Compra</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Fecha:</strong> <span id="fechaCompra"></span></p>
+                        <p><strong>Factura:</strong> <span id="facturaCompra"></span></p>
+                        <p><strong>Remito:</strong> <span id="remitoCompra"></span></p>
+                        <p><strong>Total:</strong> <span id="totalCompra"></span></p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="modalProveedor" tabindex="-1" aria-labelledby="modalProveedorLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title" id="modalProveedorLabel">Información del Proveedor</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Nombre:</strong> <span id="nombreProveedor"></span></p>
-                    <p><strong>Email:</strong> <span id="emailProveedor"></span></p>
-                    <p><strong>Teléfono:</strong> <span id="telefonoProveedor"></span></p>
-                </div>
+        <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="modalProveedorLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title" id="modalProveedorLabel">Información del Cliente</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Nombre:</strong> <span id="nombreCliente"></span></p>
+                        <p><strong>DNI:</strong> <span id="dniCliente"></span></p>
+                        <p><strong>CUIT:</strong> <span id="cuitCliente"></span></p>
+                        <p><strong>Nacido:</strong> <span id="nacidoCliente"></span></p>
+                        <p><strong>Teléfono:</strong> <span id="celularCliente"></span></p>
+                        <p><strong>e-Mail:</strong> <span id="emailCliente"></span></p>
+                        <p><strong>Estado Civil:</strong> <span id="estadoCivilCliente"></span></p>
+                    </div>
 
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Compra -->
-    <div class="modal fade" id="modalCompra" tabindex="-1" aria-labelledby="modalCompraLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title" id="modalCompraLabel">Información de la Compra</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Fecha:</strong> <span id="fechaCompra"></span></p>
-                    <p><strong>Factura:</strong> <span id="facturaCompra"></span></p>
-                    <p><strong>Remito:</strong> <span id="remitoCompra"></span></p>
-                    <p><strong>Total:</strong> <span id="totalCompra"></span></p>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="modalProveedorLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title" id="modalProveedorLabel">Información del Cliente</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Nombre:</strong> <span id="nombreCliente"></span></p>
-                    <p><strong>DNI:</strong> <span id="dniCliente"></span></p>
-                    <p><strong>CUIT:</strong> <span id="cuitCliente"></span></p>
-                    <p><strong>Nacido:</strong> <span id="nacidoCliente"></span></p>
-                    <p><strong>Teléfono:</strong> <span id="celularCliente"></span></p>
-                    <p><strong>e-Mail:</strong> <span id="emailCliente"></span></p>
-                    <p><strong>Estado Civil:</strong> <span id="estadoCivilCliente"></span></p>
-                </div>
+    @endsection
 
-            </div>
-        </div>
-    </div>
+    @section('css')
+        {{-- Estilos personalizados --}}
+    @endsection
 
-@endsection
+    @section('js')
+        {{-- Scripts adicionales --}}
+        <script>
+            document.getElementById('btnVerProveedor').addEventListener('click', function() {
+                const nombre = this.getAttribute('data-nombre');
+                const email = this.getAttribute('data-email');
+                const telefono = this.getAttribute('data-telefono');
 
-@section('css')
-    {{-- Estilos personalizados --}}
-@endsection
+                document.getElementById('nombreProveedor').textContent = nombre;
+                document.getElementById('emailProveedor').textContent = email;
+                document.getElementById('telefonoProveedor').textContent = telefono;
 
-@section('js')
-    {{-- Scripts adicionales --}}
-    <script>
-        document.getElementById('btnVerProveedor').addEventListener('click', function() {
-            const nombre = this.getAttribute('data-nombre');
-            const email = this.getAttribute('data-email');
-            const telefono = this.getAttribute('data-telefono');
+                var myModal = new bootstrap.Modal(document.getElementById('modalProveedor'));
+                myModal.show();
+            });
 
-            document.getElementById('nombreProveedor').textContent = nombre;
-            document.getElementById('emailProveedor').textContent = email;
-            document.getElementById('telefonoProveedor').textContent = telefono;
+            document.getElementById('btnVerCliente').addEventListener('click', function() {
+                const nombre = this.getAttribute('data-nombre-cliente');
+                const dni = this.getAttribute('data-dni-cliente');
+                const cuit = this.getAttribute('data-cuit-cliente');
+                const nacido = this.getAttribute('data-nacido-cliente');
+                const email = this.getAttribute('data-email-cliente');
+                const estadoCivil = this.getAttribute('data-estadoCivil-cliente');
+                const celular = this.getAttribute('data-celular-cliente');
 
-            var myModal = new bootstrap.Modal(document.getElementById('modalProveedor'));
-            myModal.show();
-        });
+                document.getElementById('nombreCliente').textContent = nombre;
+                document.getElementById('dniCliente').textContent = dni;
+                document.getElementById('cuitCliente').textContent = cuit;
+                document.getElementById('nacidoCliente').textContent = nacido;
+                document.getElementById('emailCliente').textContent = email;
+                document.getElementById('estadoCivilCliente').textContent = estadoCivil;
+                document.getElementById('celularCliente').textContent = celular;
 
-        document.getElementById('btnVerCliente').addEventListener('click', function() {
-            const nombre = this.getAttribute('data-nombre-cliente');
-            const dni = this.getAttribute('data-dni-cliente');
-            const cuit = this.getAttribute('data-cuit-cliente');
-            const nacido = this.getAttribute('data-nacido-cliente');
-            const email = this.getAttribute('data-email-cliente');
-            const estadoCivil = this.getAttribute('data-estadoCivil-cliente');
-            const celular = this.getAttribute('data-celular-cliente');
+                var myModal = new bootstrap.Modal(document.getElementById('modalCliente'));
+                myModal.show();
+            });
 
-            document.getElementById('nombreCliente').textContent = nombre;
-            document.getElementById('dniCliente').textContent = dni;
-            document.getElementById('cuitCliente').textContent = cuit;
-            document.getElementById('nacidoCliente').textContent = nacido;
-            document.getElementById('emailCliente').textContent = email;
-            document.getElementById('estadoCivilCliente').textContent = estadoCivil;
-            document.getElementById('celularCliente').textContent = celular;
+            document.getElementById('btnVerCompra').addEventListener('click', function() {
+                const fecha = this.getAttribute('data-fecha');
+                const factura = this.getAttribute('data-factura');
+                const remito = this.getAttribute('data-remito');
+                const total = this.getAttribute('data-total');
 
-            var myModal = new bootstrap.Modal(document.getElementById('modalCliente'));
-            myModal.show();
-        });
+                // Asignar los valores al modal
+                document.getElementById('fechaCompra').textContent = fecha;
+                document.getElementById('facturaCompra').textContent = factura;
+                document.getElementById('remitoCompra').textContent = remito;
+                document.getElementById('totalCompra').textContent = total;
 
-        document.getElementById('btnVerCompra').addEventListener('click', function() {
-            const fecha = this.getAttribute('data-fecha');
-            const factura = this.getAttribute('data-factura');
-            const remito = this.getAttribute('data-remito');
-            const total = this.getAttribute('data-total');
-
-            // Asignar los valores al modal
-            document.getElementById('fechaCompra').textContent = fecha;
-            document.getElementById('facturaCompra').textContent = factura;
-            document.getElementById('remitoCompra').textContent = remito;
-            document.getElementById('totalCompra').textContent = total;
-
-            // Mostrar el modal
-            var myModal = new bootstrap.Modal(document.getElementById('modalCompra'));
-            myModal.show();
-        });
-    </script>
-@endsection
+                // Mostrar el modal
+                var myModal = new bootstrap.Modal(document.getElementById('modalCompra'));
+                myModal.show();
+            });
+        </script>
+    @endsection

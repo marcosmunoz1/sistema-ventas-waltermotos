@@ -15,7 +15,7 @@ class ResetPasswordNotification extends ResetPasswordBase
         ], false));
 
         return (new MailMessage)
-            ->subject('🔑 Recupera tu contraseña - ' . config('app.name'))
+            ->subject('🔑 Recupera tu contraseña - ' . 'WalterMOTOS')
             ->markdown('emails.reset-password', [
                 'url'      => $url,
                 'user'     => $notifiable,

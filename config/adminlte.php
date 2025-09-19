@@ -315,7 +315,7 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'Buscar',
         ],
-     
+
         [
             'text' => 'Ventas',
             'url' => 'admin/ventas',
@@ -350,7 +350,30 @@ return [
 
         ],
 
-       
+        /*   [
+            'text' => 'Maestros',
+            'icon' => 'fas fa-fw fa-gear',
+            'submenu' => [
+                [
+                    'text' => 'Categorias',
+                    'url' => 'admin/categorias',
+                    'icon' => 'fa-solid fa-list-check',
+                ],
+                [
+                    'text' => 'Marcas',
+                    'url' => 'admin/marcas',
+                    'icon' => 'fa-solid fa-bars',
+                ],
+                [
+                    'text' => 'Estados de Orden',
+                    'url' => 'admin/estados',
+                    'icon' => 'fa-solid fa-chart-gantt',
+                ],
+            ],
+        ], */
+
+
+
         ['header' => 'AJUSTES'],
 
         [
@@ -373,7 +396,7 @@ return [
                     'icon' => 'fas fa-fw fa-user-check',
 
                 ],
-     
+
             ],
         ],
 
