@@ -1,16 +1,24 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('title', 'Detalle Credito')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light">Admin/Ventas/<b>Ver-Detalle de Credito</b></h2>
-    <hr>
+
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline card-info">
+            <div class="card card-outline card-info mt-1">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <h2 class="brand-text font-weight-light mb-0">Creditos/Detalle de Credito:
+                            <b>{{ $credito->venta->cliente->apellido_cliente }},
+                            {{ $credito->venta->cliente->nombre_cliente }} </b>
+                        </h2>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card-body">
@@ -24,7 +32,7 @@
                                             <th class="text-center" style="width: 5%">Valor</th>
                                             <th class="text-center" style="width: 5%">Interes x Mora</th>
                                             <th class="text-center" style="width: 5%">Estado</th>
-                                            
+
                                         </tr>
                                     </thead>
                                     <?php $contador = 1; ?>
@@ -42,7 +50,7 @@
                                                     @else
                                                         Impaga
                                                     @endif
-                                                    
+
                                                 </td>
                                                 <td class="text-success text-center" style="vertical-align: middle">
                                                     ${{ number_format($detalle->valor_cuota, 2, ',', '.') }}
@@ -56,7 +64,7 @@
                                                         {{ $detalle->estado_cuota }}
                                                     </span>
                                                 </td>
-                                               
+
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -94,7 +102,7 @@
                             <div class="d-flex"><label>Interés por Mora:</label>
                                 <p class="mb-0 mx-2 text-info">$
                                     {{ number_format($credito->total_interes, 2, ',', '.') }}</p>
-                                    
+
                             </div>
                             <div class="d-flex"><label>Total Cancelado</label>
                                 <p class="mb-0 mx-2 text-green">$
@@ -111,7 +119,7 @@
         </div>
     </div>
     <!-- Botones de acción -->
-    <div class="card-footer text-right">
+    <div class="card-footer text-right mb-2">
         <a href="{{ url('admin/creditos') }}" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Volver
         </a>

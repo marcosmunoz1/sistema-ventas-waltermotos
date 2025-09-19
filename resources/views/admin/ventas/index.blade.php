@@ -1,21 +1,18 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('title', 'Ventas')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light ">Listado de Ventas
-        {{-- <b>{{ $empresa->nombre_empresa }}</b> --}}
-    </h2>
-    <hr>
+    
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline card-primary">
+           <div class="card card-outline card-primary mt-1">
                 <div class="card-header">
-                    <h3 class="card-title">Datos de Ventas</h3>
-                    <div class="card-tools">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <h2 class="brand-text font-weight-light mb-0">Listado de Ventas</h2>
                         <a href="{{ url('admin/ventas/crear-venta') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
                             Nueva Venta</a>
                     </div>

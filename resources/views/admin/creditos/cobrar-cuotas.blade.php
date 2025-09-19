@@ -1,16 +1,23 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('title', 'Cobrar Cuotas')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light">Admin/Credito/<b>Cobrar-Cuotas</b></h2>
-    <hr>
+
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline card-info">
+            <div class="card card-outline card-info mt-1">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <h2 class="brand-text font-weight-light mb-0">Creditos/Cobrar Cuota:
+                            <b>{{ $credito->venta->cliente->apellido_cliente }},
+                                {{ $credito->venta->cliente->nombre_cliente }} </b>
+                        </h2>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card-body">
@@ -146,9 +153,7 @@
                                         <button type="submit" class="btn btn-success">
                                             <i class="fas fa-save"></i> Cobrar
                                         </button>
-
                                     </div>
-
                                 </div>
                         </div>
                     </div>
@@ -156,14 +161,15 @@
             </div>
         </div>
     </div>
+    
 
     <!-- Botones de acción -->
-    <div class="card-footer text-right">
+    <div class="card-footer text-right mb-2">
         <a href="{{ url('admin/creditos') }}" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Volver
         </a>
     </div>
-    </div>
+
 
 
 

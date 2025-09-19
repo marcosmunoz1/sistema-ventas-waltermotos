@@ -3,15 +3,13 @@
 @section('title', 'Acceso Denegado')
 
 @section('content')
-<div class="d-flex flex-column justify-content-center align-items-center vh-100 bg-light text-center">
-    <img src="{{ asset('/storage/imagenes/logo-login.png') }}" alt="Logo" class="mb-4" style="max-width: 150px;">
 
-    <h1 class="display-1 fw-bold text-danger">403</h1>
-    <h2 class="fw-semibold text-dark">Acceso no autorizado</h2>
-    <h4 class="text-muted">No tenés permisos para realizar esta acción.</h4>
+    <div class="text-center">
+        <h1 class="text-yellow" style="font-size: 100px;">403</h1>
+        <h3>Acceso no autorizado</h3>
+        <p>No tenés permisos para realizar esta acción.</p>
+        <a href="{{ url()->previous() }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Volver</a>
+        <a href="{{ route('home') }}" class="btn btn-primary">Ir al inicio</a>
+    </div>
 
-    <a href="{{ url()->previous() }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Volver
-    </a>
-</div>
 @endsection

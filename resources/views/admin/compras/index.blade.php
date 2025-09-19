@@ -1,22 +1,22 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('content_header')
-    <h1><b>Compras/Listado de compras</b></h1>
-    <hr>
+   
+    
 @stop
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline card-primary">
+            <div class="card card-outline card-primary mt-1">
                 <div class="card-header">
-                    <h3 class="card-title">Compras registradas</h3>
-                    <div class="card-tools">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <h2 class="brand-text font-weight-light mb-0">Listado de Compras</h2>
                         <a href="{{url('/admin/compras/create')}}" class="btn btn-primary"><i class="fa fa-plus"></i> Nueva compra</a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <table id="mitabla" class="table table-striped table-bordered table-hover table-sm">
+                    <table id="mitabla" class="table table-striped table-bordered table-hover table-sm ">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col" style="text-align: center; width: 8%">#</th>

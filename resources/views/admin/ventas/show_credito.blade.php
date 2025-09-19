@@ -1,10 +1,10 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('title', 'Detalle Venta')
 
 @section('content_header')
     <h2 class="brand-text font-weight-light">Admin/Ventas/<b>Ver-Detalle de Credito</b></h2>
-    <hr>
+
 @endsection
 
 @section('content')
@@ -13,7 +13,6 @@
             <div class="card card-outline card-info">
                 <div class="row">
                     <div class="col-md-12 mx-auto">
-
                         <div class="card-body">
                             <ul class="nav nav-tabs" id="detalleTabs" role="tablist">
                                 <li class="nav-item">
@@ -43,7 +42,8 @@
                                                 <h6><strong>Email: </strong> {{ $cliente->email_cliente }}</h6>
                                                 <h6><strong>CUIT: </strong> {{ $cliente->cuit_cliente }}</h6>
                                                 <h6><strong>DNI: </strong> {{ $cliente->dni_cliente }}</h6>
-                                                <h6><strong>Fecha Nacimienot: </strong> {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}</h6>
+                                                <h6><strong>Fecha Nacimienot: </strong>
+                                                    {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}</h6>
                                                 <h6><strong>Telefono: </strong> {{ $cliente->celular_cliente }}</h6>
                                                 <h6><strong>Estado Civil: </strong> {{ $cliente->estado_civil_cliente }}
                                                 </h6>
@@ -57,18 +57,20 @@
                                                             {{ $cliente->conyugue->apellido_conyugue }},
                                                             {{ $cliente->conyugue->nombre_conyugue }}
                                                         </h6>
-                                                        <h6><strong>DNI:</strong> {{ $cliente->conyugue->dni_conyugue }}</h6>
+                                                        <h6><strong>DNI:</strong> {{ $cliente->conyugue->dni_conyugue }}
+                                                        </h6>
                                                         <h6><strong>Fecha Nacimiento:</strong>
                                                             {{ \Carbon\Carbon::parse($cliente->conyugue->fecha_nacimiento_conyugue)->format('d-m-Y') }}
                                                         </h6>
-                                                        <h6><strong>Teléfono:</strong> {{ $cliente->conyugue->celular_conyugue }}</h6>
+                                                        <h6><strong>Teléfono:</strong>
+                                                            {{ $cliente->conyugue->celular_conyugue }}</h6>
                                                     @else
                                                         <h6><strong>Conyugue:</strong> No registrado</h6>
                                                     @endif
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
 
@@ -116,7 +118,8 @@
                                                                 <th class="text-center" style="width: 5%">Vencimiento</th>
                                                                 <th class="text-center" style="width: 15%">Fecha Pago</th>
                                                                 <th class="text-center" style="width: 5%">Valor</th>
-                                                                <th class="text-center" style="width: 5%">Interes x Mora</th>
+                                                                <th class="text-center" style="width: 5%">Interes x Mora
+                                                                </th>
                                                                 <th class="text-center" style="width: 5%">Estado</th>
 
                                                             </tr>
@@ -136,7 +139,7 @@
                                                                         @else
                                                                             Impaga
                                                                         @endif
-                                                                        
+
                                                                     </td>
                                                                     <td class="text-success text-center"
                                                                         style="vertical-align: middle">
@@ -206,51 +209,49 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
-            <!-- Botones de acción -->
-            <div class="card-footer text-right">
-                <a href="{{ url('admin/ventas') }}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Volver
-                </a>
-            </div>
-
         </div>
-    @endsection
 
-    @section('css')
-        {{-- Aquí puedes agregar estilos personalizados --}}
-    @endsection
+    </div>
+    <!-- Botones de acción -->
+    <div class="card-footer text-right">
+        <a href="{{ url('admin/ventas') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+@endsection
 
-    @section('js')
-        {{-- Aquí puedes agregar scripts adicionales --}}
+@section('css')
+    {{-- Aquí puedes agregar estilos personalizados --}}
+@endsection
+
+@section('js')
+    {{-- Aquí puedes agregar scripts adicionales --}}
 
 
-        <script>
-            $('#miTabla').DataTable({
-                searching: false,
-                lengthChange: false,
-                "language": {
-                    "emptyTable": "No hay información.",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Ventas",
-                    "infoEmpty": "Mostrando 0 a 0 de 0 Ventas",
-                    "infoFiltered": "(Filtrado de _MAX_ total Ventas)",
-                    "lengthMenu": "Mostrar _MENU_ Ventas",
-                    "loadingRecords": "Cargando...",
-                    "processing": "Procesando...",
-                    "search": "Buscador:",
-                    "zeroRecords": "Sin resultados encontrados",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Último",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    }
+    <script>
+        $('#miTabla').DataTable({
+            searching: false,
+            lengthChange: false,
+            "language": {
+                "emptyTable": "No hay información.",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Ventas",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Ventas",
+                "infoFiltered": "(Filtrado de _MAX_ total Ventas)",
+                "lengthMenu": "Mostrar _MENU_ Ventas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscador:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
                 }
-            });
-        </script>
-    @endsection
+            }
+        });
+    </script>
+@endsection

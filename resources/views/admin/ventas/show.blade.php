@@ -1,10 +1,10 @@
-@extends('adminlte::page')
+@extends('layouts.app') 
 
 @section('title', 'Detalle Venta')
 
 @section('content_header')
     <h2 class="brand-text font-weight-light">Admin/Ventas/<b>Ver-Detalle de Venta</b></h2>
-    <hr>
+    
 @endsection
 
 @section('content')
