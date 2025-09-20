@@ -377,8 +377,8 @@
                                                     <div class="text-center">
                                                         <div class="form-group">
                                                             <label for="imagen">Imagen</label>
-                                                            <input type="file" id="imagen_moto" name="imagen_moto[]"
-                                                                accept=".jpg, .jpeg, .png" class="form-control" multiple>
+                                                            <input type="file" id="imagen_moto" name="imagen_moto"
+                                                                accept=".jpg, .jpeg, .png" class="form-control">
                                                             @error('imagen_moto')
                                                                 <small style="color: red;">{{ $message }}</small>
                                                             @enderror
@@ -390,13 +390,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> 
-                                    </div> 
-                                </div> 
+                                        </div>
+                                    </div>
+                                </div>
                             </div> >
-                        </div> 
+                        </div>
 
-                    </div> 
+                    </div>
 
                     <div class="modal-footer">
                         <button type="button" onclick="agregarMotoATabla()" class="btn btn-primary">
@@ -407,8 +407,8 @@
                         </button>
                     </div>
                 </div> >
-            </div> 
-        </div> 
+            </div>
+        </div>
     </div>
     <!-- Modal seleccionar proveedor-->
     <div class="modal fade" id="exampleModal_proveedor" tabindex="-1" aria-labelledby="exampleModalLabel"

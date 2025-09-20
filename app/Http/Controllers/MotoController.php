@@ -110,16 +110,21 @@ class MotoController extends Controller
         $moto->precio_venta = $precio_venta;
 
 
-       // Verificar si hay una nueva imagen
-    if ($request->hasFile('imagen')) {
-        // Eliminar la imagen antigua si existe
-        if ($moto->imagen_moto && Storage::exists('public/' . $moto->imagen_moto)) {
-            Storage::delete('public/' . $moto->imagen_moto);
+        if ($request->hasFile('imagen_moto')) {
+       // Eliminar la imagen antigua si existe
+            if ($moto->imagen_moto && Storage::exists(str_replace('storage/', 'public/', $moto->imagen_moto))) {
+                Storage::delete(str_replace('storage/', 'public/', $moto->imagen_moto));
+            }
+
+            // Subir nueva imagen
+            $file = $request->file('imagen_moto');
+            $nombreArchivo = time().'_'.$file->getClientOriginalName();
+            $file->storeAs('motos', $nombreArchivo, 'public');
+
+            // Guardar en DB con "storage/motos/..."
+            $moto->imagen_moto = 'storage/motos/'.$nombreArchivo;
         }
-        // Subir la nueva imagen
-        $imagenPath = $request->file('imagen')->store('motos', 'public');
-        $moto->imagen_moto = $imagenPath;
-    }
+
         $moto->save();
 
 

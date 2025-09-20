@@ -52,7 +52,7 @@
 
                                     <div class="col-md-2">
                                         <label>Dominio</label>
-                                        <input name="dominio" type="text" class="form-control" 
+                                        <input name="dominio" type="text" class="form-control"
                                             value="{{ $moto->dominio }}" placeholder="Dominio">
                                         @error('dominio')
                                             <small style="color: red;">{{ $message }}</small>
@@ -159,7 +159,7 @@
                                 <div class="text-center">
                                     <div class="form-group">
                                         <label for="imagen">Imagen</label>
-                                        <input type="file" id="file" name="imagen" accept=".jpg, jpeg, png"
+                                        <input type="file" id="file" name="imagen_moto" accept=".jpg, .jpeg, .png"
                                             class="form-control">
                                         @error('imagen')
                                             <small style="color: red;">{{ $message }}</small>
