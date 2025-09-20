@@ -54,9 +54,9 @@
                                         </td>
 
                                         <td class="text-center" style="vertical-align: middle">
-                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                            <div class="btn-group " role="group" aria-label="Basic example">
                                                 <a href="{{ url('/admin/proveedores', $proveedor->id) }}"
-                                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                    class="btn btn-sm btn-info disabled"  aria-disabled="true"><i class="fas fa-eye"></i></a>
                                                 <a href="#" class="btn btn-sm btn-warning disabled" tabindex="-1"
                                                     aria-disabled="true">
                                                     <i class="fas fa-edit"></i>

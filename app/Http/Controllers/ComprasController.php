@@ -205,7 +205,7 @@ class ComprasController extends Controller
             ->with('icono', 'success');
     }
 
-    public function agregarMotoCompra(Request $request)
+    public function agregarMotoCompra(Request $request) 
     {
 
         try {
@@ -315,7 +315,7 @@ class ComprasController extends Controller
             'chasis' => 'required|unique:motos,nr_chasis,' . $motoId,
             'dnrpa' => 'nullable|unique:motos,dnrpa,' . $motoId,
             'certificado' => 'nullable|unique:motos,nr_certificado,' . $motoId,
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'imagen_moto' => 'nullable',
             'nacionalidad' => 'required'
         ]);
 
@@ -343,13 +343,19 @@ class ComprasController extends Controller
         $precio_venta = str_replace(['.', ','], ['', '.'], $request->precio_venta);
         $moto->precio_venta = $precio_venta;
 
-        // Verificar si hay nueva imagen
-        if ($request->hasFile('imagen')) {
-            if ($moto->imagen_moto && Storage::exists('public/' . $moto->imagen_moto)) {
-                Storage::delete('public/' . $moto->imagen_moto);
+         if ($request->hasFile('imagen_moto')) {
+       // Eliminar la imagen antigua si existe
+            if ($moto->imagen_moto && Storage::exists(str_replace('storage/', 'public/', $moto->imagen_moto))) {
+                Storage::delete(str_replace('storage/', 'public/', $moto->imagen_moto));
             }
-            $imagenPath = $request->file('imagen')->store('motos', 'public');
-            $moto->imagen_moto = $imagenPath;
+
+            // Subir nueva imagen
+            $file = $request->file('imagen_moto');
+            $nombreArchivo = time().'_'.$file->getClientOriginalName();
+            $file->storeAs('motos', $nombreArchivo, 'public');
+
+            // Guardar en DB con "storage/motos/..."
+            $moto->imagen_moto = 'storage/motos/'.$nombreArchivo;
         }
 
         // Guardar cambios

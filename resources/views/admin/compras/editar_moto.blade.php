@@ -17,12 +17,13 @@
                         <a href="{{url('admin/roles/crear-rol')}}" class="btn btn-success"><i class="fas fa-save"></i>  Agregar Rol</a>
                     </div> --}}
                 </div>
-                <form action="{{ route('compras.motos.update', ['compraId' => $compra->id, 'motoId' => $moto->id]) }}" method="POST">                    @csrf
+                <form action="{{ route('compras.motos.update', ['compraId' => $compra->id, 'motoId' => $moto->id]) }}" enctype="multipart/form-data" method="POST" >
+                    @csrf
                     @method('PUT')
                     <div class="col-md-12 mx-auto mt-2">
                         <div class="card card-info">
                             <div
-                                class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}" >
 
                                 <!-- Datos de Moto -->
                                 <div class="row">
@@ -164,8 +165,8 @@
                                         <div class="text-center">
                                             <div class="form-group">
                                                 <label for="imagen">Imagen</label>
-                                                <input type="file" id="file" name="imagen"
-                                                    accept=".jpg, jpeg, png" class="form-control">
+                                                <input type="file" id="file" name="imagen_moto"
+                                                    accept=".jpg, .jpeg, .png" class="form-control">
                                                 @error('imagen')
                                                     <small style="color: red;">{{ $message }}</small>
                                                 @enderror
