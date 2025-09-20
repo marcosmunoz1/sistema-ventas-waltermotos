@@ -22,7 +22,7 @@ class ComprasController extends Controller
      */
     public function index()
     {
-        $compras = Compra::with('motos')->get();
+        $compras = Compra::with('motos')->orderBy('id', 'desc')->get();
         return view('admin.compras.index', compact('compras'));
     }
 

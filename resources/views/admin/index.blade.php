@@ -158,6 +158,32 @@
         </div>
     </div>
 </div>
+ <div class="row">
+        <div class="col-md-6">
+             <div class="card card-outline card-primary">
+                <div class="card-header">
+                      <h3 class="card-title">Total cantida de ventas</h3>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+             </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                      <h3 class="card-title">Total monto de ventas</h3>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <canvas id="myChart2"></canvas>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </div>
 @stop
 
 {{-- Push extra CSS --}}
@@ -171,4 +197,75 @@
 
 @push('js')
     <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+
+<?php
+    $meses = array_fill(1,12,0);
+    $suma_ventas = array_fill(1,12,0);
+
+    foreach ($ventas as $venta ) {
+        $fecha = strtotime($venta['fecha_venta']);
+        // Verifica que strtotime() haya devuelto una fecha válida
+    if ($fecha !== false) {
+        $mes = date('m', $fecha);
+        $meses[(int)$mes]++;
+        $suma_ventas[(int)$mes] += $venta['total_pago'];
+    } else {
+        // Maneja el caso en que la fecha no sea válida (si es necesario)
+        echo "Fecha inválida: " . $venta['fecha_venta'] . "<br>";
+    }
+    }
+    $reporte_cantidad = implode(',',$meses);
+    $reporte_ventas = implode(',',$suma_ventas);
+?>
+
+<script>
+    var meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiempre','Octubre','Noviembre','Diciembre'];
+    var datos = [{{$reporte_cantidad}}];
+    const  ctx2 = document.getElementById('myChart')
+
+    new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: meses,
+            datasets:[{
+                label:'Total cantidad de ventas' ,
+                data: datos,
+                borderWidtch: 1
+
+            }]
+          },
+          options:{
+            scales:{
+                y:{
+                    beginAtZero: true
+                }
+            }
+          }
+    })
+</script>
+<script>
+    var meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiempre','Octubre','Noviembre','Diciembre']
+    var datos = [{{$reporte_ventas}}]
+    const  ctx = document.getElementById('myChart2')
+
+    new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: meses,
+            datasets:[{
+                label:'Monto Total de ventas' ,
+                data: datos,
+                borderWidtch: 1
+
+            }]
+          },
+          options:{
+            scales:{
+                y:{
+                    beginAtZero: true
+                }
+            }
+          }
+    })
+</script>
 @endpush
