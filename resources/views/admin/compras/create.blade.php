@@ -614,7 +614,7 @@
             $('#exampleModal_proveedor').modal('hide');
         });
     </script>
-    <script>
+{{--     <script>
         window.agregarMotoATabla = function() {
             let formData = new FormData();
             // Agregamos los campos del formulario
@@ -716,7 +716,7 @@
             });
 
         }
-    </script>
+    </script> --}}
     <script>
         window.agregarMotoATabla = function() {
             let formData = new FormData();

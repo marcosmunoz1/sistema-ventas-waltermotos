@@ -139,7 +139,7 @@ class MotoController extends Controller
      */
     public function destroy($id)
     {
-            //
+            
             Moto::destroy($id);
             return redirect()->route('admin.motos.index')
                 ->with('mensaje', 'Se elimino la Moto con exíto')

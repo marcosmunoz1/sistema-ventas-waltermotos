@@ -25,9 +25,6 @@
                                 <label>Factura</label>
                                 <input type="text" value="{{ $compra->numero_factura }}" class="form-control"
                                     id="numero_factura" name="numero_factura" placeholder="Nr. de factura" disabled>
-                                @error('numero_factura')
-                                    <small style="color:red;">{{ $message }}</small>
-                                @enderror
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -48,14 +45,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="estado_compra">Estado</label>
-                                <select class="form-control" name="estado_compra" disabled>
-                                    <option value="">-- Seleccionar estado --</option>
-                                    <option value="Pagado" {{ $compra->estado_compra == 'Pagado' ? 'selected' : '' }}>Pagado</option>
-                                    <option value="Pendiente" {{ $compra->estado_compra == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                </select>
-                                @error('estado_compra')
-                                    <small style="color: red;">{{ $message }}</small>
-                                @enderror
+                                    <input class="form-control" value="{{$compra->estado_compra}}" type="text" disabled>
                             </div>
                         </div>
                     </div>
@@ -206,7 +196,7 @@
                         <p><strong>Nr de chasis:</strong> ${nrChasis}</p>
                         <p><strong>Certificado:</strong> ${certificado}</p>
                         <p><strong>DNRPA:</strong> ${dnrpa}</p>
-                        <p><strong>DNRPA:</strong> ${condicion}</p>
+                        <p><strong>Condición:</strong> ${condicion}</p>
                     </div>
                     <div class="col-md-4">
                         ${imagenUrl ? `<img src="${imagenUrl}" class="img-fluid img-thumbnail mt-2" style="max-width: 200px;">` : '<p><em>Sin imagen</em></p>'}

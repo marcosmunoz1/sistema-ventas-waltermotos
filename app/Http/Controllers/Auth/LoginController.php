@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\TmpMoto;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -39,8 +40,12 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
-    public function logout(Request $request) 
-    {
+    public function logout(Request $request)
+{
+        // Borrar tmpMotos antes de cerrar sesión
+        $sessionId = $request->session()->getId();
+        TmpMoto::where('session_id', $sessionId)->delete();
+
         $this->guard()->logout();
 
         $request->session()->invalidate();
