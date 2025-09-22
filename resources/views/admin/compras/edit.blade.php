@@ -495,21 +495,17 @@
             xhrFields: {
             withCredentials: true
             },
-            success: function(res) {
+           success: function(res) {
                     if (res.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Éxito!',
-                            text: res.message,
-                            confirmButtonText: 'Aceptar',
-                            confirmButtonColor: '#28a745'
-                        }).then(() => {
-                            $('#crearMotoModal').modal('hide');
-                            cargarMotosATabla();
-                            // Limpiar errores y formulario
-                            $('.text-error').remove();
-                            $('#formAgregarMoto')[0].reset();
-                        });
+                        // Cerrar modal
+                        $('#crearMotoModal').modal('hide');
+
+                        // Recargar página directamente
+                        location.reload();
+
+                        // Limpiar errores y formulario
+                        $('.text-error').remove();
+                        $('#formAgregarMoto')[0].reset();
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -638,10 +634,8 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                Swal.fire('Eliminado', response.message || 'Moto eliminada correctamente', 'success')
-                                    .then(() => {
-                                        location.reload();
-                                    });
+                              // Recargar la página directamente sin mostrar otro mensaje
+                              location.reload();
                             } else {
                                 // Aquí capturamos el mensaje cuando está vendida
                                 Swal.fire('No permitido', response.message || 'No se puede eliminar la moto.', 'warning');
@@ -661,6 +655,31 @@
                 }
             });
         }
+    </script>
+     <script>
+        function archivo(evt) {
+            var files = evt.target.files; //file List objet
+            //Obtenemos la imagen del campo "file"
+            for (var i = 0, f; f = files[i]; i++) {
+                //solo admitimos imagenes
+                if (!f.type.match('image.*')) {
+                    continue;
+                }
+                var reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        //insertamos la imagen
+                        document.getElementById("list").innerHTML = ['<img class="thumb thumbail" src="', e
+                            .target.result, '" width="70%" title="', escape(theFile.name), '"/>'
+                        ].join('');
+                    };
+                })(f);
+                reader.readAsDataURL(f);
+
+            }
+
+        }
+        document.getElementById('imagen_moto').addEventListener('change', archivo, false);
     </script>
 
 @stop
