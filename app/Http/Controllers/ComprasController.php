@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compra;
-use App\Models\DetalleCompra;
 use App\Models\Moto;
 use App\Models\Proveedor;
 use App\Models\Marca;
@@ -12,7 +11,7 @@ use App\Models\Deposito;
 use App\Models\TmpMoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 
 class ComprasController extends Controller
@@ -38,11 +37,17 @@ class ComprasController extends Controller
         $depositos = Deposito::all();
         $session_id = session()->getId();
         $tmp_motos = TmpMoto::with('moto')
-                ->where('session_id', session()->getId())
-                ->get();
+            ->where('session_id', session()->getId())
+            ->get();
 
-        return view('admin.compras.create', compact('motos','proveedores','tmp_motos', 'marcas', 'nacionalidades',
-                                                    'depositos',));
+        return view('admin.compras.create', compact(
+            'motos',
+            'proveedores',
+            'tmp_motos',
+            'marcas',
+            'nacionalidades',
+            'depositos',
+        ));
     }
 
     /**
@@ -50,17 +55,30 @@ class ComprasController extends Controller
      */
     public function store(Request $request)
     {
-       /*  $datos = request()->all();
+        /*  $datos = request()->all();
         return response()->json($datos);  */
         // Validación de la compra
+
+
         $request->validate([
             'fecha_compra' => 'required|date',
-            'numero_factura' => 'required|string',
-            'numero_remito' => 'required|string',
+            'numero_factura' => [
+                'required',
+                'string',
+                Rule::unique('compras', 'numero_factura')
+                    ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor)),
+            ],
+            'numero_remito' => [
+                'required',
+                'string',
+                Rule::unique('compras', 'numero_remito')
+                    ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor)),
+            ],
             'estado_compra' => 'required|string',
             'id_proveedor' => 'required|integer',
             'total_compra' => 'required|numeric',
         ]);
+
 
         $session_id = session()->getId();
         $tmpMotos = TmpMoto::where('session_id', $session_id)->get();
@@ -72,7 +90,7 @@ class ComprasController extends Controller
         // Validar duplicados entre las tmpMotos
         $valoresTemp = [];
         foreach ($tmpMotos as $tmpMoto) {
-            $key = $tmpMoto->nr_motor.'|'.$tmpMoto->dominio.'|'.$tmpMoto->nr_chasis;
+            $key = $tmpMoto->nr_motor . '|' . $tmpMoto->dominio . '|' . $tmpMoto->nr_chasis;
             if (in_array($key, $valoresTemp)) {
                 return back()->with('mensaje', 'Hay duplicados dentro de las motos cargadas en esta compra.');
             }
@@ -96,7 +114,7 @@ class ComprasController extends Controller
             $compra->save();
 
             // Crear motos
-                /* dd($tmpMotos); */
+            /* dd($tmpMotos); */
             foreach ($tmpMotos as $tmpMoto) {
                 Moto::create([
                     'id_marca' => $tmpMoto->id_marca,
@@ -128,11 +146,10 @@ class ComprasController extends Controller
 
             return redirect()->route('admin.compras.index')
                 ->with('mensaje', 'Se registró la compra correctamente')
-                ->with('icono','success');
-
+                ->with('icono', 'success');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('mensaje', 'Error al registrar la compra: '.$e->getMessage());
+            return back()->with('mensaje', 'Error al registrar la compra: ' . $e->getMessage());
         }
     }
 
@@ -143,7 +160,7 @@ class ComprasController extends Controller
      */
     public function show($id)
     {
-        $compra = Compra::with('motos','proveedor', 'marca')->findOrFail($id);
+        $compra = Compra::with('motos', 'proveedor', 'marca')->findOrFail($id);
         return view('admin.compras.show', compact('compra'));
     }
 
@@ -156,19 +173,20 @@ class ComprasController extends Controller
         $nacionalidades = Nacionalidad::all();
         $depositos = Deposito::all();
         $marcas = Marca::all();
-        $compra = Compra::with('motos','proveedor')->findOrFail($id);
+        $compra = Compra::with('motos', 'proveedor')->findOrFail($id);
         $totalCompra = $compra->motos->sum('precio_compra');
 
         $proveedores = Proveedor::all();
 
 
-        return view('admin.compras.edit', compact('compra',
-        'proveedores',
-        'contador',
-        'marcas',
-        'nacionalidades',
-        'depositos',
-        'totalCompra',
+        return view('admin.compras.edit', compact(
+            'compra',
+            'proveedores',
+            'contador',
+            'marcas',
+            'nacionalidades',
+            'depositos',
+            'totalCompra',
         ));
     }
 
@@ -180,12 +198,12 @@ class ComprasController extends Controller
         //$datos = request()->all();
         //return response()->json($datos);
         $request->validate([
-            'fecha_compra'=>'required',
-            'numero_factura'=>'required',
-            'numero_remito'=>'required',
-            'estado_compra'=>'required',
+            'fecha_compra' => 'required',
+            'numero_factura' => 'required',
+            'numero_remito' => 'required',
+            'estado_compra' => 'required',
             'id_proveedor' => 'required',
-            'total_compra'=>'required',
+            'total_compra' => 'required',
         ]);
 
         $compra = Compra::find($id);
@@ -205,11 +223,11 @@ class ComprasController extends Controller
             ->with('icono', 'success');
     }
 
-    public function agregarMotoCompra(Request $request) 
+    public function agregarMotoCompra(Request $request)
     {
 
         try {
-        // Validar los datos que vienen del modal
+            // Validar los datos que vienen del modal
             $validated = $request->validate([
                 'id_marca' => 'required',
                 'modelo_moto' => 'required',
@@ -289,15 +307,15 @@ class ComprasController extends Controller
 
         if ($moto && $moto->condicion === 'vendida') {
             return redirect()->back()->with('mensaje', 'No se puede editar una moto que ya fue vendida.')
-                                    ->with('icono', 'error');
+                ->with('icono', 'error');
         }
         return view('admin.compras.editar_moto', compact(
-                                                'compra',
-                                                'moto',
-                                                'nacionalidades',
-                                                'depositos',
-                                                'marcas'
-                                                ));
+            'compra',
+            'moto',
+            'nacionalidades',
+            'depositos',
+            'marcas'
+        ));
     }
     public function actualizarMotoCompra(Request $request, $compraId, $motoId)
     {
@@ -343,27 +361,27 @@ class ComprasController extends Controller
         $precio_venta = str_replace(['.', ','], ['', '.'], $request->precio_venta);
         $moto->precio_venta = $precio_venta;
 
-         if ($request->hasFile('imagen_moto')) {
-       // Eliminar la imagen antigua si existe
+        if ($request->hasFile('imagen_moto')) {
+            // Eliminar la imagen antigua si existe
             if ($moto->imagen_moto && Storage::exists(str_replace('storage/', 'public/', $moto->imagen_moto))) {
                 Storage::delete(str_replace('storage/', 'public/', $moto->imagen_moto));
             }
 
             // Subir nueva imagen
             $file = $request->file('imagen_moto');
-            $nombreArchivo = time().'_'.$file->getClientOriginalName();
+            $nombreArchivo = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('motos', $nombreArchivo, 'public');
 
             // Guardar en DB con "storage/motos/..."
-            $moto->imagen_moto = 'storage/motos/'.$nombreArchivo;
+            $moto->imagen_moto = 'storage/motos/' . $nombreArchivo;
         }
 
         // Guardar cambios
         $moto->save();
 
         return redirect()->route('admin.compras.edit', $compraId)
-        ->with('mensaje', 'Moto actualizada correctamente.')
-        ->with('icono','success');
+            ->with('mensaje', 'Moto actualizada correctamente.')
+            ->with('icono', 'success');
         //->with('success', 'Moto actualizada correctamente.');
     }
 
@@ -415,7 +433,7 @@ class ComprasController extends Controller
 
         if ($motosVendidas > 0) {
             return back()->with('mensaje', 'No se puede eliminar la compra porque una o más motos ya fueron vendidas.')
-                        ->with('icono', 'error');
+                ->with('icono', 'error');
         }
 
         // Eliminar motos asociadas
@@ -425,6 +443,6 @@ class ComprasController extends Controller
         $compra->delete();
 
         return back()->with('mensaje', 'Compra y motos asociadas eliminadas correctamente.')
-                    ->with('icono', 'success');
+            ->with('icono', 'success');
     }
 }

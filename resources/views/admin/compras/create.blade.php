@@ -18,35 +18,38 @@
                         <form action="{{ route('admin.compras.store') }}" id="form_compra" method="POST">
                             @csrf
                             <div class="row">
+                                {{-- Proveedor --}}
                                 <div class="col-md-4">
-                                    <label for="proveedor">Proveedor</label>
-                                    <div class="row">
-                                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal"
-                                            data-target="#exampleModal_proveedor"><i class="fas fa-search"></i>
-                                            Buscar</button>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" id="nombre_proveedor" disabled>
-                                            <input type="text" class="form-control" id="id_proveedor" name="id_proveedor"
-                                                hidden>
+                                    <div class="form-group">
+                                        <label for="proveedor">Proveedor</label>
+                                        <div class="input-group"> 
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                data-toggle="modal" data-target="#exampleModal_proveedor">
+                                                <i class="fas fa-search"></i> Buscar
+                                            </button>  
+                                            <input type="text" class="form-control mx-1" id="nombre_proveedor" disabled>
+                                            <input type="hidden" id="id_proveedor" name="id_proveedor">
+                                            <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                                                data-target="#modalAgregarProveedor">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
                                         </div>
-                                        <div style="margin-right: 1px"></div>
-
-                                        <button type="button" class="btn btn-outline-success" data-toggle="modal"
-                                            data-target="#modalAgregarProveedor">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
                                     </div>
                                 </div>
+
+                                {{-- Factura --}}
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Factura</label>
                                         <input type="text" value="{{ old('numero_factura') }}" class="form-control"
                                             id="numero_factura" name="numero_factura" placeholder="Nr. de factura" required>
                                         @error('numero_factura')
-                                            <small style="color:red;">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
+
+                                {{-- Remito --}}
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Remito</label>
@@ -54,17 +57,20 @@
                                             id="numero_remito" name="numero_remito" placeholder="Nr. de remito" required>
                                     </div>
                                 </div>
+
+                                {{-- Fecha compra --}}
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Fecha compra</label>
                                         <input type="date" value="{{ old('fecha_compra') }}" name="fecha_compra"
-                                            id="fecha_compra" class="form-control datetimepicker-input"
-                                            data-target="#reservationdate" required>
+                                            id="fecha_compra" class="form-control" required>
                                     </div>
                                 </div>
+
+                                {{-- Estado --}}
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="estado_compra">Estado</label><b> *</b>
+                                        <label for="estado_compra">Estado <b>*</b></label>
                                         <select class="form-control" name="estado_compra" required>
                                             <option value="">-- Seleccionar estado --</option>
                                             <option value="Pagado" {{ old('estado_compra') == 'Pagado' ? 'selected' : '' }}>
@@ -74,11 +80,12 @@
                                             </option>
                                         </select>
                                         @error('estado_compra')
-                                            <small style="color: red;">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
+
                             <hr>
                             <div class="row">
                                 <div class="col-md-4 mb-1">
