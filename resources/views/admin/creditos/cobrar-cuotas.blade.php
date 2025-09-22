@@ -138,7 +138,7 @@
                                         <span class="input-group-text">Interes:</span>
                                         <input type="number" id="interes" name="interes" class="form-control">
                                         <span class="input-group-text"
-                                            style="width: 100px; display: inline-block;  text-align: left;">%</span>
+                                            style="width: 80px; display: inline-block;  text-align: left;">%</span>
                                     </div>
                                     <hr>
                                     <div class="input-group">
@@ -161,7 +161,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <!-- Botones de acción -->
     <div class="card-footer text-right mb-2">

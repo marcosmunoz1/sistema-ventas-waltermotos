@@ -116,10 +116,10 @@ class CreditoController extends Controller
         $detalle = DetalleCredito::find($id);
         $credito = Credito::with('venta')->where('id', $detalle->id_credito)->first();
 
-        $formatter = new NumeroALetras(); 
+        $formatter = new NumeroALetras();
         $montoLetras = $formatter->toMoney($detalle->valor_cuota, 2, 'pesos', 'centavos');
 
-         $formatter2 = new NumeroALetras(); 
+         $formatter2 = new NumeroALetras();
         $cuotaLetras = $formatter2->toMoney($detalle->numero_cuota);
 
         // Renderizar la vista Blade en HTML

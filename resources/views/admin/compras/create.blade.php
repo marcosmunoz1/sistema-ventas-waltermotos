@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <form action="{{ route('admin.compras.store') }}" id="form_compra" method="POST">
                             @csrf
-                             <div class="row">
+                            <div class="row">
                                 {{-- Proveedor --}}
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -144,7 +144,7 @@
                                     </div>
                                 </div>
                             </div>
-                              <!-- Botones de acción -->
+                            <!-- Botones de acción -->
                             <div class="card-footer text-right ">
 
                                 <button type="submit" class="btn btn-success">
@@ -343,10 +343,10 @@
                                                         <div class="col-md-4">
                                                             <label>Precio compra</label><b style="color: red;">*</b>
                                                             <input type="text" class="form-control"
-                                                                id="precioCompraFormatted"
-                                                                placeholder="Precio compra">
+                                                                id="precioCompraFormatted" placeholder="Precio compra">
                                                             <!-- Input hidden (valor limpio para BD) -->
-                                                            <input type="hidden" name="precio_compra" id="precio_compra">
+                                                            <input type="hidden" name="precio_compra"
+                                                                id="precio_compra">
                                                             @error('precio_compra')
                                                                 <small style="color: red;">{{ $message }}</small>
                                                             @enderror
@@ -354,8 +354,7 @@
                                                         <div class="col-md-4">
                                                             <label>Precio venta</label>
                                                             <input type="text" class="form-control"
-                                                                id="precioVentaFormatted"
-                                                                placeholder="Precio venta">
+                                                                id="precioVentaFormatted" placeholder="Precio venta">
                                                             <!-- Input hidden (valor limpio para BD) -->
                                                             <input type="hidden" name="precio_venta" id="precio_venta">
                                                             @error('precio_venta')
@@ -573,15 +572,23 @@
 @stop
 
 @section('js')
-   @if ($errors->has('km_moto') ||$errors->has('anio_moto') ||$errors->has('id_nacionalidad')
-   ||$errors->has('color_moto') ||$errors->has('cilindrada_moto') ||$errors->has('modelo_moto')
-   ||$errors->has('id_marca') ||$errors->has('dominio') || $errors->has('nr_motor') || $errors->has('nr_chasis'))
+    @if (
+        $errors->has('km_moto') ||
+            $errors->has('anio_moto') ||
+            $errors->has('id_nacionalidad') ||
+            $errors->has('color_moto') ||
+            $errors->has('cilindrada_moto') ||
+            $errors->has('modelo_moto') ||
+            $errors->has('id_marca') ||
+            $errors->has('dominio') ||
+            $errors->has('nr_motor') ||
+            $errors->has('nr_chasis'))
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 $('#crearMotoModal').modal('show');
             });
         </script>
-   @endif
+    @endif
     <script>
         $('#crearMotoModal').on('hidden.bs.modal', function() {
             // Limpiar todos los inputs de texto, number, etc
@@ -662,6 +669,7 @@
         });
     </script>
     <script>
+        /*
         window.agregarMotoATabla = function() {
             let formData = new FormData();
             // Agregamos los campos del formulario
@@ -762,7 +770,7 @@
                 }
             });
 
-        }
+        }*/
     </script>
     <script>
         window.agregarMotoATabla = function() {
@@ -806,19 +814,19 @@
                 },
                 success: function(res) {
                     if (res.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Éxito!',
-                            text: res.message,
-                            confirmButtonText: 'Aceptar',
-                            confirmButtonColor: '#28a745'
-                        }).then(() => {
+                        //Swal.fire({
+                        //    icon: 'success',
+                        //    title: '¡Éxito!',
+                        //    text: res.message,
+                        //    confirmButtonText: 'Aceptar',
+                        //    confirmButtonColor: '#28a745'
+                        //}).then(() => {
                             $('#crearMotoModal').modal('hide');
                             cargarMotosATabla();
                             // Limpiar errores y formulario
                             $('.text-error').remove();
                             $('#formAgregarMoto')[0].reset();
-                        });
+                        //});
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -841,13 +849,13 @@
                                 `<small class="text-error" style="color:red">${mensaje}</small>`);
                         }
 
-                        Swal.fire({
+                        /*Swal.fire({
                             icon: 'error',
                             title: 'Error de validación',
                             text: 'Por favor corrige los errores marcados.',
                             confirmButtonText: 'Aceptar',
                             confirmButtonColor: '#dc3545'
-                        });
+                        });*/
 
                     } else {
                         console.error(xhr);
