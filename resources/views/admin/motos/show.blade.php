@@ -259,9 +259,11 @@
                                             class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <p>Esta moto aún no fue vendida.</p>
+                                                    <div class="alert alert-info" role="alert">
+                                                        <i class="fas fa-info-circle"></i>
+                                                        Datos de venta no disponibles. La motocicleta aún no fue vendida.
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
