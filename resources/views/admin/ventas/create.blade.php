@@ -15,7 +15,7 @@
                     <div class="row">
                         <div
                             class="col-md-8 card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
-                            <!-- buscar cliente -->
+                            <!-- Cliente -->
                             <div class="row">
                                 <div class="col-md-7">
                                     <div class="card">
@@ -24,52 +24,105 @@
                                                 data-target="#buscarClienteModal">
                                                 <i class="fas fa-search"></i> Buscar Cliente <i class="fas fa-user"></i>
                                             </button>
-                                            <button type="button" class="btn btn-outline-success" data-toggle="modal"
-                                                data-target="#buscarClienteModal">
-                                                <i class="fas fa-plus"></i> Cliente
-                                            </button>
+
+                                            <a href="{{ route('admin.clientes.create', ['redirect' => 'admin.ventas.create']) }}"
+                                                class="btn btn-outline-success">
+                                                <i class="fas fa-plus"></i> Nuevo Cliente
+                                            </a>
                                         </div>
                                         <div class="mx-2 mt-2">
-                                            <input type="hidden" name="id_cliente">
-                                            <h6><strong>Cliente:</strong><span id="clienteNombreCompleto"></span></h6>
-                                            <h6><strong>Teléfono:</strong> <span id="clienteTelefono"></h6>
-                                            <h6><strong>Email:</strong> <span id="clienteEmail"></h6>
+                                            {{-- Hidden para enviar id del cliente al controlador --}}
+                                            <input type="hidden" name="id_cliente" id="id_cliente"
+                                                value="{{ session('cliente_nuevo.id') ?? '' }}">
+
+                                            {{-- Datos del cliente --}}
+                                            <h6>
+                                                <strong>Cliente:</strong>
+                                                <span id="clienteNombreCompleto">
+                                                    {{ session('cliente_nuevo.apellido_cliente') ?? '' }},
+                                                    {{ session('cliente_nuevo.nombre_cliente') ?? '' }}
+                                                </span>
+                                            </h6>
+
+                                            <h6><strong>Teléfono:</strong> <span
+                                                    id="clienteTelefono">{{ session('cliente_nuevo.celular_cliente') ?? '' }}</span>
+                                            </h6>
+                                            <h6><strong>Email:</strong> <span
+                                                    id="clienteEmail">{{ session('cliente_nuevo.email_cliente') ?? '' }}</span>
+                                            </h6>
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <h6><strong>DNI:</strong> <span id="clienteDni"></span></h6>
+                                                    <h6><strong>DNI:</strong> <span
+                                                            id="clienteDni">{{ session('cliente_nuevo.dni_cliente') ?? '' }}</span>
+                                                    </h6>
                                                 </div>
                                                 <div class="col-6">
-                                                    <h6><strong>Estado Civil:</strong> <span id="clienteEstado"></span></h6>
+                                                    <h6><strong>Estado Civil:</strong> <span
+                                                            id="clienteEstado">{{ session('cliente_nuevo.estado_civil_cliente') ?? '' }}</span>
+                                                    </h6>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- buscar conyuge -->
+
+                                <!-- Conyugue -->
                                 <div class="col-md-5">
                                     <div class="card">
-
                                         <div class="card-footer text-center">
-                                            <h5> Conyugue <i class="fas fa-user-friends"></i>
-                                            </h5>
-                                            {{--   <button type="button" class="btn btn-outline-warning" data-toggle="modal"
-                                                data-target="#buscarConyugeModal">
-                                                <i class="fas fa-edit"></i> Editar Conyugue <i
-                                                    class="fas fa-user-friends"></i>
-                                            </button> --}}
+                                            <h5>Conyugue <i class="fas fa-user-friends"></i></h5>
                                         </div>
-
                                         <div class="mx-2 mt-2">
-                                            <h6><strong>Conyugue:</strong> <span id="conyugueNombreCompleto"></span>
+                                            <h6><strong>Conyugue:</strong> <span
+                                                    id="conyugueNombreCompleto">{{ session('cliente_nuevo.conyugue_nombre_completo') ?? 'No Tiene' }}</span>
                                             </h6>
-                                            <h6><strong>Teléfono:</strong> <span id="conyugueTelefono"></h6>
-                                            <h6><strong>Fecha Nacimiento:</strong> <span id="conyugueFecha"></h6>
-                                            <h6><strong>DNI:</strong> <span id="conyugueDni"></span></h6>
-
+                                            <h6><strong>Teléfono:</strong> <span
+                                                    id="conyugueTelefono">{{ session('cliente_nuevo.conyugue_celular') ?? '' }}</span>
+                                            </h6>
+                                            <h6><strong>Fecha Nacimiento:</strong> <span
+                                                    id="conyugueFecha">{{ session('cliente_nuevo.conyugue_fecha_nacimiento') ?? '' }}</span>
+                                            </h6>
+                                            <h6><strong>DNI:</strong> <span
+                                                    id="conyugueDni">{{ session('cliente_nuevo.conyugue_dni') ?? '' }}</span>
+                                            </h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            {{-- Script para cargar cliente desde sesión --}}
+                            @php
+                                $cliente = session('cliente_nuevo');
+                            @endphp
+
+                            @if ($cliente)
+                                <script>
+                                    seleccionarClienteDesdeModal(
+                                        {{ $cliente->id }},
+                                        "{{ $cliente->apellido_cliente }}",
+                                        "{{ $cliente->nombre_cliente }}",
+                                        "{{ $cliente->dni_cliente }}",
+                                        "{{ $cliente->celular_cliente }}",
+                                        "{{ $cliente->email_cliente }}",
+                                        "{{ $cliente->estado_civil_cliente }}",
+                                        @if ($cliente->conyugue)
+                                            "{{ $cliente->conyugue->apellido_conyugue }}",
+                                            "{{ $cliente->conyugue->nombre_conyugue }}",
+                                            "{{ $cliente->conyugue->dni_conyugue }}",
+                                            "{{ $cliente->conyugue->celular_conyugue }}",
+                                            "{{ $cliente->conyugue->fecha_nacimiento_conyugue }}"
+                                        @else
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null
+                                        @endif
+                                    );
+                                </script>
+                            @endif
+
+
                             <div class="card">
                                 <!-- Botón para buscar Moto -->
                                 <div class="card-footer text-center">

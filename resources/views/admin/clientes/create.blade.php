@@ -262,7 +262,7 @@
                                     </div>
                                 </div>
                         </div>
-
+                        <input type="hidden" name="redirect" value="{{ request('redirect') }}">
                         <!-- Botones -->
                         <div class="card-footer text-right">
                             <button type="submit" class="btn btn-success">
