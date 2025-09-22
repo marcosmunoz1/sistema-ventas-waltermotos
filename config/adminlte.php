@@ -310,11 +310,11 @@ return [
             'topnav_right' => true,
         ],
 
-        // Sidebar items:
+        /*// Sidebar items:
         [
             'type' => 'sidebar-menu-search',
             'text' => 'Buscar',
-        ],
+        ],*/
 
         [
             'text' => 'Ventas',
@@ -505,7 +505,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/chart.js', 
+                    'location' => '//cdn.jsdelivr.net/npm/chart.js',
                 ],
             ],
         ],

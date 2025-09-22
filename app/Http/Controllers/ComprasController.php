@@ -205,7 +205,7 @@ class ComprasController extends Controller
             ->with('icono', 'success');
     }
 
-    public function agregarMotoCompra(Request $request) 
+    public function agregarMotoCompra(Request $request)
     {
 
         try {
@@ -306,7 +306,7 @@ class ComprasController extends Controller
         $request->validate([
             'marca' => 'required',
             'modelo' => 'required|string|max:255',
-            'dominio' => 'required|unique:motos,dominio,' . $motoId,
+            'dominio' => 'nullable|unique:motos,dominio,' . $motoId,
             'cilindrada' => 'required|numeric',
             'color' => 'nullable|string|max:50',
             'anio' => 'nullable|numeric',

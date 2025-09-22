@@ -56,8 +56,8 @@
                                             </div>
 
                                             <div class="col-md-2">
-                                                <label>Dominio</label><b style="color: red;">*</b>
-                                                <input name="dominio" type="text" class="form-control" required
+                                                <label>Dominio</label>
+                                                <input name="dominio" type="text" class="form-control"
                                                     value="{{ $moto->dominio }}" placeholder="Dominio">
                                                 @error('dominio')
                                                     <small style="color: red;">{{ $message }}</small>
