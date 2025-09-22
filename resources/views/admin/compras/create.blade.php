@@ -17,16 +17,16 @@
                     <div class="card-body">
                         <form action="{{ route('admin.compras.store') }}" id="form_compra" method="POST">
                             @csrf
-                            <div class="row">
+                             <div class="row">
                                 {{-- Proveedor --}}
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="proveedor">Proveedor</label>
-                                        <div class="input-group"> 
+                                        <div class="input-group">
                                             <button type="button" class="btn btn-outline-primary btn-sm"
                                                 data-toggle="modal" data-target="#exampleModal_proveedor">
                                                 <i class="fas fa-search"></i> Buscar
-                                            </button>  
+                                            </button>
                                             <input type="text" class="form-control mx-1" id="nombre_proveedor" disabled>
                                             <input type="hidden" id="id_proveedor" name="id_proveedor">
                                             <button type="button" class="btn btn-outline-success" data-toggle="modal"
@@ -85,7 +85,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <hr>
                             <div class="row">
                                 <div class="col-md-4 mb-1">
@@ -146,20 +145,20 @@
                                     </div>
                                 </div>
                             </div>
+                              <!-- Botones de acción -->
+                            <div class="card-footer text-right ">
+
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save"></i> Registrar
+                                </button>
+                                <a href="{{ url('admin/compras') }}" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </a>
+
+                            </div>
+
+                        </form>
                     </div>
-                    <!-- Botones de acción -->
-                    <div class="card-footer text-right ">
-
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save"></i> Registrar
-                        </button>
-                        <a href="{{ url('admin/compras') }}" class="btn btn-secondary">
-                            <i class="fas fa-times"></i> Cancelar
-                        </a>
-
-                    </div>
-
-                    </form>
                 </div>
             </div>
         </div>
@@ -571,14 +570,15 @@
 @stop
 
 @section('js')
-    @if ($errors->any())
+   @if ($errors->has('km_moto') ||$errors->has('anio_moto') ||$errors->has('id_nacionalidad')
+   ||$errors->has('color_moto') ||$errors->has('cilindrada_moto') ||$errors->has('modelo_moto')
+   ||$errors->has('id_marca') ||$errors->has('dominio') || $errors->has('nr_motor') || $errors->has('nr_chasis'))
         <script>
-            // Muestra el modal si hay errores
             document.addEventListener("DOMContentLoaded", function() {
                 $('#crearMotoModal').modal('show');
             });
         </script>
-    @endif
+   @endif
     <script>
         $('#crearMotoModal').on('hidden.bs.modal', function() {
             // Limpiar todos los inputs de texto, number, etc
