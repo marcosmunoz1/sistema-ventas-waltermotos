@@ -12,17 +12,21 @@ class MarcasSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('marcas')->insert([
-            ['nombre_marca' => 'Honda',       'created_at' => now(), 'updated_at' => now()],
-            ['nombre_marca' => 'Yamaha',      'created_at' => now(), 'updated_at' => now()],
-            ['nombre_marca' => 'Suzuki',      'created_at' => now(), 'updated_at' => now()],
-            ['nombre_marca' => 'Kawasaki',    'created_at' => now(), 'updated_at' => now()],
-            ['nombre_marca' => 'Ducati',      'created_at' => now(), 'updated_at' => now()],
-            ['nombre_marca' => 'Harley-Davidson', 'created_at' => now(), 'updated_at' => now()],
-            ['nombre_marca' => 'BMW',         'created_at' => now(), 'updated_at' => now()],
-            ['nombre_marca' => 'KTM',         'created_at' => now(), 'updated_at' => now()],
-            ['nombre_marca' => 'Triumph',     'created_at' => now(), 'updated_at' => now()],
-            ['nombre_marca' => 'Royal Enfield', 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        DB::table('marcas')->truncate(); // vacía la tabla antes de insertar
+
+        $marcas = [
+            ['nombre_marca' => 'Honda'],
+            ['nombre_marca' => 'Yamaha'],
+            ['nombre_marca' => 'Suzuki'],
+            ['nombre_marca' => 'Kawasaki'],
+            ['nombre_marca' => 'Ducati'],
+            ['nombre_marca' => 'BMW'],
+            ['nombre_marca' => 'KTM'],
+            ['nombre_marca' => 'Harley-Davidson'],
+            ['nombre_marca' => 'Triumph'],
+            ['nombre_marca' => 'Aprilia'],
+        ];
+
+        DB::table('marcas')->insert($marcas);
     }
 }

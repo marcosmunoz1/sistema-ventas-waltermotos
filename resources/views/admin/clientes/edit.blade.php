@@ -261,9 +261,10 @@
 
 
                             <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-warning"><i class="fas fa-save"></i>
+                                <button type="submit" class="btn btn-warning"><i class="fa-solid fa-file-arrow-up"></i>
                                     Actualizar</button>
-                                <a href="{{ url('admin/clientes') }}" class="btn btn-secondary">Cancelar</a>
+                                <a href="{{ url('admin/clientes') }}" class="btn btn-secondary"><i
+                                class="fas fa-times"></i> Cancelar</a>
                                 
                             </div>
 

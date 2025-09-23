@@ -154,11 +154,27 @@ class RoleController extends Controller
 
 
 
+
     public function destroy($id)
     {
-        Role::destroy($id);
+        $rol = Role::findOrFail($id);
+
+        // Si el rol a eliminar es "Super-Admin"
+        if ($rol->name === 'Super-Admin') {
+            // Solo lo puede eliminar un usuario con el rol Super-Admin
+            if (!Auth::user()->hasRole('Super-Admin')) {
+                return redirect()->route('admin.roles.index')
+                    ->with('mensaje', '❌ Solo el Super-Admin puede eliminar este rol')
+                    ->with('icono', 'error');
+            }
+        }
+
+        $rol->delete();
+
         return redirect()->route('admin.roles.index')
-            ->with('mensaje', 'Se elimino el Rol con exíto')
+            ->with('mensaje', '✅ Se eliminó el Rol con éxito')
             ->with('icono', 'success');
     }
+
+
 }

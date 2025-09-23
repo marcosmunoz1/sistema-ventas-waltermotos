@@ -49,7 +49,7 @@ class MotoController extends Controller
     {
         $moto = Moto::with(['marca', 'nacionalidad', 'compra', 'deposito'])->findOrFail($id);
         $proveedor = Proveedor::where('id', $moto->compra->id_proveedor)->first();
-        $venta = Venta::with('cliente')-> where('id_moto', $id)->first();
+        $venta = Venta::with('cliente')->where('id_moto', $id)->first();
 
         return view('admin.motos.show', compact('moto', 'proveedor', 'venta'));
     }
@@ -64,7 +64,7 @@ class MotoController extends Controller
         $marcas = Marca::all();
         $nacionalidades = Nacionalidad::all();
         $depositos = Deposito::all();
-        return view('/admin/motos/edit', compact('moto', 'marcas', 'nacionalidades','depositos'));
+        return view('/admin/motos/edit', compact('moto', 'marcas', 'nacionalidades', 'depositos'));
     }
 
     /**
@@ -81,9 +81,9 @@ class MotoController extends Controller
             'anio' => 'nullable|numeric',
             'km' => 'nullable|numeric',
             'motor' => 'required|unique:motos,nr_motor,' . $id,
-            'chasis' => 'required|unique:motos,nr_chasis,'. $id,
-            'dnrpa' => 'nullable|unique:motos,dnrpa,'. $id,
-            'certificado' => 'nullable|unique:motos,nr_certificado,'. $id,
+            'chasis' => 'required|unique:motos,nr_chasis,' . $id,
+            'dnrpa' => 'nullable|unique:motos,dnrpa,' . $id,
+            'certificado' => 'nullable|unique:motos,nr_certificado,' . $id,
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'nacionalidad' => 'required'
         ]);
@@ -111,18 +111,18 @@ class MotoController extends Controller
 
 
         if ($request->hasFile('imagen_moto')) {
-       // Eliminar la imagen antigua si existe
+            // Eliminar la imagen antigua si existe
             if ($moto->imagen_moto && Storage::exists(str_replace('storage/', 'public/', $moto->imagen_moto))) {
                 Storage::delete(str_replace('storage/', 'public/', $moto->imagen_moto));
             }
 
             // Subir nueva imagen
             $file = $request->file('imagen_moto');
-            $nombreArchivo = time().'_'.$file->getClientOriginalName();
+            $nombreArchivo = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('motos', $nombreArchivo, 'public');
 
             // Guardar en DB con "storage/motos/..."
-            $moto->imagen_moto = 'storage/motos/'.$nombreArchivo;
+            $moto->imagen_moto = 'storage/motos/' . $nombreArchivo;
         }
 
         $moto->save();
@@ -139,10 +139,19 @@ class MotoController extends Controller
      */
     public function destroy($id)
     {
-            //
-            Moto::destroy($id);
-            return redirect()->route('admin.motos.index')
-                ->with('mensaje', 'Se elimino la Moto con exíto')
-                ->with('icono','success');
+      /*   $compra = Compra::with('motos')->findOrFail($id);
+
+        // Recorro las motos asociadas
+        foreach ($compra->motos as $moto) {
+            // Solo elimino las que NO están vendidas
+            if ($moto->condicion !== 'vendida') {
+                $moto->delete();
+            }
+        }
+
+        // Finalmente elimino la compra
+       // $compra->delete();
+
+        return redirect()->route('compras.index')->with('success', 'Moto eliminada correctamente.'); */
     }
 }

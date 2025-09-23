@@ -28,15 +28,15 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center" style="width: 5%">#</th>
-                                                <th class="text-center" style="width: 7%">Marca</th>
-                                                <th class="text-center" style="width: 7%">Modelo</th>
+                                                <th class="text-center" style="width: 10%">Marca</th>
+                                                <th class="text-center" style="width: 10%">Modelo</th>
                                                 <th class="text-center" style="width: 5%">Año</th>
                                                 <th class="text-center" style="width: 10%">Nacionalidad</th>
                                                 <th class="text-center" style="width: 10%">P. Compra</th>
                                                 <th class="text-center" style="width: 10%">P. Venta</th>
                                                 <th class="text-center" style="width: 10%">Condicion</th>
                                                 <th class="text-center" style="width: 10%">Imagen</th>
-                                                <th class="text-center" style="width: 15%">Acciones</th>
+                                                <th class="text-center" style="width: 10%">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -82,11 +82,18 @@
                                                     <td class="text-center" style="vertical-align: middle">
                                                         <div class="btn-group" role="group" aria-label="Basic example">
                                                             <a href="{{ url('/admin/motos', $moto->id) }}"
-                                                                class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                                class="btn btn-sm btn-info" title="Ver moto"><i
+                                                                    class="fas fa-eye"></i></a>
                                                             <a href="{{ url('/admin/motos/' . $moto->id . '/edit') }}"
-                                                                class="btn btn-sm btn-warning"><i
+                                                                class="btn btn-sm btn-warning" title="Editar moto"><i
                                                                     class="fas fa-edit"></i></a>
-                                                            <form action="{{ url('/admin/motos', $moto->id) }}"
+                                                            <a href="{{ url('/admin/compras/' . $moto->compra->id) }}?from=motos"
+                                                                class="btn btn-secondary btn-sm" title="Ver compra">
+                                                                <i class="fa-solid fa-cart-shopping"></i>
+                                                            </a>
+
+
+                                                            {{--  <form action="{{ url('/admin/motos', $moto->id) }}"
                                                                 method="post" class="d-inline-block"
                                                                 onsubmit="preguntar(event, {{ $moto->id }})"
                                                                 id="miFormulario{{ $moto->id }}">
@@ -94,7 +101,7 @@
                                                                 @method('DELETE')
                                                                 <button type="submit" class="btn btn-sm btn-danger" style="border-radius: 0px 4px 4px 0px">
                                                                     <i class="fas fa-trash"></i>
-                                                                </button>
+                                                                </button> --}}
                                                         </div>
                                                         </form>
                                                     </td>

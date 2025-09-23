@@ -11,6 +11,9 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use App\Notifications\ResetPasswordNotification;
 
+/**
+ * @method bool hasRole(string|array $roles)
+ */
 
 class User extends Authenticatable
 {
