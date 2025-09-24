@@ -151,7 +151,7 @@
     </script>
      <script>
         $('#mitabla').DataTable({
-            "pageLength": 5,
+           ordering: false,
             "language": {
                 "emptyTable": "No hay información.",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Roles",

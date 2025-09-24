@@ -23,7 +23,7 @@
                         <div class="col-md-10 mx-auto mt-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <table class="table table-striped table-sm table-hover" id="tablaProductos">
+                                    <table id="mitabla" class="table table-striped table-sm table-hover" id="tablaProductos">
                                         <thead class="table-primary">
                                             <tr>
                                                 <th class="text-center" style="width: 5%">#</th>
@@ -79,7 +79,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <!-- Modal para Crear Rol -->
     <div class="modal fade" id="crearUsuarioModal" tabindex="-1" aria-labelledby="crearUsuarioLabel" aria-hidden="true"
@@ -230,5 +230,29 @@
                 }
             });
         }
+    </script>
+     <script>
+        $('#mitabla').DataTable({
+           ordering: false,
+            "language": {
+                "emptyTable": "No hay información.",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Usuarios",
+                "infoEmpty": "Mostrando 0 a 0 de 0 Usuarios",
+                "infoFiltered": "(Filtrado de _MAX_ total Usuarios)",
+                "lengthMenu": "Mostrar _MENU_ Usuarios",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscador:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+
+
     </script>
 @stop
