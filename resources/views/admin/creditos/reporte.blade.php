@@ -39,7 +39,7 @@
                     @php
                         $logo = base64_encode(file_get_contents(public_path('vendor/adminlte/dist/img/AdminLTELogo.png')));
                     @endphp
-                    <td><img src="data:image/png;base64,{{ $logo }}" width="80px" alt="logo">
+                    <td><img src="data:image/png;base64,{{ $logo }}" width="80px" alt="logo"> 
                         </td>
                     <td style="text-align: left" width="180px">
                         <span style="font-size: 10pt;">Walter<b>MOTOS</b></span><br>
