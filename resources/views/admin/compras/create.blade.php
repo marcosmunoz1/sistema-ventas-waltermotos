@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <form action="{{ route('admin.compras.store') }}" id="form_compra" method="POST">
                             @csrf
-                             <div class="row">
+                            <div class="row">
                                 {{-- Proveedor --}}
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -105,7 +105,6 @@
                                                 <th>#</th>
                                                 <th>Marca</th>
                                                 <th>Modelo</th>
-                                                <th>Dominio</th>
                                                 <th>Color</th>
                                                 <th>Año</th>
                                                 <th>Precio Compra</th>
@@ -148,7 +147,7 @@
                                     </div>
                                 </div>
                             </div>
-                              <!-- Botones de acción -->
+                            <!-- Botones de acción -->
                             <div class="card-footer text-right ">
 
                                 <button type="submit" class="btn btn-success">
@@ -347,8 +346,10 @@
                                                         <div class="col-md-4">
                                                             <label>Precio compra</label><b style="color: red;">*</b>
                                                             <input type="text" class="form-control"
-                                                                name="precio_compra" id="precio_compra"
-                                                                placeholder="Precio compra">
+                                                                id="precioCompraFormatted" placeholder="Precio compra">
+                                                            <!-- Input hidden (valor limpio para BD) -->
+                                                            <input type="hidden" name="precio_compra"
+                                                                id="precio_compra">
                                                             @error('precio_compra')
                                                                 <small style="color: red;">{{ $message }}</small>
                                                             @enderror
@@ -356,8 +357,9 @@
                                                         <div class="col-md-4">
                                                             <label>Precio venta</label>
                                                             <input type="text" class="form-control"
-                                                                name="precio_venta" id="precio_venta"
-                                                                placeholder="Precio venta">
+                                                                id="precioVentaFormatted" placeholder="Precio venta">
+                                                            <!-- Input hidden (valor limpio para BD) -->
+                                                            <input type="hidden" name="precio_venta" id="precio_venta">
                                                             @error('precio_venta')
                                                                 <small style="color: red;">{{ $message }}</small>
                                                             @enderror
@@ -402,7 +404,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> >
+                            </div>
                         </div>
 
                     </div>
@@ -573,15 +575,23 @@
 @stop
 
 @section('js')
-   @if ($errors->has('km_moto') ||$errors->has('anio_moto') ||$errors->has('id_nacionalidad')
-   ||$errors->has('color_moto') ||$errors->has('cilindrada_moto') ||$errors->has('modelo_moto')
-   ||$errors->has('id_marca') ||$errors->has('dominio') || $errors->has('nr_motor') || $errors->has('nr_chasis'))
+    @if (
+        $errors->has('km_moto') ||
+            $errors->has('anio_moto') ||
+            $errors->has('id_nacionalidad') ||
+            $errors->has('color_moto') ||
+            $errors->has('cilindrada_moto') ||
+            $errors->has('modelo_moto') ||
+            $errors->has('id_marca') ||
+            $errors->has('dominio') ||
+            $errors->has('nr_motor') ||
+            $errors->has('nr_chasis'))
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 $('#crearMotoModal').modal('show');
             });
         </script>
-   @endif
+    @endif
     <script>
         $('#crearMotoModal').on('hidden.bs.modal', function() {
             // Limpiar todos los inputs de texto, number, etc
@@ -606,7 +616,51 @@
         });
     </script>
 
+    <script>
+        // ============================
+        // Formatear precios con hidden
+        // ============================
+        document.getElementById('precioCompraFormatted').addEventListener('input', function(e) {
+            // Eliminar todo lo que no sea dígito
+            let value = e.target.value.replace(/\D/g, '');
 
+            if (value) {
+                // Mostrar con separadores de miles y dos decimales
+                let formatted = new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(value / 100); // dividir entre 100 para manejar decimales
+
+                e.target.value = formatted;
+
+                // Guardar valor limpio en hidden (con punto decimal)
+                document.getElementById('precio_compra').value = (value / 100).toFixed(2);
+            } else {
+                e.target.value = '';
+                document.getElementById('precio_compra').value = '';
+            }
+        });
+        document.getElementById('precioVentaFormatted').addEventListener('input', function(e) {
+            // Eliminar todo lo que no sea dígito
+            let value = e.target.value.replace(/\D/g, '');
+
+            if (value) {
+                // Mostrar con separadores de miles y dos decimales
+                let formatted = new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(value / 100); // dividir entre 100 para manejar decimales
+
+                e.target.value = formatted;
+
+                // Guardar valor limpio en hidden (con punto decimal)
+                document.getElementById('precio_venta').value = (value / 100).toFixed(2);
+            } else {
+                e.target.value = '';
+                document.getElementById('precio_venta').value = '';
+            }
+        });
+    </script>
 
     <script>
         $('.seleccionar-btn-proveedor').click(function() {
@@ -617,7 +671,8 @@
             $('#exampleModal_proveedor').modal('hide');
         });
     </script>
-{{--     <script>
+    <script>
+        /*
         window.agregarMotoATabla = function() {
             let formData = new FormData();
             // Agregamos los campos del formulario
@@ -718,8 +773,8 @@
                 }
             });
 
-        }
-    </script> --}}
+        }*/
+    </script>
     <script>
         window.agregarMotoATabla = function() {
             let formData = new FormData();
@@ -762,19 +817,19 @@
                 },
                 success: function(res) {
                     if (res.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Éxito!',
-                            text: res.message,
-                            confirmButtonText: 'Aceptar',
-                            confirmButtonColor: '#28a745'
-                        }).then(() => {
+                        //Swal.fire({
+                        //    icon: 'success',
+                        //    title: '¡Éxito!',
+                        //    text: res.message,
+                        //    confirmButtonText: 'Aceptar',
+                        //    confirmButtonColor: '#28a745'
+                        //}).then(() => {
                             $('#crearMotoModal').modal('hide');
                             cargarMotosATabla();
                             // Limpiar errores y formulario
                             $('.text-error').remove();
                             $('#formAgregarMoto')[0].reset();
-                        });
+                        //});
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -797,13 +852,13 @@
                                 `<small class="text-error" style="color:red">${mensaje}</small>`);
                         }
 
-                        Swal.fire({
+                        /*Swal.fire({
                             icon: 'error',
                             title: 'Error de validación',
                             text: 'Por favor corrige los errores marcados.',
                             confirmButtonText: 'Aceptar',
                             confirmButtonColor: '#dc3545'
-                        });
+                        });*/
 
                     } else {
                         console.error(xhr);
@@ -864,7 +919,6 @@
                                 <td>${index + 1}</td>
                                 <td>${nombreMarca}</td>
                                 <td>${moto.modelo_moto}</td>
-                                <td>${moto.dominio ?? ''}</td>
                                 <td>${moto.color_moto}</td>
                                 <td>${moto.anio_moto}</td>
                                 <td>$${moto.precio_compra ? parseFloat(moto.precio_compra).toLocaleString('es-AR') : '0'}</td>

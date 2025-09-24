@@ -262,7 +262,7 @@
                                     </div>
                                 </div>
                         </div>
-
+                        <input type="hidden" name="redirect" value="{{ request('redirect') }}">
                         <!-- Botones -->
                         <div class="card-footer text-right">
                             <button type="submit" class="btn btn-success">
@@ -289,7 +289,7 @@
         $(document).ready(function() {
             function toggleConyugueCard() {
                 var estadoCivil = $('#estado_civil_cliente').val();
-                if (estadoCivil === 'Casado' || estadoCivil === 'Concubinato') {
+                if (estadoCivil === 'Casado' || estadoCivil === 'En Concubinato') {
                     $('#cardConyugue').removeClass('d-none'); // mostrar card completa
                 } else {
                     $('#cardConyugue').addClass('d-none'); // ocultar card completa

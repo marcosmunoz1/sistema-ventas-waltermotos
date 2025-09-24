@@ -324,7 +324,7 @@ class ComprasController extends Controller
         $request->validate([
             'marca' => 'required',
             'modelo' => 'required|string|max:255',
-            'dominio' => 'required|unique:motos,dominio,' . $motoId,
+            'dominio' => 'nullable|unique:motos,dominio,' . $motoId,
             'cilindrada' => 'required|numeric',
             'color' => 'nullable|string|max:50',
             'anio' => 'nullable|numeric',
@@ -424,7 +424,6 @@ class ComprasController extends Controller
      */
     public function destroy($id)
     {
-
         // Buscar la compra
         $compra = Compra::findOrFail($id);
 
@@ -432,7 +431,8 @@ class ComprasController extends Controller
         $motosVendidas = $compra->motos()->where('condicion', 'vendida')->count();
 
         if ($motosVendidas > 0) {
-            return back()->with('mensaje', 'No se puede eliminar la compra porque una o más motos ya fueron vendidas.')
+            return back()->with('mensaje', 'Error al eliminar.')
+                ->with('descripcion', 'No se puede eliminar la compra porque una o más motos ya fueron vendidas.')
                 ->with('icono', 'error');
         }
 

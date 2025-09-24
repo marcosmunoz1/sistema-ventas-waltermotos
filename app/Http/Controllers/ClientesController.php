@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Enums\EstadoCivil;
 
 use App\Models\Cliente;
@@ -114,9 +115,32 @@ class ClientesController extends Controller
 
         $cliente->save();
 
-        return redirect()->route('admin.clientes.index')
-            ->with('mensaje', 'El cliente se agregó con éxito')
-            ->with('icono', 'success');
+        // Tomamos el redirect de la URL si existe
+        $redirect = $request->input('redirect');
+
+        if ($redirect) {
+            if ($redirect && $redirect == 'admin.ventas.create') {
+                $clienteConDatos = $cliente->load('conyugue');
+
+                if ($clienteConDatos->conyugue) {
+                    $clienteConDatos->conyugue_nombre_completo = $clienteConDatos->conyugue->apellido_conyugue . ', ' . $clienteConDatos->conyugue->nombre_conyugue;
+                    $clienteConDatos->conyugue_celular = $clienteConDatos->conyugue->celular_conyugue;
+                    $clienteConDatos->conyugue_fecha_nacimiento = $clienteConDatos->conyugue->fecha_nacimiento_conyugue;
+                    $clienteConDatos->conyugue_dni = $clienteConDatos->conyugue->dni_conyugue;
+                } else {
+                    $clienteConDatos->conyugue_nombre_completo = null;
+                    $clienteConDatos->conyugue_celular = null;
+                    $clienteConDatos->conyugue_fecha_nacimiento = null;
+                    $clienteConDatos->conyugue_dni = null;
+                }
+
+                return redirect()->route($redirect)->with('cliente_nuevo', $clienteConDatos);
+            }
+        } else {
+            return redirect()->route('admin.clientes.index')
+                ->with('mensaje', 'El cliente se agregó con éxito')
+                ->with('icono', 'success');
+        }
     }
 
 
@@ -127,7 +151,7 @@ class ClientesController extends Controller
     {
         $valores = EstadoCivil::cases(); // Devuelve un array de objetos EstadoCivil
         $cliente = Cliente::with('conyugue')->findOrFail($id);
-        return view('admin.clientes.show', compact('cliente','valores'));
+        return view('admin.clientes.show', compact('cliente', 'valores'));
     }
 
     /**
@@ -203,7 +227,6 @@ class ClientesController extends Controller
 
             // Vincular con el cliente
             $cliente->id_conyugue_cliente = $conyugue->id;
-
         } else {
             // Si cambia a otro estado civil y tenía cónyuge, eliminarlo
             if ($cliente->id_conyugue_cliente) {
@@ -238,7 +261,7 @@ class ClientesController extends Controller
         $cliente->delete();
 
         return redirect()->route('admin.clientes.index')
-        ->with('mensaje', 'Se eliminó al cliente de la manera correcta')
-        ->with('icono', 'success');
+            ->with('mensaje', 'Se eliminó al cliente de la manera correcta')
+            ->with('icono', 'success');
     }
 }

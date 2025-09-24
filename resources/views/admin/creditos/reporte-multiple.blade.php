@@ -65,7 +65,7 @@
                         <em>({{ $montoLetras }})</em>,
                         en concepto de pago correspondiente a las cuotas número
                         <strong>{{ $numerosCuotas }}</strong> de su crédito personal.
-                    </p>            
+                    </p>
                 </td>
             </tr>
 
