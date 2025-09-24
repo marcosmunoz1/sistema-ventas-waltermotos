@@ -65,14 +65,14 @@ class ComprasController extends Controller
             'numero_factura' => [
                 'required',
                 'string',
-                Rule::unique('compras', 'numero_factura')
-                    ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor)),
+              Rule::unique('compras', 'numero_factura')
+              ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
             ],
             'numero_remito' => [
                 'required',
                 'string',
                 Rule::unique('compras', 'numero_remito')
-                    ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor)),
+                    ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
             ],
             'estado_compra' => 'required|string',
             'id_proveedor' => 'required|integer',
