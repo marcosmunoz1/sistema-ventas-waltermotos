@@ -65,8 +65,8 @@ class ComprasController extends Controller
             'numero_factura' => [
                 'required',
                 'string',
-              Rule::unique('compras', 'numero_factura')
-              ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
+                Rule::unique('compras', 'numero_factura')
+                    ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
             ],
             'numero_remito' => [
                 'required',
@@ -353,7 +353,7 @@ class ComprasController extends Controller
         $moto->es_usada = $request->has('es_usada') ? 1 : 0;
         $moto->id_deposito = $request->deposito;
 
-         // Formatear precio compra
+        // Formatear precio compra
         $precio_compra = str_replace(['.', ','], ['', '.'], $request->precio_compra);
         $moto->precio_compra = $precio_compra;
 

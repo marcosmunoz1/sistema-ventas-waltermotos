@@ -105,7 +105,7 @@
         function preguntarEliminarCompra(id) {
             Swal.fire({
                 title: '¿Estás seguro?',
-                text: "Esta acción eliminará la compra y todas sus motos (que no estén vendidas).",
+                text: "Esta acción eliminará la compra y todas sus motos.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
