@@ -27,7 +27,7 @@
                                                 data-toggle="modal" data-target="#exampleModal_proveedor">
                                                 <i class="fas fa-search"></i> Buscar
                                             </button>
-                                            <input type="text" class="form-control mx-1" id="nombre_proveedor" disabled>
+                                            <input type="text" class="form-control mx-1" id="nombre_proveedor" readonly>
                                             <input type="hidden" id="id_proveedor" name="id_proveedor">
                                             <button type="button" class="btn btn-outline-success" data-toggle="modal"
                                                 data-target="#modalAgregarProveedor">
@@ -568,9 +568,7 @@
             </div>
         </div>
     </div>
-
 @stop
-
 @section('css')
 @stop
 
