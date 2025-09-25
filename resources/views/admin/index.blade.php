@@ -12,14 +12,13 @@
             <div class="small-box bg-danger zoomP">
                 <div class="inner">
                     <h3>Motos</h3>
-
                     <p>Registradas: {{ $cantidadMotos }}</p>
                 </div>
                 <div class="icon">
-                    <i class="fas fa-list"></i>
+                    <i class="fas fa-motorcycle"></i>
                 </div>
                 <a href="{{ url('/admin/motos') }}" class="small-box-footer">
-                    Ingresar <i class="fas fa-motorcycle"></i>
+                    Ingresar <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
@@ -57,8 +56,7 @@
             <div class="small-box bg-info zoomP">
                 <div class="inner">
                     <h3>Clientes</h3>
-
-                    <p>Registradas: {{ $cantidadClientes }}</p>
+                    <p>Registrados: {{ $cantidadClientes }}</p>
                 </div>
                 <div class="icon">
                     <i class="fa-solid fa-users"></i>
@@ -72,8 +70,7 @@
             <div class="small-box bg-dark zoomP">
                 <div class="inner">
                     <h3>Proveedores</h3>
-
-                    <p>Registradas: {{ $cantidadProveedores }}</p>
+                    <p>Registrados: {{ $cantidadProveedores }}</p>
                 </div>
                 <div class="icon">
                     <i class="fa-solid fa-user-tie"></i>
@@ -87,7 +84,6 @@
             <div class="small-box text-bg-light zoomP">
                 <div class="inner">
                     <h3>Compras</h3>
-
                     <p>Registradas: {{ $cantidadCompras }}</p>
                 </div>
                 <div class="icon">
@@ -103,7 +99,6 @@
             <div class="small-box bg-primary zoomP">
                 <div class="inner">
                     <h3>Roles</h3>
-
                     <p>Registrados: {{ $cantidadRoles }}</p>
                 </div>
                 <div class="icon">
@@ -150,7 +145,7 @@
         <div class="col-md-6">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Total monto de ventas</h3>
+                    <h3 class="card-title">Resumen mensual de los montos de ventas</h3>
                 </div>
                 <div class="card-body">
                     <div>
@@ -162,7 +157,7 @@
         <div class="col-md-6">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Total cantida de ventas</h3>
+                    <h3 class="card-title">Resumen de la cantidad de ventas mensuales</h3>
                 </div>
                 <div class="card-body">
                     <div>

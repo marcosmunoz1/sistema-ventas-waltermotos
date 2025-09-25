@@ -188,8 +188,8 @@
                                             <label>Precio de Compra</label>
                                             <div class="input-group">
                                                     <span class="input-group-text text-success">$</span>
-                                                  <input type="text" class="form-control text-success"
-                                                value="{{ number_format($moto->precio_compra, 2, ',', '.') }}" disabled>
+                                                  <input name="precio_compra" type="text" class="form-control text-success"
+                                                value="{{ number_format($moto->precio_compra, 2, ',', '.') }}">
                                             </div>
                                         </div>
                                     </div>

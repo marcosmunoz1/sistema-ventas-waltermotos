@@ -139,19 +139,32 @@ class MotoController extends Controller
      */
     public function destroy($id)
     {
-      /*   $compra = Compra::with('motos')->findOrFail($id);
+        $moto = Moto::findOrFail($id);
 
-        // Recorro las motos asociadas
-        foreach ($compra->motos as $moto) {
-            // Solo elimino las que NO están vendidas
-            if ($moto->condicion !== 'vendida') {
-                $moto->delete();
+        // Evitar eliminar motos vendidas
+        if ($moto->condicion === 'vendida') {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se puede eliminar una moto vendida.'
+            ]);
+        }
+
+        $compraId = $moto->compra_id;
+        $moto->delete();
+
+        // Verificar si quedan motos en la compra
+        $motosRestantes = Moto::where('compra_id', $compraId)->count();
+
+        if ($motosRestantes === 0) {
+            $compra = Compra::find($compraId);
+            if ($compra) {
+                $compra->delete();
             }
         }
 
-        // Finalmente elimino la compra
-       // $compra->delete();
-
-        return redirect()->route('compras.index')->with('success', 'Moto eliminada correctamente.'); */
+        return response()->json([
+            'success' => true,
+            'message' => 'Moto eliminada correctamente.'
+        ]);
     }
 }

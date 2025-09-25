@@ -18,7 +18,7 @@
                         <form action="{{ url('/admin/compras', $compra->id) }}" id="form_compra" method="post">
                             @csrf
                             @method('PUT')
-                            <div class="card-body">
+                            <div class="card-info">
                                 <div class="row">
                                     {{-- Proveedor --}}
                                     <div class="col-md-4">
@@ -75,7 +75,7 @@
                                     </div>
 
                                     {{-- Estado --}}
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 ">
                                         <div class="form-group">
                                             <label for="estado_compra">Estado <b>*</b></label>
                                             <select class="form-control" name="estado_compra" required>
@@ -96,99 +96,109 @@
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col-md-4 mb-1">
+                                <div class="col-md-4 mb-1 ">
                                     <button type="button" class="btn btn-outline-warning" data-toggle="modal"
                                         data-target="#crearMotoModal"><i class="fa-solid fa-cart-shopping"></i> Agregar
                                         moto</button>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-sm" id="tabla-motos">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Marca</th>
-                                                <th>Modelo</th>
-                                                <th>Dominio</th>
-                                                <th>Color</th>
-                                                <th>Año</th>
-                                                <th>Precio Compra</th>
-                                                <th>Cilindrada</th>
-                                                <th style="text-align: center">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($compra->motos as $moto)
-                                                <tr data-id="{{ $moto->id }}"
-                                                    data-imagen="{{ asset($moto->imagen_moto) }}"
-                                                    data-cilindrada="{{ $moto->cilindrada_moto }}"
-                                                    data-nr-motor="{{ $moto->nr_motor }}"
-                                                    data-nr-chasis="{{ $moto->nr_chasis }}"
-                                                    data-certificado="{{ $moto->nr_certificado }}"
-                                                    data-dnrpa="{{ $moto->dnrpa }}" data-km_moto="{{ $moto->km_moto }}"
-                                                    data-id_nacionalidad="{{ $moto->id_nacionalidad }}"
-                                                    data-nacionalidad="{{ $moto->nacionalidad->pais ?? 'N/D' }}"
-                                                    data-precio_venta="{{ $moto->precio_venta }}"
-                                                    data-condicion="{{ $moto->condicion }}">
-                                                    <td style="text-align: center">{{ $contador++ }}</td>
-                                                    <td class="marca-moto" style="text-align: center">
-                                                        {{ $moto->marca->nombre_marca }}</td>
-                                                    <td class="modelo-moto" style="text-align: center">
-                                                        {{ $moto->modelo_moto }}</td>
-                                                    <td class="dominio-moto" style="text-align: center">
-                                                        {{ $moto->dominio }}</td>
-                                                    <td class="color-moto" style="text-align: center">
-                                                        {{ $moto->color_moto }}</td>
-                                                    <td class="anio-moto" style="text-align: center">
-                                                        {{ $moto->anio_moto }}</td>
-                                                    <td class="precio_compra-moto" style="text-align: center">
-                                                        ${{ number_format($moto->precio_compra, 2, '.', ',') }}</td>
-                                                    <td>{{ $moto->cilindrada_moto }}cc</td>
-                                                    <td style="vertical-align: middle; text-align:center;">
-                                                        <div class="d-flex justify-content-center"
-                                                            style="display: flex; justify-content: center; gap: 5px;"
-                                                            role="group" aria-label="Acciones moto">
-                                                            <!-- Ver -->
-                                                            <button style="text-align: center" type="button"
-                                                                class="btn btn-primary btn-sm rounded" data-toggle="modal"
-                                                                data-target="#VerMotoModal"
-                                                                onclick="verMoto({{ $moto->id }})">
-                                                                <i class="fas fa-eye"></i>
-                                                            </button>
 
-                                                            <!-- Editar -->
-                                                            <a href="{{ route('compras.motos.edit', ['compraId' => $compra->id, 'motoId' => $moto->id]) }}"
-                                                                class="btn btn-warning btn-sm rounded">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
 
-                                                            <!-- Eliminar -->
-                                                            <button type="button" class="btn btn-danger btn-sm rounded"
-                                                                onclick="eliminarMoto(this)">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    <div class="text-right mt-2">
-                                        <strong>Total de compra:</strong> <span
-                                            id="total_compra">${{ number_format($totalCompra, 2, '.', ',') }}</span>
-                                    </div>
+                            <table class="table table-bordered table-striped table-sm table-responsive" id="tabla-motos">
+                                <thead class="bg-warning text-dark">
+                                    <tr>
+                                        <th class="text-center" style="width: 5%">#</th>
+                                        <th class="text-center" style="width: 10%">Marca</th>
+                                        <th class="text-center" style="width: 10%">Modelo</th>
+                                        {{-- <th class="text-center" style="width: 10%">Cilindrada</th> --}}
+                                        <th class="text-center" style="width: 10%">Color</th>
+                                        <th class="text-center" style="width: 5%">Año</th>
+                                        <th class="text-center" style="width: 15%">Precio Compra</th>
+                                        <th class="text-center" style="width: 10%">Condicion</th>
+                                        <th class="text-center" style="width: 5%">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php $totalCompra = 0; @endphp
+                                    @foreach ($compra->motos as $moto)
+                                        <tr data-id="{{ $moto->id }}" data-imagen="{{ asset($moto->imagen_moto) }}"
+                                            data-cilindrada="{{ $moto->cilindrada_moto }}"
+                                            data-nr-motor="{{ $moto->nr_motor }}" data-nr-chasis="{{ $moto->nr_chasis }}"
+                                            data-certificado="{{ $moto->nr_certificado }}"
+                                            data-dnrpa="{{ $moto->dnrpa }}" data-km_moto="{{ $moto->km_moto }}"
+                                            data-id_nacionalidad="{{ $moto->id_nacionalidad }}"
+                                            data-nacionalidad="{{ $moto->nacionalidad->pais ?? 'N/D' }}"
+                                            data-precio_venta="{{ $moto->precio_venta }}"
+                                            data-condicion="{{ $moto->condicion }}">
+                                            <td style="text-align: center">{{ $contador++ }}</td>
+                                            <td class="marca-moto" style="text-align: center">
+                                                {{ $moto->marca->nombre_marca }}</td>
+                                            <td class="modelo-moto" style="text-align: center">
+                                                {{ $moto->modelo_moto }}</td>
+                                            {{--  <td class="dominio-moto" style="text-align: center">
+                                                        {{ $moto->dominio }}</td> --}}
+                                            <td class="color-moto" style="text-align: center">
+                                                {{ $moto->color_moto }}</td>
+                                            <td class="anio-moto" style="text-align: center">
+                                                {{ $moto->anio_moto }}</td>
+                                            <td class="precio_compra-moto" style="text-align: center">
+                                                ${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
+                                            @php $totalCompra += $moto->precio_compra; @endphp
+                                            {{--  <td>{{ $moto->cilindrada_moto }}cc</td> --}}
+                                            <td class="text-center" style="vertical-align: middle">
+                                                @php
+                                                    $colores = [
+                                                        'vendida' => 'danger',
+                                                        'en_stock' => 'success',
+                                                        'garantia' => 'warning',
+                                                        'devuelta' => 'secondary',
+                                                    ];
+                                                    $color = $colores[$moto->condicion] ?? 'light';
+                                                @endphp
+                                                <span class="badge bg-{{ $color }}">
+                                                    {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
+                                                </span>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <!-- Ver -->
+                                                    <button style="text-align: center" type="button"
+                                                        class="btn btn-primary btn-sm" data-toggle="modal"
+                                                        data-target="#VerMotoModal"
+                                                        onclick="verMoto({{ $moto->id }})">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <!-- Editar -->
+                                                    <a href="{{ route('compras.motos.edit', ['compraId' => $compra->id, 'motoId' => $moto->id]) }}"
+                                                        class="btn btn-warning btn-sm ">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <!-- Eliminar -->
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                        style="border-radius: 0px 4px 4px 0px"
+                                                        onclick="eliminarMoto(this)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            <div class="card-body">
+                                <div class="d-flex justify-content-end">
+                                    <h3 class="fw-bold">
+                                        TOTAL:
+                                        <span id="total_compra" class="ms-2">
+                                            ${{ number_format($totalCompra, 2, ',', '.') }}
+                                        </span>
+                                        <input type="hidden" name="total_compra" value={{ $totalCompra }}>
+                                    </h3>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <input class="form-control" type="hidden" name="total_compra"
-                                                id="precio_total_input" value="0" required>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
+
+
                     </div>
 
                     <!-- Botones de acción -->
@@ -264,11 +274,12 @@
         aria-labelledby="crearRolLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header text-white d-flex justify-content-center" style="background-color: #252652">
+                <div class="modal-header bg-success text-white">
+
                     <h4 class="modal-title text-center">
                         <i class="fa-solid fa-motorcycle"></i>
-                        <span id="modalActionText">Agregar</span> detalle de la moto
-                        <i class="fa-solid fa-motorcycle"></i>
+                        <span id="modalActionText">Ingresar datos de motocicleta</span>
+
                     </h4>
                     <button type="button" class="close position-absolute" style="right: 20px" data-dismiss="modal"
                         aria-label="close">
@@ -451,7 +462,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" onclick="agregarMotoATabla()" class="btn btn-primary">
+                        <button type="button" onclick="agregarMotoATabla()" class="btn btn-success">
                             <i class="fas fa-save"></i> Guardar moto
                         </button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -461,7 +472,8 @@
                 </div> <!-- .modal-body -->
             </div> <!-- .modal-content -->
         </div> <!-- .modal-dialog -->
-    </div> <!-- .modal -->
+    </div>
+
     <!-- Modal Ver Moto -->
     <div class="modal fade" id="VerMotoModal" tabindex="-1" role="dialog" aria-labelledby="VerMotoModalLabel"
         aria-hidden="true">
@@ -482,7 +494,7 @@
             </div>
         </div>
     </div>
-    <!-- Fin modal ver moto -->
+
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ session('error') }}
@@ -520,6 +532,7 @@
             $('#exampleModal_proveedor').modal('hide');
         });
     </script>
+
     <script>
         window.agregarMotoATabla = function() {
             let formData = new FormData();
@@ -618,6 +631,7 @@
             });
         }
     </script>
+
     <script>
         function verMoto(id) {
             const fila = document.querySelector(`tr[data-id='${id}']`);
@@ -673,6 +687,7 @@
             document.getElementById('contenido-ver-moto').innerHTML = contenido;
         }
     </script>
+
     <script>
         function eliminarMoto(button) {
             const fila = button.closest('tr');
@@ -684,48 +699,70 @@
             }
 
             Swal.fire({
-                title: '¿Desea eliminar este registro?',
-                icon: 'question',
-                showDenyButton: true,
+                title: '¿Desea eliminar esta moto?',
+                text: 'Si es la última, también se eliminará la compra.',
+                icon: 'warning',
+                showCancelButton: true,
                 confirmButtonText: 'Eliminar',
-                confirmButtonColor: '#a5161d',
-                denyButtonColor: '#270a0a',
-                denyButtonText: 'Cancelar'
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#d33'
             }).then((result) => {
                 if (result.isConfirmed) {
                     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
                     $.ajax({
-                        url: `/admin/compras/motos/${motoId}`,
+                        url: "{{ url('/admin/compras/motos') }}/" + motoId,
                         type: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': token
                         },
                         success: function(response) {
                             if (response.success) {
-                                // Recargar la página directamente sin mostrar otro mensaje
-                                location.reload();
+                                Swal.fire({
+                                    title: 'Moto Eliminada',
+                                    text: response.message,
+                                    icon: 'success',
+                                    confirmButtonText: 'Aceptar'
+                                }).then(() => {
+                                    if (response.compraEliminada) {
+                                        // Si también se eliminó la compra, volver al index
+                                        window.location.href =
+                                            "{{ route('admin.compras.index') }}";
+                                    } else {
+                                        // Solo recargo si todavía existe la compra
+                                        location.reload();
+                                    }
+                                });
                             } else {
-                                // Aquí capturamos el mensaje cuando está vendida
-                                Swal.fire('No permitido', response.message ||
-                                    'No se puede eliminar la moto.', 'warning');
+                                Swal.fire('No permitido', response.message, 'warning');
                             }
                         },
                         error: function(xhr) {
                             let mensaje = 'Error en la petición de eliminación';
                             if (xhr.responseJSON && xhr.responseJSON.message) {
-                                mensaje = xhr.responseJSON.message; // mensaje del backend (ej: vendida)
+                                mensaje = xhr.responseJSON.message;
                             }
-                            Swal.fire('Error', mensaje, 'error');
+
+                            Swal.fire({
+                                title: 'No permitido',
+                                text: mensaje,
+                                icon: 'error', // icono de alerta
+                                confirmButtonText: 'Cerrar',
+                                confirmButtonColor: '#FF4500', // color del botón
+                                background: '#FFF0F5', // color de fondo del alert
+                                color: '#800000', // color del texto
+                            });
+
                             console.error(xhr);
                         }
+
                     });
-                } else if (result.isDenied) {
-                    Swal.fire('Cancelado', 'La eliminación fue cancelada', 'info');
+
                 }
             });
         }
     </script>
+
     <script>
         function archivo(evt) {
             var files = evt.target.files; //file List objet
