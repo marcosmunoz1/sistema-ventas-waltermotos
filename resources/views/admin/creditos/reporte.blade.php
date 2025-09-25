@@ -36,8 +36,10 @@
         <div class="header">
             <table border="0" style="font-size: 8pt">
                 <tr>
-                    <td><img src="{{ public_path('vendor/adminlte/dist/img/AdminLTELogo.png') }}" width="80px"
-                            alt="">
+                    @php
+                        $logo = base64_encode(file_get_contents(public_path('vendor/adminlte/dist/img/AdminLTELogo.png')));
+                    @endphp
+                    <td><img src="data:image/png;base64,{{ $logo }}" width="80px" alt="logo"> 
                         </td>
                     <td style="text-align: left" width="180px">
                         <span style="font-size: 10pt;">Walter<b>MOTOS</b></span><br>
@@ -71,7 +73,7 @@
                         <strong>{{ $detalle->numero_cuota }}</strong> <em>({{ ucfirst($cuotaLetras) }})</em>
                         de su crédito personal.
                     </p>
-                    
+
                 </td>
             </tr>
 

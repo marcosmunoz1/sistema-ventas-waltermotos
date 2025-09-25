@@ -17,10 +17,12 @@ return new class extends Migration
             $table->foreign('id_proveedor')->references('id')->on(table: 'proveedores')->onDelete('cascade');
             $table->date('fecha_compra');
             $table->string('numero_remito');
-            $table->string('numero_factura')->unique()->nullable();
+            $table->string('numero_factura')->nullable();
             $table->decimal('total_compra',10,2);
             $table->string('estado_compra');
-            $table->timestamps();
+            $table->timestamps(); 
+            $table->unique(['id_proveedor', 'numero_remito']); // Índice único compuesto
+            $table->unique(['id_proveedor', 'numero_factura']); // Índice único compuesto
         });
     }
 
