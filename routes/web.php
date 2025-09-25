@@ -77,6 +77,7 @@ Route::post('/admin/compras/edit', [App\Http\Controllers\ComprasController::clas
 Route::delete('/admin/compras/motos/{id}', [App\Http\Controllers\ComprasController::class, 'eliminarMotoCompra'])->name('admin.compras.motos.destroy')->middleware('auth','can:compras-eliminar');
 
 
+
 //Rutas para tmp-motos
 Route::middleware(['web', 'auth'])->post('/admin/tmp-compras', [TmpCompraController::class, 'store'])->name('tmp-compras.store')->middleware('auth');
 Route::delete('/admin/tmp-compras/{id}', [TmpCompraController::class, 'destroy'])->name('tmp-compras.destroy')->middleware('auth');

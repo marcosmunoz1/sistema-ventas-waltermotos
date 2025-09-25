@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class ComprasController extends Controller
 {
@@ -57,9 +58,8 @@ class ComprasController extends Controller
     {
         /*  $datos = request()->all();
         return response()->json($datos);  */
+
         // Validación de la compra
-
-
         $request->validate([
             'fecha_compra' => 'required|date',
             'numero_factura' => [
@@ -79,7 +79,6 @@ class ComprasController extends Controller
             'total_compra' => 'required|numeric',
         ]);
 
-
         $session_id = session()->getId();
         $tmpMotos = TmpMoto::where('session_id', $session_id)->get();
 
@@ -96,8 +95,6 @@ class ComprasController extends Controller
             }
             $valoresTemp[] = $key;
         }
-
-
 
         // Transacción para asegurar que todo se guarde correctamente
         DB::beginTransaction();
@@ -152,8 +149,6 @@ class ComprasController extends Controller
             return back()->with('mensaje', 'Error al registrar la compra: ' . $e->getMessage());
         }
     }
-
-
 
     /**
      * Display the specified resource.
@@ -334,7 +329,8 @@ class ComprasController extends Controller
             'dnrpa' => 'nullable|unique:motos,dnrpa,' . $motoId,
             'certificado' => 'nullable|unique:motos,nr_certificado,' . $motoId,
             'imagen_moto' => 'nullable',
-            'nacionalidad' => 'required'
+            'nacionalidad' => 'required',
+            'precio_compra' => 'required',
         ]);
 
         // Buscar la compra y la moto
@@ -356,6 +352,11 @@ class ComprasController extends Controller
         $moto->id_nacionalidad = $request->nacionalidad;
         $moto->es_usada = $request->has('es_usada') ? 1 : 0;
         $moto->id_deposito = $request->deposito;
+
+         // Formatear precio compra
+        $precio_compra = str_replace(['.', ','], ['', '.'], $request->precio_compra);
+        $moto->precio_compra = $precio_compra;
+
 
         // Formatear precio venta
         $precio_venta = str_replace(['.', ','], ['', '.'], $request->precio_venta);
@@ -388,35 +389,36 @@ class ComprasController extends Controller
 
     public function eliminarMotoCompra($id)
     {
-        $moto = Moto::find($id);
+        $moto = Moto::with('compra')->findOrFail($id);
 
-        if (!$moto) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Moto no encontrada'
-            ], 404);
-        }
-
-        // Validar si está vendida
+        // Si la moto ya está vendida -> no permitir
         if ($moto->condicion === 'vendida') {
             return response()->json([
                 'success' => false,
-                'message' => 'No se puede eliminar una moto que ya fue vendida'
-            ], 403);
+                'message' => 'No se puede eliminar una moto vendida.'
+            ], 400);
         }
 
-        try {
-            $moto->delete();
+        $compra = $moto->compra;
+
+        // Elimino la moto
+        $moto->delete();
+
+        // Si no quedan más motos en la compra -> elimino la compra también
+        if ($compra->motos()->count() === 0) {
+            $compra->delete();
             return response()->json([
                 'success' => true,
-                'message' => 'Moto eliminada'
+                'compraEliminada' => true,
+                'message' => 'La moto y la compra fueron eliminadas correctamente.'
             ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al eliminar la moto'
-            ], 500);
         }
+
+        return response()->json([
+            'success' => true,
+            'compraEliminada' => false,
+            'message' => 'Moto eliminada correctamente.'
+        ]);
     }
 
     /**
@@ -424,25 +426,26 @@ class ComprasController extends Controller
      */
     public function destroy($id)
     {
-        // Buscar la compra
-        $compra = Compra::findOrFail($id);
+        $compra = Compra::with('motos')->findOrFail($id);
 
-        // Verificar si alguna moto asociada ya fue vendida
-        $motosVendidas = $compra->motos()->where('condicion', 'vendida')->count();
+        // Verificar si hay alguna moto vendida en la compra
+        $tieneVendidas = $compra->motos()->where('condicion', 'vendida')->exists();
 
-        if ($motosVendidas > 0) {
-            return back()->with('mensaje', 'Error al eliminar.')
-                ->with('descripcion', 'No se puede eliminar la compra porque una o más motos ya fueron vendidas.')
+        if ($tieneVendidas) {
+            return redirect()->route('admin.compras.index')
+                ->with('mensaje', 'Error al eliminar.')
+                ->with('descripcion', 'Existen motos vendidas en la compra.')
                 ->with('icono', 'error');
         }
 
-        // Eliminar motos asociadas
-        $compra->motos()->delete();
+        // Si no hay motos vendidas → eliminamos todas las motos y la compra
+        foreach ($compra->motos as $moto) {
+            $moto->delete();
+        }
 
-        // Eliminar la compra
         $compra->delete();
 
-        return back()->with('mensaje', 'Compra y motos asociadas eliminadas correctamente.')
-            ->with('icono', 'success');
+        return redirect()->route('admin.compras.index')
+            ->with('success', 'La compra y sus motos fueron eliminadas correctamente.');
     }
 }

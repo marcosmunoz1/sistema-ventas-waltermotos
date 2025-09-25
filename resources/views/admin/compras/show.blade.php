@@ -106,7 +106,7 @@
                                                 <td class="anio-moto" style="text-align: center">{{ $moto->anio_moto }}
                                                 </td>
                                                 <td class="precio_compra-moto" style="text-align: center">
-                                                    ${{ number_format($moto->precio_compra, 2, '.', ',') }}</td>
+                                                    ${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
                                                 {{--  <td style="text-align: center">{{ $moto->cilindrada_moto }}cc</td> --}}
                                                 <td class="text-center" style="vertical-align: middle">
                                                     @php
@@ -134,38 +134,26 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-
-                                <div class="d-flex justify-content-end">
-                                    <div class="input-group" style="max-width: 280px;">
-                                        <span class="input-group-text fw-bold fs-5">
-                                            <h3 class="fw-bold text-decondary">
-                                                TOTAL:
-                                        </span>
-
-                                        <span
-                                            id="total_compra">${{ number_format($compra->total_compra, 2, '.', ',') }}</span>
-                                        </h3>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input class="form-control" style="text-align: center;background-color: #e9e710"
-                                        type="hidden" name="total_compra" id="precio_total_input"
-                                        value="{{ $compra->total_compra }}" disabled>
-                                </div>
                             </div>
                         </div>
 
+                        <div class="card-body">
+                            <div class="d-flex justify-content-end">
+                                <h3 class="fw-bold text-secondary">
+                                    TOTAL:
+                                    <span id="total_compra" class="ms-2">
+                                        ${{ number_format($compra->total_compra, 2, ',', '.') }}
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
 
                     </div>
+
                     <!-- Botones de acción -->
                     <div class="card-footer text-right">
                         <a href="{{ url('/admin/compras/' . $compra->id . '/edit') }}" class="btn btn-warning"><i
-                                class="fas fa-pencil"></i>Editar Compra</a>
+                                class="fas fa-pencil"></i> Editar Compra</a>
                         @if (request('from') === 'motos')
                             <a href="{{ url('admin/motos') }}" class="btn btn-secondary"> <i
                                     class="fas fa-arrow-left"></i>Volver</a>
