@@ -84,7 +84,8 @@
                                     <tbody>
                                         <?php $contador = 1; ?>
                                         @foreach ($compra->motos as $moto)
-                                            <tr data-id="{{ $moto->id }}" data-imagen="{{ asset($moto->imagen_moto) }}"
+                                            <tr data-id="{{ $moto->id }}"
+                                                data-imagen="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : '' }}"
                                                 data-cilindrada="{{ $moto->cilindrada_moto }}"
                                                 data-nr-motor="{{ $moto->nr_motor }}"
                                                 data-nr-chasis="{{ $moto->nr_chasis }}"
@@ -208,7 +209,7 @@
             const anio = fila.querySelector('.anio-moto')?.innerText || 'N/A';
             const precio_compra = fila.querySelector('.precio_compra-moto')?.innerText || 'N/A';
             const precio_venta = fila.dataset.precio_venta || 'N/A';
-            const imagenUrl = fila.dataset.imagen;
+            const imagenUrl = fila.dataset.imagen?.trim();
             const cilindrada = fila.dataset.cilindrada || '';
             const nrMotor = fila.dataset.nrMotor || '';
             const nrChasis = fila.dataset.nrChasis || '';
@@ -228,6 +229,10 @@
             // Si existe en el diccionario, usa el valor, si no, deja el original con espacios bonitos
             let condicionFormateada = mapCondiciones[condicion] ||
                 condicion.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+            // Si viene vacía o nula, usamos la default
+            const defaultImagen = '/storage/motos/default.png';
+            const urlImagen = (imagenUrl && imagenUrl !== '') ? imagenUrl : defaultImagen;
+            console.log("Imagen de la moto:", urlImagen);
             const contenido = `
                 <div class="row">
                     <div class="col-md-4">
@@ -250,7 +255,7 @@
                         <p><strong>Condición:</strong> ${condicionFormateada}</p>
                     </div>
                     <div class="col-md-4">
-                        ${imagenUrl ? `<img src="${imagenUrl}" class="img-fluid img-thumbnail mt-2" style="max-width: 200px;">` : '<p><em>Sin imagen</em></p>'}
+                        <img src="${urlImagen}" class="img-fluid img-thumbnail mt-2" style="max-width: 200px;">
                     </div>
                 </div>
 

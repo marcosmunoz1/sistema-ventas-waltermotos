@@ -167,8 +167,8 @@
                                         <br>
                                         <center>
                                             <output id="list">
-                                                <img src="{{ asset($moto->imagen_moto) }}" width="100%"
-                                                    alt="">
+                                                <img src="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : asset('storage/motos/default.png') }}"
+                                                        width="100%" alt="Imagen de la moto">
                                             </output>
                                         </center>
                                     </div>

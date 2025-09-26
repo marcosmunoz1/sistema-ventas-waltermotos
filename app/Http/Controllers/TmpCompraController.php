@@ -75,8 +75,26 @@ class TmpCompraController extends Controller
                 'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado',
                 'precio_compra' => 'required',
                 'precio_venta' => 'nullable',
-                'imagen_moto' => 'nullable', 
+                'imagen_moto' => 'nullable',
                 'id_deposito' => 'required',
+            ], [], [ //atributos con nombres "bonitos"
+                'id_marca' => 'Marca',
+                'modelo_moto' => 'Modelo',
+                'dominio' => 'Dominio',
+                'id_nacionalidad' => 'Nacionalidad',
+                'cilindrada_moto' => 'Cilindrada',
+                'color_moto' => 'Color',
+                'anio_moto' => 'Año',
+                'km_moto' => 'Kilometraje',
+                'es_usada' => 'Condición de uso',
+                'nr_motor' => 'Número de motor',
+                'nr_chasis' => 'Número de chasis',
+                'dnrpa' => 'DNRPA',
+                'nr_certificado' => 'Número de certificado',
+                'precio_compra' => 'Precio de compra',
+                'precio_venta' => 'Precio de venta',
+                'imagen_moto' => 'Imagen de la moto',
+                'id_deposito' => 'Depósito',
             ]);
 
             // Si la validación falla, devolver errores en JSON

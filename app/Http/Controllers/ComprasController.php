@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class ComprasController extends Controller
@@ -223,25 +224,51 @@ class ComprasController extends Controller
 
         try {
             // Validar los datos que vienen del modal
-            $validated = $request->validate([
+            $validator = Validator::make($request->all(), [
                 'id_marca' => 'required',
                 'modelo_moto' => 'required',
-                'dominio' => 'nullable',
+                'dominio' => 'nullable|unique:motos,dominio',
                 'id_nacionalidad' => 'required',
                 'cilindrada_moto' => 'required|numeric|min:0',
                 'color_moto' => 'required',
                 'anio_moto' => 'required|numeric|min:0',
                 'km_moto' => 'required|numeric|min:0',
                 'es_usada' => 'required',
-                'nr_motor' => 'required',
-                'nr_chasis' => 'required',
-                'dnrpa' => 'nullable',
-                'nr_certificado' => 'nullable',
+                'nr_motor' => 'required|unique:motos,nr_motor',
+                'nr_chasis' => 'required|unique:motos,nr_chasis',
+                'dnrpa' => 'nullable|unique:motos,dnrpa',
+                'nr_certificado' => 'nullable|unique:motos,nr_certificado',
                 'precio_compra' => 'required',
                 'precio_venta' => 'nullable',
                 'imagen_moto' => 'nullable|image|mimes:jpg,jpeg,png,gif',
                 'id_deposito' => 'required',
+            ], [], [ //atributos con nombres "bonitos"
+                'id_marca' => 'Marca',
+                'modelo_moto' => 'Modelo',
+                'dominio' => 'Dominio',
+                'id_nacionalidad' => 'Nacionalidad',
+                'cilindrada_moto' => 'Cilindrada',
+                'color_moto' => 'Color',
+                'anio_moto' => 'Año',
+                'km_moto' => 'Kilometraje',
+                'es_usada' => 'Condición de uso',
+                'nr_motor' => 'Número de motor',
+                'nr_chasis' => 'Número de chasis',
+                'dnrpa' => 'DNRPA',
+                'nr_certificado' => 'Número de certificado',
+                'precio_compra' => 'Precio de compra',
+                'precio_venta' => 'Precio de venta',
+                'imagen_moto' => 'Imagen de la moto',
+                'id_deposito' => 'Depósito',
             ]);
+
+            // Si la validación falla, devolver errores en JSON
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
 
             $compraId = $request->input('compra_id');
             $fecha_compra = $request->input('fecha_compra');
