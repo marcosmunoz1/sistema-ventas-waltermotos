@@ -55,9 +55,9 @@
                                         <label>Remito</label>
                                         <input type="text" value="{{ old('numero_remito') }}" class="form-control"
                                             id="numero_remito" name="numero_remito" placeholder="Nr. de remito" required>
-                                            @error('numero_remito')
+                                        @error('numero_remito')
                                             <small class="text-danger">{{ $message }}</small>
-                                           @enderror
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -597,43 +597,28 @@
         // Formatear precios con hidden
         // ============================
         document.getElementById('precioCompraFormatted').addEventListener('input', function(e) {
-            // Eliminar todo lo que no sea dígito
             let value = e.target.value.replace(/\D/g, '');
-
             if (value) {
-                // Mostrar con separadores de miles y dos decimales
-                let formatted = new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }).format(value / 100); // dividir entre 100 para manejar decimales
+                e.target.value = new Intl.NumberFormat('es-AR').format(value);
+                document.getElementById('precio_compra').value = value;
 
-                e.target.value = formatted;
 
-                // Guardar valor limpio en hidden (con punto decimal)
-                document.getElementById('precio_compra').value = (value / 100).toFixed(2);
             } else {
                 e.target.value = '';
                 document.getElementById('precio_compra').value = '';
             }
         });
+
         document.getElementById('precioVentaFormatted').addEventListener('input', function(e) {
-            // Eliminar todo lo que no sea dígito
             let value = e.target.value.replace(/\D/g, '');
-
             if (value) {
-                // Mostrar con separadores de miles y dos decimales
-                let formatted = new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }).format(value / 100); // dividir entre 100 para manejar decimales
+                e.target.value = new Intl.NumberFormat('es-AR').format(value);
+                document.getElementById('precioVenta').value = value;
 
-                e.target.value = formatted;
 
-                // Guardar valor limpio en hidden (con punto decimal)
-                document.getElementById('precio_venta').value = (value / 100).toFixed(2);
             } else {
                 e.target.value = '';
-                document.getElementById('precio_venta').value = '';
+                document.getElementById('precioVenta').value = '';
             }
         });
     </script>
