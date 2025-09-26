@@ -48,7 +48,7 @@
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                             <a href="{{ url('/admin/compras/' . $compra->id . '/edit') }}"
                                                 class="btn btn-warning btn-sm"><i class="fas fa-pencil"></i></a>
-                                            <form action="{{ url('/admin/compras ', $compra->id) }}" method="post"
+                                            <form action="{{ route('admin.compras.destroy', $compra->id) }}" method="post"
                                                 id="formEliminarCompra{{ $compra->id }}">
                                                 @csrf
                                                 @method('DELETE')
@@ -58,6 +58,8 @@
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
+
+
 
 
                                         </div>
