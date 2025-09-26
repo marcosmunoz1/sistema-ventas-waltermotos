@@ -192,13 +192,26 @@ class ComprasController extends Controller
     {
         //$datos = request()->all();
         //return response()->json($datos);
+        // Validación de la compra
         $request->validate([
-            'fecha_compra' => 'required',
-            'numero_factura' => 'required',
-            'numero_remito' => 'required',
-            'estado_compra' => 'required',
-            'id_proveedor' => 'required',
-            'total_compra' => 'required',
+            'fecha_compra' => 'required|date',
+            'numero_factura' => [
+                'required',
+                'string',
+                Rule::unique('compras', 'numero_factura')
+                    ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
+                    ->ignore($id),
+            ],
+            'numero_remito' => [
+                'required',
+                'string',
+                Rule::unique('compras', 'numero_remito')
+                    ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
+                    ->ignore($id),
+            ],
+            'estado_compra' => 'required|string',
+            'id_proveedor' => 'required|integer',
+            'total_compra' => 'required|numeric',
         ]);
 
         $compra = Compra::find($id);

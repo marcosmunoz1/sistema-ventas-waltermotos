@@ -551,23 +551,7 @@
 @stop
 
 @section('js')
-    @if (
-        $errors->has('km_moto') ||
-            $errors->has('anio_moto') ||
-            $errors->has('id_nacionalidad') ||
-            $errors->has('color_moto') ||
-            $errors->has('cilindrada_moto') ||
-            $errors->has('modelo_moto') ||
-            $errors->has('id_marca') ||
-            $errors->has('dominio') ||
-            $errors->has('nr_motor') ||
-            $errors->has('nr_chasis'))
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                $('#crearMotoModal').modal('show');
-            });
-        </script>
-    @endif
+ c
     <script>
         $('#crearMotoModal').on('hidden.bs.modal', function() {
             // Limpiar todos los inputs de texto, number, etc

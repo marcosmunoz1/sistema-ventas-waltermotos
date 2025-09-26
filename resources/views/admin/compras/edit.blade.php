@@ -62,6 +62,9 @@
                                             <input type="text" value="{{ $compra->numero_remito }}" class="form-control"
                                                 id="numero_remito" name="numero_remito" placeholder="Nr. de remito"
                                                 required>
+                                                @error('numero_remito')
+                                                <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                         </div>
                                     </div>
 
@@ -218,7 +221,7 @@
     </div>
 
 
-    <!-- Modal -->
+    <!-- Modal de proveedores -->
     <div class="modal fade" id="exampleModal_proveedor" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -516,6 +519,23 @@
 @section('css')
 @stop
 @section('js')
+   @if (
+        $errors->has('km_moto') ||
+            $errors->has('anio_moto') ||
+            $errors->has('id_nacionalidad') ||
+            $errors->has('color_moto') ||
+            $errors->has('cilindrada_moto') ||
+            $errors->has('modelo_moto') ||
+            $errors->has('id_marca') ||
+            $errors->has('dominio') ||
+            $errors->has('nr_motor') ||
+            $errors->has('nr_chasis'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                $('#crearMotoModal').modal('show');
+            });
+        </script>
+    @endif
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Asignar el total que viene desde la BD
