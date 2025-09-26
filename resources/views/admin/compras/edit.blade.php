@@ -62,6 +62,9 @@
                                             <input type="text" value="{{ $compra->numero_remito }}" class="form-control"
                                                 id="numero_remito" name="numero_remito" placeholder="Nr. de remito"
                                                 required>
+                                                @error('numero_remito')
+                                                <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                         </div>
                                     </div>
 

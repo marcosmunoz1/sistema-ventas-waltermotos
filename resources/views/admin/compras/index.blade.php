@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Compras')
 @section('content_header')
 
 
@@ -48,7 +48,7 @@
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                             <a href="{{ url('/admin/compras/' . $compra->id . '/edit') }}"
                                                 class="btn btn-warning btn-sm"><i class="fas fa-pencil"></i></a>
-                                            <form action="{{ url('/admin/compras ', $compra->id) }}" method="post"
+                                            <form action="{{ route('admin.compras.destroy', $compra->id) }}" method="post"
                                                 id="formEliminarCompra{{ $compra->id }}">
                                                 @csrf
                                                 @method('DELETE')
@@ -58,6 +58,8 @@
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
+
+
 
 
                                         </div>
@@ -105,7 +107,7 @@
         function preguntarEliminarCompra(id) {
             Swal.fire({
                 title: '¿Estás seguro?',
-                text: "Esta acción eliminará la compra y todas sus motos (que no estén vendidas).",
+                text: "Esta acción eliminará la compra y todas sus motos.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
