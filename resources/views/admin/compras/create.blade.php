@@ -29,12 +29,16 @@
                                             </button>
                                             <input type="text" class="form-control mx-1" id="nombre_proveedor" readonly>
                                             <input type="hidden" id="id_proveedor" name="id_proveedor">
+
                                             <button type="button" class="btn btn-outline-success" data-toggle="modal"
                                                 data-target="#modalAgregarProveedor">
                                                 <i class="fas fa-plus"></i>
                                             </button>
                                         </div>
                                     </div>
+                                    @error('id_proveedor')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 {{-- Factura --}}
@@ -374,15 +378,14 @@
                                                             <small style="color: red;">{{ $message }}</small>
                                                         @enderror
                                                         <br>
-                                                            <center>
-                                                                <output id="list">
-                                                                    <img id="preview-moto"
-                                                                        src="{{ asset('storage/motos/default.png') }}"
-                                                                        width="70%"
-                                                                        alt="Vista previa"
-                                                                        style="border:1px solid #ccc; border-radius:8px; object-fit:cover;">
-                                                                </output>
-                                                            </center>
+                                                        <center>
+                                                            <output id="list">
+                                                                <img id="preview-moto"
+                                                                    src="{{ asset('storage/motos/default.png') }}"
+                                                                    width="70%" alt="Vista previa"
+                                                                    style="border:1px solid #ccc; border-radius:8px; object-fit:cover;">
+                                                            </output>
+                                                        </center>
 
                                                     </div>
 
@@ -559,7 +562,7 @@
 @stop
 
 @section('js')
- c
+    c
     <script>
         $('#crearMotoModal').on('hidden.bs.modal', function() {
             // Limpiar todos los inputs de texto, number, etc
@@ -579,8 +582,8 @@
             // Limpiar input file y previews
             $(this).find('input[type="file"]').val('');
             $(this).find('#preview-container').empty().hide();
-           // Resetear la imagen de previsualización a la default
-            $(this).find('#preview-moto').attr('src', '{{ asset("storage/motos/default.png") }}');
+            // Resetear la imagen de previsualización a la default
+            $(this).find('#preview-moto').attr('src', '{{ asset('storage/motos/default.png') }}');
         });
     </script>
 
@@ -862,9 +865,10 @@
                     `$ ${parseFloat(moto.precio_venta).toLocaleString('es-AR')}` : 'No registrado');
                 $('#verDeposito').text(moto.deposito ? moto.deposito.nombre_deposito : 'No registrado');
                 // Imagen de la moto con fallback a default
-                let imgRuta = moto.imagen_moto
-                    ? '/' + moto.imagen_moto // si guardaste la ruta completa desde storage
-                    : '/storage/motos/default.png'; // fallback a imagen default
+                let imgRuta = moto.imagen_moto ?
+                    '/' + moto.imagen_moto // si guardaste la ruta completa desde storage
+                    :
+                    '/storage/motos/default.png'; // fallback a imagen default
                 $('#verImagen').attr('src', imgRuta).show();
 
                 //Abrir modal
@@ -907,7 +911,7 @@
         document.getElementById('imagen_moto').addEventListener('change', archivo, false);
 
         // Resetear modal al abrir
-        $('#modalAgregarMoto').on('show.bs.modal', function (e) {
+        $('#modalAgregarMoto').on('show.bs.modal', function(e) {
             var preview = document.getElementById("preview-moto");
             var input = document.getElementById("imagen_moto");
 

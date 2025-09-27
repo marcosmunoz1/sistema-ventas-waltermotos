@@ -78,6 +78,8 @@ class ComprasController extends Controller
             'estado_compra' => 'required|string',
             'id_proveedor' => 'required|integer',
             'total_compra' => 'required|numeric',
+        ],[],[
+                'id_proveedor'=>'Proveedor',
         ]);
 
         $session_id = session()->getId();
