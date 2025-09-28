@@ -73,9 +73,13 @@
                                                             class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
                                                         {{--  <a href="{{ url('/admin/creditos/' . $credito->id . '/edit') }}"
                                                     class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a> --}}
-                                                        <a href="{{ url('/admin/creditos/' . $credito->id . '/cobrar-cuotas') }}"
-                                                            class="btn btn-sm btn-secondary"><i
-                                                                class="fas fa-cash-register"></i></a>
+                                                        @if($credito->estado_credito != "Pagado")
+                                                            <a href="{{ url('/admin/creditos/' . $credito->id . '/cobrar-cuotas') }}"
+                                                                class="btn btn-sm btn-secondary"><i
+                                                                    class="fas fa-cash-register"></i></a>
+                                                        @else
+                                                        @endif
+
                                                         <form action="{{ url('/admin/creditos', $credito->id) }}"
                                                             method="post" class="d-inline-block"
                                                             onsubmit="preguntar(event, {{ $credito->id }})"
