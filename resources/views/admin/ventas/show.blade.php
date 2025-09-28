@@ -1,10 +1,10 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 
 @section('title', 'Detalle Venta')
 
 @section('content_header')
     <h2 class="brand-text font-weight-light">Admin/Ventas/<b>Ver-Detalle de Venta</b></h2>
-    
+
 @endsection
 
 @section('content')
@@ -77,7 +77,7 @@
                             <div class="mx-2 mt-2">
                                 <div class="row">
                                     <div class="col-3">
-                                        <h6><strong>Marmca:</strong> {{ $moto->marca->nombre_marca }}</h6>
+                                        <h6><strong>Marca:</strong> {{ $moto->marca->nombre_marca }}</h6>
                                         <h6><strong>Modelo:</strong> {{ $moto->modelo_moto }}</h6>
                                         <h6><strong>Año:</strong> {{ $moto->anio_moto }}</h6>
                                         <h6><strong>Dominio:</strong> {{ $moto->dominio }}</span></h6>
