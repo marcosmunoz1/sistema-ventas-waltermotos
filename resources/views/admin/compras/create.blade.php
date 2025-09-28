@@ -767,6 +767,7 @@
                         precio_total += parseFloat(moto.precio_compra) || 0;
                         // Obtenemos el nombre de la marca
                         const nombreMarca = getNombreMarca(moto.id_marca);
+                        let urlEditar = `/admin/motos-temporales/${moto.id}/editar`;
 
                         let fila = `
                     <tr>

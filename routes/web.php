@@ -79,7 +79,6 @@ Route::delete('/admin/compras/motos/{id}', [App\Http\Controllers\ComprasControll
 
 // EDITAR MOTO DE LA TABLA TEMPORAL
 Route::get('/admin/motos-temporales/{motoId}/editar',[App\Http\Controllers\TmpCompraController::class, 'editarMoto'])->name('compras.temporales.motos.edit')->middleware('auth','can:compras-editar');
-
 Route::put('/admin/motos-temporales/moto/{motoId}', [\App\Http\Controllers\TmpCompraController::class, 'update'])
     ->name('compras.temporales.motos.update');
 
