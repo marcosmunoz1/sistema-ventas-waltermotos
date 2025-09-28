@@ -309,7 +309,7 @@
                                                     <div class="row">
                                                         <div class="col-md-4">
                                                             <label>Marca</label> <b style="color: red;">*</b>
-                                                            <select class="form-control" name="id_marca" id="id_marca">
+                                                            <select class="form-control" name="id_marca" id="id_marca" required>
                                                                 <option value="">Seleccione una marca
                                                                 </option>
                                                                 @foreach ($marcas as $marca)

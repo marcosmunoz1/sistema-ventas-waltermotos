@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TmpCompraController;
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -76,7 +77,11 @@ Route::put('/admin/compras/{compraId}/motos/{motoId}', [App\Http\Controllers\Com
 Route::post('/admin/compras/edit', [App\Http\Controllers\ComprasController::class, 'agregarMotoCompra'])->name('admin.compras.motos.create')->middleware('auth')->middleware('auth','can:compras-editar');
 Route::delete('/admin/compras/motos/{id}', [App\Http\Controllers\ComprasController::class, 'eliminarMotoCompra'])->name('admin.compras.motos.destroy')->middleware('auth','can:compras-eliminar');
 
+// EDITAR MOTO DE LA TABLA TEMPORAL
+Route::get('/admin/motos-temporales/{motoId}/editar',[App\Http\Controllers\TmpCompraController::class, 'editarMoto'])->name('compras.temporales.motos.edit')->middleware('auth','can:compras-editar');
 
+Route::put('/admin/motos-temporales/moto/{motoId}', [\App\Http\Controllers\TmpCompraController::class, 'update'])
+    ->name('compras.temporales.motos.update');
 
 //Rutas para tmp-motos
 Route::middleware(['web', 'auth'])->post('/admin/tmp-compras', [TmpCompraController::class, 'store'])->name('tmp-compras.store')->middleware('auth');

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Compra;
+use App\Models\Deposito;
+use App\Models\Marca;
 use App\Models\Moto;
+use App\Models\Nacionalidad;
 use App\Models\TmpMoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -75,7 +79,7 @@ class TmpCompraController extends Controller
                 'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado',
                 'precio_compra' => 'required',
                 'precio_venta' => 'nullable',
-                'imagen_moto' => 'nullable', 
+                'imagen_moto' => 'nullable',
                 'id_deposito' => 'required',
             ]);
 
@@ -133,6 +137,92 @@ class TmpCompraController extends Controller
             ], 500);
         }
     }
+
+    public function editarMoto($motoId){
+         $nacionalidades = Nacionalidad::all();
+        $depositos = Deposito::all();
+        $marcas = Marca::all();
+        $moto = tmpMoto::findOrFail($motoId);
+
+        if ($moto && $moto->condicion === 'vendida') {
+            return redirect()->back()->with('mensaje', 'No se puede editar una moto que ya fue vendida.')
+                ->with('icono', 'error');
+        }
+        return view('admin.compras.edit_tmp_moto', compact(
+            'moto',
+            'nacionalidades',
+            'depositos',
+            'marcas'
+        ));
+
+    }
+
+    public function update(Request $request, $motoId)
+    {
+        $request->validate([
+        'id_marca' => 'required',
+        'id_nacionalidad' => 'required',
+        'modelo_moto' => 'required|string|max:255',
+        'dominio' => 'nullable|unique:tmp_motos,dominio,' . $motoId,
+        'cilindrada_moto' => 'required|numeric',
+        'color_moto' => 'nullable|string|max:50',
+        'anio_moto' => 'nullable|numeric',
+        'km_moto' => 'nullable|numeric',
+        'nr_motor' => 'required|unique:tmp_motos,nr_motor,' . $motoId,
+        'nr_chasis' => 'required|unique:tmp_motos,nr_chasis,' . $motoId,
+        'dnrpa' => 'nullable|unique:tmp_motos,dnrpa,' . $motoId,
+        'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado,' . $motoId,
+        'imagen_moto' => 'nullable|image|max:2048',
+        'precio_compra' => 'required',
+        'precio_venta' => 'nullable',
+        'id_deposito' => 'required',
+    ]);
+
+    // Buscar la moto temporal
+    $moto = TmpMoto::findOrFail($motoId);
+
+    // Actualizar campos
+    $moto->id_marca = $request->id_marca;
+    $moto->id_nacionalidad = $request->id_nacionalidad;
+    $moto->id_deposito = $request->id_deposito;
+    $moto->modelo_moto = $request->modelo_moto;
+    $moto->dominio = $request->dominio;
+    $moto->cilindrada_moto = $request->cilindrada_moto;
+    $moto->color_moto = $request->color_moto;
+    $moto->anio_moto = $request->anio_moto;
+    $moto->km_moto = $request->km_moto;
+    $moto->es_usada = $request->has('es_usada') ? 1 : 0;
+    $moto->nr_motor = $request->nr_motor;
+    $moto->nr_chasis = $request->nr_chasis;
+    $moto->dnrpa = $request->dnrpa;
+    $moto->nr_certificado = $request->nr_certificado;
+
+    // Formatear precios
+    $moto->precio_compra = floatval(str_replace(['.', ','], ['', '.'], $request->precio_compra));
+    $moto->precio_venta = floatval(str_replace(['.', ','], ['', '.'], $request->precio_venta ?? 0));
+
+    // Subir nueva imagen si existe
+    if ($request->hasFile('imagen_moto')) {
+        // Eliminar imagen antigua si existe
+        if ($moto->imagen_moto && \Illuminate\Support\Facades\Storage::exists(str_replace('storage/', 'public/', $moto->imagen_moto))) {
+            \Illuminate\Support\Facades\Storage::delete(str_replace('storage/', 'public/', $moto->imagen_moto));
+        }
+        $file = $request->file('imagen_moto');
+        $nombreArchivo = time() . '_' . $file->getClientOriginalName();
+        $file->storeAs('motos', $nombreArchivo, 'public');
+        $moto->imagen_moto = 'storage/motos/' . $nombreArchivo;
+    }
+
+    $moto->session_id = session()->getId();
+
+    $moto->save();
+
+    return redirect()->route('admin.compras.create')
+        ->with('mensaje', 'Moto actualizada correctamente')
+        ->with('icono', 'success');
+
+    }
+
 
     public function listar()
     {

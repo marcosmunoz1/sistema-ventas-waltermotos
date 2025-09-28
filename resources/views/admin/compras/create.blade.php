@@ -551,7 +551,23 @@
 @stop
 
 @section('js')
- c
+    @if (
+        $errors->has('km_moto') ||
+            $errors->has('anio_moto') ||
+            $errors->has('id_nacionalidad') ||
+            $errors->has('color_moto') ||
+            $errors->has('cilindrada_moto') ||
+            $errors->has('modelo_moto') ||
+            $errors->has('id_marca') ||
+            $errors->has('dominio') ||
+            $errors->has('nr_motor') ||
+            $errors->has('nr_chasis'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                $('#crearMotoModal').modal('show');
+            });
+        </script>
+    @endif
     <script>
         $('#crearMotoModal').on('hidden.bs.modal', function() {
             // Limpiar todos los inputs de texto, number, etc
@@ -756,6 +772,7 @@
                         precio_total += parseFloat(moto.precio_compra) || 0;
                         // Obtenemos el nombre de la marca
                         const nombreMarca = getNombreMarca(moto.id_marca);
+                        let urlEditar = `/admin/motos-temporales/${moto.id}/editar`; 
 
                         let fila = `
                     <tr>
@@ -771,6 +788,10 @@
                                 data-moto='${JSON.stringify(moto)}'>
                                 <i class="fas fa-eye"></i>
                             </button>
+                             <!-- Editar -->
+                            <a href="${urlEditar}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </a>
                             <button class="btn btn-danger btn-sm delete-btn" data-id="${moto.id}">
                                 <i class="fas fa-trash"></i>
                             </button>
