@@ -29,12 +29,16 @@
                                             </button>
                                             <input type="text" class="form-control mx-1" id="nombre_proveedor" readonly>
                                             <input type="hidden" id="id_proveedor" name="id_proveedor">
+
                                             <button type="button" class="btn btn-outline-success" data-toggle="modal"
                                                 data-target="#modalAgregarProveedor">
                                                 <i class="fas fa-plus"></i>
                                             </button>
                                         </div>
                                     </div>
+                                    @error('id_proveedor')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 {{-- Factura --}}
@@ -374,10 +378,17 @@
                                                             <small style="color: red;">{{ $message }}</small>
                                                         @enderror
                                                         <br>
-                                                        <center><output id="list"></output></center>
+                                                        <center>
+                                                            <output id="list">
+                                                                <img id="preview-moto"
+                                                                    src="{{ asset('storage/motos/default.png') }}"
+                                                                    width="70%" alt="Vista previa"
+                                                                    style="border:1px solid #ccc; border-radius:8px; object-fit:cover;">
+                                                            </output>
+                                                        </center>
+
                                                     </div>
-                                                    <!-- Contenedor para previsualización -->
-                                                    <div id="preview-container" class="mt-2"></div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -551,23 +562,7 @@
 @stop
 
 @section('js')
-    @if (
-        $errors->has('km_moto') ||
-            $errors->has('anio_moto') ||
-            $errors->has('id_nacionalidad') ||
-            $errors->has('color_moto') ||
-            $errors->has('cilindrada_moto') ||
-            $errors->has('modelo_moto') ||
-            $errors->has('id_marca') ||
-            $errors->has('dominio') ||
-            $errors->has('nr_motor') ||
-            $errors->has('nr_chasis'))
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                $('#crearMotoModal').modal('show');
-            });
-        </script>
-    @endif
+    c
     <script>
         $('#crearMotoModal').on('hidden.bs.modal', function() {
             // Limpiar todos los inputs de texto, number, etc
@@ -587,8 +582,8 @@
             // Limpiar input file y previews
             $(this).find('input[type="file"]').val('');
             $(this).find('#preview-container').empty().hide();
-            // Limpiar también el output que muestra la lista de imágenes
-            $(this).find('#list').empty();
+            // Resetear la imagen de previsualización a la default
+            $(this).find('#preview-moto').attr('src', '{{ asset('storage/motos/default.png') }}');
         });
     </script>
 
@@ -772,7 +767,6 @@
                         precio_total += parseFloat(moto.precio_compra) || 0;
                         // Obtenemos el nombre de la marca
                         const nombreMarca = getNombreMarca(moto.id_marca);
-                        let urlEditar = `/admin/motos-temporales/${moto.id}/editar`; 
 
                         let fila = `
                     <tr>
@@ -874,17 +868,14 @@
                 $('#verPrecioVenta').text(moto.precio_venta ?
                     `$ ${parseFloat(moto.precio_venta).toLocaleString('es-AR')}` : 'No registrado');
                 $('#verDeposito').text(moto.deposito ? moto.deposito.nombre_deposito : 'No registrado');
-                console.log("Imagen de la moto:", moto.imagen_moto);
+                // Imagen de la moto con fallback a default
+                let imgRuta = moto.imagen_moto ?
+                    '/' + moto.imagen_moto // si guardaste la ruta completa desde storage
+                    :
+                    '/storage/motos/default.png'; // fallback a imagen default
+                $('#verImagen').attr('src', imgRuta).show();
 
-                // Imagen
-                if (moto.imagen_moto) {
-                    $('#verImagen')
-                        .attr('src', '/' + moto.imagen_moto) // agregamos la barra inicial
-                        .show();
-                } else {
-                    $('#verImagen').attr('src', '/img/placeholder.png').show();
-                }
-
+                //Abrir modal
                 $('#modalVerMoto').modal('show');
             });
         }
@@ -898,30 +889,46 @@
 
 
     <script>
+        // Función para previsualización
         function archivo(evt) {
-            var files = evt.target.files; //file List objet
-            //Obtenemos la imagen del campo "file"
-            for (var i = 0, f; f = files[i]; i++) {
-                //solo admitimos imagenes
-                if (!f.type.match('image.*')) {
-                    continue;
-                }
-                var reader = new FileReader();
-                reader.onload = (function(theFile) {
-                    return function(e) {
-                        //insertamos la imagen
-                        document.getElementById("list").innerHTML = ['<img class="thumb thumbail" src="', e
-                            .target.result, '" width="70%" title="', escape(theFile.name), '"/>'
-                        ].join('');
-                    };
-                })(f);
-                reader.readAsDataURL(f);
+            var files = evt.target.files;
+            var preview = document.getElementById("preview-moto");
 
+            if (files.length === 0) {
+                preview.src = "{{ asset('storage/motos/default.png') }}";
+                return;
             }
 
+            var f = files[0];
+            if (!f.type.match('image.*')) {
+                preview.src = "{{ asset('storage/motos/default.png') }}";
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(f);
         }
+
         document.getElementById('imagen_moto').addEventListener('change', archivo, false);
+
+        // Resetear modal al abrir
+        $('#modalAgregarMoto').on('show.bs.modal', function(e) {
+            var preview = document.getElementById("preview-moto");
+            var input = document.getElementById("imagen_moto");
+
+            // Limpiar input
+            input.value = "";
+
+            // Volver a imagen default
+            preview.src = "{{ asset('storage/motos/default.png') }}";
+        });
     </script>
+
+
+
     <script>
         $('#formAgregarProveedor').on('submit', function(e) {
             e.preventDefault();

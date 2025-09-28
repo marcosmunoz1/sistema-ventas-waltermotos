@@ -124,7 +124,8 @@
                                 <tbody>
                                     @php $totalCompra = 0; @endphp
                                     @foreach ($compra->motos as $moto)
-                                        <tr data-id="{{ $moto->id }}" data-imagen="{{ asset($moto->imagen_moto) }}"
+                                        <tr data-id="{{ $moto->id }}"
+                                            data-imagen="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : '' }}"
                                             data-cilindrada="{{ $moto->cilindrada_moto }}"
                                             data-nr-motor="{{ $moto->nr_motor }}" data-nr-chasis="{{ $moto->nr_chasis }}"
                                             data-certificado="{{ $moto->nr_certificado }}"
@@ -221,7 +222,7 @@
     </div>
 
 
-    <!-- Modal de proveedores -->
+    <!-- Modal seleccionar proveedor -->
     <div class="modal fade" id="exampleModal_proveedor" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -234,7 +235,7 @@
                 </div>
                 <div class="modal-body">
                     <table id="mitabla2"
-                        class="table table-striped table-bordered table-hover table-sm table-responsive">
+                        class="table table-striped table-bordered table-hover table-sm">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col" style="text-align: center;">Nro</th>
@@ -271,7 +272,60 @@
             </div>
         </div>
     </div>
+    <!--Modal agregar proveedor -->
+    <div class="modal fade" id="modalAgregarProveedor" tabindex="-1" role="dialog"
+        aria-labelledby="modalProveedorLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header bg-success">
+                    <h5 class="modal-title" id="modalProveedorLabel">Agregar Proveedor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
+                <!-- Formulario -->
+                <form id="formAgregarProveedor">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
+                        <div class="form-group">
+                            <label for="nombre_proveedor">Nombre</label>
+                            <input type="text" placeholder="Ingrese el nombre" name="nombre_proveedor"
+                                id="nombre_proveedor" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cuit">CUIT</label>
+                            <input type="text" placeholder="Ingrese el CUIT" name="cuit" id="cuit"
+                                class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" placeholder="Ingrese el telefono" name="telefono" id="telefono"
+                                class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="celular">Celular</label>
+                            <input type="text" placeholder="Ingrese el celular" name="celular" id="celular"
+                                class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" placeholder="Ingrese el correo electronico" name="email"
+                                id="email" class="form-control">
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- Modal para agregar el detalle de la moto -->
     <div class="modal" id="crearMotoModal" tabindex="-1" role="dialog" aria-modal="true"
         aria-labelledby="crearRolLabel" aria-hidden="true">
@@ -415,14 +469,16 @@
                                                         <div class="col-md-4">
                                                             <label>Precio compra</label><b style="color: red;">*</b>
                                                             <input type="text" class="form-control"
-                                                                name="precio_compra" id="precio_compra"
-                                                                placeholder="Precio compra">
+                                                            id="precioCompraFormatted" placeholder="Precio compra">
+                                                            <!-- Input hidden (valor limpio para BD) -->
+                                                            <input type="hidden" name="precio_compra" id="precio_compra">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label>Precio venta</label>
                                                             <input type="text" class="form-control"
-                                                                name="precio_venta" id="precio_venta"
-                                                                placeholder="Precio venta">
+                                                            id="precioVentaFormatted" placeholder="Precio venta">
+                                                            <!-- Input hidden (valor limpio para BD) -->
+                                                            <input type="hidden" name="precio_venta" id="precio_venta">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label>Deposito</label><b style="color: red;">*</b>
@@ -450,7 +506,15 @@
                                                                 <small style="color: red;">{{ $message }}</small>
                                                             @enderror
                                                             <br>
-                                                            <center><output id="list"></output></center>
+                                                            <center>
+                                                                <output id="list">
+                                                                    <img id="preview-moto"
+                                                                        src="{{ asset('storage/motos/default.png') }}"
+                                                                        width="70%"
+                                                                        alt="Vista previa"
+                                                                        style="border:1px solid #ccc; border-radius:8px; object-fit:cover;">
+                                                                </output>
+                                                            </center>
                                                         </div>
                                                         <!-- Contenedor para previsualización -->
                                                         <div id="preview-container" class="mt-2"></div>
@@ -519,23 +583,91 @@
 @section('css')
 @stop
 @section('js')
-   @if (
-        $errors->has('km_moto') ||
-            $errors->has('anio_moto') ||
-            $errors->has('id_nacionalidad') ||
-            $errors->has('color_moto') ||
-            $errors->has('cilindrada_moto') ||
-            $errors->has('modelo_moto') ||
-            $errors->has('id_marca') ||
-            $errors->has('dominio') ||
-            $errors->has('nr_motor') ||
-            $errors->has('nr_chasis'))
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                $('#crearMotoModal').modal('show');
-            });
-        </script>
+    @if (
+            $errors->has('km_moto') ||
+                $errors->has('anio_moto') ||
+                $errors->has('id_nacionalidad') ||
+                $errors->has('color_moto') ||
+                $errors->has('cilindrada_moto') ||
+                $errors->has('modelo_moto') ||
+                $errors->has('id_marca') ||
+                $errors->has('dominio') ||
+                $errors->has('nr_motor') ||
+                $errors->has('nr_chasis'))
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    $('#crearMotoModal').modal('show');
+                });
+            </script>
     @endif
+    <script>
+        $('#crearMotoModal').on('hidden.bs.modal', function() {
+            // Limpiar todos los inputs de texto, number, etc
+            $(this).find('input[type="text"], input[type="number"], input[type="date"]').val('');
+
+            // Limpiar selects
+            $(this).find('select').prop('selectedIndex', 0);
+
+            // Limpiar checkboxes y radios
+            $(this).find('input[type="checkbox"], input[type="radio"]').prop('checked', false);
+
+            // Eliminar errores pintados por Ajax
+            $(this).find('.text-error').remove();
+            $(this).find('.is-invalid').removeClass('is-invalid');
+
+            // Limpiar imagen si aplica
+            // Limpiar input file y previews
+            $(this).find('input[type="file"]').val('');
+            $(this).find('#preview-container').empty().hide();
+           // Resetear la imagen de previsualización a la default
+            $(this).find('#preview-moto').attr('src', '{{ asset("storage/motos/default.png") }}');
+        });
+    </script>
+    <script>
+        // ============================
+        // Formatear precios con hidden
+        // ============================
+        document.getElementById('precioCompraFormatted').addEventListener('input', function(e) {
+            // Eliminar todo lo que no sea dígito
+            let value = e.target.value.replace(/\D/g, '');
+
+            if (value) {
+                // Mostrar con separadores de miles y dos decimales
+                let formatted = new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(value / 100); // dividir entre 100 para manejar decimales
+
+                e.target.value = formatted;
+
+                // Guardar valor limpio en hidden (con punto decimal)
+                document.getElementById('precio_compra').value = (value / 100).toFixed(2);
+            } else {
+                e.target.value = '';
+                document.getElementById('precio_compra').value = '';
+            }
+        });
+        document.getElementById('precioVentaFormatted').addEventListener('input', function(e) {
+            // Eliminar todo lo que no sea dígito
+            let value = e.target.value.replace(/\D/g, '');
+
+            if (value) {
+                // Mostrar con separadores de miles y dos decimales
+                let formatted = new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(value / 100); // dividir entre 100 para manejar decimales
+
+                e.target.value = formatted;
+
+                // Guardar valor limpio en hidden (con punto decimal)
+                document.getElementById('precio_venta').value = (value / 100).toFixed(2);
+            } else {
+                e.target.value = '';
+                document.getElementById('precio_venta').value = '';
+            }
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Asignar el total que viene desde la BD
@@ -667,7 +799,7 @@
             const anio = fila.querySelector('.anio-moto')?.innerText || 'N/A';
             const precio_compra = fila.querySelector('.precio_compra-moto')?.innerText || 'N/A';
             const precio_venta = fila.dataset.precio_venta || 'N/A';
-            const imagenUrl = fila.dataset.imagen;
+            const imagenUrl = fila.dataset.imagen?.trim();
             const cilindrada = fila.dataset.cilindrada || '';
             const nrMotor = fila.dataset.nrMotor || '';
             const nrChasis = fila.dataset.nrChasis || '';
@@ -676,6 +808,9 @@
             const km_moto = fila.dataset.km_moto || '';
             const nacionalidad = fila.dataset.nacionalidad || 'N/D';
             const condicion = fila.dataset.condicion || 'N/D';
+
+            const defaultImagen = '/storage/motos/default.png';
+            const urlImagen = (imagenUrl && imagenUrl !== '') ? imagenUrl : defaultImagen;
             const contenido = `
                 <div class="row">
                     <div class="col-md-4">
@@ -698,7 +833,7 @@
                         <p><strong>Condición:</strong> ${condicion}</p>
                     </div>
                     <div class="col-md-4">
-                        ${imagenUrl ? `<img src="${imagenUrl}" class="img-fluid img-thumbnail mt-2" style="max-width: 200px;">` : '<p><em>Sin imagen</em></p>'}
+                        <img src="${urlImagen}" class="img-fluid img-thumbnail mt-2" style="max-width: 200px;">
                     </div>
                 </div>
 
@@ -807,6 +942,57 @@
 
         }
         document.getElementById('imagen_moto').addEventListener('change', archivo, false);
+    </script>
+    <script>
+        $('#formAgregarProveedor').on('submit', function(e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: '{{ route('proveedores.crearProveedorCompra') }}', // tu ruta definida
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Cerrar modal
+                    $('#modalAgregarProveedor').modal('hide');
+
+                    // Limpiar errores anteriores
+                    $('.text-error').remove();
+
+                    // Actualizar inputs en compras
+                    $('#id_proveedor').val(response.id);
+                    $('#nombre_proveedor').val(response.nombre);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Proveedor agregado',
+                        text: 'Se seleccionó automáticamente el proveedor recién creado.',
+                        confirmButtonColor: '#28a745'
+                    });
+                },
+                error: function(xhr) {
+                    $('.text-error').remove();
+
+                    if (xhr.status === 422) { // errores de validación
+                        let errors = xhr.responseJSON.errors;
+                        for (let campo in errors) {
+                            let mensaje = errors[campo][0];
+                            $(`[name="${campo}"]`).after(
+                                `<small class="text-error" style="color:red">${mensaje}</small>`);
+                        }
+                    } else {
+                        console.error(xhr.responseText);
+                    }
+                }
+            });
+            $('#modalAgregarProveedor').on('hidden.bs.modal', function() {
+                $(this).find('input').val(''); // Limpia todos los inputs del modal
+                $(this).find('.text-error').remove(); // Limpia los errores mostrados
+            });
+        });
     </script>
 
 @stop
