@@ -177,23 +177,65 @@ class TmpCompraController extends Controller
 
     public function update(Request $request, $motoId)
     {
+        /* $datos = request()->all();
+        return response()->json($datos); */
+
         $request->validate([
         'id_marca' => 'required',
         'id_nacionalidad' => 'required',
         'modelo_moto' => 'required|string|max:255',
-        'dominio' => 'nullable|unique:tmp_motos,dominio,' . $motoId,
+        'dominio' => ['nullable', function ($attribute, $value, $fail) use ($motoId) {
+            if ($value) {
+                if (
+                    Moto::where('dominio', $value)->exists() ||
+                    TmpMoto::where('dominio', $value)->where('id', '!=', $motoId)->exists()
+                ) {
+                    $fail('El dominio ya existe en la base de datos.');
+                }
+            }
+        }],
         'cilindrada_moto' => 'required|numeric',
         'color_moto' => 'nullable|string|max:50',
         'anio_moto' => 'nullable|numeric',
         'km_moto' => 'nullable|numeric',
-        'nr_motor' => 'required|unique:tmp_motos,nr_motor,' . $motoId,
-        'nr_chasis' => 'required|unique:tmp_motos,nr_chasis,' . $motoId,
-        'dnrpa' => 'nullable|unique:tmp_motos,dnrpa,' . $motoId,
+        'nr_motor' => ['required', function ($attribute, $value, $fail) use ($motoId) {
+            if (
+                Moto::where('nr_motor', $value)->exists() ||
+                TmpMoto::where('nr_motor', $value)->where('id', '!=', $motoId)->exists()
+            ) {
+                $fail('El número de motor ya existe en la base de datos.');
+            }
+        }],
+        'nr_chasis' => ['required', function ($attribute, $value, $fail) use ($motoId) {
+            if (
+                Moto::where('nr_chasis', $value)->exists() ||
+                TmpMoto::where('nr_chasis', $value)->where('id', '!=', $motoId)->exists()
+            ) {
+                $fail('El número de chasis ya existe en la base de datos.');
+            }
+        }],
+        'dnrpa' => ['nullable', function ($attribute, $value, $fail) use ($motoId) {
+            if ($value) {
+                if (
+                    Moto::where('dnrpa', $value)->exists() ||
+                    TmpMoto::where('dnrpa', $value)->where('id', '!=', $motoId)->exists()
+                ) {
+                    $fail('El DNRPA ya existe en la base de datos.');
+                }
+            }
+        }],
         'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado,' . $motoId,
         'imagen_moto' => 'nullable|image|max:2048',
         'precio_compra' => 'required',
         'precio_venta' => 'nullable',
         'id_deposito' => 'required',
+    ], [], [
+        'id_marca' => 'Marca',
+        'modelo_moto' => 'Modelo',
+        'color_moto' => 'Color',
+        'anio_moto' => 'Año',
+        'km_moto' => 'Kilometraje',
+        'cilindrada_moto' => 'Cilindrada',
     ]);
 
     // Buscar la moto temporal
@@ -214,10 +256,8 @@ class TmpCompraController extends Controller
     $moto->nr_chasis = $request->nr_chasis;
     $moto->dnrpa = $request->dnrpa;
     $moto->nr_certificado = $request->nr_certificado;
-
-    // Formatear precios
-    $moto->precio_compra = floatval(str_replace(['.', ','], ['', '.'], $request->precio_compra));
-    $moto->precio_venta = floatval(str_replace(['.', ','], ['', '.'], $request->precio_venta ?? 0));
+    $moto->precio_compra = $request->precio_compra;
+    $moto->precio_venta = $request->precio_venta;
 
     // Subir nueva imagen si existe
     if ($request->hasFile('imagen_moto')) {

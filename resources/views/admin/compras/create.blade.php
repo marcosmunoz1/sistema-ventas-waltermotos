@@ -562,7 +562,6 @@
 @stop
 
 @section('js')
-    c
     <script>
         $('#crearMotoModal').on('hidden.bs.modal', function() {
             // Limpiar todos los inputs de texto, number, etc
