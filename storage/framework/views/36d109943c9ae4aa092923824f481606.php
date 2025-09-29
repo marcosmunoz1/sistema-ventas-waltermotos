@@ -1,13 +1,11 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Ver Moto'); ?>
 
-@section('title', 'Ver Moto')
-
-@section('content_header')
+<?php $__env->startSection('content_header'); ?>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card card-outline card-info mt-1">
@@ -21,7 +19,7 @@
                     <div class="col-md-12 mx-auto mt-2">
                         <div class="card card-info">
                             <div
-                                class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                class="card-body <?php echo e($auth_type ?? 'login'); ?>-card-body <?php echo e(config('adminlte.classes_auth_body', '')); ?>">
                                 <h5 class="text-center text-info"><i class="fas fa-motorcycle"></i> Datos de la Moto</h5>
                                 <!-- Datos de Moto -->
                                 <div class="row">
@@ -31,73 +29,73 @@
                                             <div class="col-md-4">
                                                 <label>Marca</label>
                                                 <input type="text" class="form-control"
-                                                    value="{{ $moto->marca->nombre_marca }}" disabled>
+                                                    value="<?php echo e($moto->marca->nombre_marca); ?>" disabled>
                                             </div>
                                             <div class="col-md-4">
                                                 <label>Modelo</label>
-                                                <input type="text" class="form-control" value="{{ $moto->modelo_moto }}"
+                                                <input type="text" class="form-control" value="<?php echo e($moto->modelo_moto); ?>"
                                                     disabled>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Dominio</label>
-                                                <input type="text" class="form-control" value="{{ $moto->dominio }}"
+                                                <input type="text" class="form-control" value="<?php echo e($moto->dominio); ?>"
                                                     disabled>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Cilindrada</label>
                                                 <input type="number" class="form-control"
-                                                    value="{{ $moto->cilindrada_moto }}" disabled>
+                                                    value="<?php echo e($moto->cilindrada_moto); ?>" disabled>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-md-3">
                                                 <label>Color</label>
-                                                <input type="text" class="form-control" value="{{ $moto->color_moto }}"
+                                                <input type="text" class="form-control" value="<?php echo e($moto->color_moto); ?>"
                                                     disabled>
                                             </div>
                                             <div class="col-md-3">
                                                 <label>Nacionalidad</label>
                                                 <input type="text" class="form-control"
-                                                    value="{{ $moto->nacionalidad->pais }}" disabled>
+                                                    value="<?php echo e($moto->nacionalidad->pais); ?>" disabled>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Año</label>
-                                                <input type="number" class="form-control" value="{{ $moto->anio_moto }}"
+                                                <input type="number" class="form-control" value="<?php echo e($moto->anio_moto); ?>"
                                                     disabled>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Km</label>
-                                                <input type="number" class="form-control" value="{{ $moto->km_moto }}"
+                                                <input type="number" class="form-control" value="<?php echo e($moto->km_moto); ?>"
                                                     disabled>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Moto</label>
                                                 <input type="text" class="form-control"
-                                                    value="{{ $moto->es_usada == 1 ? 'Usada' : 'Nueva' }}" disabled>
+                                                    value="<?php echo e($moto->es_usada == 1 ? 'Usada' : 'Nueva'); ?>" disabled>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <label>Nro. Motor</label>
-                                                <input type="text" class="form-control" value="{{ $moto->nr_motor }}"
+                                                <input type="text" class="form-control" value="<?php echo e($moto->nr_motor); ?>"
                                                     disabled>
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Nro. Chasis</label>
-                                                <input type="text" class="form-control" value="{{ $moto->nr_chasis }}"
+                                                <input type="text" class="form-control" value="<?php echo e($moto->nr_chasis); ?>"
                                                     disabled>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <label>D.N.R.P.A</label>
-                                                <input type="text" class="form-control" value="{{ $moto->dnrpa }}"
+                                                <input type="text" class="form-control" value="<?php echo e($moto->dnrpa); ?>"
                                                     disabled>
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Certificado</label>
                                                 <input type="text" class="form-control"
-                                                    value="{{ $moto->nr_certificado }}" disabled>
+                                                    value="<?php echo e($moto->nr_certificado); ?>" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -108,7 +106,7 @@
                                                 <label for="imagen">Imagen</label>
                                                 <center>
                                                     <output id="list">
-                                                        <img src="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : asset('storage/motos/default.png') }}"
+                                                        <img src="<?php echo e($moto->imagen_moto ? asset($moto->imagen_moto) : asset('storage/motos/default.png')); ?>"
                                                             width="100%" alt="Imagen de la moto">
                                                     </output>
                                                 </center>
@@ -125,17 +123,17 @@
                                     <h5 class="text-center text-info mt-2"><i class="fas fa fa-truck"></i> Datos del Compra
                                     </h5>
                                     <div
-                                        class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                        class="card-body <?php echo e($auth_type ?? 'login'); ?>-card-body <?php echo e(config('adminlte.classes_auth_body', '')); ?>">
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
                                                 <label class="form-label">Proveedor</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control"
-                                                        value="{{ $proveedor->nombre_proveedor }}" disabled>
+                                                        value="<?php echo e($proveedor->nombre_proveedor); ?>" disabled>
                                                     <button class="btn btn-outline-info" type="button" id="btnVerProveedor"
-                                                        data-nombre="{{ $proveedor->nombre_proveedor }}"
-                                                        data-email="{{ $proveedor->email }}"
-                                                        data-telefono="{{ $proveedor->telefono }}">
+                                                        data-nombre="<?php echo e($proveedor->nombre_proveedor); ?>"
+                                                        data-email="<?php echo e($proveedor->email); ?>"
+                                                        data-telefono="<?php echo e($proveedor->telefono); ?>">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                 </div>
@@ -145,12 +143,12 @@
                                                 <div class="mb-3">
                                                     <label>Fecha de Ingreso</label>
                                                     <input type="date" class="form-control"
-                                                        value="{{ $moto->fecha_compra_moto }}" disabled>
+                                                        value="<?php echo e($moto->fecha_compra_moto); ?>" disabled>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Precio de Compra</label>
                                                     <input type="text" class="form-control text-success"
-                                                        value="{{ '$' . number_format($moto->precio_compra, 0, ',', '.') }}"
+                                                        value="<?php echo e('$' . number_format($moto->precio_compra, 0, ',', '.')); ?>"
                                                         disabled>
                                                 </div>
                                             </div>
@@ -158,19 +156,19 @@
                                                 <div class="mb-3">
                                                     <label>Número de Remito</label>
                                                     <input type="number" class="form-control"
-                                                        value="{{ $moto->compra->numero_remito }}" disabled>
+                                                        value="<?php echo e($moto->compra->numero_remito); ?>" disabled>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Nro. de Factura</label>
                                                     <div class="input-group">
                                                         <input type="text" class="form-control"
-                                                            value="{{ $moto->compra->numero_factura }}" disabled>
+                                                            value="<?php echo e($moto->compra->numero_factura); ?>" disabled>
                                                         <button class="btn btn-outline-info" type="button"
                                                             id="btnVerCompra"
-                                                            data-fecha="{{ $moto->compra->fecha_compra }}"
-                                                            data-factura="{{ $moto->compra->numero_factura }}"
-                                                            data-remito="{{ $moto->compra->numero_remito }}"
-                                                            data-total="{{ '$' . number_format($moto->compra->total_compra, 0, ',', '.') }}">
+                                                            data-fecha="<?php echo e($moto->compra->fecha_compra); ?>"
+                                                            data-factura="<?php echo e($moto->compra->numero_factura); ?>"
+                                                            data-remito="<?php echo e($moto->compra->numero_remito); ?>"
+                                                            data-total="<?php echo e('$' . number_format($moto->compra->total_compra, 0, ',', '.')); ?>">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </div>
@@ -180,31 +178,31 @@
                                     </div>
                                 </div>
                             </div>
-                            @if ($venta)
+                            <?php if($venta): ?>
                                 <div class="col-md-6">
                                     <div class="card">
                                         <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i>
                                             Datos
                                             de Venta</h5>
                                         <div
-                                            class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                            class="card-body <?php echo e($auth_type ?? 'login'); ?>-card-body <?php echo e(config('adminlte.classes_auth_body', '')); ?>">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label for="nroFactura" class="form-label">Cliente</label>
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
-                                                                value="{{ $venta->cliente->apellido_cliente }}, {{ $venta->cliente->nombre_cliente }}"
+                                                                value="<?php echo e($venta->cliente->apellido_cliente); ?>, <?php echo e($venta->cliente->nombre_cliente); ?>"
                                                                 disabled>
                                                             <button class="btn btn-outline-info" type="button"
                                                                 id="btnVerCliente"
-                                                                data-nombre-cliente="{{ $venta->cliente->apellido_cliente }}, {{ $venta->cliente->nombre_cliente }}"
-                                                                data-cuit-cliente="{{ $venta->cliente->cuit_cliente }}"
-                                                                data-dni-cliente="{{ $venta->cliente->dni_cliente }}"
-                                                                data-nacido-cliente="{{ \Carbon\Carbon::parse($venta->cliente->fecha_nacimiento_cliente)->format('d-m-Y') }}"
-                                                                data-email-cliente="{{ $venta->cliente->email_cliente }}"
-                                                                data-celular-cliente="{{ $venta->cliente->celular_cliente }}"
-                                                                data-estadoCivil-cliente="{{ $venta->cliente->estado_civil_cliente }}">
+                                                                data-nombre-cliente="<?php echo e($venta->cliente->apellido_cliente); ?>, <?php echo e($venta->cliente->nombre_cliente); ?>"
+                                                                data-cuit-cliente="<?php echo e($venta->cliente->cuit_cliente); ?>"
+                                                                data-dni-cliente="<?php echo e($venta->cliente->dni_cliente); ?>"
+                                                                data-nacido-cliente="<?php echo e(\Carbon\Carbon::parse($venta->cliente->fecha_nacimiento_cliente)->format('d-m-Y')); ?>"
+                                                                data-email-cliente="<?php echo e($venta->cliente->email_cliente); ?>"
+                                                                data-celular-cliente="<?php echo e($venta->cliente->celular_cliente); ?>"
+                                                                data-estadoCivil-cliente="<?php echo e($venta->cliente->estado_civil_cliente); ?>">
                                                                 <i class="fas fa-eye"></i>
                                                             </button>
                                                         </div>
@@ -216,24 +214,28 @@
                                                         <label for="fechaIngreso" class="form-label">Fecha de
                                                             Egreso</label>
                                                         <input type="date" class="form-control"
-                                                            value="{{ $venta->fecha_venta }}" disabled>
+                                                            value="<?php echo e($venta->fecha_venta); ?>" disabled>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="precioVenta" class="form-label">Precio de
                                                             Venta</label>
                                                         <input type="text" class="form-control text-danger"
-                                                            value="{{ '$' . number_format($moto->precio_venta, 0, ',', '.') }}"
+                                                            value="<?php echo e('$' . number_format($moto->precio_venta, 0, ',', '.')); ?>"
                                                             disabled>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    
+                                                    <div class="mb-3">
+                                                        <label for="precioCompra" class="form-label">Número de
+                                                            Remito</label>
+                                                        <input type="number" class="form-control" disabled>
+                                                    </div>
                                                     <div class="mb-3">
                                                         <label for="nroFactura" class="form-label">Nro. de Factura</label>
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
-                                                                value="{{ $venta->id_venta }}" disabled>
+                                                                value="<?php echo e($venta->id_venta); ?>" disabled>
                                                             <button class="btn btn-outline-secondary" type="button"
                                                                 id="btnVerFactura">
                                                                 <i class="fas fa-eye"></i>
@@ -245,14 +247,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            @else
+                            <?php else: ?>
                                 <div class="col-md-6">
                                     <div class="card">
                                         <h5 class="text-center text-info mt-2"><i class="fas fa fa-cash-register"></i>
                                             Datos
                                             de Venta</h5>
                                         <div
-                                            class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
+                                            class="card-body <?php echo e($auth_type ?? 'login'); ?>-card-body <?php echo e(config('adminlte.classes_auth_body', '')); ?>">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="alert alert-info" role="alert">
@@ -263,7 +265,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                            @endif
+                            <?php endif; ?>
                         </div>
 
 
@@ -271,7 +273,7 @@
 
                 </div>
                 <div class="card-footer text-right">
-                    <a href="{{ url('admin/motos') }}" class="btn btn-secondary">
+                    <a href="<?php echo e(url('admin/motos')); ?>" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
                 </div>
@@ -337,14 +339,14 @@
             </div>
         </div>
 
-    @endsection
+    <?php $__env->stopSection(); ?>
 
-    @section('css')
-        {{-- Estilos personalizados --}}
-    @endsection
+    <?php $__env->startSection('css'); ?>
+        
+    <?php $__env->stopSection(); ?>
 
-    @section('js')
-        {{-- Scripts adicionales --}}
+    <?php $__env->startSection('js'); ?>
+        
         <script>
             document.getElementById('btnVerProveedor').addEventListener('click', function() {
                 const nombre = this.getAttribute('data-nombre');
@@ -397,4 +399,6 @@
                 myModal.show();
             });
         </script>
-    @endsection
+    <?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\Pruebas-tp-final\resources\views\admin\motos\show.blade.php ENDPATH**/ ?>
