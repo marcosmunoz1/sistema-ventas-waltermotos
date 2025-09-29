@@ -10,9 +10,22 @@
     <div class="row">
         <div class="card card-outline card-warning mt-1">
             <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center w-100">
-                    <h2 class="brand-text font-weight-light mb-0">Motos/<b>Editar Moto</b> </h2>
+                <div class="d-flex align-items-center w-100">
+                    <h2 class="brand-text font-weight-light mx-2 mb-0">Motos/<b>Editar Moto</b> </h2>
+                    @php
+                        $colores = [
+                            'vendida' => 'danger',
+                            'en_stock' => 'success',
+                            'garantia' => 'warning',
+                            'devuelta' => 'secondary',
+                        ];
+                        $color = $colores[$moto->condicion] ?? 'light';
+                    @endphp
+                    <span class="badge bg-{{ $color }}">
+                        {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
+                    </span>
                 </div>
+
             </div>
             <form action="{{ url('/admin/motos', $moto->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -173,6 +186,7 @@
                                         </center>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                         <!-- Fila 4 -->
@@ -195,7 +209,9 @@
                                     <div class="input-group">
                                         <span class="input-group-text text-danger">$</span>
                                         <input name="precio_venta" type="text" class="form-control text-danger"
-                                            value="{{ number_format($moto->precio_venta, 2, ',', '.') }}">
+                                            value="{{ number_format($moto->precio_venta, 2, ',', '.') }}"
+                                            @if($moto->condicion === 'vendida' || $moto->fecha_venta_moto) readonly @endif>
+
                                     </div>
                                 </div>
                             </div>
