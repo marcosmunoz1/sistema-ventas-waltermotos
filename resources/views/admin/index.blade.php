@@ -7,7 +7,7 @@
 {{-- Content body: main page content --}}
 
 @section('content')
-    <div class="row">
+    <div class="row mt-2">
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger zoomP">
                 <div class="inner">
@@ -186,7 +186,7 @@
     <?php
     $meses = array_fill(1, 12, 0);
     $suma_ventas = array_fill(1, 12, 0);
-    
+
     foreach ($ventas as $venta) {
         $fecha = strtotime($venta['fecha_venta']);
         // Verifica que strtotime() haya devuelto una fecha válida

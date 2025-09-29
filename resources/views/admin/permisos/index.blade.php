@@ -5,9 +5,9 @@
 @section('content_header')
 
 @stop
- 
+
 @section('content')
-    <div class="row">
+    <div class="row mt-3">
         <div class="col-md-12">
             <div class="col-md-12">
                 <div class="card card-outline card-primary mt-1">

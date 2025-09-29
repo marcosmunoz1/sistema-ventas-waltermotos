@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+    
     /*
     |--------------------------------------------------------------------------
     | Title
@@ -402,12 +402,6 @@ return [
 
 
         /*  ['header' => 'SALIR'], */
-        [
-            'type' => 'custom-logout-button',
-            'text' => 'Salir',
-            'icon' => 'fas fa-sign-out-alt',
-            'classes' => 'text-light', // texto claro
-        ],
 
 
 

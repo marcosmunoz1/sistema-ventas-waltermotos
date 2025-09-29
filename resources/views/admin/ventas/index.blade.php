@@ -3,11 +3,11 @@
 @section('title', 'Ventas')
 
 @section('content_header')
-    
+
 @endsection
 
 @section('content')
-    <div class="row">
+    <div class="row mt-3">
         <div class="col-md-12">
            <div class="card card-outline card-primary mt-1">
                 <div class="card-header">
@@ -23,7 +23,7 @@
                             <table class="table table-striped table-sm" id="miTabla">
                                 <thead class="table-primary">
                                     <tr>
-                                       
+
                                         <th class="text-center" style="width: 10%">Fecha</th>
                                         <th class="text-center" style="width: 5%">Numero</th>
                                         <th class="text-center" style="width: 15%">Cliente</th>

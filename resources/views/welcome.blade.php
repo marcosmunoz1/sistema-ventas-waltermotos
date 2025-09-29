@@ -1,53 +1,57 @@
-@extends('adminlte::page')
+@extends('adminlte::auth.auth-page', ['authType' => 'login'])
 
-@section('title', 'Bienvenidos')
+@section('title', 'Bienvenido')
 
-@section('content_header')
-    <h1 style="font-family: Arial, sans-serif; text-align: center;">HOLA!!</h1>
-@stop
-
-@section('content')
-    <div class="container" style="font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4;">
-        <h1>¡Bienvenido al WalterMOTOS Sistema!</h1>
-        <p>Necesitas iniciar sesión para acceder a las funcionalidades del sistema.</p>
-        <a href="{{url('/login')}}" class="btn">Iniciar Sesión</a>
+@section('auth_body')
+    <div class="text-center p-5">
+        <h1 class="mb-4" style="font-size: 2.4rem; font-weight: bold; color: #007BFF;">
+            ¡Bienvenido a <span style="color: #0056b3;">WalterMOTOS</span>!
+        </h1>
+        <p class="mb-5" style="color: #555; font-size: 1.2rem;">
+            Necesitas iniciar sesión para acceder a todas las funcionalidades del sistema.
+        </p>
+        <a href="{{ url('/login') }}" class="btn btn-primary btn-lg shadow-sm px-5 py-3">
+            <i class="fas fa-sign-in-alt mr-2"></i> Iniciar Sesión
+        </a>
     </div>
 @stop
 
-
-
-@section('css')
-    {{-- Add here extra stylesheets --}}
-    <style>
-    
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-           
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-        .btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+@section('auth_footer')
+    <div class="text-center" style="color: #777; font-size: 0.9rem;">
+        &copy; {{ date('Y') }} WalterMOTOS. Todos los derechos reservados.
+    </div>
 @stop
 
-@section('js')
-    
+@section('css')
+    <style>
+        .auth-page {
+            background: linear-gradient(135deg, #007BFF, #00C6FF);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 🔹 AdminLTE usa .login-box, no .auth-box */
+        .login-box {
+             width: 90% !important;
+            width: 800px !important;   /* más ancha */
+            min-height: 500px !important; /* más alta */
+        }
+
+        .login-box .card {
+            border-radius: 16px !important;
+            box-shadow: 0px 8px 24px rgba(0,0,0,0.25) !important;
+            height: 80% !important;
+        }
+
+        h1 {
+            line-height: 1.4;
+        }
+        @media (max-width: 576px) {
+            .login-box {
+                min-height: 400px !important; /* más bajo en mobile */
+                padding: 20px !important;
+            }
+        }
+    </style>
 @stop

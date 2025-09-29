@@ -23,17 +23,44 @@
             </ul>
         </nav>
     </div>
-    <li class="nav-item">
-        <a class="btn btn-flat btn-block text-left text-white" href="#"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <i class="fa fa-fw fa-power-off text-red"></i>
-            Cerrar Sesión
-        </a>
-    </li>
-    
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
-    
+     <li class="nav-item">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="margin: 0;">
+            @csrf
+            <div class="logout-wrapper">
+                <button type="submit" class="logout-button">
+                    <i class="nav-icon fas fa-power-off text-danger"></i>
+                    <span class="ml-2">Cerrar Sesión</span>
+                </button>
+            </div>
+        </form>
+     </li>
+
+
+
 
 </aside>
+<style>
+.logout-wrapper {
+    margin-left: 9px;
+    margin-right: 9px;
+    transition: transform 0.3s ease;
+}
+
+.logout-wrapper:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px; /* se extiende hacia la derecha */
+}
+
+.logout-button {
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    background-color: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.719);
+    padding: 7px 15px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+</style>
