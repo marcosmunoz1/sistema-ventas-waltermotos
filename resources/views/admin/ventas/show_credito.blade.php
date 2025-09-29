@@ -152,7 +152,7 @@
                                                                     <td class="text-center" style="vertical-align: middle">
                                                                         <span
                                                                             class="badge {{ $detalle->estado_cuota == 'Pendiente' ? 'bg-danger' : 'bg-success' }}">
-                                                                            {{ $venta->estado_venta }}
+                                                                            {{ $detalle->estado_cuota }}
                                                                         </span>
                                                                     </td>
                                                                     </td>
