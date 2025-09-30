@@ -9,7 +9,7 @@
 @section('content')
     <div class="row mt-3">
         <div class="col-md-12">
-           <div class="card card-outline card-primary mt-1">
+            <div class="card card-outline card-primary mt-1">
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center w-100">
                         <h2 class="brand-text font-weight-light mb-0">Listado de Ventas</h2>
@@ -80,7 +80,11 @@
                                                         id="miFormulario{{ $venta->id_venta }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" style="border-radius: 0px 4px 4px 0px">
+
+                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                            style="border-radius: 0px 4px 4px 0px"
+                                                            @if ($venta->estado_venta === 'Pagado') disabled 
+                                                                 title="No se puede eliminar una venta cobrada" @endif>
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                 </div>

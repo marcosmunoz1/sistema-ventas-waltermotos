@@ -63,7 +63,7 @@ class MotoController extends Controller
         $moto = Moto::find($id);
         $marcas = Marca::all();
         $nacionalidades = Nacionalidad::all();
-        $depositos = Deposito::all();
+       $depositos = Deposito::where('nombre_deposito', '!=', 'Vendida')->get();
         return view('/admin/motos/edit', compact('moto', 'marcas', 'nacionalidades', 'depositos'));
     }
 

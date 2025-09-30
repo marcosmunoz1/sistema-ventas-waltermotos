@@ -1,0 +1,2 @@
+
+<?php echo $__env->make('adminlte::auth.passwords.confirm', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\Pruebas-tp-final\resources\views\auth\passwords\confirm.blade.php ENDPATH**/ ?>

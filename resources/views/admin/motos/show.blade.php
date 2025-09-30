@@ -228,11 +228,7 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label for="precioCompra" class="form-label">Número de
-                                                            Remito</label>
-                                                        <input type="number" class="form-control" disabled>
-                                                    </div>
+                                                    
                                                     <div class="mb-3">
                                                         <label for="nroFactura" class="form-label">Nro. de Factura</label>
                                                         <div class="input-group">
