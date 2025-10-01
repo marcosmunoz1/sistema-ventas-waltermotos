@@ -23,7 +23,7 @@
                 <div class="col-md-12 mx-auto">
                     <div class="card-body">
 
-                        <table id="tablaProveedores" class="table table-striped table-sm table-responsive">
+                        <table id="tablaProveedores" class="table  table-striped table-sm table-responsive">
                             <thead class="table-primary">
                                 <tr>
                                     <th class="text-center" style="width: 5%">#</th>
@@ -36,7 +36,7 @@
                                 </tr>
                             </thead>
                             <?php $contador = 1; ?>
-                            <tbody>
+                            <tbody class="table-bordered">
                                 @foreach ($proveedores as $proveedor)
                                     <tr>
                                         <td class="text-center" style="vertical-align: middle">{{ $contador++ }}</td>
@@ -121,6 +121,9 @@
     <script>
         $('#tablaProveedores').DataTable({
             ordering: false,
+              "order": [
+                [0, "desc"]
+            ],
             "language": {
                 "emptyTable": "No hay información.",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ Proveedores",

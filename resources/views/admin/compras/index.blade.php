@@ -30,7 +30,7 @@
                             </tr>
                         </thead>
                         <?php $contador = 1; ?>
-                        <tbody>
+                        <tbody class="table-bordered">
                             @foreach ($compras as $compra)
                                 <tr>
                                     <td style="text-align: center;vertical-align:middle;">{{ $contador++ }}</td>

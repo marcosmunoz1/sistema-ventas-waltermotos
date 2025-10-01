@@ -39,7 +39,7 @@
                                                 <th class="text-center" style="width: 10%">Acciones</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="table-bordered">
                                             <?php $contador = 1; ?>
                                             @foreach ($motos as $moto)
                                                 <tr>
