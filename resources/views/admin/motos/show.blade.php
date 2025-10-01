@@ -228,15 +228,15 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    
+
                                                     <div class="mb-3">
                                                         <label for="nroFactura" class="form-label">Nro. de Factura</label>
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
                                                                 value="{{ $venta->id_venta }}" disabled>
-                                                            <button class="btn btn-outline-secondary" type="button"
-                                                                id="btnVerFactura">
-                                                                <i class="fas fa-eye"></i>
+                                                              <a href="{{ url('/admin/ventas/' . $venta->id_venta) }}"
+                                                                    class="btn btn-outline-info"><i class="fas fa-eye"></i></a>
+
                                                             </button>
                                                         </div>
                                                     </div>
