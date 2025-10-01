@@ -34,7 +34,7 @@
                                                 <th class="text-center" style="width: 10%">Nacionalidad</th>
                                                 <th class="text-center" style="width: 10%">P. Compra</th>
                                                 <th class="text-center" style="width: 10%">P. Venta</th>
-                                                <th class="text-center" style="width: 10%">Condicion</th>
+                                                <th class="text-center" style="width: 8%">Condicion</th>
                                                 <th class="text-center" style="width: 10%">Imagen</th>
                                                 <th class="text-center" style="width: 10%">Acciones</th>
                                             </tr>
@@ -75,8 +75,8 @@
                                                     </td>
 
                                                     <td class="text-center" style="vertical-align: middle">
-                                                        <img src="{{ asset($moto->imagen_moto) }}" width="40%"
-                                                            alt="">
+                                                       <img src="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : asset('storage/motos/default.png') }}"
+                                                            width="40%" alt="Imagen de la moto">
 
                                                     </td>
                                                     <td class="text-center" style="vertical-align: middle">

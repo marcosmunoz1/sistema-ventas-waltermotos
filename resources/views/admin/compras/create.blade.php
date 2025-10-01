@@ -331,23 +331,30 @@
                                                 <div class="row mt-2">
                                                     <div class="col-md-4">
                                                         <label>Precio compra</label><b style="color: red;">*</b>
-                                                        <input type="text" class="form-control"
-                                                            id="precioCompraFormatted" placeholder="Precio compra">
-                                                        <!-- Input hidden (valor limpio para BD) -->
-                                                        <input type="hidden" name="precio_compra" id="precio_compra">
-                                                        @error('precio_compra')
-                                                            <small style="color: red;">{{ $message }}</small>
-                                                        @enderror
+                                                        <div class="input-group">
+                                                            <span class="input-group-text text-success">$</span>
+                                                            <input type="text" class="form-control"
+                                                                id="precioCompraFormatted" placeholder="Precio compra">
+                                                            <!-- Input hidden (valor limpio para BD) -->
+                                                            <input type="hidden" name="precio_compra"
+                                                                id="precio_compra">
+                                                            @error('precio_compra')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>Precio venta</label>
-                                                        <input type="text" class="form-control"
-                                                            id="precioVentaFormatted" placeholder="Precio venta">
-                                                        <!-- Input hidden (valor limpio para BD) -->
-                                                        <input type="hidden" name="precio_venta" id="precio_venta">
-                                                        @error('precio_venta')
-                                                            <small style="color: red;">{{ $message }}</small>
-                                                        @enderror
+                                                        <div class="input-group">
+                                                            <span class="input-group-text text-danger">$</span>
+                                                            <input type="text" class="form-control"
+                                                                id="precioVentaFormatted" placeholder="Precio venta">
+                                                            <!-- Input hidden (valor limpio para BD) -->
+                                                            <input type="hidden" name="precio_venta" id="precio_venta">
+                                                            @error('precio_venta')
+                                                                <small style="color: red;">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>Deposito</label><b style="color: red;">*</b>

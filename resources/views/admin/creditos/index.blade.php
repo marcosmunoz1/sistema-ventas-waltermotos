@@ -71,14 +71,18 @@
                                                     <div class="btn-group" role="group" aria-label="Basic example">
                                                         <a href="{{ url('/admin/creditos/' . $credito->id) }}"
                                                             class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                        {{--  <a href="{{ url('/admin/creditos/' . $credito->id . '/edit') }}"
-                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a> --}}
-                                                        @if($credito->estado_credito != "Pagado")
-                                                            <a href="{{ url('/admin/creditos/' . $credito->id . '/cobrar-cuotas') }}"
-                                                                class="btn btn-sm btn-secondary"><i
-                                                                    class="fas fa-cash-register"></i></a>
-                                                        @else
-                                                        @endif
+
+                                                        <form
+                                                            action="{{ url('/admin/creditos/' . $credito->id . '/cobrar-cuotas') }}"
+                                                            method="get" class="d-inline-block">
+                                                            <button type="submit" class="btn btn-sm btn-success"
+                                                                style="border-radius: 0px 4px 4px 0px"
+                                                                @if ($credito->estado_credito === 'Pagado') disabled title="El crédito ya está pagado" @endif>
+                                                                <i class="fas fa-cash-register"></i>
+                                                            </button>
+                                                        </form>
+
+
 
                                                         <form action="{{ url('/admin/creditos', $credito->id) }}"
                                                             method="post" class="d-inline-block"
@@ -87,9 +91,12 @@
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-sm btn-danger"
-                                                                style="border-radius: 0px 4px 4px 0px">
+                                                                style="border-radius: 0px 4px 4px 0px"
+                                                                @if ($credito->estado_credito === 'Pagado') disabled 
+                                                                 title="No se puede eliminar un crédito pagado" @endif>
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
+
                                                     </div>
                                                     </form>
                                                 </td>
@@ -104,6 +111,8 @@
             </div>
         </div>
     </div>
+
+        <!-- Modal  -->
     <div class="modal fade" id="ventana_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">

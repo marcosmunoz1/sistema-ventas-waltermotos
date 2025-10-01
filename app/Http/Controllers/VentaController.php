@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use App\Models\Compra;
 use App\Models\Conyugue;
 use App\Models\Credito;
+use App\Models\Deposito;
 use App\Models\DetalleCredito;
 use App\Models\Marca;
 use App\Models\Moto;
@@ -77,10 +78,13 @@ class VentaController extends Controller
         $venta->save();
 
         //actualizamos la condicion de la moto
+        $deposito = Deposito::where('nombre_deposito', 'Vendida')->firstOrFail();
         $moto = Moto::find($validated['id_moto']);
         $moto->condicion = 'vendida';
+        $moto->id_deposito = $deposito->id;
         $moto->fecha_venta_moto = now();
         $moto->precio_venta = $validated['precio_venta'];
+
         $moto->save();
 
 
