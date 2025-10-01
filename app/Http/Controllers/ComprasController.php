@@ -36,7 +36,7 @@ class ComprasController extends Controller
         $proveedores = Proveedor::all();
         $marcas = Marca::all();
         $nacionalidades = Nacionalidad::all();
-        $depositos = Deposito::all();
+        $depositos = Deposito::where('nombre_deposito', '!=', 'Vendida')->get();
         $session_id = session()->getId();
         $tmp_motos = TmpMoto::with('moto')
             ->where('session_id', session()->getId())

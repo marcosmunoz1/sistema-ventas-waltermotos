@@ -10,20 +10,8 @@
     <div class="row">
         <div class="card card-outline card-warning mt-1">
             <div class="card-header">
-                <div class="d-flex align-items-center w-100">
-                    <h2 class="brand-text font-weight-light mx-2 mb-0">Motos/<b>Editar Moto</b> </h2>
-                    @php
-                        $colores = [
-                            'vendida' => 'danger',
-                            'en_stock' => 'success',
-                            'garantia' => 'warning',
-                            'devuelta' => 'secondary',
-                        ];
-                        $color = $colores[$moto->condicion] ?? 'light';
-                    @endphp
-                    <span class="badge bg-{{ $color }}">
-                        {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
-                    </span>
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <h2 class="brand-text font-weight-light mb-0">Motos/<b>Editar Moto</b> </h2>
                 </div>
 
             </div>
@@ -82,7 +70,7 @@
                                     </div>
                                 </div>
                                 <!-- Fila 2 -->
-                                <div class="row mt-2">
+                                <div class="row">
                                     <div class="col-md-2">
                                         <label>Color</label>
                                         <input name="color" type="text" class="form-control" placeholder="Color"
@@ -172,16 +160,16 @@
                                 <div class="text-center">
                                     <div class="form-group">
                                         <label for="imagen">Imagen</label>
-                                        <input type="file" id="file" name="imagen_moto" accept=".jpg, .jpeg, .png"
-                                            class="form-control">
+                                        <input type="file" id="file" name="imagen_moto"
+                                            accept=".jpg, .jpeg, .png" class="form-control">
                                         @error('imagen')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
-                                        <br>
+
                                         <center>
                                             <output id="list">
                                                 <img src="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : asset('storage/motos/default.png') }}"
-                                                        width="100%" alt="Imagen de la moto">
+                                                    width="100%" alt="Imagen de la moto">
                                             </output>
                                         </center>
                                     </div>
@@ -197,10 +185,19 @@
                                     <div class="input-group">
                                         <span class="input-group-text text-success">$</span>
                                         <input type="text" class="form-control text-success"
+                                            title="El precio de compras debe editarse desde la compra."
                                             value="{{ number_format($moto->precio_compra, 2, ',', '.') }}" disabled>
-                                    </div>
-                                </div>
-                            </div>
+                                        <a href="{{ $moto->condicion === 'vendida' ? '#' : url('/admin/compras/' . $moto->compra->id) . '?from=motos' }}"
+                                            class="btn btn-secondary btn-sm {{ $moto->condicion === 'vendida' ? 'disabled' : '' }}"
+                                            title="{{ $moto->condicion === 'vendida' ? 'No disponible (vendida)' : 'Ver compra' }}">
+                                            <i class="fa-solid fa-cart-shopping"></i>
+                                        </a>
+
+            </form>
+
+        </div>
+    </div>
+    </div>
 
 
                             <div class="col-md-3">
@@ -209,41 +206,40 @@
                                     <div class="input-group">
                                         <span class="input-group-text text-danger">$</span>
                                         <input name="precio_venta" type="text" class="form-control text-danger"
-                                            value="{{ number_format($moto->precio_venta, 2, ',', '.') }}"
-                                            @if($moto->condicion === 'vendida' || $moto->fecha_venta_moto) readonly @endif>
-
+                                            value="{{ number_format($moto->precio_venta, 2, ',', '.') }}">
                                     </div>
                                 </div>
                             </div>
 
 
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Deposito </label>
-                                    <select name="deposito" id="" class="form-control" required>
-                                        @foreach ($depositos as $deposito)
-                                            <option value="{{ $deposito->id }}"
-                                                {{ $deposito->id == $moto->id_deposito ? 'selected' : '' }}>
-                                                {{ $deposito->nombre_deposito }} </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                <div class="card-footer text-right">
-                    <button type="submit" class="btn btn-warning"><i class="fa-solid fa-file-arrow-up"></i>
-                        Actualizar
-                    </button>
-                    <a href="{{ url('admin/motos') }}" class="btn btn-secondary">
-                        <i class="fas fa-cancel"></i> Cancelar
-                    </a>
-                </div>
-            </form>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>Depósito</label>
+            <select name="deposito" class="form-control" required @if ($moto->condicion === 'vendida') disabled @endif>
+                @foreach ($depositos as $deposito)
+                    <option value="{{ $deposito->id }}" {{ $deposito->id == $moto->id_deposito ? 'selected' : '' }}>
+                        {{ $deposito->nombre_deposito }}
+                    </option>
+                @endforeach
+            </select>
         </div>
+
+    </div>
+    </div>
+
+
+    </div>
+    </div>
+    <div class="card-footer text-right">
+        <button type="submit" class="btn btn-warning"><i class="fa-solid fa-file-arrow-up"></i>
+            Actualizar
+        </button>
+        <a href="{{ url('admin/motos') }}" class="btn btn-secondary">
+            <i class="fas fa-cancel"></i> Cancelar
+        </a>
+    </div>
+    </form>
+    </div>
     </div>
 
 @stop

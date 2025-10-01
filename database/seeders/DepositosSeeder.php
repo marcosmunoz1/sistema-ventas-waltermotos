@@ -23,6 +23,11 @@ class DepositosSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+             [
+                'nombre_deposito' => 'Vendida',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }
