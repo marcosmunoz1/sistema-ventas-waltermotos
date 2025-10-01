@@ -10,10 +10,17 @@ class TmpMoto extends Model
     use HasFactory;
 
     protected $table = 'tmp_motos';
+
     public function moto()
     {
         return $this->belongsTo(Moto::class, 'id_moto', 'id');
     }
+
+    public function compra()
+    {
+        return $this->belongsTo(Compra::class, 'id_compra');
+    }
+
     public function marca()
     {
         return $this->belongsTo(Marca::class, 'id_marca');

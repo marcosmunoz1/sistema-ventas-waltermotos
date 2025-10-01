@@ -544,7 +544,7 @@
                         <div class="col-md-4">
                             <p><strong>Nacionalidad:</strong> <span id="verNacionalidad"></span></p>
                             <p><strong>Año:</strong> <span id="verAnio"></span></p>
-                            <p><strong>Km:</strong> <span id="verKm"></span></p>
+                            <p><strong>Km:</strong> <span id="verKm"></span>km</p>
                             <p><strong>Usada:</strong> <span id="verUsada"></span></p>
                             <p><strong>N° Motor:</strong> <span id="verMotor"></span></p>
                             <p><strong>DNRPA:</strong> <span id="verDnrpa"></span></p>
@@ -614,12 +614,12 @@
             let value = e.target.value.replace(/\D/g, '');
             if (value) {
                 e.target.value = new Intl.NumberFormat('es-AR').format(value);
-                document.getElementById('precioVenta').value = value;
+                document.getElementById('precio_venta').value = value;
 
 
             } else {
                 e.target.value = '';
-                document.getElementById('precioVenta').value = '';
+                document.getElementById('precio_venta').value = '';
             }
         });
     </script>
@@ -636,6 +636,7 @@
 
     <script>
         window.agregarMotoATabla = function() {
+
             let formData = new FormData();
             // Agregamos los campos del formulario
             formData.append('id_marca', $('#id_marca').val());

@@ -13,6 +13,11 @@ class Compra extends Model
     {
         return $this->hasMany(Moto::class, 'id_compra');
     }
+    
+    public function tmpMotos()
+    {
+        return $this->hasMany(TmpMoto::class, 'id_compra');
+    }
 
     public function proveedor()
     {

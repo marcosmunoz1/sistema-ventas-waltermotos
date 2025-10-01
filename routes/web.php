@@ -87,6 +87,10 @@ Route::middleware(['web', 'auth'])->post('/admin/tmp-compras', [TmpCompraControl
 Route::delete('/admin/tmp-compras/{id}', [TmpCompraController::class, 'destroy'])->name('tmp-compras.destroy')->middleware('auth');
 Route::get('/admin/tmp-compras/motos', [TmpCompraController::class, 'getMotos'])->name('tmp-compras.getMotos')->middleware('auth');
 Route::get('/admin/tmp-compras/listar', [TmpCompraController::class, 'listar'])->name('tmp-compras.listar')->middleware('auth');
+Route::delete('/admin/tmp-compras/clear/{compraId}', [TmpCompraController::class, 'clear'])
+    ->name('tmp-compras.clear')
+    ->middleware('auth');
+
 
 //Rutas para Ventas
 Route::get('/admin/ventas', [App\Http\Controllers\VentaController::class, 'index'])->name('admin.ventas.index')->middleware('auth','can:ventas-ver');

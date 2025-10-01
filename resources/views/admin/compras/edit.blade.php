@@ -62,9 +62,9 @@
                                             <input type="text" value="{{ $compra->numero_remito }}" class="form-control"
                                                 id="numero_remito" name="numero_remito" placeholder="Nr. de remito"
                                                 required>
-                                                @error('numero_remito')
+                                            @error('numero_remito')
                                                 <small class="text-danger">{{ $message }}</small>
-                                                @enderror
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -129,11 +129,14 @@
                                             data-cilindrada="{{ $moto->cilindrada_moto }}"
                                             data-nr-motor="{{ $moto->nr_motor }}" data-nr-chasis="{{ $moto->nr_chasis }}"
                                             data-certificado="{{ $moto->nr_certificado }}"
-                                            data-dnrpa="{{ $moto->dnrpa }}" data-km_moto="{{ $moto->km_moto }}"
+                                            data-dnrpa="{{ $moto->dnrpa }}"
+                                            data-km_moto="{{ $moto->km_moto }}"
                                             data-id_nacionalidad="{{ $moto->id_nacionalidad }}"
+                                            data-dominio="{{ $moto->dominio }}"
                                             data-nacionalidad="{{ $moto->nacionalidad->pais ?? 'N/D' }}"
                                             data-precio_venta="{{ $moto->precio_venta }}"
-                                            data-condicion="{{ $moto->condicion }}">
+                                            data-condicion="{{ $moto->condicion }}"
+                                            >
                                             <td style="text-align: center">{{ $contador++ }}</td>
                                             <td class="marca-moto" style="text-align: center">
                                                 {{ $moto->marca->nombre_marca }}</td>
@@ -187,6 +190,59 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    {{-- Motos temporales --}}
+                                    @foreach ($compra->tmpMotos as $tmpMoto)
+                                        <tr class="table-secondary" data-id="{{ $tmpMoto->id }}"
+                                            data-imagen="{{ $tmpMoto->imagen_moto ? asset($tmpMoto->imagen_moto) : '' }}"
+                                            data-cilindrada="{{ $tmpMoto->cilindrada_moto }}"
+                                            data-nr-motor="{{ $tmpMoto->nr_motor }}"
+                                            data-nr-chasis="{{ $tmpMoto->nr_chasis }}"
+                                            data-certificado="{{ $tmpMoto->nr_certificado }}"
+                                            data-dnrpa="{{ $tmpMoto->dnrpa }}"
+                                            data-km_moto="{{ $tmpMoto->km_moto }}"
+                                            data-id_nacionalidad="{{ $tmpMoto->id_nacionalidad }}"
+                                            data-dominio="{{ $tmpMoto->dominio }}"
+                                            data-nacionalidad="{{ $tmpMoto->nacionalidad->pais ?? 'N/D' }}"
+                                            data-precio_venta="{{ $tmpMoto->precio_venta }}"
+                                            data-condicion="{{ $tmpMoto->condicion ?? 'pendiente' }}">
+                                            <td style="text-align: center">{{ $contador++ }}</td>
+                                            <td class="marca-motoTmp" style="text-align: center">
+                                                {{ $tmpMoto->marca->nombre_marca }}</td>
+                                            <td class="modelo-motoTmp" style="text-align: center">
+                                                {{ $tmpMoto->modelo_moto }}</td>
+                                            <td class="color-motoTmp" style="text-align: center">
+                                                {{ $tmpMoto->color_moto }}</td>
+                                            <td class="anio-motoTmp" style="text-align: center">{{ $tmpMoto->anio_moto }}
+                                            </td>
+                                            <td class="precio_compra-motoTmp" style="text-align: center">
+                                                ${{ number_format($tmpMoto->precio_compra, 2, ',', '.') }}
+                                            </td>
+                                            @php $totalCompra += $tmpMoto->precio_compra; @endphp
+                                            <td class="text-center condicionTmp">
+                                                <span class="badge bg-warning text-dark">Pendiente</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-group" role="group">
+                                                    <!-- Ver moto temporal -->
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="verMotoTmp({{ $tmpMoto->id }})" data-toggle="modal"
+                                                        data-target="#verMotoTmpModal">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <!-- Editar moto temporal -->
+                                                    <a href="{{ route('compras.temporales.motos.edit', $tmpMoto->id) }}"
+                                                        class="btn btn-warning btn-sm">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <!-- Eliminar moto temporal -->
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                        onclick="eliminarTmpMoto({{ $tmpMoto->id }}, this)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
 
@@ -201,16 +257,13 @@
                                     </h3>
                                 </div>
                             </div>
-
-
                     </div>
-
                     <!-- Botones de acción -->
                     <div class="card-footer d-flex justify-content-end">
                         <button type="submit" class="btn btn-warning me-2">
                             <i class="fa-solid fa-file-arrow-up"></i> Actualizar compra
                         </button>
-                        <a href="{{ route('admin.compras.index') }}" class="btn btn-secondary mx-1"><i
+                        <a href="{{ route('admin.compras.index') }}" id="btnCancelar" class="btn btn-secondary mx-1"><i
                                 class="fas fa-times"></i>
                             Cancelar
                         </a>
@@ -234,8 +287,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <table id="mitabla2"
-                        class="table table-striped table-bordered table-hover table-sm">
+                    <table id="mitabla2" class="table table-striped table-bordered table-hover table-sm">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col" style="text-align: center;">Nro</th>
@@ -354,7 +406,7 @@
                                             class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
                                             <!-- Datos de Moto -->
                                             <div class="row">
-                                                <input type="hidden" id="compra_id" value="{{ $compra->id }}">
+                                                <input type="hidden" id="id_compra" value="{{ $compra->id }}">
                                                 <input type="hidden" id="fecha_compra"
                                                     value="{{ $compra->fecha_compra }}">
                                                 <!-- Primera Columna: Datos -->
@@ -363,7 +415,8 @@
                                                     <div class="row">
                                                         <div class="col-md-4">
                                                             <label>Marca</label> <b style="color: red;">*</b>
-                                                            <select class="form-control" name="id_marca" id="id_marca" required>
+                                                            <select class="form-control" name="id_marca" id="id_marca"
+                                                                required>
                                                                 <option value="">Seleccione una marca
                                                                 </option>
                                                                 @foreach ($marcas as $marca)
@@ -468,17 +521,24 @@
                                                     <div class="row mt-2">
                                                         <div class="col-md-4">
                                                             <label>Precio compra</label><b style="color: red;">*</b>
-                                                            <input type="text" class="form-control"
-                                                            id="precioCompraFormatted" placeholder="Precio compra">
-                                                            <!-- Input hidden (valor limpio para BD) -->
-                                                            <input type="hidden" name="precio_compra" id="precio_compra">
+                                                            <div class="input-group">
+                                                                <span class="input-group-text text-success">$</span>
+                                                                <input type="text" class="form-control"
+                                                                    id="precioCompraFormatted" placeholder="Precio compra">
+                                                                <!-- Input hidden (valor limpio para BD) -->
+                                                                <input type="hidden" name="precio_compra"
+                                                                    id="precio_compra">
+                                                            </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label>Precio venta</label>
-                                                            <input type="text" class="form-control"
-                                                            id="precioVentaFormatted" placeholder="Precio venta">
-                                                            <!-- Input hidden (valor limpio para BD) -->
-                                                            <input type="hidden" name="precio_venta" id="precio_venta">
+                                                            <div class="input-group">
+                                                                <span class="input-group-text text-danger">$</span>
+                                                                <input type="text" class="form-control"
+                                                                    id="precioVentaFormatted" placeholder="Precio venta">
+                                                                <!-- Input hidden (valor limpio para BD) -->
+                                                                <input type="hidden" name="precio_venta" id="precio_venta">
+                                                            </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label>Deposito</label><b style="color: red;">*</b>
@@ -510,8 +570,7 @@
                                                                 <output id="list">
                                                                     <img id="preview-moto"
                                                                         src="{{ asset('storage/motos/default.png') }}"
-                                                                        width="70%"
-                                                                        alt="Vista previa"
+                                                                        width="70%" alt="Vista previa"
                                                                         style="border:1px solid #ccc; border-radius:8px; object-fit:cover;">
                                                                 </output>
                                                             </center>
@@ -561,6 +620,27 @@
             </div>
         </div>
     </div>
+    <!-- Modal ver tmp-moto -->
+    <div class="modal fade" id="verMotoTmpModal" tabindex="-1" role="dialog" aria-labelledby="verMotoLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title" id="verMotoLabel">Detalles de la Moto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="contenido-ver-motoTmp">
+                    <!-- acá entra lo que arma verMoto() -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -584,21 +664,21 @@
 @stop
 @section('js')
     @if (
-            $errors->has('km_moto') ||
-                $errors->has('anio_moto') ||
-                $errors->has('id_nacionalidad') ||
-                $errors->has('color_moto') ||
-                $errors->has('cilindrada_moto') ||
-                $errors->has('modelo_moto') ||
-                $errors->has('id_marca') ||
-                $errors->has('dominio') ||
-                $errors->has('nr_motor') ||
-                $errors->has('nr_chasis'))
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    $('#crearMotoModal').modal('show');
-                });
-            </script>
+        $errors->has('km_moto') ||
+            $errors->has('anio_moto') ||
+            $errors->has('id_nacionalidad') ||
+            $errors->has('color_moto') ||
+            $errors->has('cilindrada_moto') ||
+            $errors->has('modelo_moto') ||
+            $errors->has('id_marca') ||
+            $errors->has('dominio') ||
+            $errors->has('nr_motor') ||
+            $errors->has('nr_chasis'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                $('#crearMotoModal').modal('show');
+            });
+        </script>
     @endif
     <script>
         $('#crearMotoModal').on('hidden.bs.modal', function() {
@@ -619,8 +699,8 @@
             // Limpiar input file y previews
             $(this).find('input[type="file"]').val('');
             $(this).find('#preview-container').empty().hide();
-           // Resetear la imagen de previsualización a la default
-            $(this).find('#preview-moto').attr('src', '{{ asset("storage/motos/default.png") }}');
+            // Resetear la imagen de previsualización a la default
+            $(this).find('#preview-moto').attr('src', '{{ asset('storage/motos/default.png') }}');
         });
     </script>
     <script>
@@ -673,7 +753,7 @@
             // Asignar el total que viene desde la BD
             let totalDesdeBD = @json($compra->total_compra);
             document.getElementById("precio_total_input").value = totalDesdeBD;
-        });
+        })
     </script>
     <script>
         $('.seleccionar-btn-proveedor').click(function() {
@@ -691,7 +771,7 @@
 
             // Agregamos los campos del formulario
             formData.append('fecha_compra', $('#fecha_compra').val());
-            formData.append('compra_id', $('#compra_id').val());
+            formData.append('id_compra', $('#id_compra').val());
             formData.append('id_marca', $('#id_marca').val());
             formData.append('modelo_moto', $('#modelo_moto').val());
             formData.append('dominio', $('#dominio').val());
@@ -720,7 +800,7 @@
 
             // Enviar AJAX
             $.ajax({
-                url: '{{ route('admin.compras.motos.create') }}',
+                url: '{{ route('tmp-compras.store') }}',
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -795,10 +875,9 @@
             const marca = fila.querySelector('.marca-moto')?.innerText || 'N/A';
             const modelo = fila.querySelector('.modelo-moto')?.innerText || 'N/A';
             const color = fila.querySelector('.color-moto')?.innerText || 'N/A';
-            const dominio = fila.querySelector('.dominio-moto')?.innerText || 'N/A';
             const anio = fila.querySelector('.anio-moto')?.innerText || 'N/A';
             const precio_compra = fila.querySelector('.precio_compra-moto')?.innerText || 'N/A';
-            const precio_venta = fila.dataset.precio_venta || 'N/A';
+            const precio_venta_raw = fila.dataset.precio_venta;
             const imagenUrl = fila.dataset.imagen?.trim();
             const cilindrada = fila.dataset.cilindrada || '';
             const nrMotor = fila.dataset.nrMotor || '';
@@ -806,8 +885,25 @@
             const certificado = fila.dataset.certificado || 'N/A';
             const dnrpa = fila.dataset.dnrpa || 'N/A';
             const km_moto = fila.dataset.km_moto || '';
-            const nacionalidad = fila.dataset.nacionalidad || 'N/D';
-            const condicion = fila.dataset.condicion || 'N/D';
+            const nacionalidad = fila.dataset.nacionalidad || 'N/A';
+            const condicion = fila.dataset.condicion || 'N/A';
+            const dominio = fila.dataset.dominio || "N/A";
+            let precio_venta = precio_venta_raw
+                ? new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(precio_venta_raw)
+                : 'N/A';
+
+            let precio = precio_venta !== 'N/A' ? `$${precio_venta}` : 'N/A';
+
+            const mapCondiciones = {
+                vendida: "Vendida",
+                en_stock: "En stock",
+                garantia: "Garantía",
+                devuelta: "Devuelta"
+            };
+
+            // Si existe en el diccionario, usa el valor, si no, deja el original con espacios bonitos
+            let condicionFormateada = mapCondiciones[condicion] ||
+                condicion.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 
             const defaultImagen = '/storage/motos/default.png';
             const urlImagen = (imagenUrl && imagenUrl !== '') ? imagenUrl : defaultImagen;
@@ -821,16 +917,16 @@
                         <p><strong>Año:</strong> ${anio}</p>
                         <p><strong>Precio compra:</strong> ${precio_compra}</p>
                         <p><strong>Nacionalidad:</strong> ${nacionalidad}</p>
-
+                        <p><strong>Kilometraje:</strong> ${km_moto}km</p>
                     </div>
                     <div class="col-md-4">
-                        <p><strong>Precio venta:</strong> $${precio_venta}</p>
-                        <p><strong>Cilindrada:</strong> ${cilindrada}</p>
+                        <p><strong>Precio venta:</strong> ${precio}</p>
+                        <p><strong>Cilindrada:</strong> ${cilindrada}cc</p>
                         <p><strong>Nr de motor:</strong> ${nrMotor}</p>
                         <p><strong>Nr de chasis:</strong> ${nrChasis}</p>
                         <p><strong>Certificado:</strong> ${certificado}</p>
                         <p><strong>DNRPA:</strong> ${dnrpa}</p>
-                        <p><strong>Condición:</strong> ${condicion}</p>
+                        <p><strong>Condición:</strong> ${condicionFormateada}</p>
                     </div>
                     <div class="col-md-4">
                         <img src="${urlImagen}" class="img-fluid img-thumbnail mt-2" style="max-width: 200px;">
@@ -916,6 +1012,150 @@
                 }
             });
         }
+
+        function eliminarTmpMoto(id) {
+            if (!id) return;
+
+            $.ajax({
+                url: "{{ url('/admin/tmp-compras') }}/" + id,
+                type: 'POST', // porque estás usando _method DELETE
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    _method: 'DELETE'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Moto temporal eliminada",
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "No se pudo eliminar la moto temporal"
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Ocurrió un problema en la petición"
+                    });
+                }
+            });
+
+        }
+
+        $('#btnCancelar').on('click', function() {
+            let idCompra = {{ $compra->id ?? 'null' }};
+
+            if (idCompra) {
+                $.ajax({
+                    url: "{{ url('/admin/tmp-compras/clear') }}/" + idCompra,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        _method: 'DELETE'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: "success",
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 1000
+                            });
+
+
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "No se pudieron eliminar las motos temporales"
+                        });
+                    }
+                });
+            }
+        });
+
+        function verMotoTmp(id) {
+            console.log(id);
+            const fila = document.querySelector(`tr[data-id='${id}']`);
+            if (!fila) {
+                console.error("No se encontró la fila de la moto ID: " + id);
+                return;
+            }
+
+            const marca = fila.querySelector('.marca-motoTmp')?.innerText || 'N/A';
+            const modelo = fila.querySelector('.modelo-motoTmp')?.innerText || 'N/A';
+            const color = fila.querySelector('.color-motoTmp')?.innerText || 'N/A';
+            const anio = fila.querySelector('.anio-motoTmp')?.innerText || 'N/A';
+            const precio_compra = fila.querySelector('.precio_compra-motoTmp')?.innerText || 'N/A';
+
+            let precio_venta_raw = fila.dataset.precio_venta;
+            let precio_formateado = (precio_venta_raw && precio_venta_raw.trim() !== '')
+                ? new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(precio_venta_raw)
+                : null;
+
+            const precio = precio_formateado ? `$${precio_formateado}` : 'N/A';
+
+            const imagenUrl = fila.dataset.imagen?.trim();
+            const cilindrada = fila.dataset.cilindrada || 'N/A';
+            const nrMotor = fila.dataset.nrMotor || 'N/A';
+            const nrChasis = fila.dataset.nrChasis || 'N/A';
+            const certificado = fila.dataset.certificado || 'N/A';
+            const dnrpa = fila.dataset.dnrpa || 'N/A';
+            const km_moto = fila.dataset.km_moto || 'N/A';
+            const nacionalidad = fila.dataset.nacionalidad || 'N/A';
+            const condicion = "Pendiente";
+            const dominio = fila.dataset.dominio || "N/A";
+
+
+
+            const defaultImagen = '/storage/motos/default.png';
+            const urlImagen = (imagenUrl && imagenUrl !== '') ? imagenUrl : defaultImagen;
+
+            const contenido = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Marca:</strong> ${marca}</p>
+                        <p><strong>Modelo:</strong> ${modelo}</p>
+                        <p><strong>Color:</strong> ${color}</p>
+                        <p><strong>Dominio:</strong> ${dominio}</p>
+                        <p><strong>Año:</strong> ${anio}</p>
+                        <p><strong>Precio compra:</strong> ${precio_compra}</p>
+                        <p><strong>Nacionalidad:</strong> ${nacionalidad}</p>
+                        <p><strong>Kilometraje:</strong> ${km_moto}km</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Precio venta:</strong> ${precio}</p>
+                        <p><strong>Cilindrada:</strong> ${cilindrada}cc</p>
+                        <p><strong>Nr de motor:</strong> ${nrMotor}</p>
+                        <p><strong>Nr de chasis:</strong> ${nrChasis}</p>
+                        <p><strong>Certificado:</strong> ${certificado}</p>
+                        <p><strong>DNRPA:</strong> ${dnrpa}</p>
+                        <p><strong>Condición:</strong> ${condicion}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="${urlImagen}" class="img-fluid img-thumbnail mt-2" style="max-width: 200px;">
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('contenido-ver-motoTmp').innerHTML = contenido;
+        }
     </script>
 
     <script>
@@ -995,6 +1235,6 @@
         });
     </script>
 
-    
+
 
 @stop

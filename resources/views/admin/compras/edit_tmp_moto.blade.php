@@ -18,7 +18,7 @@
                     enctype="multipart/form-data" method="POST">
                     @csrf
                     @method('PUT')
-
+                    <input type="hidden" name="return_url" value="{{ url()->previous() }}">
                     <div class="col-md-12 mx-auto mt-2">
                         <div class="card card-info">
                             <div class="card-body">
@@ -192,7 +192,7 @@
                                             <span class="input-group-text text-danger">$</span>
                                             <input type="text"  class="form-control" value="{{$moto->precio_venta}}"
                                                 id="precioVentaFormatted" placeholder="Precio venta">
-                                            <input type="hidden" name="precio_venta" value="{{$moto->precio_venta}}" id="precio_venta"> 
+                                            <input type="hidden" name="precio_venta" value="{{$moto->precio_venta}}" id="precio_venta">
                                             @error('precio_venta')
                                                 <small style="color: red;">{{ $message }}</small>
                                             @enderror
@@ -219,10 +219,9 @@
                             <button type="submit" class="btn btn-warning">
                                 <i class="fa-solid fa-file-arrow-up"></i> Actualizar
                             </button>
-                             <a href="{{ route('admin.compras.create') }}" class="btn btn-secondary mx-1"><i
-                                class="fas fa-times"></i>
-                                Cancelar
-                              </a>
+                            <a href="{{ url()->previous() }}" class="btn btn-secondary mx-1">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
                         </div>
                     </div>
                 </form>

@@ -83,7 +83,7 @@ class ComprasController extends Controller
         ]);
 
         $session_id = session()->getId();
-        $tmpMotos = TmpMoto::where('session_id', $session_id)->get();
+        $tmpMotos = TmpMoto::where('session_id', $session_id)->whereNull('id_compra')->get();
 
         if ($tmpMotos->isEmpty()) {
             return back()->with('mensaje', 'No hay motos cargadas para esta compra.');
@@ -140,7 +140,7 @@ class ComprasController extends Controller
             }
 
             // Borrar tmpMotos
-            TmpMoto::where('session_id', $session_id)->delete();
+            TmpMoto::where('session_id', $session_id)->whereNull('id_compra')->delete();
 
             DB::commit();
 
@@ -171,7 +171,14 @@ class ComprasController extends Controller
         $nacionalidades = Nacionalidad::all();
         $depositos = Deposito::all();
         $marcas = Marca::all();
-        $compra = Compra::with('motos', 'proveedor')->findOrFail($id);
+        $sessionId = session()->getId();
+        $compra = Compra::with([
+            'motos',
+            'proveedor',
+            'tmpMotos' => function ($query) use ($sessionId) {
+                $query->where('session_id', $sessionId);
+            }
+        ])->findOrFail($id);
         $totalCompra = $compra->motos->sum('precio_compra');
 
         $proveedores = Proveedor::all();
@@ -217,21 +224,58 @@ class ComprasController extends Controller
             'total_compra' => 'required|numeric',
         ]);
 
-        $compra = Compra::find($id);
-        $compra->fecha_compra = $request->fecha_compra;
-        $compra->numero_factura = $request->numero_factura;
-        $compra->numero_remito = $request->numero_remito;
-        $compra->estado_compra = $request->estado_compra;
-        $compra->id_proveedor = $request->id_proveedor;
-        $compra->total_compra = $request->total_compra;
-        $compra->save();
+        DB::beginTransaction();
 
-        // Actualizar fecha_compra_moto en todas las motos asociadas
-        $compra->motos()->update(['fecha_compra_moto' => $request->fecha_compra]);
+        try {
+            $compra = Compra::find($id);
+            $compra->fecha_compra = $request->fecha_compra;
+            $compra->numero_factura = $request->numero_factura;
+            $compra->numero_remito = $request->numero_remito;
+            $compra->estado_compra = $request->estado_compra;
+            $compra->id_proveedor = $request->id_proveedor;
+            $compra->total_compra = $request->total_compra;
+            $compra->save();
 
-        return redirect()->route('admin.compras.index')
-            ->with('mensaje', 'Se actualizó la compra correctamente')
-            ->with('icono', 'success');
+            // Traer las motos temporales vinculadas a esta compra
+            $tmpMotos = TmpMoto::where('id_compra', $compra->id)->get();
+
+            foreach ($tmpMotos as $tmpMoto) {
+                Moto::create([
+                    'id_marca'         => $tmpMoto->id_marca,
+                    'modelo_moto'      => $tmpMoto->modelo_moto,
+                    'dominio'          => $tmpMoto->dominio,
+                    'id_nacionalidad'  => $tmpMoto->id_nacionalidad,
+                    'cilindrada_moto'  => $tmpMoto->cilindrada_moto,
+                    'color_moto'       => $tmpMoto->color_moto,
+                    'anio_moto'        => $tmpMoto->anio_moto,
+                    'km_moto'          => $tmpMoto->km_moto,
+                    'es_usada'         => $tmpMoto->es_usada,
+                    'nr_motor'         => $tmpMoto->nr_motor,
+                    'nr_chasis'        => $tmpMoto->nr_chasis,
+                    'dnrpa'            => $tmpMoto->dnrpa,
+                    'nr_certificado'   => $tmpMoto->nr_certificado,
+                    'precio_compra'    => $tmpMoto->precio_compra,
+                    'precio_venta'     => $tmpMoto->precio_venta,
+                    'imagen_moto'      => $tmpMoto->imagen_moto,
+                    'id_deposito'      => $tmpMoto->id_deposito,
+                    'fecha_compra_moto'=> $compra->fecha_compra,
+                    'id_compra'        => $compra->id,
+                    'condicion'        => 'en_stock', // Por defecto
+                    'estado_moto'      => 'disponible', // Si tenés este campo
+                ]);
+            }
+
+            // Borrar las temporales de esa compra
+            TmpMoto::where('id_compra', $compra->id)->delete();
+
+            DB::commit();
+
+            return redirect()->route('admin.compras.index')
+                ->with('success', 'Compra actualizada y motos agregadas correctamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error al actualizar la compra: ' . $e->getMessage());
+        }
     }
 
     public function agregarMotoCompra(Request $request)
