@@ -35,7 +35,7 @@
                                         <th class="text-center" style="width: 10%">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody  class="table-bordered">
                                     @foreach ($ventas as $venta)
                                         <tr>
                                             <td class="text-center"style="vertical-align: middle">
@@ -83,7 +83,7 @@
 
                                                         <button type="submit" class="btn btn-sm btn-danger"
                                                             style="border-radius: 0px 4px 4px 0px"
-                                                            @if ($venta->estado_venta === 'Pagado') disabled 
+                                                            @if ($venta->estado_venta === 'Pagado') disabled
                                                                  title="No se puede eliminar una venta cobrada" @endif>
                                                             <i class="fas fa-trash"></i>
                                                         </button>

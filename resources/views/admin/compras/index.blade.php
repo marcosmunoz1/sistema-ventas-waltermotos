@@ -17,8 +17,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table id="mitabla" class="table table-striped table-bordered table-hover table-sm ">
-                        <thead class="thead-light">
+                    <table id="mitabla" class="table table-responsive table-striped  table-hover">
+                        <thead class="table-primary">
                             <tr>
                                 <th scope="col" style="text-align: center; width: 8%">#</th>
                                 <th scope="col" style="text-align: center; width: 10%">Fecha</th>
@@ -30,7 +30,7 @@
                             </tr>
                         </thead>
                         <?php $contador = 1; ?>
-                        <tbody>
+                        <tbody class="table-bordered">
                             @foreach ($compras as $compra)
                                 <tr>
                                     <td style="text-align: center;vertical-align:middle;">{{ $contador++ }}</td>
