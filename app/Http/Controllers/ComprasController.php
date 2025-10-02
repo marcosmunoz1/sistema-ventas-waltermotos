@@ -330,7 +330,6 @@ class ComprasController extends Controller
             }
 
             $compraId = $request->input('compra_id');
-            $fecha_compra = $request->input('fecha_compra');
             $moto = new Moto();
             $moto->id_compra = $compraId; // el nombre del campo que relaciona con compra
             $moto->id_marca = $request->id_marca;
@@ -465,7 +464,12 @@ class ComprasController extends Controller
 
         // Guardar cambios
         $moto->save();
+        // Recalcular el total de la compra con la suma de todas las motos
+        $total = $compra->motos()->sum('precio_compra');
 
+        // Actualizar la compra
+        $compra->total_compra = $total;
+        $compra->save();
         return redirect()->route('admin.compras.edit', $compraId)
             ->with('mensaje', 'Moto actualizada correctamente.')
             ->with('icono', 'success');
