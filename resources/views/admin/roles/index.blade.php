@@ -3,10 +3,7 @@
 @section('title', 'Roles')
 
 @section('content_header')
-    <h2>Listado de Roles
-        {{-- <b>{{ $empresa->nombre_empresa }}</b> --}}
-    </h2>
-    <hr>
+  
 @stop
 
 @section('content')
@@ -14,8 +11,8 @@
         <div class="col-md-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Roles Registrados</h3>
-                    <div class="card-tools">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <h2 class="brand-text font-weight-light mb-0">Listado de Roles</h2>
                         <a class="btn btn-primary" data-toggle="modal" data-target="#crearRolModal">
                             <i class="fas fa-plus"></i> Nuevo Rol
                         </a>

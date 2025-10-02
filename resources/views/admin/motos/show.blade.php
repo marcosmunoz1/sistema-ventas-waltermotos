@@ -12,8 +12,20 @@
         <div class="col-md-12">
             <div class="card card-outline card-info mt-1">
                 <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center w-100">
-                        <h2 class="brand-text font-weight-light mb-0">Motos/<b>Ver Moto</b> </h2>
+                    <div class="d-flex  align-items-center w-100">
+                        <h2 class="brand-text font-weight-light mx-2 mb-0">Motos/<b>Ver Moto</b> </h2>
+                        @php
+                            $colores = [
+                                'vendida' => 'danger',
+                                'en_stock' => 'success',
+                                'garantia' => 'warning',
+                                'devuelta' => 'secondary',
+                            ];
+                            $color = $colores[$moto->condicion] ?? 'light';
+                        @endphp
+                        <span class="badge bg-{{ $color }}">
+                            {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
+                        </span>
                     </div>
                 </div>
 
@@ -122,7 +134,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="card">
-                                    <h5 class="text-center text-info mt-2"><i class="fas fa fa-truck"></i> Datos del Compra
+                                    <h5 class="text-center text-info mt-2"><i class="fas fa fa-truck"></i> Datos de Compra
                                     </h5>
                                     <div
                                         class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
@@ -157,7 +169,7 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label>Número de Remito</label>
-                                                    <input type="number" class="form-control"
+                                                    <input type="text" class="form-control"
                                                         value="{{ $moto->compra->numero_remito }}" disabled>
                                                 </div>
                                                 <div class="mb-3">
@@ -228,7 +240,7 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    
+
                                                     <div class="mb-3">
                                                         <label for="nroFactura" class="form-label">Nro. de Factura</label>
                                                         <div class="input-group">

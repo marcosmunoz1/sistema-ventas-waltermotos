@@ -25,6 +25,7 @@
                         {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
                     </span>
                 </div>
+
             </div>
             <form action="{{ url('/admin/motos', $moto->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -185,6 +186,7 @@
                                         </center>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                         <!-- Fila 4 -->
