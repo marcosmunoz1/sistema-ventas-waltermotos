@@ -212,18 +212,16 @@
     </div>
 
 
-    <div class="col-md-3">
-        <div class="mb-3">
-            <label>Precio de Venta</label>
-            <div class="input-group">
-                <span class="input-group-text text-danger">$</span>
-                <input name="precio_venta" type="text" class="form-control text-danger"
-                    value="{{ number_format($moto->precio_venta, 2, ',', '.') }}"
-                    @if ($moto->condicion === 'vendida') disabled @endif>
-            </div>
-        </div>
-
-    </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label>Precio de Venta</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text text-danger">$</span>
+                                        <input name="precio_venta" type="text" class="form-control text-danger"
+                                            value="{{ number_format($moto->precio_venta, 2, ',', '.') }}">
+                                    </div>
+                                </div>
+                            </div>
 
 
     <div class="col-md-3">

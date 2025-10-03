@@ -10,6 +10,7 @@ use App\Models\Moto;
 use App\Models\Proveedor;
 use App\Models\User;
 use App\Models\Venta;
+use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
 
 class AdminController extends Controller
@@ -25,7 +26,27 @@ class AdminController extends Controller
         $cantidadClientes = Cliente::count();
         $cantidadVentas = Venta::count();
         $cantidadCreditos = Credito::count();
-        $ventas = Venta::all(); 
+        $ventas = Venta::all();
+
+
+        $morosos = Credito::with(['detalles', 'venta'])
+            ->get()
+            ->filter(function ($credito) {
+                return $credito->detalles->filter(function ($detalle) {
+                    return $detalle->estado_cuota === 'Pendiente' && $detalle->fecha_vencimiento < now();
+                })->count() > 0;
+            })
+            ->sortByDesc(function ($credito) {
+                return $credito->detalles->filter(function ($detalle) {
+                    return $detalle->estado_cuota === 'Pendiente' && $detalle->fecha_vencimiento < now();
+                })->count();
+            });
+
+        // Asegurarte que siempre es Collection
+        $morosos = $morosos ?? collect();
+
+
+
 
         return view('admin.index', compact(
             'cantidadRoles',
@@ -37,8 +58,8 @@ class AdminController extends Controller
             'cantidadCreditos', // <- corregido aquí
             'cantidadMarcas',
             'cantidadMotos',
-            'ventas'
+            'ventas',
+            'morosos'
         ));
-
     }
 }

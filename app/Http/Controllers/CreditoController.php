@@ -6,6 +6,7 @@ use App\Models\Credito;
 use App\Models\DetalleCredito;
 use App\Models\Moto;
 use App\Models\Venta;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Dompdf\Adapter\PDFLib;
 use Illuminate\Http\Request;
@@ -119,7 +120,7 @@ class CreditoController extends Controller
         $formatter = new NumeroALetras();
         $montoLetras = $formatter->toMoney($detalle->valor_cuota, 2, 'pesos', 'centavos');
 
-         $formatter2 = new NumeroALetras();
+        $formatter2 = new NumeroALetras();
         $cuotaLetras = $formatter2->toMoney($detalle->numero_cuota);
 
         // Renderizar la vista Blade en HTML
@@ -168,5 +169,16 @@ class CreditoController extends Controller
         return redirect()->back()
             ->with('mensaje', 'Credito y Venta eliminada correctamente.')
             ->with('icono', 'success');
+    }
+
+
+
+    public function imprimirCredito($id)
+    {
+       $credito = Credito::with('detalles', 'venta')->where('id', $id)->first();
+       $clienteApellido = $credito->venta->cliente->apellido_cliente;
+       $clienteNombre = $credito->venta->cliente->apellido_cliente;
+        $pdf = Pdf::loadView('admin.creditos.resumen', compact('credito'));
+        return $pdf->stream("credito_{$clienteApellido}_{$clienteNombre}.pdf");
     }
 }

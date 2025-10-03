@@ -25,7 +25,7 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-sm table-bordered table-striped" id="mitabla">
-                                        <thead>
+                                        <thead class="table-primary">
                                             <tr>
                                                 <th class="text-center" style="width: 5%">#</th>
                                                 <th class="text-center" style="width: 10%">Marca</th>
@@ -39,7 +39,7 @@
                                                 <th class="text-center" style="width: 10%">Acciones</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="table-bordered">
                                             <?php $contador = 1; ?>
                                             @foreach ($motos as $moto)
                                                 <tr>

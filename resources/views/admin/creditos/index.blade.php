@@ -20,7 +20,7 @@
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-sm" id="miTabla">
+                                <table class="table  table-striped table-sm" id="miTabla">
                                     <thead class="table-primary">
                                         <tr>
                                             <th class="text-center" style="width: 3%">#</th>
@@ -37,7 +37,7 @@
                                         </tr>
                                     </thead>
                                     <?php $contador = 1; ?>
-                                    <tbody>
+                                    <tbody  class="table-bordered">
                                         @foreach ($creditos as $credito)
                                             <tr>
                                                 <td class="text-center" style="vertical-align: middle">{{ $contador++ }}
@@ -92,7 +92,7 @@
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-sm btn-danger"
                                                                 style="border-radius: 0px 4px 4px 0px"
-                                                                @if ($credito->estado_credito === 'Pagado') disabled 
+                                                                @if ($credito->estado_credito === 'Pagado') disabled
                                                                  title="No se puede eliminar un crédito pagado" @endif>
                                                                 <i class="fas fa-trash"></i>
                                                             </button>

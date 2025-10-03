@@ -32,7 +32,7 @@
                                         </tr>
                                     </thead>
                                     <?php $contador = 1; ?>
-                                    <tbody>
+                                    <tbody  class="table-bordered">
                                         @foreach ($permisos as $permiso)
                                             <tr>
                                                 <td class="text-center">{{ $contador++ }}</td>

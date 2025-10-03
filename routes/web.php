@@ -87,6 +87,10 @@ Route::middleware(['web', 'auth'])->post('/admin/tmp-compras', [TmpCompraControl
 Route::delete('/admin/tmp-compras/{id}', [TmpCompraController::class, 'destroy'])->name('tmp-compras.destroy')->middleware('auth');
 Route::get('/admin/tmp-compras/motos', [TmpCompraController::class, 'getMotos'])->name('tmp-compras.getMotos')->middleware('auth');
 Route::get('/admin/tmp-compras/listar', [TmpCompraController::class, 'listar'])->name('tmp-compras.listar')->middleware('auth');
+Route::delete('/admin/tmp-compras/clear/{compraId}', [TmpCompraController::class, 'clear'])
+    ->name('tmp-compras.clear')
+    ->middleware('auth');
+
 
 //Rutas para Ventas
 Route::get('/admin/ventas', [App\Http\Controllers\VentaController::class, 'index'])->name('admin.ventas.index')->middleware('auth','can:ventas-ver');
@@ -109,6 +113,7 @@ Route::get('/admin/creditos/{id}/edit', [App\Http\Controllers\CreditoController:
 Route::put('/admin/creditos/{id}', [App\Http\Controllers\CreditoController::class, 'update'])->name('admin.creditos.update')->middleware('auth','can:creditos-editar');
 Route::delete('/admin/creditos/{id}', [App\Http\Controllers\CreditoController::class, 'destroy'])->name('admin.creditos.destroy')->middleware('auth','can:creditos-eliminar');
 Route::get('/admin/creditos/reporte/{id}', [App\Http\Controllers\CreditoController::class, 'reporte'])->name('admin.creditos.reporte')->middleware('auth','can:creditos-ver');
+Route::get('/admin/creditos/resumen/{id}', [App\Http\Controllers\CreditoController::class, 'imprimirCredito'])->name('admin.creditos.resumen')->middleware('auth','can:creditos-ver');
 
 
 //Rutas para clientes

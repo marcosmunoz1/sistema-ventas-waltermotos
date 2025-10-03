@@ -68,7 +68,7 @@
                         <div class="row">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-sm" id="tabla-motos">
-                                    <thead class="thead-light">
+                                    <thead class="table-info">
                                         <tr>
                                             <th class="text-center" style="width: 5%">#</th>
                                             <th class="text-center" style="width: 10%">Marca</th>
@@ -89,6 +89,7 @@
                                                 data-cilindrada="{{ $moto->cilindrada_moto }}"
                                                 data-nr-motor="{{ $moto->nr_motor }}"
                                                 data-nr-chasis="{{ $moto->nr_chasis }}"
+                                                data-dominio="{{$moto->dominio}}"
                                                 data-certificado="{{ $moto->nr_certificado }}"
                                                 data-dnrpa="{{ $moto->dnrpa }}" data-km_moto="{{ $moto->km_moto }}"
                                                 data-id_nacionalidad="{{ $moto->id_nacionalidad }}"
@@ -205,10 +206,9 @@
             const marca = fila.querySelector('.marca-moto')?.innerText || 'N/A';
             const modelo = fila.querySelector('.modelo-moto')?.innerText || 'N/A';
             const color = fila.querySelector('.color-moto')?.innerText || 'N/A';
-            const dominio = fila.querySelector('.dominio-moto')?.innerText || 'N/A';
             const anio = fila.querySelector('.anio-moto')?.innerText || 'N/A';
             const precio_compra = fila.querySelector('.precio_compra-moto')?.innerText || 'N/A';
-            const precio_venta = fila.dataset.precio_venta || 'N/A';
+            let precio_venta_raw = fila.dataset.precio_venta;
             const imagenUrl = fila.dataset.imagen?.trim();
             const cilindrada = fila.dataset.cilindrada || '';
             const nrMotor = fila.dataset.nrMotor || '';
@@ -217,7 +217,13 @@
             const dnrpa = fila.dataset.dnrpa || 'N/A';
             const km_moto = fila.dataset.km_moto || '';
             const condicion = fila.dataset.condicion || '';
-            const nacionalidad = fila.dataset.nacionalidad || 'N/D';
+            const nacionalidad = fila.dataset.nacionalidad || 'N/A';
+            const dominio = fila.dataset.dominio || "N/A";
+            let precio_formateado = (precio_venta_raw && precio_venta_raw.trim() !== '')
+                ? new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(precio_venta_raw)
+                : null;
+            const precio = precio_formateado ? `$${precio_formateado}` : 'N/A';
+
 
             const mapCondiciones = {
                 vendida: "Vendida",
@@ -243,10 +249,11 @@
                         <p><strong>Año:</strong> ${anio}</p>
                         <p><strong>Precio compra:</strong> ${precio_compra}</p>
                         <p><strong>Nacionalidad:</strong> ${nacionalidad}</p>
+                        <p><strong>Kilometraje:</strong> ${km_moto}km</p>
 
                     </div>
                     <div class="col-md-4">
-                        <p><strong>Precio venta:</strong> $${precio_venta}</p>
+                        <p><strong>Precio venta:</strong> ${precio}</p>
                         <p><strong>Cilindrada:</strong> ${cilindrada}cc</p>
                         <p><strong>Nr de motor:</strong> ${nrMotor}</p>
                         <p><strong>Nr de chasis:</strong> ${nrChasis}</p>

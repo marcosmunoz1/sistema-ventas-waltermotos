@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('title', 'Roles')
 
@@ -30,7 +30,7 @@
                                     </tr>
                                 </thead>
                                 <?php $contador = 1; ?>
-                                <tbody>
+                                <tbody  class="table-bordered">
                                     @foreach ($roles as $rol)
                                         <tr>
                                             <td class="text-center">{{ $contador++ }}</td>

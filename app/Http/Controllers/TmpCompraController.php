@@ -112,6 +112,7 @@ class TmpCompraController extends Controller
             // Crear la moto temporal
             $tmpMoto = new TmpMoto();
             $tmpMoto->id_marca = $request->id_marca;
+            $tmpMoto->id_compra = $request->id_compra;
             $tmpMoto->modelo_moto = $request->modelo_moto;
             $tmpMoto->dominio = $request->dominio;
             $tmpMoto->id_nacionalidad = $request->id_nacionalidad;
@@ -157,7 +158,7 @@ class TmpCompraController extends Controller
     }
 
     public function editarMoto($motoId){
-         $nacionalidades = Nacionalidad::all();
+        $nacionalidades = Nacionalidad::all();
         $depositos = Deposito::all();
         $marcas = Marca::all();
         $moto = tmpMoto::findOrFail($motoId);
@@ -275,9 +276,10 @@ class TmpCompraController extends Controller
 
     $moto->save();
 
-    return redirect()->route('admin.compras.create')
-        ->with('mensaje', 'Moto actualizada correctamente')
-        ->with('icono', 'success');
+    $returnUrl = $request->input('return_url', route('admin.compras.create'));
+    return redirect($returnUrl)
+       ->with('mensaje', 'Moto actualizada correctamente')
+       ->with('icono', 'success');
 
     }
 
@@ -287,6 +289,7 @@ class TmpCompraController extends Controller
         $sessionId = session()->getId();
         $motos = TmpMoto::with(['nacionalidad', 'deposito', 'marca'])
             ->where('session_id', $sessionId)
+            ->whereNull('id_compra')
             ->get();
 
         return response()->json([
@@ -307,4 +310,35 @@ class TmpCompraController extends Controller
 
         return redirect()->back()->with('success', 'Moto eliminada del carrito');
     }
+
+    public function clear($compraId)
+    {
+        try {
+            $tmpMotos = \App\Models\TmpMoto::where('id_compra', $compraId)->get();
+
+            if ($tmpMotos->isEmpty()) {
+                // No hay motos temporales, devolvemos success sin SweetAlert
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No hay motos temporales para eliminar'
+                ]);
+            }
+
+            // Hay motos temporales, eliminamos
+            \App\Models\TmpMoto::where('id_compra', $compraId)->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Motos pendientes eliminadas'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar motos pendientes'
+            ], 500);
+        }
+    }
+
+
+
 }

@@ -14,7 +14,7 @@
                     <div class="d-flex justify-content-between align-items-center w-100">
                         <h2 class="brand-text font-weight-light mb-0">Creditos/Detalle de Credito:
                             <b>{{ $credito->venta->cliente->apellido_cliente }},
-                            {{ $credito->venta->cliente->nombre_cliente }} </b>
+                                {{ $credito->venta->cliente->nombre_cliente }} </b>
                         </h2>
                     </div>
                 </div>
@@ -113,6 +113,14 @@
                                     {{ number_format($credito->saldo_credito, 2, ',', '.') }}</p>
                             </div>
                         </div>
+
+                        <div class="card-footer text-right mb-2">
+                            <a href="{{ route('admin.creditos.resumen', $credito->id) }}" target="_blank"
+                                class="btn btn-sm btn-secondary">
+                                <i class="fas fa-file-pdf"></i> Ver PDF
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>

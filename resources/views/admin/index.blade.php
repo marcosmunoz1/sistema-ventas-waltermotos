@@ -9,7 +9,7 @@
 @section('content')
     <div class="row mt-2">
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger zoomP">
+            <div class="small-box bg-maroon  zoomP">
                 <div class="inner">
                     <h3>Motos</h3>
                     <p>Registradas: {{ $cantidadMotos }}</p>
@@ -140,6 +140,56 @@
             </a>
         </div> --}}
     </div>
+    @if ($morosos->isNotEmpty())
+        <div class="alert alert-danger" role="alert">
+            <h5 class="mb-3"><i class="fas fa-exclamation-triangle"></i> Clientes Morosos</h5>
+            <div class="table-responsive">
+                <table class="table table-sm table-hover mb-0">
+                    <thead class="table-danger">
+                        <tr>
+                            <th class="text-center">Cliente</th>
+                            <th class="text-center">Cuotas Vencidas</th>
+                            <th class="text-center">Celular</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($morosos as $credito)
+                            @php
+                                $cliente = $credito->venta->cliente;
+                                $cuotasVencidas = $credito->detalles
+                                    ->filter(
+                                        fn($detalle) => $detalle->estado_cuota === 'Pendiente' &&
+                                            $detalle->fecha_vencimiento < now(),
+                                    )
+                                    ->count();
+                            @endphp
+                            <tr>
+                                <td>{{ $cliente->apellido_cliente }} {{ $cliente->nombre_cliente }}</td>
+                                <td class="text-center">{{ $cuotasVencidas }}</td>
+                                <td class="text-center">{{ $cliente->celular_cliente }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('admin.creditos.show', $credito->id) }}"
+                                        class="btn btn-block btn-outline-info btn-sm">
+                                         <i class="fas fa-eye"></i> Ver crédito
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @else
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <i class="fas fa-check-circle me-2 fs-3"></i>
+            <div>
+                <h5 class="mb-0">No hay clientes morosos</h5>
+            </div>
+        </div>
+    @endif
+
+
 
     <div class="row">
         <div class="col-md-6">
@@ -186,7 +236,7 @@
     <?php
     $meses = array_fill(1, 12, 0);
     $suma_ventas = array_fill(1, 12, 0);
-
+    
     foreach ($ventas as $venta) {
         $fecha = strtotime($venta['fecha_venta']);
         // Verifica que strtotime() haya devuelto una fecha válida

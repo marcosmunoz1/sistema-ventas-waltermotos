@@ -9,75 +9,70 @@
 
 @section('content')
     <div class="row mt-3">
-        <div class="col-md-12">
             <div class="col-md-12">
-                <div class="card card-outline card-primary mt-1">
+                <div class="card card-outline card-primary">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <h2 class="brand-text font-weight-light mb-0">Lista de Usuarios</h2>
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#crearUsuarioModal"><i
-                                    class="fas fa-plus"></i>
-                                Nuevo Usuario</a>
-                        </div>
-
-                        <div class="col-md-10 mx-auto mt-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <table id="mitabla" class="table table-striped table-sm table-hover" id="tablaProductos">
-                                        <thead class="table-primary">
-                                            <tr>
-                                                <th class="text-center" style="width: 5%">#</th>
-                                                <th style="width: 25%">Nombre</th>
-                                                <th style="width: 25%">Rol</th>
-                                                <th style="width: 30%">Correo</th>
-                                                {{--    <th style="width: 10%">Rol</th> --}}
-                                                <th class="text-center" style="width: 30%">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <?php $contador = 1; ?>
-                                        <tbody>
-                                            @foreach ($usuarios as $usuario)
-                                                <tr>
-                                                    <td class="text-center ">{{ $contador++ }}</td>
-                                                    <td>{{ $usuario->name }}</td>
-                                                    <td>{{ $usuario->roles->pluck('name')->join(', ') }}</td>
-                                                    <td>{{ $usuario->email }}</td>
-                                                    {{--   <td>{{ $usuario->roles->pluck('name')->implode(', ') }}</td> --}}
-                                                    <td style="text-align: center;vertical-align:middle;">
-                                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                                            <a href="{{ url('/admin/usuarios', $usuario->id) }}"
-                                                                class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                            <a href="{{ url('/admin/usuarios/' . $usuario->id . '/edit') }}"
-                                                                class="btn btn-sm btn-warning"><i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <form action="{{ url('/admin/usuarios', $usuario->id) }}"
-                                                                method="post" class="d-inline-block"
-                                                                onsubmit="preguntar(event, {{ $usuario->id }})"
-                                                                id="miFormulario{{ $usuario->id }}">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                                    style="border-radius: 0px 4px 4px 0px">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
+                                <a class="btn btn-primary" data-toggle="modal" data-target="#crearUsuarioModal"><i
+                                        class="fas fa-plus"></i>
+                                    Nuevo Usuario</a>
                         </div>
                     </div>
+                    <div class="col-md-10 mx-auto mt-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <table id="mitabla" class="table table-striped table-responsive table-hover" id="tablaProductos">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th class="text-center" style="width: 5%">#</th>
+                                            <th style="width: 25%">Nombre</th>
+                                            <th style="width: 25%">Rol</th>
+                                            <th style="width: 30%">Correo</th>
+                                            {{--    <th style="width: 10%">Rol</th> --}}
+                                            <th class="text-center" style="width: 30%">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <?php $contador = 1; ?>
+                                    <tbody  class="table-bordered">
+                                        @foreach ($usuarios as $usuario)
+                                            <tr>
+                                                <td class="text-center ">{{ $contador++ }}</td>
+                                                <td>{{ $usuario->name }}</td>
+                                                <td>{{ $usuario->roles->pluck('name')->join(', ') }}</td>
+                                                <td>{{ $usuario->email }}</td>
+                                                {{--   <td>{{ $usuario->roles->pluck('name')->implode(', ') }}</td> --}}
+                                                <td style="text-align: center;vertical-align:middle;">
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <a href="{{ url('/admin/usuarios', $usuario->id) }}"
+                                                            class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                        <a href="{{ url('/admin/usuarios/' . $usuario->id . '/edit') }}"
+                                                            class="btn btn-sm btn-warning"><i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <form action="{{ url('/admin/usuarios', $usuario->id) }}"
+                                                            method="post" class="d-inline-block"
+                                                            onsubmit="preguntar(event, {{ $usuario->id }})"
+                                                            id="miFormulario{{ $usuario->id }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                                style="border-radius: 0px 4px 4px 0px">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
 
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
 
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
 
 

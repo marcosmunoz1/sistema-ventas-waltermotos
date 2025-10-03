@@ -21,7 +21,7 @@
                 <div class="col-md-12 mx-auto ">
 
                     <div class="card-body">
-                        <table id="mitabla" class="table table-striped table-hover table-sm">
+                        <table id="mitabla" class="table table-responsive  table-striped table-hover table-sm">
                             <thead class="table-primary">
                                 <tr>
                                     <th class="text-center" style="width: 10%">#</th>
@@ -34,7 +34,7 @@
                                 </tr>
                             </thead>
                             <?php $contador = 1; ?>
-                            <tbody>
+                            <tbody class="table-bordered">
                                 @foreach ($clientes as $cliente)
                                     <tr>
                                         <td class="text-center">{{ $contador++ }}</td>
