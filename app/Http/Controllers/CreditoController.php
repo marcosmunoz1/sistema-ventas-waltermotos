@@ -20,7 +20,11 @@ class CreditoController extends Controller
     public function index()
     {
         $creditos = Credito::with('detalles', 'venta')->orderBy('id', 'desc')->get();
-        return view('admin.creditos.index', compact('creditos'));
+
+        $totalFinanciado = $creditos->sum('valor_financiado');
+        $totalEntregado = $creditos->sum('entrega');
+        $totalSaldo = $creditos->sum('saldo_credito');
+        return view('admin.creditos.index', compact('creditos', 'totalFinanciado', 'totalEntregado', 'totalSaldo'));
     }
 
     public function show($id)
@@ -175,9 +179,9 @@ class CreditoController extends Controller
 
     public function imprimirCredito($id)
     {
-       $credito = Credito::with('detalles', 'venta')->where('id', $id)->first();
-       $clienteApellido = $credito->venta->cliente->apellido_cliente;
-       $clienteNombre = $credito->venta->cliente->apellido_cliente;
+        $credito = Credito::with('detalles', 'venta')->where('id', $id)->first();
+        $clienteApellido = $credito->venta->cliente->apellido_cliente;
+        $clienteNombre = $credito->venta->cliente->apellido_cliente;
         $pdf = Pdf::loadView('admin.creditos.resumen', compact('credito'));
         return $pdf->stream("credito_{$clienteApellido}_{$clienteNombre}.pdf");
     }

@@ -35,7 +35,7 @@
                                         <th class="text-center" style="width: 10%">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody  class="table-bordered">
+                                <tbody class="table-bordered">
                                     @foreach ($ventas as $venta)
                                         <tr>
                                             <td class="text-center"style="vertical-align: middle">
@@ -102,6 +102,62 @@
         </div>
     </div>
 
+    <div class="card mt-3 shadow-sm border-primary">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-calculator"></i> Resumen General de Ventas</h5>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+
+                <div class="col-md-3">
+                    <h6 class="text-muted">Total de Ventas</h6>
+                    <h4 class="fw-bold text-success">${{ number_format($totalVenta, 2, ',', '.') }}</h4>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-muted">Total Pagos</h6>
+                    <h4 class="fw-bold text-danger">${{ number_format($totalPago, 2, ',', '.') }}</h4>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-muted">Total Intereses</h6>
+                    <h4 class="fw-bold ">${{ number_format($totalInteres, 2, ',', '.') }}</h4>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-muted">Saldo Total</h6>
+                    <h4 class="fw-bold text-primary">
+                        ${{ number_format($totalVenta - $totalPago - $totalInteres, 2, ',', '.') }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        {{-- Monto total de ventas --}}
+        <div class="col-md-6">
+            <div class="card card-outline card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Monto total de ventas por mes</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartVentasMontos"></canvas>
+                </div>
+            </div>
+        </div>
+
+        {{-- Cantidad de ventas --}}
+        <div class="col-md-6">
+            <div class="card card-outline card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Cantidad de ventas mensuales</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartVentasCantidad"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 @endsection
 
 @section('css')
@@ -156,5 +212,90 @@
                 }
             }
         });
+    </script>
+
+    @php
+        // ====== VENTAS ======
+        $mesesVentas = array_fill(1, 12, 0);
+        $sumaVentas = array_fill(1, 12, 0);
+
+        foreach ($ventas as $venta) {
+            $fecha = strtotime($venta['fecha_venta']);
+            if ($fecha !== false) {
+                $mes = (int) date('m', $fecha);
+                $mesesVentas[$mes]++;
+                $sumaVentas[$mes] += $venta['total_pago'];
+            }
+        }
+
+        $reporteCantidadVentas = implode(',', $mesesVentas);
+        $reporteMontosVentas = implode(',', $sumaVentas);
+    @endphp
+
+
+    <script>
+        const meses = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+
+        // === Ventas ===
+        const datosCantidadVentas = [{{ $reporteCantidadVentas }}];
+        const datosMontosVentas = [{{ $reporteMontosVentas }}];
+
+      
+
+        // ---- Gráfico: Cantidad de Ventas ----
+        new Chart(document.getElementById('chartVentasCantidad'), {
+            type: 'bar',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Cantidad de Ventas',
+                    data: datosCantidadVentas,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // ---- Gráfico: Monto Total de Ventas ----
+        new Chart(document.getElementById('chartVentasMontos'), {
+            type: 'line',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Monto Total de Ventas ($)',
+                    data: datosMontosVentas,
+                    fill: true,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 2,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: v => '$' + v.toLocaleString('es-AR')
+                        }
+                    }
+                }
+            }
+        });
+
+       
+
+      
     </script>
 @endsection

@@ -26,7 +26,11 @@ class VentaController extends Controller
             ->orderBy('id_venta', 'desc')
             ->get();
 
-        return view('admin.ventas.index', compact('ventas'));
+        $totalVenta = $ventas->sum('precio_venta');
+        $totalPago = $ventas->sum('total_pago');
+        $totalInteres = $ventas->sum('total_interes');
+
+        return view('admin.ventas.index', compact('ventas', 'totalVenta', 'totalPago', 'totalInteres'));
     }
 
     public function create()

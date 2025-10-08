@@ -171,7 +171,7 @@
                                 <td class="text-center">
                                     <a href="{{ route('admin.creditos.show', $credito->id) }}"
                                         class="btn btn-block btn-outline-info btn-sm">
-                                         <i class="fas fa-eye"></i> Ver crédito
+                                        <i class="fas fa-eye"></i> Ver crédito
                                     </a>
                                 </td>
                             </tr>
@@ -192,31 +192,32 @@
 
 
     <div class="row">
+        {{-- Monto total de ventas --}}
         <div class="col-md-6">
-            <div class="card card-outline card-primary">
+            <div class="card card-outline card-success">
                 <div class="card-header">
-                    <h3 class="card-title">Resumen mensual de los montos de ventas</h3>
+                    <h3 class="card-title">Ventas Mensuales</h3>
                 </div>
                 <div class="card-body">
-                    <div>
-                        <canvas id="myChart2"></canvas>
-                    </div>
+                    <canvas id="chartVentasMontos"></canvas>
                 </div>
             </div>
         </div>
+
+        {{-- Saldo total de creditos --}}
         <div class="col-md-6">
-            <div class="card card-outline card-primary">
+            <div class="card card-outline card-warning">
                 <div class="card-header">
-                    <h3 class="card-title">Resumen de la cantidad de ventas mensuales</h3>
+                    <h3 class="card-title">Créditos Mensuales</h3>
                 </div>
                 <div class="card-body">
-                    <div>
-                        <canvas id="myChart"></canvas>
-                    </div>
+                    <canvas id="chartCreditosMontos"></canvas>
                 </div>
             </div>
         </div>
     </div>
+
+
 @stop
 
 {{-- Push extra CSS --}}
@@ -233,78 +234,108 @@
         console.log("Hi, I'm using the Laravel-AdminLTE package!");
     </script>
 
-    <?php
-    $meses = array_fill(1, 12, 0);
-    $suma_ventas = array_fill(1, 12, 0);
-    
-    foreach ($ventas as $venta) {
-        $fecha = strtotime($venta['fecha_venta']);
-        // Verifica que strtotime() haya devuelto una fecha válida
-        if ($fecha !== false) {
-            $mes = date('m', $fecha);
-            $meses[(int) $mes]++;
-            $suma_ventas[(int) $mes] += $venta['total_pago'];
-        } else {
-            // Maneja el caso en que la fecha no sea válida (si es necesario)
-            echo 'Fecha inválida: ' . $venta['fecha_venta'] . '<br>';
-        }
-    }
-    $reporte_cantidad = implode(',', $meses);
-    $reporte_ventas = implode(',', $suma_ventas);
-    ?>
+    @php
+        // ====== VENTAS ======
+        $mesesVentas = array_fill(1, 12, 0);
+        $sumaVentas = array_fill(1, 12, 0);
 
-    <script>
-        var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiempre', 'Octubre',
-            'Noviembre', 'Diciembre'
-        ];
-        var datos = [{{ $reporte_cantidad }}];
-        const ctx2 = document.getElementById('myChart')
-
-        new Chart(ctx2, {
-            type: 'bar',
-            data: {
-                labels: meses,
-                datasets: [{
-                    label: 'Total cantidad de ventas',
-                    data: datos,
-                    borderWidtch: 1
-
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+        foreach ($ventas as $venta) {
+            $fecha = strtotime($venta['fecha_venta']);
+            if ($fecha !== false) {
+                $mes = (int) date('m', $fecha);
+                $mesesVentas[$mes]++;
+                $sumaVentas[$mes] += $venta['total_pago'];
             }
-        })
-    </script>
-    <script>
-        var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiempre', 'Octubre',
-            'Noviembre', 'Diciembre'
-        ]
-        var datos = [{{ $reporte_ventas }}]
-        const ctx = document.getElementById('myChart2')
+        }
 
-        new Chart(ctx, {
+        $reporteCantidadVentas = implode(',', $mesesVentas);
+        $reporteMontosVentas = implode(',', $sumaVentas);
+
+        // ====== CRÉDITOS ======
+        $mesesCreditos = array_fill(1, 12, 0);
+        $sumaCreditos = array_fill(1, 12, 0);
+
+        foreach ($creditos as $credito) {
+            $fecha = strtotime($credito['created_at']);
+            if ($fecha !== false) {
+                $mes = (int) date('m', $fecha);
+                $mesesCreditos[$mes]++;
+                $sumaCreditos[$mes] += $credito['saldo_credito'];
+            }
+        }
+
+        $reporteCantidadCreditos = implode(',', $mesesCreditos);
+        $reporteMontosCreditos = implode(',', $sumaCreditos);
+    @endphp
+
+
+    <script>
+        const meses = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+
+        // === Ventas ===
+        const datosCantidadVentas = [{{ $reporteCantidadVentas }}];
+        const datosMontosVentas = [{{ $reporteMontosVentas }}];
+
+        // === Créditos ===
+        const datosCantidadCreditos = [{{ $reporteCantidadCreditos }}];
+        const datosMontosCreditos = [{{ $reporteMontosCreditos }}];
+
+        // ---- Gráfico: Monto Total de Ventas ----
+        new Chart(document.getElementById('chartVentasMontos'), {
             type: 'line',
             data: {
                 labels: meses,
                 datasets: [{
-                    label: 'Monto Total de ventas',
-                    data: datos,
-                    borderWidtch: 1
-
+                    label: 'Monto Total de Ventas ($)',
+                    data: datosMontosVentas,
+                    fill: true,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 2,
+                    tension: 0.3
                 }]
             },
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            callback: v => '$' + v.toLocaleString('es-AR')
+                        }
                     }
                 }
             }
-        })
+        });
+
+
+        // ---- Gráfico: Monto Total Financiado ----
+        new Chart(document.getElementById('chartCreditosMontos'), {
+            type: 'line',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Saldo Total Financiado ($)',
+                    data: datosMontosCreditos,
+                    fill: true,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderWidth: 2,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: v => '$' + v.toLocaleString('es-AR')
+                        }
+                    }
+                }
+            }
+        });
     </script>
 @endpush

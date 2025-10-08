@@ -27,7 +27,7 @@ class AdminController extends Controller
         $cantidadVentas = Venta::count();
         $cantidadCreditos = Credito::count();
         $ventas = Venta::all();
-
+        $creditos = Credito::all();
 
         $morosos = Credito::with(['detalles', 'venta'])
             ->get()
@@ -59,6 +59,7 @@ class AdminController extends Controller
             'cantidadMarcas',
             'cantidadMotos',
             'ventas',
+            'creditos',
             'morosos'
         ));
     }
