@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'use_ico_only' => true, 
+    'use_ico_only' => true,
     'use_full_favicon' => false,
 
     /*
@@ -89,7 +89,7 @@ return [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
             'alt' => 'Auth Logo',
             'class' => '',
-            'width' => 50,
+            'width' => 100,
             'height' => 50,
         ],
     ],
@@ -327,20 +327,9 @@ return [
             'icon' => 'fa fa-credit-card',
         ],
         [
-            'text' => 'Clientes',
-            'icon' => 'fas fa fa-users',
-            'url' => 'admin/clientes',
-        ],
-        [
             'text' => 'Compras',
             'icon' => 'fas fa-cart-shopping',
             'url' => 'admin/compras',
-
-        ],
-        [
-            'text' => 'Proveedores',
-            'url' => 'admin/proveedores',
-            'icon' => 'fas fa fa-truck',
 
         ],
         [
@@ -349,6 +338,18 @@ return [
             'icon' => 'fas fa-motorcycle',
 
         ],
+        [
+            'text' => 'Clientes',
+            'icon' => 'fas fa fa-users',
+            'url' => 'admin/clientes',
+        ],
+        [
+            'text' => 'Proveedores',
+            'url' => 'admin/proveedores',
+            'icon' => 'fas fa fa-truck',
+
+        ],
+        
 
         /*   [
             'text' => 'Maestros',

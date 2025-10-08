@@ -3,11 +3,8 @@
 @section('auth_header', 'Autenticarse para Iniciar Sesión')
 
 @section('auth_body')
-   
 
 @section('classes_body', 'login-page bg-light') {{-- Cambia el color con clases de Bootstrap --}}
-
-
 
 <form action="{{ route('login') }}" method="post">
     @csrf
@@ -61,3 +58,7 @@
 </p>
 @endsection
 
+@section('css')
+
+
+@stop

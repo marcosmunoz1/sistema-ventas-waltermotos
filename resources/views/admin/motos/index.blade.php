@@ -75,7 +75,7 @@
                                                     </td>
 
                                                     <td class="text-center" style="vertical-align: middle">
-                                                       <img src="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : asset('storage/motos/default.png') }}"
+                                                        <img src="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : asset('storage/motos/default.png') }}"
                                                             width="40%" alt="Imagen de la moto">
 
                                                     </td>
@@ -118,6 +118,84 @@
             </div>
         </div>
     </div>
+
+
+    @php
+        // Totales generales
+        $totalStock = $motos->where('condicion', 'en_stock')->count();
+        $totalVendidas = $motos->where('condicion', 'vendida')->count();
+        $totalGarantia = $motos->where('condicion', 'garantia')->count();
+        $totalDevueltas = $motos->where('condicion', 'devuelta')->count();
+
+        // Si tus motos tienen un campo deposito_id y relación con modelo Deposito
+        $motosPorDeposito = $motos->groupBy('deposito.nombre_deposito')->map->count();
+    @endphp
+
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{ $totalStock }}</h3>
+                    <p>Motos en Stock</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{ $totalVendidas }}</h3>
+                    <p>Motos Vendidas</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-motorcycle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>{{ $totalGarantia }}</h3>
+                    <p>Motos en Garantía</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if ($motosPorDeposito->isNotEmpty())
+        <div class="card mt-3">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0"><i class="fas fa-map-marker-alt"></i> Motos por Depósito</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-bordered mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Depósito</th>
+                            <th class="text-center">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($motosPorDeposito as $deposito => $cantidad)
+                            <tr>
+                                <td>{{ $deposito ?? 'Sin asignar' }}</td>
+                                <td class="text-center"><strong>{{ $cantidad }}</strong></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
+
 @stop
 
 @section('css')

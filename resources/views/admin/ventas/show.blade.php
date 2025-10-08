@@ -23,7 +23,8 @@
                             <h6><strong>Email: </strong> {{ $cliente->email_cliente }}</h6>
                             <h6><strong>CUIT: </strong> {{ $cliente->cuit_cliente }}</h6>
                             <h6><strong>DNI: </strong> {{ $cliente->dni_cliente }}</h6>
-                            <h6><strong>Fecha Nacimiento: </strong> {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}</h6>
+                            <h6><strong>Fecha Nacimiento: </strong>
+                                {{ \Carbon\Carbon::parse($venta->fecha_venta)->format('d-m-Y') }}</h6>
                             <h6><strong>Telefono: </strong> {{ $cliente->celular_cliente }}</h6>
                             <h6><strong>Estado Civil: </strong> {{ $cliente->estado_civil_cliente }}
                             </h6>
@@ -35,18 +36,24 @@
                         </div>
                         <div class="card-body">
                             <div class="mx-2 mt-2">
-                                <h6><strong>Conyugue:</strong>
-                                    {{ $cliente->conyugue->apellido_conyugue }},
-                                    {{ $cliente->conyugue->nombre_conyugue }}
+                                <h6>
+                                    <strong>Conyugue:</strong>
+                                    {{ $cliente->conyugue ? $cliente->conyugue->apellido_conyugue . ', ' . $cliente->conyugue->nombre_conyugue : 'Sin cónyuge' }}
                                 </h6>
-                                <h6><strong>DNI:</strong> {{ $cliente->conyugue->dni_conyugue }}</h6>
-                                <h6><strong>Fecha Nacimiento:</strong>
-                                    {{ \Carbon\Carbon::parse($cliente->conyugue->fecha_nacimiento_conyugue)->format('d-m-Y') }}
-                                </h6>
-                                <h6><strong>Teléfono:</strong>
-                                    {{ $cliente->conyugue->celular_conyugue }}</h6>
+
+                                @if ($cliente->conyugue)
+                                    <h6><strong>DNI:</strong> {{ $cliente->conyugue->dni_conyugue }}</h6>
+                                    <h6>
+                                        <strong>Fecha Nacimiento:</strong>
+                                        {{ \Carbon\Carbon::parse($cliente->conyugue->fecha_nacimiento_conyugue)->format('d-m-Y') }}
+                                    </h6>
+                                    <h6><strong>Teléfono:</strong> {{ $cliente->conyugue->celular_conyugue }}</h6>
+                                @else
+                                    <h6 class="text-muted"><em>No se registraron datos del cónyuge.</em></h6>
+                                @endif
                             </div>
                         </div>
+
                     </div>
                     <div class="col-md-4">
                         <div class="card-header">
@@ -100,8 +107,8 @@
                     </div>
                 </div>
             </div>
-              <!-- Botones de acción -->
-              <div class="card-footer text-right">
+            <!-- Botones de acción -->
+            <div class="card-footer text-right">
                 <a href="{{ url('admin/ventas') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Volver
                 </a>
