@@ -31,6 +31,9 @@
                         </thead>
                         <?php $contador = 1; ?>
                         <tbody class="table-bordered">
+                            @php
+                                $granTotal = 0;
+                            @endphp
                             @foreach ($compras as $compra)
                                 <tr>
                                     <td style="text-align: center;vertical-align:middle;">{{ $contador++ }}</td>
@@ -40,6 +43,9 @@
                                     <td class="text-center" style="vertical-align:middle;">{{ $compra->numero_remito }}</td>
                                     <td class="text-center" style="vertical-align:middle;">{{ $compra->numero_factura }}
                                     </td>
+                                     @php
+                                        $granTotal += $compra->total_compra;
+                                    @endphp
                                     <td class="text-right text-danger" style="vertical-align:middle;">
                                         ${{ number_format($compra->total_compra, 2, ',', '.') }}</td>
                                     <td style="text-align: center;vertical-align:middle;">
@@ -58,10 +64,6 @@
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
-
-
-
-
                                         </div>
                                     </td>
                                 </tr>
@@ -71,6 +73,59 @@
                 </div>
             </div>
         </div>
+    </div>
+
+   <div class="card mt-3 shadow-sm border-primary">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-calculator"></i> Resumen General de Compras</h5>
+    </div>
+    <div class="card-body">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <h6 class="text-muted">Total Compras</h6>
+                <h4 class="fw-bold text-danger">${{ number_format($granTotal, 2, ',', '.') }}</h4>
+            </div>
+            <div class="col-md-4">
+                <h6 class="text-muted">Monto Total de Compras Pagadas</h6>
+                <h4 class="fw-bold text-success">${{ number_format($totalPagadas, 2, ',', '.') }}</h4>
+            </div>
+            <div class="col-md-4">
+                <h6 class="text-muted">Monto Total de Compras Pendientes</h6>
+                <h4 class="fw-bold text-warning">${{ number_format($totalPendientes, 2, ',', '.') }}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <div class="row">
+
+        {{-- Saldo total de creditos --}}
+        <div class="col-md-6">
+            <div class="card card-outline card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">Monto total de Compras</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartCreditosMontos"></canvas>
+                </div>
+            </div>
+        </div>
+
+        {{-- Cantidad de créditos --}}
+        <div class="col-md-6">
+            <div class="card card-outline card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">Cantidad de Compras mensuales</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartCreditosCantidad"></canvas>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 @stop
@@ -121,4 +176,81 @@
             });
         }
     </script>
+
+    @php
+        $mesesCompras = array_fill(1, 12, 0);
+        $sumaCompras = array_fill(1, 12, 0);
+
+        foreach ($compras as $compra) {
+            $fecha = strtotime($compra->fecha_compra);
+            if ($fecha !== false) {
+                $mes = (int) date('m', $fecha);
+                $mesesCompras[$mes]++;
+                $sumaCompras[$mes] += $compra->total_compra;
+            }
+        }
+
+        $reporteCantidadCompras = implode(',', $mesesCompras);
+        $reporteMontosCompras = implode(',', $sumaCompras);
+    @endphp
+
+    <script>
+        const meses = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+
+        const datosCantidadCompras = [{{ $reporteCantidadCompras }}];
+        const datosMontosCompras = [{{ $reporteMontosCompras }}];
+
+        // ---- Gráfico: Cantidad de Créditos ----
+        new Chart(document.getElementById('chartCreditosCantidad'), {
+            type: 'bar',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Cantidad de Compras',
+                    data: datosCantidadCompras,
+                    backgroundColor: 'rgba(255, 206, 86, 0.5)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // ---- Gráfico: Monto Total Financiado ----
+        new Chart(document.getElementById('chartCreditosMontos'), {
+            type: 'line',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Monto Total de Compras ($)',
+                    data: datosMontosCompras,
+                    fill: true,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderWidth: 2,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: v => '$' + v.toLocaleString('es-AR')
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
 @stop

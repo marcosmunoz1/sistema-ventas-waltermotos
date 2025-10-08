@@ -24,7 +24,12 @@ class ComprasController extends Controller
     public function index()
     {
         $compras = Compra::with('motos')->orderBy('id', 'desc')->get();
-        return view('admin.compras.index', compact('compras'));
+       
+        $granTotal = Compra::sum('total_compra');
+        $totalPagadas = Compra::where('estado_compra', 'pagado')->sum('total_compra');
+        $totalPendientes = Compra::where('estado_compra', 'pendiente')->sum('total_compra');
+
+        return view('admin.compras.index', compact('compras','granTotal', 'totalPagadas', 'totalPendientes'));
     }
 
     /**
@@ -78,8 +83,8 @@ class ComprasController extends Controller
             'estado_compra' => 'required|string',
             'id_proveedor' => 'required|integer',
             'total_compra' => 'required|numeric',
-        ],[],[
-                'id_proveedor'=>'Proveedor',
+        ], [], [
+            'id_proveedor' => 'Proveedor',
         ]);
 
         $session_id = session()->getId();
@@ -258,7 +263,7 @@ class ComprasController extends Controller
                     'precio_venta'     => $tmpMoto->precio_venta,
                     'imagen_moto'      => $tmpMoto->imagen_moto,
                     'id_deposito'      => $tmpMoto->id_deposito,
-                    'fecha_compra_moto'=> $compra->fecha_compra,
+                    'fecha_compra_moto' => $compra->fecha_compra,
                     'id_compra'        => $compra->id,
                     'condicion'        => 'en_stock', // Por defecto
                     'estado_moto'      => 'disponible', // Si tenés este campo
