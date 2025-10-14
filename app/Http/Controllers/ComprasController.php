@@ -24,7 +24,7 @@ class ComprasController extends Controller
     public function index()
     {
         $compras = Compra::with('motos')->orderBy('id', 'desc')->get();
-       
+
         $granTotal = Compra::sum('total_compra');
         $totalPagadas = Compra::where('estado_compra', 'pagado')->sum('total_compra');
         $totalPendientes = Compra::where('estado_compra', 'pendiente')->sum('total_compra');
@@ -69,7 +69,7 @@ class ComprasController extends Controller
         $request->validate([
             'fecha_compra' => 'required|date',
             'numero_factura' => [
-                'required',
+                'nullable',
                 'string',
                 Rule::unique('compras', 'numero_factura')
                     ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
@@ -91,7 +91,9 @@ class ComprasController extends Controller
         $tmpMotos = TmpMoto::where('session_id', $session_id)->whereNull('id_compra')->get();
 
         if ($tmpMotos->isEmpty()) {
-            return back()->with('mensaje', 'No hay motos cargadas para esta compra.');
+            return back()->with('mensaje', 'No hay motos cargadas para esta compra.')
+                        ->with('icono', 'error')
+                        ->withInput();
         }
 
         // Validar duplicados entre las tmpMotos
@@ -174,7 +176,7 @@ class ComprasController extends Controller
     {
         $contador = 1;
         $nacionalidades = Nacionalidad::all();
-        $depositos = Deposito::all();
+        $depositos = Deposito::where('nombre_deposito', '!=', 'Vendida')->get();
         $marcas = Marca::all();
         $sessionId = session()->getId();
         $compra = Compra::with([
@@ -306,7 +308,7 @@ class ComprasController extends Controller
                 'precio_venta' => 'nullable',
                 'imagen_moto' => 'nullable|image|mimes:jpg,jpeg,png,gif',
                 'id_deposito' => 'required',
-            ], [], [ //atributos con nombres "bonitos"
+            ], [], [
                 'id_marca' => 'Marca',
                 'modelo_moto' => 'Modelo',
                 'dominio' => 'Dominio',
@@ -385,7 +387,7 @@ class ComprasController extends Controller
     public function editarMotoCompra($compraId, $motoId)
     {
         $nacionalidades = Nacionalidad::all();
-        $depositos = Deposito::all();
+        $depositos = Deposito::where('nombre_deposito', '!=', 'Vendida')->get();
         $marcas = Marca::all();
         $compra = Compra::findOrFail($compraId);
         $moto = $compra->motos()->where('id', $motoId)->firstOrFail();

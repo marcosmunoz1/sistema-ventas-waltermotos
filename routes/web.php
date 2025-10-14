@@ -83,7 +83,7 @@ Route::put('/admin/motos-temporales/moto/{motoId}', [\App\Http\Controllers\TmpCo
     ->name('compras.temporales.motos.update');
 
 //Rutas para tmp-motos
-Route::middleware(['web', 'auth'])->post('/admin/tmp-compras', [TmpCompraController::class, 'store'])->name('tmp-compras.store')->middleware('auth');
+Route::middleware(['web', 'auth'])->post('/admin/tmp-compras', [TmpCompraController::class, 'store'])->name('tmp-compras.store');
 Route::delete('/admin/tmp-compras/{id}', [TmpCompraController::class, 'destroy'])->name('tmp-compras.destroy')->middleware('auth');
 Route::get('/admin/tmp-compras/motos', [TmpCompraController::class, 'getMotos'])->name('tmp-compras.getMotos')->middleware('auth');
 Route::get('/admin/tmp-compras/listar', [TmpCompraController::class, 'listar'])->name('tmp-compras.listar')->middleware('auth');
