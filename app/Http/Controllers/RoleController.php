@@ -11,9 +11,17 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::where('name', '!=', 'SuperAdmin')->get();
+        $usuarioActual = Auth::user();
+
+        if ($usuarioActual->hasRole('Super-Admin')) {
+            $roles = Role::all();
+        } else {
+            $roles = Role::where('name', '!=', 'Super-Admin')->get();
+        }
+
         return view('admin.roles.index', compact('roles'));
     }
+
 
     public function store(Request $request)
     {

@@ -21,56 +21,59 @@
                 <div class="col-md-12 mx-auto ">
 
                     <div class="card-body">
-                        <table id="mitabla" class="table table-responsive  table-striped table-hover table-sm">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th class="text-center" style="width: 5%">#</th>
-                                    <th class="text-center" style="width: 15%">Nombre</th>
-                                    <th class="text-center" style="width: 10%">Apellido</th>
-                                    <th class="text-center" style="width: 10%">CUIT</th>
-                                    <th class="text-center" style="width: 10%">DNI</th>
-                                    <th class="text-center" style="width: 10%">Celular</th>
-                                     <th class="text-center" style="width: 10%">Estado Civil</th>
-                                    <th class="text-center" style="width: 10%">Acciones</th>
-                                </tr>
-                            </thead>
-                            <?php $contador = 1; ?>
-                            <tbody class="table-bordered">
-                                @foreach ($clientes as $cliente)
+                        <div class="table-responsive">
+                            <table id="mitabla" class="table  table-striped table-hover table-sm">
+                                <thead class="table-primary">
                                     <tr>
-                                        <td class="text-center">{{ $contador++ }}</td>
-                                        <td style="vertical-align: middle">{{ $cliente->nombre_cliente }}</td>
-                                        <td style="vertical-align: middle">{{ $cliente->apellido_cliente }}</td>
-                                        <td class="text-center" style="vertical-align: middle">
-                                            {{ $cliente->cuit_cliente }}</td>
-                                        <td class="text-center" style="vertical-align: middle">
-                                            {{ $cliente->dni_cliente }}</td>
-                                        <td class="text-center" style="vertical-align: middle">
-                                            {{ $cliente->celular_cliente }}</td>
-                                        <td class="text-center" style="vertical-align: middle">
-                                            {{ $cliente->estado_civil_cliente }}</td>
-                                        <td class="text-center">
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <a href="{{ url('/admin/clientes', $cliente->id) }}"
-                                                    class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                                <a href="{{ url('/admin/clientes/' . $cliente->id . '/edit') }}"
-                                                    class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                <form action="{{ url('/admin/clientes', $cliente->id) }}" method="post"
-                                                    class="d-inline-block" onsubmit="preguntar(event, {{ $cliente->id }})"
-                                                    id="miFormulario{{ $cliente->id }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"
-                                                        style="border-radius: 0px 4px 4px 0px">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-
-                                        </td>
+                                        <th class="text-center" style="width: 5%">#</th>
+                                        <th class="text-center" style="width: 15%">Nombre</th>
+                                        <th class="text-center" style="width: 10%">Apellido</th>
+                                        <th class="text-center" style="width: 10%">CUIT</th>
+                                        <th class="text-center" style="width: 10%">DNI</th>
+                                        <th class="text-center" style="width: 10%">Celular</th>
+                                        <th class="text-center" style="width: 10%">Estado Civil</th>
+                                        <th class="text-center" style="width: 10%">Acciones</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <?php $contador = 1; ?>
+                                <tbody class="table-bordered">
+                                    @foreach ($clientes as $cliente)
+                                        <tr>
+                                            <td class="text-center">{{ $contador++ }}</td>
+                                            <td style="vertical-align: middle">{{ $cliente->nombre_cliente }}</td>
+                                            <td style="vertical-align: middle">{{ $cliente->apellido_cliente }}</td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                {{ $cliente->cuit_cliente }}</td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                {{ $cliente->dni_cliente }}</td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                {{ $cliente->celular_cliente }}</td>
+                                            <td class="text-center" style="vertical-align: middle">
+                                                {{ $cliente->estado_civil_cliente }}</td>
+                                            <td class="text-center">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <a href="{{ url('/admin/clientes', $cliente->id) }}"
+                                                        class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                                    <a href="{{ url('/admin/clientes/' . $cliente->id . '/edit') }}"
+                                                        class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <form action="{{ url('/admin/clientes', $cliente->id) }}"
+                                                        method="post" class="d-inline-block"
+                                                        onsubmit="preguntar(event, {{ $cliente->id }})"
+                                                        id="miFormulario{{ $cliente->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                            style="border-radius: 0px 4px 4px 0px">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
