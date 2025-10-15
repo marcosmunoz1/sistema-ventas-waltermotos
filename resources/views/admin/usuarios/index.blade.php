@@ -22,7 +22,7 @@
                     <div class="col-md-10 mx-auto mt-4">
                         <div class="card">
                             <div class="card-body">
-                                <table id="mitabla" class="table table-striped table-responsive table-hover" id="tablaProductos">
+                                <table id="mitabla" class="table table-striped  table-hover" id="tablaProductos">
                                     <thead class="table-primary">
                                         <tr>
                                             <th class="text-center" style="width: 5%">#</th>

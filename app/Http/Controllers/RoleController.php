@@ -148,7 +148,8 @@ class RoleController extends Controller
         }
 
         return redirect()->route('admin.roles.index')
-            ->with('mensaje', 'Se asignaron los permisos para el rol de manera correcta ✅')
+            ->with('mensaje', 'Permisos creados para el Rol ✅')
+            ->with('descripcion', 'Se asignaron los permisos para el rol de manera correcta.')
             ->with('icono', 'success');
     }
 
@@ -175,6 +176,4 @@ class RoleController extends Controller
             ->with('mensaje', '✅ Se eliminó el Rol con éxito')
             ->with('icono', 'success');
     }
-
-
 }

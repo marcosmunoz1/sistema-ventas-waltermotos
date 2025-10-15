@@ -12,21 +12,15 @@ class MarcasSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('marcas')->truncate(); // vacía la tabla antes de insertar
-
-        $marcas = [
-            ['nombre_marca' => 'Honda'],
-            ['nombre_marca' => 'Yamaha'],
-            ['nombre_marca' => 'Suzuki'],
-            ['nombre_marca' => 'Kawasaki'],
-            ['nombre_marca' => 'Ducati'],
-            ['nombre_marca' => 'BMW'],
-            ['nombre_marca' => 'KTM'],
-            ['nombre_marca' => 'Harley-Davidson'],
-            ['nombre_marca' => 'Triumph'],
-            ['nombre_marca' => 'Aprilia'],
-        ];
-
-        DB::table('marcas')->insert($marcas);
+        DB::table('marcas')->insert(['nombre_marca' => 'Honda']);
+        DB::table('marcas')->insert(['nombre_marca' => 'Yamaha']);
+        DB::table('marcas')->insert(['nombre_marca' => 'Suzuki']);
+        DB::table('marcas')->insert(['nombre_marca' => 'Kawasaki']);
+        DB::table('marcas')->insert(['nombre_marca' => 'Ducati']);
+        DB::table('marcas')->insert(['nombre_marca' => 'BMW']);
+        DB::table('marcas')->insert(['nombre_marca' => 'KTM']);
+        DB::table('marcas')->insert(['nombre_marca' => 'Harley-Davidson']);
+        DB::table('marcas')->insert(['nombre_marca' => 'Triumph']);
+        DB::table('marcas')->insert(['nombre_marca' => 'Aprilia']);
     }
 }
