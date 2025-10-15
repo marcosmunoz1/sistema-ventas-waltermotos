@@ -90,12 +90,14 @@
                                                         <form
                                                             action="{{ url('/admin/creditos/' . $credito->id . '/cobrar-cuotas') }}"
                                                             method="get" class="d-inline-block">
+                                                            <input type="hidden" name="origen" value="index">
                                                             <button type="submit" class="btn btn-sm btn-success"
                                                                 style="border-radius: 0px 4px 4px 0px"
                                                                 @if ($credito->estado_credito === 'Pagado') disabled title="El crédito ya está pagado" @endif>
                                                                 <i class="fas fa-cash-register"></i>
                                                             </button>
                                                         </form>
+
 
 
 
@@ -145,7 +147,7 @@
                 </div>
                 <div class="col-md-3">
                     <h6 class="text-muted">Interes Total</h6>
-                    <h4 class="fw-bold ">${{ number_format( $granInteres, 2, ',', '.') }}</h4>
+                    <h4 class="fw-bold ">${{ number_format($granInteres, 2, ',', '.') }}</h4>
                 </div>
                 <div class="col-md-3">
                     <h6 class="text-muted">Total Cancelado c/interes</h6>

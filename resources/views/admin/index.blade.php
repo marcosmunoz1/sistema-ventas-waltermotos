@@ -144,8 +144,8 @@
         <div class="alert alert-danger" role="alert">
             <h5 class="mb-3"><i class="fas fa-exclamation-triangle"></i> Clientes Morosos</h5>
             <div class="table-responsive">
-                <table class="table table-sm table-hover mb-0">
-                    <thead class="table-danger">
+                <table class="table table-sm mb-0">
+                    <thead class="table">
                         <tr>
                             <th class="text-center">Cliente</th>
                             <th class="text-center">Cuotas Vencidas</th>
@@ -169,11 +169,12 @@
                                 <td class="text-center">{{ $cuotasVencidas }}</td>
                                 <td class="text-center">{{ $cliente->celular_cliente }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('admin.creditos.show', $credito->id) }}"
+                                    <a href="{{ url('/admin/creditos/' . $credito->id . '/cobrar-cuotas?origen=home') }}"
                                         class="btn btn-block btn-outline-info btn-sm">
-                                        <i class="fas fa-eye"></i> Ver crédito
+                                        <i class="fas fa-credit-card"></i> Ir al crédito
                                     </a>
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>

@@ -29,7 +29,7 @@ class ComprasController extends Controller
         $totalPagadas = Compra::where('estado_compra', 'pagado')->sum('total_compra');
         $totalPendientes = Compra::where('estado_compra', 'pendiente')->sum('total_compra');
 
-        return view('admin.compras.index', compact('compras','granTotal', 'totalPagadas', 'totalPendientes'));
+        return view('admin.compras.index', compact('compras', 'granTotal', 'totalPagadas', 'totalPendientes'));
     }
 
     /**
@@ -68,22 +68,30 @@ class ComprasController extends Controller
         // Validación de la compra
         $request->validate([
             'fecha_compra' => 'required|date',
+
             'numero_factura' => [
                 'nullable',
                 'string',
+                'regex:/^\d{4}-\d{6,}$/', // 4 dígitos, guion, al menos 6 dígitos
                 Rule::unique('compras', 'numero_factura')
                     ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
             ],
+
             'numero_remito' => [
                 'required',
                 'string',
+                'regex:/^\d{4}-\d{6,}$/', // mismo formato que factura
                 Rule::unique('compras', 'numero_remito')
                     ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
             ],
+
             'estado_compra' => 'required|string',
             'id_proveedor' => 'required|integer',
             'total_compra' => 'required|numeric',
-        ], [], [
+        ], [
+            'numero_factura.regex' => 'El número de factura debe tener el formato 0001-000000',
+            'numero_remito.regex' => 'El número de remito debe tener el formato 0001-000000',
+        ], [
             'id_proveedor' => 'Proveedor',
         ]);
 
@@ -92,8 +100,8 @@ class ComprasController extends Controller
 
         if ($tmpMotos->isEmpty()) {
             return back()->with('mensaje', 'No hay motos cargadas para esta compra.')
-                        ->with('icono', 'error')
-                        ->withInput();
+                ->with('icono', 'error')
+                ->withInput();
         }
 
         // Validar duplicados entre las tmpMotos

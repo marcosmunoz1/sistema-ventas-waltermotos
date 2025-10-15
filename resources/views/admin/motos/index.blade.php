@@ -14,86 +14,83 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <h2 class="brand-text font-weight-light mb-0">Listado de Motos</h2>
-                            {{-- <div class="card-tools">
-                        <a href="{{ url('admin/motos/crear-moto') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
-                            Nueva Moto</a>
-                    </div> --}}
+                            <hr>
                         </div>
-                        <div class="col-md-12 mx-auto mt-2">
-
-                            <!-- Tabla -->
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-bordered table-striped" id="mitabla">
-                                        <thead class="table-primary">
+                    </div>
+                    <div class="col-md-12 mx-auto mt-2">
+                        <!-- Tabla -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered table-striped" id="mitabla">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th class="text-center" style="width: 5%">#</th>
+                                            <th class="text-center" style="width: 10%">Marca</th>
+                                            <th class="text-center" style="width: 10%">Modelo</th>
+                                            <th class="text-center" style="width: 5%">Año</th>
+                                            <th class="text-center" style="width: 10%">Nacionalidad</th>
+                                            <th class="text-center" style="width: 10%">P. Compra</th>
+                                            <th class="text-center" style="width: 10%">P. Venta</th>
+                                            <th class="text-center" style="width: 8%">Condicion</th>
+                                            <th class="text-center" style="width: 10%">Imagen</th>
+                                            <th class="text-center" style="width: 10%">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-bordered">
+                                        <?php $contador = 1; ?>
+                                        @foreach ($motos as $moto)
                                             <tr>
-                                                <th class="text-center" style="width: 5%">#</th>
-                                                <th class="text-center" style="width: 10%">Marca</th>
-                                                <th class="text-center" style="width: 10%">Modelo</th>
-                                                <th class="text-center" style="width: 5%">Año</th>
-                                                <th class="text-center" style="width: 10%">Nacionalidad</th>
-                                                <th class="text-center" style="width: 10%">P. Compra</th>
-                                                <th class="text-center" style="width: 10%">P. Venta</th>
-                                                <th class="text-center" style="width: 8%">Condicion</th>
-                                                <th class="text-center" style="width: 10%">Imagen</th>
-                                                <th class="text-center" style="width: 10%">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="table-bordered">
-                                            <?php $contador = 1; ?>
-                                            @foreach ($motos as $moto)
-                                                <tr>
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        {{ $contador++ }}</td>
-                                                    <!-- Marca de la moto, usando la relación -->
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        {{ $moto->marca->nombre_marca }}</td>
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        {{ $moto->modelo_moto }}</td>
+                                                <td class="text-center" style="vertical-align: middle">
+                                                    {{ $contador++ }}</td>
+                                                <!-- Marca de la moto, usando la relación -->
+                                                <td class="text-center" style="vertical-align: middle">
+                                                    {{ $moto->marca->nombre_marca }}</td>
+                                                <td class="text-center" style="vertical-align: middle">
+                                                    {{ $moto->modelo_moto }}</td>
 
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        {{ $moto->anio_moto }}</td>
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        {{ $moto->nacionalidad->pais }}</td>
-                                                    <td class="text-right text-success" style="vertical-align: middle">
-                                                        ${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
-                                                    <td class="text-right text-danger" style="vertical-align: middle">
-                                                        ${{ number_format($moto->precio_venta, 2, ',', '.') }}</td>
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        @php
-                                                            $colores = [
-                                                                'vendida' => 'danger',
-                                                                'en_stock' => 'success',
-                                                                'garantia' => 'warning',
-                                                                'devuelta' => 'secondary',
-                                                            ];
-                                                            $color = $colores[$moto->condicion] ?? 'light';
-                                                        @endphp
-                                                        <span class="badge bg-{{ $color }}">
-                                                            {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
-                                                        </span>
-                                                    </td>
+                                                <td class="text-center" style="vertical-align: middle">
+                                                    {{ $moto->anio_moto }}</td>
+                                                <td class="text-center" style="vertical-align: middle">
+                                                    {{ $moto->nacionalidad->pais }}</td>
+                                                <td class="text-right text-success" style="vertical-align: middle">
+                                                    ${{ number_format($moto->precio_compra, 2, ',', '.') }}</td>
+                                                <td class="text-right text-danger" style="vertical-align: middle">
+                                                    ${{ number_format($moto->precio_venta, 2, ',', '.') }}</td>
+                                                <td class="text-center" style="vertical-align: middle">
+                                                    @php
+                                                        $colores = [
+                                                            'vendida' => 'danger',
+                                                            'en_stock' => 'success',
+                                                            'garantia' => 'warning',
+                                                            'devuelta' => 'secondary',
+                                                        ];
+                                                        $color = $colores[$moto->condicion] ?? 'light';
+                                                    @endphp
+                                                    <span class="badge bg-{{ $color }}">
+                                                        {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
+                                                    </span>
+                                                </td>
 
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        <img src="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : asset('storage/motos/default.png') }}"
-                                                            width="40%" alt="Imagen de la moto">
+                                                <td class="text-center" style="vertical-align: middle">
+                                                    <img src="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : asset('storage/motos/default.png') }}"
+                                                        width="40%" alt="Imagen de la moto">
 
-                                                    </td>
-                                                    <td class="text-center" style="vertical-align: middle">
-                                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                                            <a href="{{ url('/admin/motos', $moto->id) }}"
-                                                                class="btn btn-sm btn-info" title="Ver moto"><i
-                                                                    class="fas fa-eye"></i></a>
-                                                            <a href="{{ url('/admin/motos/' . $moto->id . '/edit') }}"
-                                                                class="btn btn-sm btn-warning" title="Editar moto"><i
-                                                                    class="fas fa-edit"></i></a>
-                                                            <a href="{{ url('/admin/compras/' . $moto->compra->id) }}?from=motos"
-                                                                class="btn btn-secondary btn-sm" title="Ver compra">
-                                                                <i class="fa-solid fa-cart-shopping"></i>
-                                                            </a>
+                                                </td>
+                                                <td class="text-center" style="vertical-align: middle">
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <a href="{{ url('/admin/motos', $moto->id) }}"
+                                                            class="btn btn-sm btn-info" title="Ver moto"><i
+                                                                class="fas fa-eye"></i></a>
+                                                        <a href="{{ url('/admin/motos/' . $moto->id . '/edit') }}"
+                                                            class="btn btn-sm btn-warning" title="Editar moto"><i
+                                                                class="fas fa-edit"></i></a>
+                                                        <a href="{{ url('/admin/compras/' . $moto->compra->id) }}?from=motos"
+                                                            class="btn btn-secondary btn-sm" title="Ver compra">
+                                                            <i class="fa-solid fa-cart-shopping"></i>
+                                                        </a>
 
 
-                                                            {{--  <form action="{{ url('/admin/motos', $moto->id) }}"
+                                                        {{--  <form action="{{ url('/admin/motos', $moto->id) }}"
                                                                 method="post" class="d-inline-block"
                                                                 onsubmit="preguntar(event, {{ $moto->id }})"
                                                                 id="miFormulario{{ $moto->id }}">
@@ -102,23 +99,21 @@
                                                                 <button type="submit" class="btn btn-sm btn-danger" style="border-radius: 0px 4px 4px 0px">
                                                                     <i class="fas fa-trash"></i>
                                                                 </button> --}}
-                                                        </div>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                    </div>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+   
 
     @php
         // Totales generales
@@ -126,8 +121,6 @@
         $totalVendidas = $motos->where('condicion', 'vendida')->count();
         $totalGarantia = $motos->where('condicion', 'garantia')->count();
         $totalDevueltas = $motos->where('condicion', 'devuelta')->count();
-
-        // Si tus motos tienen un campo deposito_id y relación con modelo Deposito
         $motosPorDeposito = $motos->groupBy('deposito.nombre_deposito')->map->count();
     @endphp
 
@@ -175,8 +168,8 @@
                 <h5 class="card-title mb-0"><i class="fas fa-map-marker-alt"></i> Motos por Depósito</h5>
             </div>
             <div class="card-body">
-                <table class="table table-sm table-bordered mb-0">
-                    <thead class="table-light">
+                <table class="table table-sm  mb-0">
+                    <thead class="table-info text-secondary">
                         <tr>
                             <th>Depósito</th>
                             <th class="text-center">Cantidad</th>

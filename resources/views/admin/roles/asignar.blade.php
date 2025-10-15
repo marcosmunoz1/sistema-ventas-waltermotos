@@ -4,7 +4,7 @@
 
 @section('content_header')
     <h2 class="brand-text font-weight-light ">Asignar Permisos al Rol: <b>{{ $rol->name }}</b></h2>
-    <hr>
+    
 @stop
 
 @section('content')
