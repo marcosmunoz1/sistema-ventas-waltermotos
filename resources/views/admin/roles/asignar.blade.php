@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('title', 'Asignar Permiso')
 
@@ -20,29 +20,58 @@
 
             <form action="{{ url('/admin/roles/asignar', $rol->id) }}" method="post">
                 @csrf
-                @method('PUT') <!-- Si estás actualizando un rol -->
+                @method('PUT')
 
                 <div class="card-body">
-                    <div class="row">
-                        @foreach ($permisos as $modulo => $grupoPermisos)
-                            <div class="col-md-2">
-                                <h3>{{ $modulo }}</h3>
-                                @foreach ($permisosDivididos[$modulo] as $grupo)  <!-- Acceder correctamente a los permisos divididos -->
-                                    <div class="col-md-12">
-                                        @foreach ($grupo as $permiso)
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input permiso-checkbox"
-                                                    name="permisos[]" value="{{ $permiso->id }}"
-                                                    {{ $rol->hasPermissionTo($permiso->name) ? 'checked' : '' }}>
-                                                <label class="form-check-label">{{ $permiso->name }}</label>
+                    <div class="col-12 mb-3">
+                        <h5 class="text-primary mb-3">⚙️ Configuración del Sistema</h5>
+                        <div class="row">
+                            @foreach (['Usuarios', 'Roles', 'Permisos'] as $modulo)
+                                @if (isset($permisos[$modulo]))
+                                    <div class="col-md-2">
+                                        <h4>{{ $modulo }}</h4>
+                                        @foreach ($permisosDivididos[$modulo] as $grupo)
+                                            <div class="col-md-12">
+                                                @foreach ($grupo as $permiso)
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input permiso-checkbox"
+                                                            name="permisos[]" value="{{ $permiso->id }}"
+                                                            {{ $rol->hasPermissionTo($permiso->name) ? 'checked' : '' }}>
+                                                        <label class="form-check-label">{{ $permiso->name }}</label>
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         @endforeach
                                     </div>
-                                @endforeach
-                            </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                    <hr>
+                    <h5 class="text-primary mb-3">🧩 Otros Módulos</h5>
+                    <div class="row">
+                        @foreach ($permisos as $modulo => $grupoPermisos)
+                            @if (!in_array($modulo, ['Usuarios', 'Roles', 'Permisos']))
+                                <div class="col-md-2">
+                                    <h3>{{ $modulo }}</h3>
+                                    @foreach ($permisosDivididos[$modulo] as $grupo)
+                                        <div class="col-md-12">
+                                            @foreach ($grupo as $permiso)
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input permiso-checkbox"
+                                                        name="permisos[]" value="{{ $permiso->id }}"
+                                                        {{ $rol->hasPermissionTo($permiso->name) ? 'checked' : '' }}>
+                                                    <label class="form-check-label">{{ $permiso->name }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
                         @endforeach
                     </div>
                 </div>
+
 
 
                 <!-- Botones de acción -->

@@ -25,16 +25,14 @@
                         {{ ucfirst(str_replace('_', ' ', $moto->condicion)) }}
                     </span>
                 </div>
-
             </div>
-            <form action="{{ url('/admin/motos', $moto->id) }}" method="post" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="col-md-12 mx-auto mt-2">
 
+            <div class="col-md-12 mx-auto mt-2">
+                <form action="{{ url('/admin/motos', $moto->id) }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
                     <div
                         class="card-body {{ $auth_type ?? 'login' }}-card-body {{ config('adminlte.classes_auth_body', '') }}">
-
                         <!-- Datos de Moto -->
                         <div class="row">
                             <!-- Primera Columna: Datos -->
@@ -205,11 +203,11 @@
                                             <i class="fa-solid fa-cart-shopping"></i>
                                         </a>
 
-            </form>
 
-        </div>
-    </div>
-    </div>
+
+                                    </div>
+                                </div>
+                            </div>
 
 
                             <div class="col-md-3">
@@ -218,40 +216,58 @@
                                     <div class="input-group">
                                         <span class="input-group-text text-danger">$</span>
                                         <input name="precio_venta" type="text" class="form-control text-danger"
-                                            value="{{ number_format($moto->precio_venta, 2, ',', '.') }}">
+                                            title="{{ $moto->condicion === 'vendida' ? 'Moto vendida no es posible cambiar el precio' : '' }}"
+                                            value="{{ number_format($moto->precio_venta, 2, ',', '.') }}"
+                                            {{ $moto->condicion === 'vendida' ? 'disabled' : '' }}>
                                     </div>
                                 </div>
                             </div>
 
 
-    <div class="col-md-3">
-        <div class="form-group">
-            <label>Depósito</label>
-            <select name="deposito" class="form-control" required @if ($moto->condicion === 'vendida') disabled @endif>
-                @foreach ($depositos as $deposito)
-                    <option value="{{ $deposito->id }}" {{ $deposito->id == $moto->id_deposito ? 'selected' : '' }}>
-                        {{ $deposito->nombre_deposito }}
-                    </option>
-                @endforeach
-            </select>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Depósito</label>
+                                    {{-- Si la moto está vendida --}}
+                                    @if ($moto->condicion === 'vendida')
+                                        <select name="deposito" class="form-control" disabled
+                                            title="La moto está vendida, no se puede cambiar el depósito">
+                                            @foreach ($depositos as $deposito)
+                                                @if (strtolower($deposito->nombre_deposito) === 'vendida')
+                                                    <option value="{{ $deposito->id }}" selected>
+                                                        {{ $deposito->nombre_deposito }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    {{-- Si la moto NO está vendida --}}
+                                    @else
+                                        <select name="deposito" class="form-control" required>
+                                            @foreach ($depositos as $deposito)
+                                                @if (strtolower($deposito->nombre_deposito) !== 'vendida')
+                                                    <option value="{{ $deposito->id }}"
+                                                        {{ $deposito->id == $moto->id_deposito ? 'selected' : '' }}>
+                                                        {{ $deposito->nombre_deposito }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    @endif
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button type="submit" class="btn btn-warning"><i class="fa-solid fa-file-arrow-up"></i>
+                            Actualizar
+                        </button>
+                        <a href="{{ url('admin/motos') }}" class="btn btn-secondary">
+                            <i class="fas fa-cancel"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
-
-    </div>
-    </div>
-
-
-    </div>
-    </div>
-    <div class="card-footer text-right">
-        <button type="submit" class="btn btn-warning"><i class="fa-solid fa-file-arrow-up"></i>
-            Actualizar
-        </button>
-        <a href="{{ url('admin/motos') }}" class="btn btn-secondary">
-            <i class="fas fa-cancel"></i> Cancelar
-        </a>
-    </div>
-    </form>
-    </div>
     </div>
 
 @stop

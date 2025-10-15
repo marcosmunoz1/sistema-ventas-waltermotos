@@ -101,8 +101,6 @@ class RoleController extends Controller
                 return 'Marcas';
             } elseif (stripos($permiso->name, 'mot') !== false) {
                 return 'Motos';
-            } elseif (stripos($permiso->name, 'config') !== false) {
-                return 'Sistema';
             }
         })->map(function ($grupo) {
             return $grupo->sortBy('name');
@@ -129,7 +127,7 @@ class RoleController extends Controller
         /** @var \App\Models\User $userLogueado */
         $userLogueado = Auth::user();
 
-        // 🚫 Bloquear cambios si el rol es Super-Admin y quien edita no lo es
+        //Bloquear cambios si el rol es Super-Admin y quien edita no lo es
         if (strtolower($rol->name) === 'super-admin' && !optional($userLogueado)->hasRole('Super-Admin')) {
             return redirect()->back()
                 ->with('mensaje', 'No podés modificar los permisos del rol Super-Admin 🚫')
@@ -148,7 +146,8 @@ class RoleController extends Controller
         }
 
         return redirect()->route('admin.roles.index')
-            ->with('mensaje', 'Se asignaron los permisos para el rol de manera correcta ✅')
+            ->with('mensaje', 'Permisos creados para el Rol')
+            ->with('descripcion', 'Se asignaron los permisos para el rol de manera correcta.')
             ->with('icono', 'success');
     }
 
@@ -175,6 +174,4 @@ class RoleController extends Controller
             ->with('mensaje', '✅ Se eliminó el Rol con éxito')
             ->with('icono', 'success');
     }
-
-
 }

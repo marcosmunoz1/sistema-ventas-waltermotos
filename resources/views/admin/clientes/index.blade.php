@@ -24,12 +24,13 @@
                         <table id="mitabla" class="table table-responsive  table-striped table-hover table-sm">
                             <thead class="table-primary">
                                 <tr>
-                                    <th class="text-center" style="width: 10%">#</th>
+                                    <th class="text-center" style="width: 5%">#</th>
                                     <th class="text-center" style="width: 15%">Nombre</th>
                                     <th class="text-center" style="width: 10%">Apellido</th>
                                     <th class="text-center" style="width: 10%">CUIT</th>
                                     <th class="text-center" style="width: 10%">DNI</th>
                                     <th class="text-center" style="width: 10%">Celular</th>
+                                     <th class="text-center" style="width: 10%">Estado Civil</th>
                                     <th class="text-center" style="width: 10%">Acciones</th>
                                 </tr>
                             </thead>
@@ -46,7 +47,8 @@
                                             {{ $cliente->dni_cliente }}</td>
                                         <td class="text-center" style="vertical-align: middle">
                                             {{ $cliente->celular_cliente }}</td>
-
+                                        <td class="text-center" style="vertical-align: middle">
+                                            {{ $cliente->estado_civil_cliente }}</td>
                                         <td class="text-center">
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 <a href="{{ url('/admin/clientes', $cliente->id) }}"

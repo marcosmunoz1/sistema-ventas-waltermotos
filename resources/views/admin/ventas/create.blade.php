@@ -3,7 +3,7 @@
 @section('title', 'Crear Venta')
 
 @section('content_header')
-    <h2 class="brand-text font-weight-light">Admin/Ventas/<b>Nueva-Venta</b></h2>
+    <h2 class="brand-text font-weight-light">Ventas/<b>Nueva-Venta</b></h2>
 @endsection
 
 @section('content')

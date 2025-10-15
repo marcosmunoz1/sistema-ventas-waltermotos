@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('fecha_nacimiento_cliente');
             $table->string('celular_cliente', 20);
             $table->string('email_cliente', 200);
-            $table->enum('estado_civil_cliente', ['Soltero', 'Casado', 'En Concubinato']);
+            $table->enum('estado_civil_cliente', ['Soltero', 'Casado', 'Soltera', 'Casada','En Concubinato']);
 
             $table->unsignedBigInteger('id_conyugue_cliente')->nullable();
             $table->foreign('id_conyugue_cliente')
