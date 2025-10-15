@@ -165,10 +165,11 @@
 
     <!-- Botones de acción -->
     <div class="card-footer text-right mb-2">
-        <a href="{{ url('admin/creditos') }}" class="btn btn-secondary">
+        <a href="{{ request('origen') === 'index' ? url('/admin/creditos') : url('/home') }}" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Volver
         </a>
     </div>
+
 
 
 

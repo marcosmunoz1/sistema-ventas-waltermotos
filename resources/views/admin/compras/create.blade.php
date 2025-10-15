@@ -45,7 +45,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Factura</label>
-                                        <input type="number" value="{{ old('numero_factura') }}" class="form-control"
+                                        <input type="text" value="{{ old('numero_factura') }}" class="form-control"
                                             id="numero_factura" name="numero_factura" placeholder="Nr. de factura">
                                         @error('numero_factura')
                                             <small class="text-danger">{{ $message }}</small>
