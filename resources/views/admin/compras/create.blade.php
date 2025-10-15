@@ -765,6 +765,7 @@
                         // No seguimos con el resto del código porque no hay motos
                         $('#precio_total_input').val(0);
                         $('#total_compra').text(`$ 0`);
+                        $('#total_compra_display').text(`$ 0`);
                         return;
                     }
 

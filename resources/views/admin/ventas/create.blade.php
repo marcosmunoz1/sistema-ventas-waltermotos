@@ -629,8 +629,8 @@
                                             ${{ number_format($moto->precio_venta, 2, ',', '.') }}
                                         </td>
                                         <td class="text-center" style="vertical-align: middle">
-                                            <img src="{{ asset('storage/' . $moto->imagen_moto) }}"
-                                                style="max-width: 100%; width: auto;" alt="">
+                                            <img src="{{ $moto->imagen_moto ? asset($moto->imagen_moto) : asset('storage/motos/default.png') }}"
+                                                            width="100%" alt="Imagen de la moto">
 
                                         </td>
                                     </tr>

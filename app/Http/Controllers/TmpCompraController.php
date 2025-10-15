@@ -77,7 +77,7 @@ class TmpCompraController extends Controller
                     }
                 }],
                 'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado',
-                'precio_compra' => 'required',
+                'precio_compra' => 'required|numeric|min:0|max:99999999.99',
                 'precio_venta' => 'nullable',
                 'imagen_moto' => 'nullable',
                 'id_deposito' => 'required',
@@ -227,7 +227,7 @@ class TmpCompraController extends Controller
         }],
         'nr_certificado' => 'nullable|unique:tmp_motos,nr_certificado,' . $motoId,
         'imagen_moto' => 'nullable|image|max:2048',
-        'precio_compra' => 'required',
+        'precio_compra' => 'required|numeric|min:0|max:99999999.99',
         'precio_venta' => 'nullable',
         'id_deposito' => 'required',
     ], [], [
