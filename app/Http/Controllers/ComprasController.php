@@ -69,13 +69,13 @@ class ComprasController extends Controller
         $request->validate([
             'fecha_compra' => 'required|date',
             'numero_factura' => [
-                'integer',
+                'string',
                 Rule::unique('compras', 'numero_factura')
                     ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
             ],
             'numero_remito' => [
                 'required',
-                'integer',
+                'string',
                 Rule::unique('compras', 'numero_remito')
                     ->where(fn($query) => $query->where('id_proveedor', $request->id_proveedor))
             ],
