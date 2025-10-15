@@ -159,7 +159,7 @@ class TmpCompraController extends Controller
 
     public function editarMoto($motoId){
         $nacionalidades = Nacionalidad::all();
-        $depositos = Deposito::all();
+        $depositos = Deposito::where('nombre_deposito', '!=', 'Vendida')->get();
         $marcas = Marca::all();
         $moto = tmpMoto::findOrFail($motoId);
 
@@ -310,6 +310,27 @@ class TmpCompraController extends Controller
 
         return redirect()->back()->with('success', 'Moto eliminada del carrito');
     }
+    public function clearSession()
+    {
+        try {
+            $sessionId = session()->getId();
+
+            $deleted = TmpMoto::whereNull('id_compra')
+                        ->where('session_id', $sessionId)
+                        ->delete();
+
+            return response()->json([
+                'success' => $deleted > 0,
+                'message' => $deleted > 0 ? 'Motos eliminadas correctamente.' : null
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar motos.'
+            ], 500);
+        }
+    }
 
     public function clear($compraId)
     {
@@ -317,7 +338,7 @@ class TmpCompraController extends Controller
             $tmpMotos = \App\Models\TmpMoto::where('id_compra', $compraId)->get();
 
             if ($tmpMotos->isEmpty()) {
-                // No hay motos temporales, devolvemos success sin SweetAlert
+                // No hay motos temporales
                 return response()->json([
                     'success' => false,
                     'message' => 'No hay motos temporales para eliminar'

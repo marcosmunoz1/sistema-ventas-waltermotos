@@ -45,7 +45,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Factura</label>
-                                        <input type="number" value="{{ old('numero_factura') }}" class="form-control"
+                                        <input type="text" value="{{ old('numero_factura') }}" class="form-control"
                                             id="numero_factura" name="numero_factura" placeholder="Nr. de factura">
                                         @error('numero_factura')
                                             <small class="text-danger">{{ $message }}</small>
@@ -144,8 +144,9 @@
                         <button type="submit" class="btn btn-success">
                             <i class="fas fa-save"></i> Registrar
                         </button>
-                        <a href="{{ url('admin/compras') }}" class="btn btn-secondary">
-                            <i class="fas fa-times"></i> Cancelar
+                        <a href="{{ route('admin.compras.index') }}" id="btnCancelar" class="btn btn-secondary mx-1"><i
+                            class="fas fa-times"></i>
+                            Cancelar
                         </a>
 
                     </div>
@@ -688,7 +689,7 @@
                         cargarMotosATabla();
                         // Limpiar errores y formulario
                         $('.text-error').remove();
-                        $('#formAgregarMoto')[0].reset();
+                        //$('#formAgregarMoto')[0].reset();
                         //});
                     } else {
                         Swal.fire({
@@ -734,6 +735,7 @@
             });
 
         }
+
     </script>
 
     <script>
@@ -894,6 +896,41 @@
         $(document).ready(function() {
             cargarMotosATabla();
         });
+
+        $('#btnCancelar').on('click', function() {
+            $.ajax({
+                url: "{{ url('/admin/tmp-compras/clear-session') }}",
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    _method: 'DELETE'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(() => {
+                            window.location.href = "{{ route('admin.compras.index') }}";
+                        });
+                    } else {
+                        window.location.href = "{{ route('admin.compras.index') }}";
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "No se pudieron eliminar las motos."
+                    });
+                }
+            });
+        });
+
+
     </script>
 
 

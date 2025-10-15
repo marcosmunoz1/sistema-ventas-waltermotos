@@ -1018,7 +1018,7 @@
 
             $.ajax({
                 url: "{{ url('/admin/tmp-compras') }}/" + id,
-                type: 'POST', // porque estás usando _method DELETE
+                type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
                     _method: 'DELETE'
@@ -1027,7 +1027,7 @@
                     if (response.success) {
                         Swal.fire({
                             icon: "success",
-                            title: "Moto temporal eliminada",
+                            title: "Moto eliminada",
                             showConfirmButton: false,
                             timer: 1000
                         });
@@ -1039,7 +1039,7 @@
                         Swal.fire({
                             icon: "error",
                             title: "Error",
-                            text: "No se pudo eliminar la moto temporal"
+                            text: "No se pudo eliminar la moto"
                         });
                     }
                 },
@@ -1083,7 +1083,7 @@
                         Swal.fire({
                             icon: "error",
                             title: "Error",
-                            text: "No se pudieron eliminar las motos temporales"
+                            text: "No se pudieron eliminar las motos"
                         });
                     }
                 });
