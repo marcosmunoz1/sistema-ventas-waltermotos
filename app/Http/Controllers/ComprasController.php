@@ -104,15 +104,7 @@ class ComprasController extends Controller
                 ->withInput();
         }
 
-        // Validar duplicados entre las tmpMotos
-        $valoresTemp = [];
-        foreach ($tmpMotos as $tmpMoto) {
-            $key = $tmpMoto->nr_motor . '|' . $tmpMoto->dominio . '|' . $tmpMoto->nr_chasis;
-            if (in_array($key, $valoresTemp)) {
-                return back()->with('mensaje', 'Hay duplicados dentro de las motos cargadas en esta compra.');
-            }
-            $valoresTemp[] = $key;
-        }
+
 
         // Transacción para asegurar que todo se guarde correctamente
         DB::beginTransaction();
@@ -336,7 +328,6 @@ class ComprasController extends Controller
                 'id_deposito' => 'Depósito',
             ]);
 
-            // Si la validación falla, devolver errores en JSON
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,

@@ -81,7 +81,7 @@ class TmpCompraController extends Controller
                 'precio_venta' => 'nullable',
                 'imagen_moto' => 'nullable',
                 'id_deposito' => 'required',
-            ], [], [ //atributos con nombres "bonitos"
+            ], [], [
                 'id_marca' => 'Marca',
                 'modelo_moto' => 'Modelo',
                 'dominio' => 'Dominio',
