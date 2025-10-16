@@ -124,7 +124,7 @@
                 <div class="col-md-3">
                     <h6 class="text-muted">Saldo Total</h6>
                     <h4 class="fw-bold text-primary">
-                        ${{ number_format($totalVenta - $totalPago - $totalInteres, 2, ',', '.') }}</h4>
+                        ${{ number_format($totalVenta + $totalInteres - $totalPago , 2, ',', '.') }}</h4>
                 </div>
             </div>
         </div>
